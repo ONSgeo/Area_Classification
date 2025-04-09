@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
 
     #data dirs
-    url = "https://nrscensusprodumb.blob.core.windows.net/media/zz85kfinmf97whklasd98gfjk_20241003_1200_Topic2G__9575hj6t9375h/Census-2022-Output-Area-v1.zip"
+    url = "http://www.scotlandscensus.gov.uk/media/zz85kfinmf97whklasd98gfkadft5hj4f_Topic2H_20241120_1747/Census-2022-Output-Area-v1.zip"
     # Download the zip file
     r = requests.get(url)
     z = zipfile.ZipFile(BytesIO(r.content))
@@ -112,11 +112,16 @@ if __name__ == "__main__":
 
                 # # validate data and types
             # check if all columns are numeric
-            non_numeric = df.map(lambda x: not isinstance(x, (int, float)))
-            if non_numeric.any().any():
+            #non_numeric = df.map(lambda x: not isinstance(x, (int, float)))
+            #if non_numeric.any().any():
+            #    print("Non-numeric data found in the following cells:")
+            #    print(df[non_numeric])
+                
+            #new code to do the above (as erroring on df.map) - Dan 09/04/2025
+            non_numeric = [col for col in df.columns if re.sub(r'\d+', '', df[col].dtype.name) not in ('int','float')]
+            if len(non_numeric):
                 print("Non-numeric data found in the following cells:")
                 print(df[non_numeric])
-
 
             # Create new column names with zero padding
             variable_names = df.columns
@@ -142,7 +147,7 @@ if __name__ == "__main__":
             )
 
     # Remove the temporary files and directory
-    shutil.rmtree("./tmp")
+    # shutil.rmtree("./tmp") (commenting this out for the time being to get rid of permission error) - Dan 09/04/2025
     # save metadata table
     # create full name column
     meta_data_table["Full_Name"] = (
