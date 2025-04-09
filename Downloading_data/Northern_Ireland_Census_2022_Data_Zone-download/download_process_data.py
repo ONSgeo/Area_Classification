@@ -80,7 +80,7 @@ def fetch_data(var_code, var_name, var_unit):
         - Some variables may not be available at the Data Zone (DZ) level.
     """
 
-    url = f"https://build.nisra.gov.uk/en/custom/table.csv?d={var_unit}&v=DZ21&v={var_code}&p=1"
+    url = f"https://build.nisra.gov.uk/en/custom/table.csv?d={var_unit}&v=LGD14&v={var_code}&p=1"
     r = requests.get(url)
 
     # some vars in the list don't have the correct dimensions (like urban/rural)
@@ -128,7 +128,7 @@ if __name__ == "__main__":
             continue
 
         # get metadata, there is more stuff here we could grab if needed
-        meta_url = f"https://build.nisra.gov.uk/en/custom/table.csv-metadata.json?d={t_unit}&v=DZ21&v={t_dcode}&p=1"
+        meta_url = f"https://build.nisra.gov.uk/en/custom/table.csv-metadata.json?d={t_unit}&v=LGD14&v={t_dcode}&p=1"
         r = requests.get(meta_url)
         if r.status_code != 200:
             log_message = (
@@ -140,14 +140,15 @@ if __name__ == "__main__":
             continue
         type = r.json()["tableSchema"]["columns"][4]["titles"]
         df = pd.read_csv(BytesIO(data), skiprows=1)
-        df.rename(columns={"Census 2021 Data Zone Code": "DZ"}, inplace=True)
-        df.set_index("DZ", inplace=True)
+        
+        df.rename(columns={"Local Government District 2014 Code": "LGD"}, inplace=True)
+        df.set_index("LGD", inplace=True)
         # drop the label column
-        df.drop(columns=["Census 2021 Data Zone Label"], inplace=True)
+        df.drop(columns=["Local Government District 2014 Label"], inplace=True)
         # drop the "No code required" column if it exists
         if "No code required" in df.columns:
             df.drop(columns=["No code required"], inplace=True)
-
+    
         # create a total column, that includes everything except "No code required"
         df["All " + t_unit] = df.sum(axis=1)
         # put the total column first
