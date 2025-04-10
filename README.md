@@ -21,6 +21,45 @@ A table that describes each of the files in the repo (like we did for the automa
 Description of the input datasets
 
 ## Methodology / process description
+
+### Census 2021 Output Areas (legacy ReadME)
+This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
+
+The R code:
+
+* Download the bulk census data from [Nomis](https://www.nomisweb.co.uk/sources/census_2021_bulk)
+* Import the Output Area level data into R
+* Create new variable names based on the sequential ordering of the variables and the table identification code
+* Create a metadata lookup table providing the link between the new names and the original names
+* Export the OA data as both CSV and Parquet files
+
+The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
+
+### Northern Ireland Census 2021 Data Zones (legacy ReadMe)
+This repository contains code to download and clean all Data Zone level data for the Northen Irish 2021 Census
+
+The python code:
+
+* Finds the available variables from the [NISRA Table Builder](https://build.nisra.gov.uk/)
+* Scrapes the tables for each variable using beautiful soup
+* Create new variable names based on the sequential ordering of the variables and the table identification code
+* Create a metadata lookup table providing the link between the new names and the original names
+* Export the data zone data as both CSV and Parquet files
+
+The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
+
+### Scotland Census 2022 Output Areas (legacy ReadMe)
+This repository contains code to download and clean all Data Zone level data for the Scottish 2022 Census
+
+The python code:
+
+* Downloads the bulk data from the [Scotland Census](https://www.scotlandscensus.gov.uk/documents/2022-output-area-data/)
+* Processes and cleans the tables
+* Create new variable names based on the sequential ordering of the variables and the table identification code
+* Create a metadata lookup table providing the link between the new names and the original names
+* Export the data zone data as both CSV and Parquet files
+
+The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 ## Output
 ## Limitations
 ## Future scope
