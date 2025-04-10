@@ -3,3 +3,6 @@ clustergram
 scikit-learn
 matplotlib
 jupyter
+pyarrow
+requests
+bs4
