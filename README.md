@@ -21,6 +21,7 @@ A table that describes each of the files in the repo (like we did for the automa
 Description of the input datasets
 
 ## Methodology / process description
+Notes: NO BULK DOWNLOAD FOR LAD SCOTLAND SO MANUALLY DOWNLOADED FROM https://www.scotlandscensus.gov.uk/search-the-census#/search-by. Additionally migration indicator variable not available for Scotland.
 
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
