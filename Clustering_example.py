@@ -1,8 +1,9 @@
 # Install dependencies if running in a new environment and not using requirements.txt
 %pip install pandas clustergram scikit-learn matplotlib
 
-# Geodemographic python example
-# This notebook contains the workflow for producing a geodemographic classification in python using k-means clustering. It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
+## Geodemographic python example
+# This notebook contains the workflow for producing a geodemographic classification in python using k-means clustering. 
+#It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
 
 # Import necessary libraries
 import pandas as pd
@@ -46,8 +47,7 @@ variable_df = load_data(inputdata_filepath)
 variable_df.head()
 
 
-# Data transformation
-
+## Data transformation
 # Transform the input data to make it more suitable for clustering
 
 def transform_and_standardize_data(df):
@@ -71,8 +71,7 @@ transformed_variable_df = transform_and_standardize_data(variable_df)
 transformed_variable_df.head()
 
 
-
-# Clustergrams
+## Clustergrams
 # We produce a clustergram plot to assess an appropriate number of clusters for the supergroups.
 # For OAC, eight supergroups were created.
 # Some guidance on interpreting clustergrams and choosing the number of clusters can be found here: [Clustergram](https://clustergram.readthedocs.io/en/stable/notebooks/introduction.html)
@@ -106,8 +105,7 @@ n_init = 10  # Use a low value for quick testing, increase for final results
 create_clustergram(transformed_variable_df, n_init, save_loc=PLOT_DIR+"/supergroup_clustergram.png")
 
 
-# Supergroup Clustering
-
+## Supergroup Clustering
 # Run kmeans to cluster the geographies in K clusters (supergroups)
 
 def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.csv", random_seed=None):
@@ -161,8 +159,7 @@ supergrouped_variable_df = run_kmeans(transformed_variable_df, num_clusters, n_i
 supergrouped_variable_df.head()
 
 
-
-# Subgroups
+## Subgroups
 # For OAC the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 # Example code for creating the first layer of subclusters (groups) is below
 
@@ -247,7 +244,6 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> 
     print("Final output saved to outputs/subgroups_clusteroutput.csv")
 
     return df  # Return the modified DataFrame with clusters and subclusters
-
 
 
 # We can now select the number of subclusters to split each of the supergroups into using the clustergrams above.
