@@ -18,7 +18,8 @@ Current focus:
 A table that describes each of the files in the repo (like we did for the automated mapping repo)
 
 ## Data
-Description of the input datasets
+Data for E&W and NI is collected from the bulk downloads availble on their respective census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk) , [NISRA flexible table builder](https://build.nisra.gov.uk/en/))
+Currently data for (Scotland is manually downloaded from Scotland's Census Search Census Data)[https://www.scotlandscensus.gov.uk/search-the-census#/search-by].
 
 ## Methodology / process description
 Notes: NO BULK DOWNLOAD FOR LAD SCOTLAND SO MANUALLY DOWNLOADED FROM https://www.scotlandscensus.gov.uk/search-the-census#/search-by. Additionally migration indicator variable not available for Scotland.
