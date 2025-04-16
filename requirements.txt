@@ -1,4 +1,7 @@
+requests
 pandas
+bs4
+pyarrow
 clustergram
 scikit-learn
 matplotlib
