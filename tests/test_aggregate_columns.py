@@ -1,5 +1,4 @@
-from area_classification.___ import aggregate_columns
+# from area_classification.___ import aggregate_columns
 
 
-def test_____():
-    
+# def test_____():
