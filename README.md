@@ -18,6 +18,13 @@ Current focus:
 A table that describes each of the files in the repo (like we did for the automated mapping repo)
 
 ## Data
+Look up V60 variables
+Old	New 	Country
+	v1	
+	v2	
+![image](https://github.com/user-attachments/assets/f48baab0-5be5-40cf-a7fd-f21e7568f3f5)
+
+
 Data for E&W and NI is collected from the bulk downloads availble on their respective census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk) , [NISRA flexible table builder](https://build.nisra.gov.uk/en/))
 Currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by).
 
