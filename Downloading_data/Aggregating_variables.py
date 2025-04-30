@@ -58,3 +58,7 @@ print(age_table)
 # overcrowding
 # ownership_or_shared
 # level_1_2_and_appr
+# age_5_14
+# age_25_44
+# age_45_64
+# age_65_84

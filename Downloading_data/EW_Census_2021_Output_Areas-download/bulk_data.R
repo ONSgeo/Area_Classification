@@ -69,6 +69,8 @@ dir.create("./output_data/csv",recursive = TRUE)
 
 zip_urls <-  result <- setdiff(zip_urls, no_oa_tables)  # Remove the tables without OA
 
+
+
 for (url in zip_urls){
 
   dir.create("./tmp",recursive = TRUE)#create a temporary directory for unzipping
