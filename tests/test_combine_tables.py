@@ -85,12 +85,12 @@ for row in UK_result:
 
 def test_combine_tables_values():
     df_actual = combine_table(table1, table2, table3)
-    assert_frame_equal(df_actual, result_tables123, check_dtype=False)
+    assert df_actual == result_tables123
 
 def test_combine_tables_strings_and_counts():
     df_actual = combine_table(EnglWales, Scotland, NI)
-    assert_frame_equal(df_actual, results_UK, check_dtype=False)
+    assert df_actual == results_UK
 
 def test_combine_tables_columns():
     df_actual = combine_table(table_A, table_B, table_C)
-    assert_frame_equal(df_actual, tablesABC, check_dtype=False)
+    assert df_actual == tablesABC
