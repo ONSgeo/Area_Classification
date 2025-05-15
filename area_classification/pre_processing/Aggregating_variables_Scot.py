@@ -66,7 +66,7 @@ file_configs = [
 
     {
         'file_name': "uv210.csv",
-        'col_names': ['UV2100010', 'UV2100011'], # limited English skills. No skills English
+        'col_names': ['UV2100010', 'UV2100011'], 
         'new_col_name': 'cannot_speak_English'
     },
 
