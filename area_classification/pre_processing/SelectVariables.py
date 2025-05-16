@@ -39,14 +39,14 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
 # Parameters
 input_dir = "D:/Output_Area_Classification/EW_csv_samples"
 base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
-config_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/config_file.csv"
+config_file = "D:/Output_Area_Classification/Codes_final.csv"
 join_column = "LTLA"
 join_type = "left"
 
 # Load columns and their new names from the configuration file
 config_df = pd.read_csv(config_file)
-selected_variables = config_df['selected_variables'].dropna().tolist()
-new_names = dict(zip(config_df['selected_variables'], config_df['new_name']))
+selected_variables = config_df['variable_code'].dropna().tolist()
+new_names = dict(zip(config_df['new_code'], config_df['new_name']))
 
 # Call the function
 select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type)
