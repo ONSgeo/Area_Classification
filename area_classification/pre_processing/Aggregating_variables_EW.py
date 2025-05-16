@@ -126,6 +126,11 @@ file_configs = [
         'new_col_name': 'age_65_84'
     },
     
+    {
+        'file_path': "D:/Output_Area_Classification/csv/ts003.csv",
+        'col_names': ['ts0030008','ts0030012'],
+        'new_col_name': 'no_children'
+    },
 
 ]
 
@@ -149,3 +154,4 @@ batch_ag_columns(file_configs)
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
+# no_children -DONE

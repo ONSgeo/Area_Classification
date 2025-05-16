@@ -100,6 +100,7 @@ file_configs = [
         'col_names': ['ni0120015','ni0120016','ni0120017','ni0120018'],
         'new_col_name': 'age_65_84'
     },
+
     
 
 ]
@@ -123,3 +124,4 @@ batch_ag_columns(file_configs)
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
+# no_children - this already has one variable (No children in household - ni0900002)

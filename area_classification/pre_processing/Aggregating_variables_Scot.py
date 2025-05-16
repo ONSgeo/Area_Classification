@@ -112,6 +112,13 @@ file_configs = [
         'col_names': ['UV102b0017','UV102b0018','UV102b0019','UV102b0020'],
         'new_col_name': 'age_65_84'
     },
+
+    
+    {
+        'file_name': "uv112.csv",
+        'col_names': ['UV1120008','UV1120013'],
+        'new_col_name': 'no_children'
+    },
     
 
 ]
@@ -135,3 +142,4 @@ batch_ag_columns(file_configs)
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
+# no_children - DONE
