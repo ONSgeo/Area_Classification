@@ -101,6 +101,12 @@ file_configs = [
         'new_col_name': 'age_65_84'
     },
 
+    {
+        'file_name': "ni027.csv",
+        'col_names': ['ni0270002','ni0270003','ni0270004','ni0270005'],
+        'new_col_name': 'united_kingdom'
+    },
+
     
 
 ]
@@ -124,4 +130,5 @@ batch_ag_columns(file_configs)
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
-# no_children - this already has one variable (No children in household - ni0900002)
+# no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
+# united_kingdom - This has to be derived for NI. 
