@@ -52,8 +52,8 @@ main_path = "D:/Repos/Area_Classification/Area_Classification_Project/Downloadin
 file_configs = [
 
     {
-        'file_name': "ni130.csv",
-        'col_names': ['ni1300008', 'ni1300009'],
+        'file_name': "ni137.csv",
+        'col_names': ['ni1370005', 'ni1370006'],
         'new_col_name': 'separated_divorced'
     },
 
