@@ -18,6 +18,13 @@ Current focus:
 A table that describes each of the files in the repo (like we did for the automated mapping repo)
 
 ## Data
+Look up V60 variables
+Old	New 	Country
+	v1	
+	v2	
+![image](https://github.com/user-attachments/assets/f48baab0-5be5-40cf-a7fd-f21e7568f3f5)
+
+
 Data for E&W and NI is collected from the bulk downloads availble on their respective census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk) , [NISRA flexible table builder](https://build.nisra.gov.uk/en/))
 Currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by).
 
@@ -50,18 +57,10 @@ The python code:
 
 The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 
-### Scotland Census 2022 Output Areas (legacy ReadMe)
-This repository contains code to download and clean all Data Zone level data for the Scottish 2022 Census
+### Scotland Census 2022 Output Areas 
+We were unable to use the bulk download method to bring in data from Scotland since a bulk file is not availble for LAD. Additionally we were unable to aggregate up lower levels of geography (such as OA, for which there is a bulk download) as this is not recommended due to the statistical disclosure controls applied. Therefore we opted to download the data manually from [Scotland Census search data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by).
+The manual download was completed 22 April 2025 (Population density was downloaded 15 April 2025).
 
-The python code:
-
-* Downloads the bulk data from the [Scotland Census](https://www.scotlandscensus.gov.uk/documents/2022-output-area-data/)
-* Processes and cleans the tables
-* Create new variable names based on the sequential ordering of the variables and the table identification code
-* Create a metadata lookup table providing the link between the new names and the original names
-* Export the data zone data as both CSV and Parquet files
-
-The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 ## Output
 ## Limitations
 ## Future scope

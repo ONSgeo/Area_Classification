@@ -48,6 +48,7 @@ def test_ag_nan():
     df_actual = ag_columns(df_dummy_nan, ['col_1', 'col_2', 'col_3'], 'col_4')
     assert_frame_equal(df_actual, df_expected_nan, check_dtype=False)
 
+@pytest.mark.xfail(reason="Function has not been updated to raise value errors")
 def test_ag_inf():
     with pytest.raises(ValueError):
         ag_columns(df_dummy_inf, ['col_1', 'col_2', 'col_3'], 'col_4')

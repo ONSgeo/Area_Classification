@@ -1,0 +1,8 @@
+# Config file for the Area Classification project
+
+
+working_directory : ~/Area_Classification
+
+#input_directory: data/inputs
+
+#output_directory : data/outputs
