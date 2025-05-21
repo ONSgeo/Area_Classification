@@ -102,12 +102,24 @@ file_configs = [
     },
 
     {
-        'file_name': "ni027.csv",
-        'col_names': ['ni0270002','ni0270003','ni0270004','ni0270005'],
+        'file_name': "ni033.csv",
+        'col_names': ['ni0330002','ni0330003'],
         'new_col_name': 'united_kingdom'
     },
 
-    
+
+    {
+        'file_name': "ni033.csv",
+        'col_names': ['ni0330004','ni0330005'],
+        'new_col_name': 'eu_countries'
+    },
+
+
+    {
+        'file_name': "ni050.csv",
+        'col_names': ['ni0500005','ni0500007'],
+        'new_col_name': 'economically_active'
+    },
 
 ]
 
@@ -131,4 +143,6 @@ batch_ag_columns(file_configs)
 # age_45_64 - DONE
 # age_65_84 - DONE
 # no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
-# united_kingdom - This has to be derived for NI. 
+# united_kingdom - DONE. This has to be derived for NI only
+# eu_countries - DONE. This has to be derived for NI only
+# economically_active - DONE 

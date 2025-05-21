@@ -70,6 +70,7 @@ file_configs = [
         'new_col_name': 'cannot_speak_English'
     },
 
+
     {
         'file_name': "uv405.csv",
         'col_names': ['UV4050004', 'UV4050005','UV4050006'],
@@ -119,6 +120,12 @@ file_configs = [
         'col_names': ['UV1120008','UV1120013'],
         'new_col_name': 'no_children'
     },
+
+    {
+        'file_name': "uv601.csv",
+        'col_names': ['UV6010012','UV6010023'],
+        'new_col_name': 'economically_active'
+    },
     
 
 ]
@@ -132,14 +139,15 @@ batch_ag_columns(file_configs)
 # dependant_children - DONE
 # cannot_speak_English - DONE
 # provides_unpaid_care - this already has one variable (All unpaid carers - UV3010003) 
-# flat - this already has one variable (flat, maisonette or apartment total - UV4020006)
+# flat - this already has one variable (Flat, maisonette or apartment: total - UV4010006)
 # cars_2_or_more - DONE
 # under_occupation - DONE
 # overcrowding - this already has one variable (Occupancy rating of bedrooms: -1 or less - UV4150005)
-# ownership_or_shared - this already has one variable (owned: total - UV4040002)
+# ownership_or_shared - this already has one variable (Owned: Total	UV4030002)
 # level_1_2_and_appr - DONE
 # age_5_14 - DONE
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
 # no_children - DONE
+# economically_active - DONE this is a single variable for EW
