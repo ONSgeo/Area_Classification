@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import pytest
-from pandas.testing import assert_frame_equal
 from area_classification.pre_processing.combine_tables import combine_table
 
 # Test_1 - positive values, zero values, negative values, NaNs, duplicates
