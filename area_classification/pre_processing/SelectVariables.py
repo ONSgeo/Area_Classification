@@ -8,7 +8,8 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
 
     Parameters:
     - input_dir (str): The directory containing the input CSV files to join.
-    - base_file (str): The path to the base CSV file to join with.
+    - base_file (str): The path to the base/empty CSV file to join with.
+    - lookup_file: path to the lookup file containing variable codes and their new names.
     - selected_variables (list): A list of column names to add from the input files.
     - join_column (str): The column name to join on.
     - join_type (str): The type of join to perform. Options: 'left', 'inner', 'outer', 'right'.
@@ -39,14 +40,14 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
 # Parameters
 input_dir = "D:/Output_Area_Classification/EW_csv_samples"
 base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
-config_file = "D:/Output_Area_Classification/Codes_final.csv"
+lookup_file = "D:/Output_Area_Classification/Codes_final.csv"
 join_column = "LTLA"
 join_type = "left"
 
-# Load columns and their new names from the configuration file
-config_df = pd.read_csv(config_file)
-selected_variables = config_df['variable_code'].dropna().tolist()
-new_names = dict(zip(config_df['new_code'], config_df['new_name']))
+# Load columns and their new names from the lookup file
+lookup_df = pd.read_csv(lookup_file)
+selected_variables = lookup_df['variable_code'].dropna().tolist()
+new_names = dict(zip(lookup_df['new_code'], lookup_df['new_name']))
 
 # Call the function
 select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type)
