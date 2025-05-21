@@ -8,7 +8,7 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
 
     Parameters:
     - input_dir (str): The directory containing the input CSV files to join.
-    - base_file (str): The path to the base/empty CSV file to join with.
+    - base_file (str): The path to the base CSV file to join with. Needs to have the LA code column in.
     - lookup_file: path to the lookup file containing variable codes and their new names.
     - selected_variables (list): A list of column names to add from the input files.
     - join_column (str): The column name to join on.
@@ -38,9 +38,10 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
     print(f"Updated base file: {base_file}")
 
 # Parameters
-input_dir = "D:/Output_Area_Classification/EW_csv_samples"
+input_dir = "C:/Users/dsouzt/Office for National Statistics/Geospatial - LAD_data_downloaded/EW_LAD"
 base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
-lookup_file = "D:/Output_Area_Classification/Codes_final.csv"
+lookup_file = "D:/Output_Area_Classification/Codes_final_lookup.csv"
+# this is the column name in the base file that will be used to join with the input files
 join_column = "LTLA"
 join_type = "left"
 
