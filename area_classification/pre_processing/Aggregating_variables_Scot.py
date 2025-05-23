@@ -126,6 +126,12 @@ file_configs = [
         'col_names': ['UV6010012','UV6010023'],
         'new_col_name': 'economically_active'
     },
+
+    {
+        'file_name': "uv205.csv",
+        'col_names': ['UV2050002','UV2050003','UV2050004'],
+        'new_col_name': 'christian'
+    },
     
 
 ]
@@ -151,3 +157,4 @@ batch_ag_columns(file_configs)
 # age_65_84 - DONE
 # no_children - DONE
 # economically_active - DONE this is a single variable for EW
+# christian - DONE
