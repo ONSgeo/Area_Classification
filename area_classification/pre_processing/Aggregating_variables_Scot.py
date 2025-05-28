@@ -91,30 +91,68 @@ file_configs = [
 
 
     {
-        'file_name': "uv102b.csv",
-        'col_names': ['UV102b0003','UV102b0004'],
+        'file_name': "uv103.csv",
+        'col_names': ['UV1030002','UV1030003','UV1030004','UV1030005','UV1030006'],
+        'new_col_name': 'age_4_and_under'
+    },
+
+    {
+        'file_name': "uv103.csv",
+        'col_names': [
+            'uv1030007','uv1030008','uv1030009','uv1030010',
+            'uv1030011','uv1030012','uv1030013','uv1030014',
+            'uv1030015','uv1030016'
+        ],
         'new_col_name': 'age_5_14'
     },
 
     {
-        'file_name': "uv102b.csv",
-        'col_names': ['UV102b0009','UV102b0010','UV102b0011','UV102b0012'],
+        'file_name': "uv103.csv",
+        'col_names': [
+            'uv1030027', 'uv1030028', 'uv1030029', 'uv1030030', 'uv1030031', 
+            'uv1030032', 'uv1030033', 'uv1030034', 'uv1030035', 'uv1030036', 
+            'uv1030037', 'uv1030038', 'uv1030039', 'uv1030040', 'uv1030041', 
+            'uv1030042', 'uv1030043', 'uv1030044', 'uv1030045', 'uv1030046'
+        ],
         'new_col_name': 'age_25_44'
     },
 
     {
-        'file_name': "uv102b.csv",
-        'col_names': ['UV102b0013','UV102b0014','UV102b0015','UV102b0016'],
+        'file_name': "uv103.csv",
+        'col_names': [
+            'uv1030047','uv1030048','uv1030049','uv1030050','uv1030051',
+            'uv1030052','uv1030053','uv1030054','uv1030055','uv1030056',
+            'uv1030057','uv1030058','uv1030059','uv1030060','uv1030061',
+            'uv1030062','uv1030063','uv1030064','uv1030065','uv1030066'
+        ],
         'new_col_name': 'age_45_64'
     },
 
     {
-        'file_name': "uv102b.csv",
-        'col_names': ['UV102b0017','UV102b0018','UV102b0019','UV102b0020'],
+        'file_name': "uv103.csv",
+        'col_names': [
+            'uv1030067','uv1030068','uv1030069','uv1030070','uv1030071',
+            'uv1030072','uv1030073','uv1030074','uv1030075','uv1030076',
+            'uv1030077','uv1030078','uv1030079','uv1030080','uv1030081',
+            'uv1030082','uv1030083','uv1030084','uv1030085','uv1030086'
+        ],
         'new_col_name': 'age_65_84'
     },
 
-    
+
+    {
+        'file_name': "uv103.csv",
+        'col_names': [
+            'uv1030087','uv1030088','uv1030089','uv1030090','uv1030091',
+            'uv1030092','uv1030093','uv1030094','uv1030095','uv1030096',
+            'uv1030097','uv1030098','uv1030099','uv1030100','uv1030101',
+            'uv1030102'
+        ],
+        'new_col_name': 'age_85_and_over'
+    },
+
+
+
     {
         'file_name': "uv112.csv",
         'col_names': ['UV1120008','UV1120013'],
@@ -151,10 +189,12 @@ batch_ag_columns(file_configs)
 # overcrowding - this already has one variable (Occupancy rating of bedrooms: -1 or less - UV4150005)
 # ownership_or_shared - this already has one variable (Owned: Total	UV4030002)
 # level_1_2_and_appr - DONE
+# age_4_years_and_under - DONE
 # age_5_14 - DONE
 # age_25_44 - DONE
 # age_45_64 - DONE
 # age_65_84 - DONE
+# age_85_and_over - DONE 
 # no_children - DONE
 # economically_active - DONE this is a single variable for EW
 # christian - DONE
