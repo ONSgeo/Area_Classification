@@ -18,10 +18,12 @@ ill_prop_2021 = pd.read_excel("D:/Repos/Area_Classification/disabilitycensus2021
 
 # renaming columns using underscores instead of spaces
 ill_prop_2021.rename(columns={
+    'Local Authority': 'Local_Authority',
     "Disability status": "Disability_status",
     "Age-specific Percentage": "Age_specific_perc",
     "Area Code": "Area_Code"
 }, inplace=True)
+
 
 #print(ill_prop_2021.columns)
 
@@ -46,7 +48,8 @@ ill_prop_2021["sir_age_band"] = ill_prop_2021["Age"].apply(
 
 # deleting unnecessary columns (those not need for aggregation steps)
 ill_prop_2021 = ill_prop_2021.drop(columns=[
-    "Year", "Local Authority", "Notes", 
+    "Year", #"Local Authority", 
+    "Notes", 
     "Lower 95% Confidence Interval", 
     "Upper 95% Confidence Interval", "Category", "Age_specific_perc"
 ])
@@ -59,16 +62,58 @@ ill_prop_2021 = ill_prop_2021[pd.to_numeric(ill_prop_2021['Count'], errors='coer
 ill_prop_2021['Count'] = pd.to_numeric(ill_prop_2021['Count'], errors='coerce')
 ill_prop_2021['Population'] = pd.to_numeric(ill_prop_2021['Count'], errors='coerce')
 
-# aggregating the data to create count and sum of the data by 'Area_Code' and 'sir_age_band'
-ill_prop_2021 = ill_prop_2021.groupby(["Area_Code", "sir_age_band"]).agg(
-    count=("Count", "sum"),
-    population=("Population", "sum")
-).reset_index()
 
-print(ill_prop_2021.head() )
+#################### CALCULATE SIR ###########################################
+# Get Ii (observed count of disabled people in geography i)
+# Get Pai (pop size of age group a in area i)
+
+# Count = Ii; Population = Pai
+
+agg_data = ill_prop_2021.groupby(['Area_Code', 'Local_Authority'])[['Count', 'Population']].sum().reset_index()
+#print(agg_data.head())
+
+# Get ran (proportion of disabled people in group a (all age groups for now) at the national level)
+# 
+nat_disabled_count = ill_prop_2021['Count'].sum()
+nat_pop = ill_prop_2021['Population'].sum()
+
+
+nat_disabled_prop = nat_disabled_count / nat_pop 
+
+# Add value to ill+prop df
+agg_data['nat_prop_disabled'] = nat_disabled_prop
+
+#print(nat_disabled_prop)
+# Calculate SIR for each LAD (i)
+
+# Count / Population * nat_prop_disabled
+agg_data['SIR'] = agg_data.apply(lambda row: round((row['Count'] / (row['nat_prop_disabled'] * row['Population'])) * 100, 4), axis=1)
+
+# Check SIRs
+#print(agg_data.sort_values(by='SIR', ascending=True).head(15))
+
+## OUTPUT 
+
+
+
+
+
+
+
+
+
+
+
+# aggregating the data to create count and sum of the data by 'Area_Code' and 'sir_age_band'
+#ill_prop_2021 = ill_prop_2021.groupby(["Area_Code", "sir_age_band"]).agg(
+#    count=("Count", "sum"),
+#    population=("Population", "sum")
+#).reset_index()
+
+#print(ill_prop_2021.head() )
 
 # Create new ill_prop column
-ill_prop_2021["ill_prop"] = ill_prop_2021["count"] / ill_prop_2021["population"]
+#ill_prop_2021["ill_prop"] = ill_prop_2021["count"] / ill_prop_2021["population"]
 
 # Process data sets
 # for dat in ["Census_2021_common_var", "Census_2021_oa_changed_common_var"]:
