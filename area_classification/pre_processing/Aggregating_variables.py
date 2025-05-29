@@ -1,64 +1,45 @@
 import pandas as pd
+import os
 
-#Aggregating ages for England and Wales
-def ag_columns(df, col_names, new_col_name):
+
+def batch_ag_columns(main_path, file_configs):
     """
-    This function takes a dataframe, a list of column names, and a new column name as input.
-    It sums the values of the specified columns and stores the result in the new column.
+    This function loops through multiple CSV files, aggregates specified columns,
+    adds new columns, renames the original CSV file, and saves the updated file
+    with a new name.
+
+    Parameters:
+    - file_configs (list of dict): A list of dictionaries where each dictionary contains:
+        - 'file_name' (str): Path to the CSV file to update.
+        - 'col_names' (list): List of column names to aggregate.
+        - 'new_col_name' (str): Name of the new column to create.
     """
-    # Create a copy of the dataframe to avoid modifying the original
-    df_copy = df.copy()
-    
-    # Sum the values of the specified columns and store the result in the new column
-    df_copy[new_col_name] = df_copy[col_names].sum(axis=1)
-    
-    # Return the modified dataframe
-    return df_copy
+    for config in file_configs:
+        file_name = config['file_name']
+        col_names = config['col_names']
+        new_col_name = config['new_col_name']
 
- # Create a dataframe
-df = pd.DataFrame({'col_1': [1, 1, 2, 2, 5],
-                'col_2': [6, 7, 8, 9, 10],
-                'col_3': [20, 30, 40, 50, 60]})
-print(df)
-# Call the ag_columns() function
-aggregated_df = ag_columns(df, ['col_1', 'col_2', 'col_3'], 'col_4_total')
+        # Construct the full file path
+        file_name = os.path.join(main_path, file_name)
+        
+        # Derive a new name for the '_derived' file
+        base, ext = os.path.splitext(file_name)
+        derived_name = f"{base}_derived{ext}"
+        
+        # Check if the '_derived' file already exists
+        if os.path.exists(derived_name):
+            # Read the existing '_derived' file
+            df = pd.read_csv(derived_name)
+            print(f"Updating existing file: {derived_name}")
+        else:
+            # Read the original file to create a new '_derived' file
+            df = pd.read_csv(file_name)
+            print(f"Creating new file: {derived_name}")
+        
+        # Add the new column by summing the specified columns
+        df[new_col_name] = df[col_names].sum(axis=1)
+        
+        # Save the updated DataFrame to the '_derived' file
+        df.to_csv(derived_name, index=False)
+        print(f"Updated '{derived_name}' with new column '{new_col_name}'.")
 
-print(aggregated_df)
-
-#table = "C:/Users/goodme/Office for National Statistics/Geospatial - NI_LAD/ni001.csv"
-#df1 = pd.read_csv(table)
-#print(df1)
-
-# NI AGES
-table = "C:/Users/goodme/Office for National Statistics/Geospatial - NI_LAD/ni012.csv"
-age_table = pd.read_csv(table)
-print(age_table)
-
-# Select the columns to aggregate
-#age 5 to 14
-age_table = ag_columns(age_table, ['ni0120003', 'ni0120004'], 'age_5_14')
-print(age_table)
-#age 25 to 44 
-age_table = ag_columns(age_table, ['ni0120007', 'ni0120008', 'ni0120009', 'ni0120010'], 'age_25_44')
-print(age_table)
-#age 45 to 64
-age_table = ag_columns(age_table, ['ni0120011', 'ni0120012', 'ni0120013', 'ni0120014'], 'age_45_64')
-print(age_table)
-#age 65 to 84
-age_table = ag_columns(age_table, ['ni0120015', 'ni0120016', 'ni0120017', 'ni0120018'], 'age_65_84')
-print(age_table)
-
-# separated_divorced
-# dependant_children
-# cannot_speak_English
-# provides_unpaid_care
-# flat
-# cars_2_or_more
-# under_occupation
-# overcrowding
-# ownership_or_shared
-# level_1_2_and_appr
-# age_5_14
-# age_25_44
-# age_45_64
-# age_65_84
