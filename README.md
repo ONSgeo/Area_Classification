@@ -26,7 +26,13 @@ Old	New 	Country
 
 
 Data for E&W and NI is collected from the bulk downloads availble on their respective census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk) , [NISRA flexible table builder](https://build.nisra.gov.uk/en/))
+
+### Scotland
 At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Note: it is not advised to aggregate from a lower level of geography (such as OA), if the geography is available as an option on the Flexible Table Builder as cell key perturbation has been used to help protect the confidentiality of data within tables. This means that cells might not sum to sub totals and totals due to these Statistical Disclosure Controls (SDC). When building tables using smaller geographies this protection is applied to a lot of cells, and doesn’t always cancel out. So there are differences when you add them all up. Perturbation is consistent and repeatable so will always be applied consistently when the same records contribute to the cell total.
+
+**Exceptions:**
+* Migrant indicator is available on the [Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml).
+* Sctoalnd's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx)
 
 ## Methodology / process description
 Notes: NO BULK DOWNLOAD FOR LAD SCOTLAND SO MANUALLY DOWNLOADED FROM https://www.scotlandscensus.gov.uk/search-the-census#/search-by. Additionally migration indicator variable not available for Scotland.
