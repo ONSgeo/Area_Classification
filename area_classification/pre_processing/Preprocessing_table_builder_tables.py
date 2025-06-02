@@ -8,9 +8,11 @@
 #pip install os
 import os
 import pandas as pd
+from reformat_Scot_tables_functions import reformat_uv101b, reformat_uv103 
 
 # Paths to the folder and metadata file
-folder_path = 'C:\\Users\\goodme\\Office for National Statistics\\Geospatial - LAD_data_downloaded\\Scotland_LA\\Percentages'  # Replace with your folder path
+#folder_path = 'C:\\Users\\goodme\\Office for National Statistics\\Geospatial - LAD_data_downloaded\\Scotland_LA\\Percentages'  # Replace with your folder path
+folder_path = "D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/general_reformat_sample/"
 metadata_file = 'Downloading_data/Scotland_Census_2022_OA-download/output_data/Table_Metadata.csv'
 
 # Loop through all files in the folder
