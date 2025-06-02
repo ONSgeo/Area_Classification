@@ -18,11 +18,25 @@ Current focus:
 A table that describes each of the files in the repo (like we did for the automated mapping repo)
 
 ## Data
+Look up V60 variables
+Old	New 	Country
+	v1	
+	v2	
+![image](https://github.com/user-attachments/assets/f48baab0-5be5-40cf-a7fd-f21e7568f3f5)
+
+### England and Wales and Northern Ireland
 Data for E&W and NI is collected from the bulk downloads availble on their respective census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk) , [NISRA flexible table builder](https://build.nisra.gov.uk/en/))
-Currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by).
+* Ususal residents per square kilometer doesnt exist for NI, there is population desinsty per LGD in the 2022 Mid-year population estimates.
+
+### Scotland
+At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The manual download was completed 22 April 2025 (two exceptions listed below). Note: it is not advised to aggregate from a lower level of geography (such as OA), if the geography is available as an option on the Flexible Table Builder as cell key perturbation has been used to help protect the confidentiality of data within tables. This means that cells might not sum to sub totals and totals due to these Statistical Disclosure Controls (SDC). When building tables using smaller geographies this protection is applied to a lot of cells, and doesn’t always cancel out. So there are differences when you add them all up. Perturbation is consistent and repeatable so will always be applied consistently when the same records contribute to the cell total.
+
+**Exceptions:**
+* Migrant indicator is available on the [Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). Manually downloaded 22 April 2025.
+* Scotlands's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx) Population density was downloaded 15 April 2025.
 
 ## Methodology / process description
-Notes: NO BULK DOWNLOAD FOR LAD SCOTLAND SO MANUALLY DOWNLOADED FROM https://www.scotlandscensus.gov.uk/search-the-census#/search-by. Additionally migration indicator variable not available for Scotland.
+
 
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
@@ -50,18 +64,9 @@ The python code:
 
 The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 
-### Scotland Census 2022 Output Areas (legacy ReadMe)
-This repository contains code to download and clean all Data Zone level data for the Scottish 2022 Census
+### Scotland Census 
 
-The python code:
 
-* Downloads the bulk data from the [Scotland Census](https://www.scotlandscensus.gov.uk/documents/2022-output-area-data/)
-* Processes and cleans the tables
-* Create new variable names based on the sequential ordering of the variables and the table identification code
-* Create a metadata lookup table providing the link between the new names and the original names
-* Export the data zone data as both CSV and Parquet files
-
-The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 ## Output
 ## Limitations
 ## Future scope
