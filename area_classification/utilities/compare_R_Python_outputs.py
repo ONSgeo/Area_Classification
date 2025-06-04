@@ -67,3 +67,4 @@ def check_csv_files_in_folders(folder1, folder2):
     return all_identical
 
 check_csv_files_in_folders('D:/output_data/csv/R_', 'D:/output_data/csv/python_')
+# Need to generalise these file paths to be relative to the script location

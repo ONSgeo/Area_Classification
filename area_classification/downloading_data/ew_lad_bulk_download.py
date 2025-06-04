@@ -150,4 +150,5 @@ meta_data_table2 = (
 )
 
 # Write the resulting DataFrame to a CSV file
-meta_data_table2.to_csv("Table_Metadata.csv", index=False)
+# Should be updated to output to specific path. 
+meta_data_table2.to_csv("ew_lad_table_metadata.csv", index=False)
