@@ -9,6 +9,8 @@ from glob import glob
 from shutil import rmtree
 # import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
 
+def ew_download(): 
+    print("Placeholder to download England and Wales data.")  
 # Read the HTML page
 html_page = BeautifulSoup(requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk").content, "html.parser")
 
@@ -150,4 +152,5 @@ meta_data_table2 = (
 )
 
 # Write the resulting DataFrame to a CSV file
-meta_data_table2.to_csv("Table_Metadata.csv", index=False)
+# Should be updated to output to specific path. 
+meta_data_table2.to_csv("ew_lad_table_metadata.csv", index=False)
