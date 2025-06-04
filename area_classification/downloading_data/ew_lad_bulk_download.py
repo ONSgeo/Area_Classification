@@ -9,6 +9,8 @@ from glob import glob
 from shutil import rmtree
 # import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
 
+def ew_download(): 
+    print("Placeholder to download England and Wales data.")  
 # Read the HTML page
 html_page = BeautifulSoup(requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk").content, "html.parser")
 

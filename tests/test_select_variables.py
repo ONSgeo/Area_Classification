@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 import os
 from tempfile import TemporaryDirectory
-from SelectVariables import select_variables
+from area_classification.pre_processing.select_variables import select_variables
 
 class TestSelectVariables(unittest.TestCase):
     def test_select_variables(self):

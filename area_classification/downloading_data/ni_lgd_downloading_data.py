@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 import logging
 from io import BytesIO
 
+def ni_download(): 
+    print("Placeholder to download Northen Ireland data.")  
+
 # Set up logging enabled flag
 LOGGING_ENABLED = False  # Set this to False to silence logs
 
