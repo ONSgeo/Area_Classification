@@ -13,23 +13,23 @@ def combine_table(table1, table2, table3):
     combined_table = table1 + table2 + table3
     return combined_table
  
-# Example usage
-table1 = [
-    [1, 2, 3],
-    [4, 5, 6]
-]
+# # Example usage
+# table1 = [
+#     [1, 2, 3],
+#     [4, 5, 6]
+# ]
  
-table2 = [
-    [7, 8, 9],
-    [10, 11, 12]
-]
+# table2 = [
+#     [7, 8, 9],
+#     [10, 11, 12]
+# ]
  
-table3 = [
-    [13, 14, 15],
-    [16, 17, 18]
-]
+# table3 = [
+#     [13, 14, 15],
+#     [16, 17, 18]
+# ]
  
-result = combine_table(table1, table2, table3)
-for row in result:
-    print(row)
+# result = combine_table(table1, table2, table3)
+# for row in result:
+#     print(row)
  
