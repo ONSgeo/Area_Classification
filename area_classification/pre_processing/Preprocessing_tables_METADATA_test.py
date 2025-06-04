@@ -127,6 +127,7 @@ for file_name in os.listdir(input_directory):
     df.columns = var_ids
     # save to new csv
     df.to_csv(f"{input_directory}/{table_id}_codes.csv")
+    
     # add to metadata table
     meta_data_table = pd.concat(
         [
