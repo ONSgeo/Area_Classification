@@ -157,4 +157,5 @@ if __name__ == "__main__":
 
     #manually set Type to 'Count' for all tables
     meta_data_table['Type'] = 'Count'
-    meta_data_table.to_csv(f"{DATA_DIR}/Table_Metadata.csv", index=False)
+    # Needs to be updated to output to path.
+    meta_data_table.to_csv("scot_legacy_oa_table_metadata.csv", index=False)

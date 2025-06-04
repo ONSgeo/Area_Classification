@@ -196,5 +196,5 @@ if __name__ == "__main__":
 
     # manually set Type to 'Count' for all tables
     meta_data_table["Type"] = "Count"
-    meta_data_table.to_csv("Table_Metadata.csv", index=False)
+    meta_data_table.to_csv("ni_lgd_table_metadata.csv", index=False)
 
