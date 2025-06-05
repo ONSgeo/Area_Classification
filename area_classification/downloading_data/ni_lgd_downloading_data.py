@@ -14,7 +14,7 @@ if LOGGING_ENABLED:
 else:
     logging.basicConfig(level=logging.CRITICAL)  # Disable logging when set to False
 
-def ni_download(config): 
+def ni_lgd_download_data(config): 
     """
     wrapper function to download Northern Ireland Local Government District (LGD) data.
     Data and metadata are downloaded and exported to csv files. 
@@ -230,5 +230,5 @@ def fetch_data(var_code, var_name, var_unit):
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config("../config.yaml")
-    ni_download(config)
+    ni_lgd_download_data(config)
 
