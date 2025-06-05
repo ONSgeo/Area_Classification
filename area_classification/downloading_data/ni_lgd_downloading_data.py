@@ -62,7 +62,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         t_unit = var[2]
         # create a unique ID code for the tab ni001 -> ni002
 
-        t_id = "ni" + str(vars.index(var)).zfill(3)
+        t_id = "ni" + str(variables.index(var)).zfill(3)
 
         # get data
         data = fetch_data(t_dcode, t_name, t_unit)
@@ -152,7 +152,7 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
 
     # manually set Type to 'Count' for all tables
     meta_data_table["Type"] = "Count"
-    meta_data_table.to_csv(os.path.join(config["output_path"],"ni_lgd_table_metadata.csv", index=False))
+    meta_data_table.to_csv(os.path.join(config["output_path"],"ni_lgd_table_metadata.csv"), index=False)
 
 
 def get_available_variables():
@@ -212,7 +212,7 @@ def fetch_data(var_code, var_name, var_unit):
     url = f"https://build.nisra.gov.uk/en/custom/table.csv?d={var_unit}&v=LGD14&v={var_code}&p=1"
     r = requests.get(url)
 
-    # some vars in the list don't have the correct dimensions (like urban/rural)
+    # some variables in the list don't have the correct dimensions (like urban/rural)
     # some aren't available for DZ level, ie
     if r.status_code != 200:
         log_message = (
@@ -229,6 +229,6 @@ def fetch_data(var_code, var_name, var_unit):
 
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
-    config = load_config()
+    config = load_config("../config.yaml")
     ni_download(config)
 
