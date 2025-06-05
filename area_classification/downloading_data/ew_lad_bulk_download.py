@@ -171,6 +171,7 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     config : dict
         main pipeline config dictionary containing output directory.
     """    
+    # TODO: Add a unit test to this function to check its processing everything correctly
     # Format the lookup table
     meta_data_table = (
         meta_data_table
