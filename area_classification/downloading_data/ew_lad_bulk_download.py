@@ -9,22 +9,41 @@ from glob import glob
 from shutil import rmtree
 # import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
 from area_classification.utilities.load_config import load_config
+import tempfile
 
 def ew_lad_bulk_download(config: dict):
     """
     Downloads the latest census 2021 data for England and Wales Local Authority Districts (LADs) from Nomis.
-    
-    Args:
-        config (dict): Configuration dictionary containing output directory.
+    census data is exported in CSV format to output directory specified in the config.
+
+    Parameters
+    ----------
+    config : dict
+        main config for pipeline
     """
-    zip_urls = configure_html_pages(config)
+    zip_urls = get_census_table_urls(config)
 
     meta_data_table = download_and_unzip_data(zip_urls, config)
 
     format_and_export_metadata_table(meta_data_table, config)
 
 
-def configure_html_pages(config: dict):
+def get_census_table_urls(config: dict) -> list:
+    """
+    function to configure the HTML pages and extract the URLs for census tables.
+    Removes tables that do not have Output Areas (OA) from the list outlined in config.
+
+
+    Parameters
+    ----------
+    config : dict
+        main config for pipeline
+
+    Returns
+    -------
+    list
+        list of URLs for census tables that contain Output Areas (OA).
+    """     
     # Read the HTML page
     html_page = BeautifulSoup(requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk").content, "html.parser")
 
@@ -36,9 +55,9 @@ def configure_html_pages(config: dict):
 
     # Make zip file names into a full URL
     zip_urls = ["https://www.nomisweb.co.uk" + url for url in zip_urls]
-    
+
     nomis_address = "https://www.nomisweb.co.uk/output/census/2021/census2021-{table_id}.zip"
-    no_oa_tables = [nomis_address.format(table_id=code) for code in config["england_and_wales_table_codes"]]
+    no_oa_tables = [nomis_address.format(table_id=code) for code in config["england_and_wales_table_codes_to_remove"]]
 
     # Remove the tables without OA
     zip_urls = list(set(zip_urls) - set(no_oa_tables))
@@ -49,28 +68,45 @@ def configure_html_pages(config: dict):
 
     return zip_urls
 
-def download_and_unzip_data(zip_urls, config):
+def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
+    """
+    fucntion to download and unzip the census data files, extract the relevant tables,
+    and create a metadata table with the old and new column names.
+
+    Parameters
+    ----------
+    zip_urls : list
+        list of urls to download census data zip files from Nomis.
+        produced by the `get_census_table_urls` function.
+    config : dict
+        main pipeline config dictionary containing output directory.
+
+    Returns
+    -------
+    pd.DataFrame
+        metadata table containing old and new column names, and table IDs.
+        downloaded data is saved as CSV files in the specified output directory.
+    """
     # Initialize an empty metadata table
     meta_data_table = pd.DataFrame()
 
     for url in zip_urls:
         # Create a temporary directory for unzipping
-        tmp_dir = "./tmp"
-        os.makedirs(tmp_dir, exist_ok=True)
+        tmp_dir = tempfile.mkdtemp()
 
         # Download the specified zip file
         response = requests.get(url)
-        zip_path = os.path.join(tmp_dir, "temp.zip")
-        with open(zip_path, "wb") as f:
+        zip_file_path = os.path.join(tmp_dir, "temp.zip")
+        with open(zip_file_path, "wb") as f:
             f.write(response.content)
 
         # Unzip the file
-        with ZipFile(zip_path, 'r') as zip_ref:
+        with ZipFile(zip_file_path, 'r') as zip_ref:
             zip_ref.extractall(tmp_dir)
 
         # Extract the table name from the URL
-        t_name_match = re.search(r"ts\d{3}[a-z]?", url)
-        t_name = t_name_match.group(0) if t_name_match else None
+        t_code_name_match = re.search(r"ts\d{3}[a-z]?", url)
+        t_name = t_code_name_match.group(0) if t_code_name_match else None
 
         # Extract the LTLA CSV location
         t_tab_loc = glob(os.path.join(tmp_dir, f"*{t_name}-ltla.csv"))
@@ -96,14 +132,14 @@ def download_and_unzip_data(zip_urls, config):
         new_names = [f"{t_name}{i:04d}" for i in range(1, len(old_names) + 1)]
 
         # Create a metadata table
-        N_list = pd.DataFrame({
+        n_list = pd.DataFrame({
             "old_names": old_names,
             "new_names": new_names,
             "Table_ID": t_name
         })
 
         # Append to the metadata table
-        meta_data_table = pd.concat([meta_data_table, N_list], ignore_index=True)
+        meta_data_table = pd.concat([meta_data_table, n_list], ignore_index=True)
 
         # Rename the columns in the DataFrame
         df.columns = new_names
@@ -115,9 +151,6 @@ def download_and_unzip_data(zip_urls, config):
         os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
         df.to_csv(output_csv_path, index=False)
 
-        # Clean up temporary objects
-        del N_list, old_names, new_names, t_name, t_tab_loc, df
-
         # Remove all downloaded files for this table
         rmtree(tmp_dir)
 
@@ -127,6 +160,17 @@ def download_and_unzip_data(zip_urls, config):
 
 
 def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict):
+    """
+    function to format the metadata table and export it to a CSV file.
+
+    Parameters
+    ----------
+    meta_data_table : pd.DataFrame
+        metadata table containing old and new column names, and table IDs.
+        produced by the `download_and_unzip_data` function.
+    config : dict
+        main pipeline config dictionary containing output directory.
+    """    
     # Format the lookup table
     meta_data_table = (
         meta_data_table
@@ -145,5 +189,4 @@ if __name__ == "__main__":
     # Example usage
     config = load_config(config_path="./area_classification/config.yaml", placeholder="{USERNAME}")
     print(config)
-    ew_lad_bulk_download(config={
-    "output_directory": "./test_outputs/"})
+    ew_lad_bulk_download(config)

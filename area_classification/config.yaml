@@ -8,7 +8,7 @@ working_directory : ~/Area_Classification
 #output_directory : data/outputs
 
 # These tables dont have OA data for England and Wales
-england_and_wales_table_codes : [
+england_and_wales_table_codes_to_remove : [
         "ts007",
         "ts009",
         "ts010",
@@ -35,3 +35,5 @@ england_and_wales_table_codes : [
         "ts038asp",
         "ts039asp"
     ]
+
+"output_directory": "./test_outputs/"
