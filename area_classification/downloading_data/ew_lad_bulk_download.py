@@ -181,7 +181,6 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
             df['Table_Name'] + ': ', '', regex=False))
     )
     # Write the resulting DataFrame to a CSV file
-    # Should be updated to output to specific path. 
     meta_data_table.to_csv(os.path.join(config["output_directory"], "ew_lad_table_metadata.csv"), index=False)
 
 
