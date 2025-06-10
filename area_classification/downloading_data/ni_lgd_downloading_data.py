@@ -101,10 +101,8 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         var_ids = [f"{t_id}{str(i).zfill(4)}" for i in range(1, len(variable_names) + 1)]
         df.columns = var_ids
 
-        # save to csv and parquet
+        # save to csv
         df.to_csv(config["output_path"] + f"/{t_id}.csv")
-        # Commenting out, not sure if we plan on using parquet files.
-        # df.to_parquet(PARQUET_DIR + f"/{t_id}.parquet")
 
         meta_data_table = pd.concat(
             [
