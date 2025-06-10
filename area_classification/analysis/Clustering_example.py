@@ -1,6 +1,3 @@
-# Install dependencies if running in a new environment and not using requirements.txt
-%pip install pandas clustergram scikit-learn matplotlib
-
 ## Geodemographic python example
 # This notebook contains the workflow for producing a geodemographic classification in python using k-means clustering. 
 #It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
@@ -12,22 +9,13 @@ from sklearn.cluster import KMeans
 from clustergram import Clustergram
 import matplotlib.pyplot as plt
 import os
-# set a  random seed for reproducibility
-random_seed = 507
 
-
-# create outputs and plots directories if they do not exist
-OUTPUT_DIR = "outputs"
-PLOT_DIR = "plots"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(PLOT_DIR, exist_ok=True)
-
-# load the input data from a csv file 
-# The names of the columns are not important, BUT;
-# the first column should be the geography code (e.g., Output Area or Local Authority District),
-# which will be used as the DataFrame index.
-# The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
 def load_data(filepath):
+    # load the input data from a csv file 
+    # The names of the columns are not important, BUT;
+    # the first column should be the geography code (e.g., Output Area or Local Authority District),
+    # which will be used as the DataFrame index.
+    # The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
     input_df = pd.read_csv(filepath, index_col=0)
     
     # Check for missing values
@@ -37,18 +25,6 @@ def load_data(filepath):
         input_df.fillna(0, inplace=True)
     
     return input_df
-
-# File path to the dataset
-inputdata_filepath = "example_oacdata.csv"
-
-# Load the dataset
-variable_df = load_data(inputdata_filepath)
-# show first 5 rows of the dataset
-variable_df.head()
-
-
-## Data transformation
-# Transform the input data to make it more suitable for clustering
 
 def transform_and_standardize_data(df):
     """
@@ -66,17 +42,13 @@ def transform_and_standardize_data(df):
     df = (df - df.min()) / (df.max() - df.min()) # Apply min-max scaling
     return df
 
-# Apply the transformation and standardization to the input data
-transformed_variable_df = transform_and_standardize_data(variable_df)
-transformed_variable_df.head()
-
 
 ## Clustergrams
 # We produce a clustergram plot to assess an appropriate number of clusters for the supergroups.
 # For OAC, eight supergroups were created.
 # Some guidance on interpreting clustergrams and choosing the number of clusters can be found here: [Clustergram](https://clustergram.readthedocs.io/en/stable/notebooks/introduction.html)
 
-def create_clustergram(df, n_init, save_loc, random_seed=random_seed):
+def create_clustergram(df, n_init, save_loc, random_seed=None):
     """
     Create and save a clustergram for evaluating k-means clustering solutions.
 
@@ -94,16 +66,14 @@ def create_clustergram(df, n_init, save_loc, random_seed=random_seed):
     save_loc (str): File path to save the clustergram plot.
     random_seed (int, optional): Random seed for reproducibility.
     """
-    cgram = Clustergram(range(1, 15), n_init=n_init, random_state=random_seed)  # Initialize clustergram model
+    if random_seed is None:
+        cgram = Clustergram(range(1, 15), n_init=n_init) # Initialize clustergram model  
+    else:
+        cgram = Clustergram(range(1, 15), n_init=n_init, random_state=random_seed)  # Initialize clustergram model
     cgram.fit(df)  # Fit model to data
     cgram.plot()  # Generate plot
     plt.savefig(save_loc)  # Save figure
     plt.show()  # Display plot
-
-# Example usage
-n_init = 10  # Use a low value for quick testing, increase for final results
-create_clustergram(transformed_variable_df, n_init, save_loc=PLOT_DIR+"/supergroup_clustergram.png")
-
 
 ## Supergroup Clustering
 # Run kmeans to cluster the geographies in K clusters (supergroups)
@@ -147,16 +117,6 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
 
     return df
 
-# Define the number of clusters (K). Choose K based on the clustergram plot.
-num_clusters = 8 
-n_init = 100  #1000 is recommended for final results, but a lower value can be used for testing as it is faster
-output_filepath = OUTPUT_DIR+"/supergroups_clusteroutput.csv"
-
-# Run K-means clustering
-supergrouped_variable_df = run_kmeans(transformed_variable_df, num_clusters, n_init, output_filepath = output_filepath, random_seed=random_seed)
-
-#supregrouped_variable_df contains the cluster assignments for each row in the input data, and the input data itself.
-supergrouped_variable_df.head()
 
 
 ## Subgroups
@@ -188,9 +148,6 @@ def create_subcluster_clustergrams(output_df, num_clusters, n_init=10):
 
         # Generate clustergram
         create_clustergram(cluster_df, n_init=n_init, save_loc=save_loc)
-
-# Create clustergrams for splitting each of the superclusters
-create_subcluster_clustergrams(supergrouped_variable_df, num_clusters, n_init=10)
 
 
 
@@ -246,15 +203,65 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> 
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
-# We can now select the number of subclusters to split each of the supergroups into using the clustergrams above.
-# For this example, we choose three subclusters for each supergroup.
-# The length of the list must match num_clusters (the number of supergroups).
+if __name__ == "__main__":
+    # Running the script directly will be the same as running the notebook from original 
+    # git repo
+    # set a  random seed for reproducibility
 
-subcluster_nums = [3, 3, 3, 3, 3, 3, 3, 3]
-# Example with different number of subclusters for each supergroup
-# subcluster_nums = [2, 4, 2, 2, 5, 2, 3, 3]
+    random_seed = 507
 
-# num clusters is the number of supergroups (set earlier)
-# n_init is the number of times the KMeans algorithm will be initialized (as before)
-n_init = 1000
-subgrouped_variable_df = run_subclustering(supergrouped_variable_df, subcluster_nums, num_clusters, n_init)
+
+    # create outputs and plots directories if they do not exist
+    OUTPUT_DIR = "outputs"
+    PLOT_DIR = "plots"
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    os.makedirs(PLOT_DIR, exist_ok=True)
+
+    # load the input data from a csv file 
+    # The names of the columns are not important, BUT;
+    # the first column should be the geography code (e.g., Output Area or Local Authority District),
+    # which will be used as the DataFrame index.
+    # The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
+
+    # File path to the dataset
+    inputdata_filepath = "./area_classification/analysis/example_oacdata.csv"
+
+    # Load the dataset
+    variable_df = load_data(inputdata_filepath)
+    # show first 5 rows of the dataset
+    
+    ## Data transformation
+    # Transform the input data to make it more suitable for clustering
+
+    # Apply the transformation and standardization to the input data
+    transformed_variable_df = transform_and_standardize_data(variable_df)
+
+    # Example usage
+    n_init = 10  # Use a low value for quick testing, increase for final results
+    create_clustergram(transformed_variable_df, n_init, save_loc=PLOT_DIR+"/supergroup_clustergram.png")
+
+    # Define the number of clusters (K). Choose K based on the clustergram plot.
+    num_clusters = 8 
+    n_init = 100  #1000 is recommended for final results, but a lower value can be used for testing as it is faster
+    output_filepath = OUTPUT_DIR+"/supergroups_clusteroutput.csv"
+
+    # Run K-means clustering
+    supergrouped_variable_df = run_kmeans(transformed_variable_df, num_clusters, n_init, output_filepath = output_filepath, random_seed=random_seed)
+
+    #supregrouped_variable_df contains the cluster assignments for each row in the input data, and the input data itself.
+    
+    # Create clustergrams for splitting each of the superclusters
+    create_subcluster_clustergrams(supergrouped_variable_df, num_clusters, n_init=10)
+
+    # We can now select the number of subclusters to split each of the supergroups into using the clustergrams above.
+    # For this example, we choose three subclusters for each supergroup.
+    # The length of the list must match num_clusters (the number of supergroups).
+
+    subcluster_nums = [3, 3, 3, 3, 3, 3, 3, 3]
+    # Example with different number of subclusters for each supergroup
+    # subcluster_nums = [2, 4, 2, 2, 5, 2, 3, 3]
+
+    # num clusters is the number of supergroups (set earlier)
+    # n_init is the number of times the KMeans algorithm will be initialized (as before)
+    n_init = 1000
+    subgrouped_variable_df = run_subclustering(supergrouped_variable_df, subcluster_nums, num_clusters, n_init)
