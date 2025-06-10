@@ -1,5 +1,5 @@
 from area_classification.downloading_data.ew_lad_bulk_download import ew_download
-from area_classification.downloading_data.ni_lgd_downloading_data import ni_download
+from area_classification.downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
 # from area_classification.pre_processing. ADD PREPROCESSING OF SCOT
 from area_classification.pre_processing.pre_processing import pre_processing    
 
@@ -14,7 +14,7 @@ def main_pipeline():
     ew_download()
 
     # Step 2: Download Northen Ireland data
-    ni_download()
+    ni_df = ni_lgd_download_data()
 
     # Step 3: Processing of Scotland data
     # scot_process()
