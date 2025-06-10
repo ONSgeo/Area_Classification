@@ -73,7 +73,7 @@ def create_clustergram(df, n_init, save_loc, random_seed=None):
     cgram.fit(df)  # Fit model to data
     cgram.plot()  # Generate plot
     plt.savefig(save_loc)  # Save figure
-    plt.show()  # Display plot
+    # plt.show()  # Display plot
 
 ## Supergroup Clustering
 # Run kmeans to cluster the geographies in K clusters (supergroups)
@@ -203,17 +203,70 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> 
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
+def clustering_wrapper(inputdata_filepath, 
+                       num_clusters,
+                       n_init, 
+                       output_directory, 
+                       plot_directory,
+                       random_seed=None):
+    """
+    Wrapper function to perform the entire clustering process.
+    
+    Parameters:
+    - inputdata_filepath (str): Path to the input data CSV file.
+    - num_clusters (int): Number of superclusters to create.
+    - n_init (int): Number of times KMeans will be initialized.
+    - output_filepath (str): Path to save the final cluster assignments.
+    - random_seed (int, optional): Random seed for reproducibility.
+    
+    Returns:
+    - pd.DataFrame: DataFrame with cluster assignments.
+    """
+    os.makedirs(output_directory, exist_ok=True)
+    os.makedirs(plot_directory, exist_ok=True)
+    variable_df = load_data(inputdata_filepath)
+
+    transformed_variable_df = transform_and_standardize_data(variable_df)
+
+    create_clustergram(transformed_variable_df, 
+                       n_init, 
+                       save_loc=plot_directory+"/supergroup_clustergram.png")
+    output_filepath = output_directory+"/supergroups_clusteroutput.csv"
+
+    supergrouped_variable_df = run_kmeans(transformed_variable_df, 
+                                          num_clusters, 
+                                          n_init, 
+                                          output_filepath, 
+                                          random_seed)
+    create_subcluster_clustergrams(supergrouped_variable_df, 
+                                   num_clusters, 
+                                   n_init)
+    subcluster_nums = [3, 3, 3, 3, 3, 3, 3, 3]
+    subgrouped_variable_df = run_subclustering(supergrouped_variable_df, 
+                                               subcluster_nums, 
+                                               num_clusters, 
+                                               n_init)
+
+    
+    return subgrouped_variable_df
+
+
+
+
+
 if __name__ == "__main__":
     # Running the script directly will be the same as running the notebook from original 
     # git repo
     # set a  random seed for reproducibility
 
     random_seed = 507
-
-
-    # create outputs and plots directories if they do not exist
+    inputdata_filepath = "./area_classification/analysis/example_oacdata.csv"
     OUTPUT_DIR = "outputs"
     PLOT_DIR = "plots"
+    clustering_wrapper(inputdata_filepath,8,10,OUTPUT_DIR,PLOT_DIR,random_seed)
+
+    # create outputs and plots directories if they do not exist
+
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     os.makedirs(PLOT_DIR, exist_ok=True)
 
