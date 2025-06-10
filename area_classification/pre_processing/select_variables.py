@@ -37,18 +37,20 @@ def select_variables(input_dir, base_file, selected_variables, new_names, join_c
     base_df.to_csv(base_file, index=False)
     print(f"Updated base file: {base_file}")
 
-# Parameters
-input_dir = "C:/Users/dsouzt/Office for National Statistics/Geospatial - LAD_data_downloaded/EW_LAD"
-base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
-lookup_file = "D:/Output_Area_Classification/Codes_final_lookup.csv"
-# this is the column name in the base file that will be used to join with the input files
-join_column = "LTLA"
-join_type = "left"
 
-# Load columns and their new names from the lookup file
-lookup_df = pd.read_csv(lookup_file)
-selected_variables = lookup_df['variable_code'].dropna().tolist()
-new_names = dict(zip(lookup_df['new_code'], lookup_df['new_name']))
+if __name__ == "__main__":
+    # Parameters
+    input_dir = "C:/Users/dsouzt/Office for National Statistics/Geospatial - LAD_data_downloaded/EW_LAD"
+    base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
+    lookup_file = "D:/Output_Area_Classification/Codes_final_lookup.csv"
+    # this is the column name in the base file that will be used to join with the input files
+    join_column = "LTLA"
+    join_type = "left"
 
-# Call the function
-select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type)
+    # Load columns and their new names from the lookup file
+    lookup_df = pd.read_csv(lookup_file)
+    selected_variables = lookup_df['variable_code'].dropna().tolist()
+    new_names = dict(zip(lookup_df['new_code'], lookup_df['new_name']))
+
+    # Call the function
+    select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type)
