@@ -1,7 +1,9 @@
 import pandas as pd
 import os
+import numpy as np
+import csv
 
-# these functions are set up to reformat the tables once the excess information at the top and bottom have been removed
+# these functions are set up to reformat the Scotland tables and extract metadata from them.
 
 def reformat_uv101b(input_directory):
     """
@@ -55,14 +57,6 @@ def reformat_uv101b(input_directory):
     else:
         print("No relevant data found in UV101b.csv.")
 
-# Run the function
-# input_directory = "D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/uv101b_uv103/"
-# reformat_uv101b(input_directory)
-
-
-
-
-
 
 
 
@@ -108,8 +102,319 @@ def reformat_uv103(input_directory):
     print("Data formatting complete. Results saved to:", output_file_path)
 
 
-# Run the function
-# input_directory = "D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/uv101b_uv103/"
-# reformat_uv103(input_directory)
+
+
+# def extract_metadata_from_files(input_directory):
+
+#     la_files = os.listdir(input_directory)
+#     units = []
+#     for file in la_files:
+#         t_tab_loc = file
+#         # extract the table id
+#         table_id = os.path.splitext(t_tab_loc)[0]
+
+#         # Open the CSV file and extract row 5
+#         with open(os.path.join(input_directory, t_tab_loc), "r") as f:
+#             reader = csv.reader(f)
+#             rows = list(reader)
+            
+#             # Ensure there are at least 4 rows in the file
+#             if len(rows) >= 4:
+#                 row_4 = rows[3][0]  # Extract the first column of row 4
+                
+#                 # Extract the portion after the second hyphen
+#                 parts = row_4.split('-')
+#                 if len(parts) > 2:
+#                     # Extract the portion after the second hyphen
+#                     table_name = parts[2].strip()
+                    
+#                     # If there's a third hyphen, extract only the part before it
+#                     if len(parts) > 3:
+#                         table_name = parts[2].split('-', 1)[0].strip()
+                    
+#                     # If the word 'All' is present, extract only the part before 'All'
+#                     if 'All' in table_name:
+#                         table_name = table_name.split('All', 1)[0].strip()
+                    
+#                     # Print the extracted table name
+#                     print(f"Extracted table name for {table_id} is {table_name}")
+
     
+#             # Initialize table_includes with a default value
+#             table_includes = []
+#             # Ensure there are at least 9 rows in the file
+#             if len(rows) > 8:
+#                 table_includes = rows[8]  # Directly point to the 9th row
+#             # Find the unit of measure
+#             unit = "-"
+#             if "Households" in table_includes:
+#                 unit = "Household"
+#             elif "Individuals" in table_includes:
+#                 unit = "Person"
+#             else:
+#                 print(f"Unit of measure not found for {table_id}")
+            
+#             # Print the unit of measure for the current CSV
+#             print(f"Unit of measure for {table_id}: {unit}")
+
+#             # Append the unit to the units list
+#             units.append(unit)
+
+def extract_metadata_from_files(input_directory):
+    la_files = os.listdir(input_directory)
+    metadata = []  # List to store metadata for each file
+
+    for file in la_files:
+        t_tab_loc = file
+        # Extract the table id
+        table_id = os.path.splitext(t_tab_loc)[0]
+
+        # Open the CSV file and extract row 5
+        with open(os.path.join(input_directory, t_tab_loc), "r") as f:
+            reader = csv.reader(f)
+            rows = list(reader)
+            
+            table_name = None  # Initialize table_name
+            # Ensure there are at least 4 rows in the file
+            if len(rows) >= 4:
+                row_4 = rows[3][0]  # Extract the first column of row 4
+                
+                # Extract the portion after the second hyphen
+                parts = row_4.split('-')
+                if len(parts) > 2:
+                    # Extract the portion after the second hyphen
+                    table_name = parts[2].strip()
+                    
+                    # If there's a third hyphen, extract only the part before it
+                    if len(parts) > 3:
+                        table_name = parts[2].split('-', 1)[0].strip()
+                    
+                    # If the word 'All' is present, extract only the part before 'All'
+                    if 'All' in table_name:
+                        table_name = table_name.split('All', 1)[0].strip()
+
+            # Initialize table_includes with a default value
+            table_includes = []
+            # Ensure there are at least 9 rows in the file
+            if len(rows) > 8:
+                table_includes = rows[8]  # Directly point to the 9th row
+            
+            # Find the unit of measure
+            unit = "-"
+            if "Households" in table_includes:
+                unit = "Household"
+            elif "Individuals" in table_includes:
+                unit = "Person"
+
+            # Append the metadata for the current file to the list
+            metadata.append({
+                "table_id": table_id,
+                "table_name": table_name,
+                "unit": unit
+            })
+
+    return metadata
+
+
+
+
+
+
+
+    
+
+def replace_ca19_names_with_codes(input_directory, lookup_file_path):
+    """
+    Replace council area names with council area codes in CSV files.
+
+    Parameters:
+    - input_directory (str): Path to the directory containing input CSV files.
+    - lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
+    """
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
+
+
+    # Process each CSV file in the input directory
+    for file_name in os.listdir(input_directory):
+        if file_name.endswith(".csv"):  # Ensure it's a CSV file
+            file_path = os.path.join(input_directory, file_name)
+            
+            # Read the input CSV file
+            df = pd.read_csv(file_path, header=None, skiprows=10)
+            
+            # Locate the row where 'Council Area 2019' appears in column 1
+            if 0 in df.columns:  # Ensure column 0 exists in the input DataFrame
+                council_area_row_index = df[df.iloc[:, 0] == 'Council Area 2019'].index
+                if not council_area_row_index.empty:  # Check if the value exists
+                    start_index = council_area_row_index[0] + 1  # Start processing rows below this index
+                    
+                    # Slice the DataFrame to include only rows below the specified cell
+                    df_below = df.iloc[start_index:]
+                    
+                    # Strip spaces and convert to lowercase for consistent matching
+                    df_below.iloc[:, 0] = df_below.iloc[:, 0].str.strip().str.lower()
+                    
+                    # Replace values in column 0 using the lookup dictionary
+                    df_below.iloc[:, 0] = df_below.iloc[:, 0].map(lookup_dict).fillna(df_below.iloc[:, 0])  # Replace matching values, keep original if no match
+                    
+                    # Update the original DataFrame with the modified rows
+                    df.iloc[start_index:] = df_below
+                else:
+                    print(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
+            else:
+                print(f"Column 0 not found in {file_name}. Skipping replacement.")
+
+            # Save the reformat DataFrame to a new CSV file
+            reformat_file_path = os.path.join(input_directory, f"reformat_{file_name}")
+            df.to_csv(reformat_file_path, index=False, header=False)
+
+
+
+
+def remove_rows(input_directory):
+    """
+    Processes all CSV files in the input directory that start with 'reformat_'.
+    Modifies the files in place by performing specific preprocessing steps.
+
+    Parameters:
+    - input_directory (str): Path to the directory containing the CSV files.
+    """
+
+    # Iterate through each file in the input directory
+    for file_name in os.listdir(input_directory):
+        if file_name.startswith("reformat_") and file_name.endswith(".csv"):  # Target only reformat CSV files
+            file_path = os.path.join(input_directory, file_name)
+            
+            try:
+                # Read the CSV file
+                df = pd.read_csv(file_path, on_bad_lines='warn', header=None)
+                
+                # Remove the last 3 rows
+                df = df.iloc[:-3, :]
+                
+                # Replace any cell in the DataFrame that says "Council Area 2019" with "CA19"
+                df.replace("Council Area 2019", "CA19", inplace=True)
+                
+                # Remove value from cell A1
+                df.iloc[0, 0] = ""  # Remove the value in A1 (table name)
+                
+                # Move the values from row 1 (index 0) in columns B onward (index 1 onward) to row 2 (index 1)
+                df.iloc[1, 1:] = df.iloc[0, 1:]
+                
+                # Clear the original values in row 1 (index 0) from column B onward (index 1 onward)
+                df.iloc[0, 1:] = np.nan
+                
+                # Drop the first (empty) row and reset the index
+                df = df.drop(index=0).reset_index(drop=True)
+                
+                # Save the modified DataFrame back to the same file (edit in place)
+                df.to_csv(file_path, index=False, header=False)
+                print(f"Processed and reformat: {file_name}")
+            
+            except pd.errors.ParserError as e:
+                print(f"Error processing {file_name}: {e}")
+        else:
+            print(f"Skipping non-reformat file: {file_name}")
+
+
+
+
+
+# def replace_variable_names_with_codes(input_directory):
+#     """
+#     Replace the variable names with the variable codes.
+#     Modifies the files in place by performing specific preprocessing steps.
+
+#     Parameters:
+#     - input_directory (str): Path to the directory containing the CSV files.
+#     """
+
+#     # Iterate through each file in the input directory
+#     for file_name in os.listdir(input_directory):
+#         print(f"Checking file: {file_name}")  # Debugging print statement
+#         if "reformat_" in file_name and file_name.endswith(".csv"):  # Target only relevant CSV files
+#             file_path = os.path.join(input_directory, file_name)
+            
+#             # Read the CSV file
+#             df = pd.read_csv(file_path, on_bad_lines='warn', header=0)
+
+#             # Create new column names with zero padding, excluding the first column
+#             variable_names = df.columns
+
+
+#             # Extract the table_id from the file name after "reformat_"
+#             table_id = file_name.split("reformat_")[1].split(".")[0]
+
+#             # Create a list of new column names
+#             variable_ids = [f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))]
+
+
+#             # Replace the existing column names of the df from column B onward with the newly generated column names stored in variable_ids
+#             df.columns = [df.columns[0]] + variable_ids  # Keep column A unchanged, replace column B onward
+#             # Print the new column names
+#             print("Updated column names:", df.columns.tolist())
+
+#             # Drop the last column
+#             df = df.iloc[:, :-1]  # Remove the last column from the DataFrame
+
+#             # Save the modified DataFrame to a new file with the prefix "code_" added to the original file name
+#             df.to_csv(file_path, index=False, header=True)
+#             print(f"Processed and saved as: {file_path}")
+        
+#         else:
+#             print(f"Skipping file: {file_name}")
+
+
+def replace_variable_names_with_codes(input_directory):
+    """
+    Replace the variable names with the variable codes.
+    Modifies the files in place by performing specific preprocessing steps.
+
+    Parameters:
+    - input_directory (str): Path to the directory containing the CSV files.
+
+    Returns:
+    - List of tuples containing variable_names and variable_ids for each processed file.
+    """
+    variable_names_ids = []  # Initialize a list to store variable_names and variable_ids for each file
+
+    # Iterate through each file in the input directory
+    for file_name in os.listdir(input_directory):
+        print(f"Checking file: {file_name}")  # Debugging print statement
+        if "reformat_" in file_name and file_name.endswith(".csv"):  # Target only relevant CSV files
+            file_path = os.path.join(input_directory, file_name)
+            
+            # Read the CSV file
+            df = pd.read_csv(file_path, on_bad_lines='warn', header=0)
+
+            # Create new column names with zero padding, excluding the first column
+            variable_names = df.columns
+
+            # Extract the table_id from the file name after "reformat_"
+            table_id = file_name.split("reformat_")[1].split(".")[0]
+
+            # Create a list of new column names
+            variable_ids = [f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))]
+
+            # Replace the existing column names of the df from column B onward with the newly generated column names stored in variable_ids
+            df.columns = [df.columns[0]] + variable_ids  # Keep column A unchanged, replace column B onward
+            # Print the new column names
+            print("Updated column names:", df.columns.tolist())
+
+            # Drop the last column
+            df = df.iloc[:, :-1]  # Remove the last column from the DataFrame
+
+            # Save the modified DataFrame to a new file with the prefix "code_" added to the original file name
+            df.to_csv(file_path, index=False, header=True)
+            print(f"Processed and saved as: {file_path}")
+
+            # Append the variable_names and variable_ids to the results list
+            variable_names_ids.append((variable_names.tolist(), variable_ids))
+        else:
+            print(f"Skipping file: {file_name}")
+    
+    # Return the list of results
+    return variable_names_ids
 
