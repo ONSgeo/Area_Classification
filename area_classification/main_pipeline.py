@@ -28,7 +28,7 @@ def main_pipeline():
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
     clustering_output = clustering_wrapper(
-        inputdata_filepath= config["input_data__filepath"],
+        input_dataframe_or_filepath= config["input_data__filepath"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],

@@ -201,19 +201,19 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000, ran
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
-def clustering_wrapper(inputdata_filepath:str, 
-                       num_clusters:int,
-                       n_init:int, 
-                       output_directory:str, 
-                       plot_directory:str,
-                       random_seed:int=None)->pd.DataFrame:
+def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame, 
+                       num_clusters: int,
+                       n_init: int, 
+                       output_directory: str, 
+                       plot_directory: str,
+                       random_seed: int = None) -> pd.DataFrame:
     """
-    Wrapper function to perform clustering on input data, create supergroups and subgroups,7
+    Wrapper function to perform clustering on input data, create supergroups and subgroups.
 
     Parameters
     ----------
-    inputdata_filepath : str
-        Path to the input data CSV file.
+    input_dataframe_or_filepath : str or pd.DataFrame
+        Path to the input data CSV file or a pandas DataFrame.
     num_clusters : int
         Number of superclusters to create.
     n_init : int
@@ -230,9 +230,21 @@ def clustering_wrapper(inputdata_filepath:str,
     pd.DataFrame
         DataFrame with cluster assignments after supergroup and subgroup clustering.
     """
+
+
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
-    variable_df = load_data(inputdata_filepath)
+    
+    if isinstance(input_dataframe_or_filepath, str):
+        # If a file path is provided, load the data from the CSV file
+        print(f"Loading data from {input_dataframe_or_filepath}")
+        variable_df = load_data(input_dataframe_or_filepath)
+    elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
+        # If a DataFrame is provided, use it directly
+        print("Using provided DataFrame for clustering.")
+        variable_df = input_dataframe_or_filepath.copy()
+    else:
+        raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
 
     transformed_variable_df = transform_and_standardize_data(variable_df)
 
@@ -275,7 +287,6 @@ if __name__ == "__main__":
     OUTPUT_DIR = "outputs"
     PLOT_DIR = "plots"
     function_output = clustering_wrapper(inputdata_filepath,8,10,OUTPUT_DIR,PLOT_DIR,random_seed)
-
     # create outputs and plots directories if they do not exist
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
