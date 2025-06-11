@@ -66,10 +66,7 @@ def create_clustergram(df, n_init, save_loc, random_seed=None):
     save_loc (str): File path to save the clustergram plot.
     random_seed (int, optional): Random seed for reproducibility.
     """
-    if random_seed is None:
-        cgram = Clustergram(range(1, 15), n_init=n_init) # Initialize clustergram model  
-    else:
-        cgram = Clustergram(range(1, 15), n_init=n_init, random_state=random_seed)  # Initialize clustergram model
+    cgram = Clustergram(range(1, 15), n_init=n_init, random_state=random_seed)  # Initialize clustergram model
     cgram.fit(df)  # Fit model to data
     cgram.plot()  # Generate plot
     plt.savefig(save_loc)  # Save figure
@@ -123,7 +120,7 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
 # For OAC the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 # Example code for creating the first layer of subclusters (groups) is below
 
-def create_subcluster_clustergrams(output_df, num_clusters, n_init=10):
+def create_subcluster_clustergrams(output_df, num_clusters, n_init=10, random_seed=None):
     """
     Generate and save clustergrams for each supercluster.
     This function loops through the existing clusters and creates a clustergram 
@@ -147,11 +144,11 @@ def create_subcluster_clustergrams(output_df, num_clusters, n_init=10):
         print(f"Saving clustergram to {save_loc}")
 
         # Generate clustergram
-        create_clustergram(cluster_df, n_init=n_init, save_loc=save_loc)
+        create_clustergram(cluster_df, n_init=n_init, save_loc=save_loc, random_seed=random_seed)
 
 
 
-def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> pd.DataFrame:
+def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000, random_seed = None) -> pd.DataFrame:
     """
     Runs subclustering for each supergroup using KMeans and returns a modified DataFrame with subcluster labels.
     
@@ -185,7 +182,8 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> 
             cluster_df, 
             num_subclusters, 
             n_init=n_init, 
-            output_filepath=OUTPUT_DIR+f"/subclusters/supergroup{cluster}_subclusteroutput.csv"
+            output_filepath=OUTPUT_DIR+f"/subclusters/supergroup{cluster}_subclusteroutput.csv",
+            random_seed=random_seed  # Use a different random seed for each subclustering to ensure diversity
         )
 
         # Convert subcluster numbers (0, 1, 2, ...) into a more readable format (e.g., '0a', '0b', '0c', ...),
@@ -203,24 +201,34 @@ def run_subclustering(input_df, subcluster_nums, num_clusters, n_init= 1000) -> 
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
-def clustering_wrapper(inputdata_filepath, 
-                       num_clusters,
-                       n_init, 
-                       output_directory, 
-                       plot_directory,
-                       random_seed=None):
+def clustering_wrapper(inputdata_filepath:str, 
+                       num_clusters:int,
+                       n_init:int, 
+                       output_directory:str, 
+                       plot_directory:str,
+                       random_seed:int=None)->pd.DataFrame:
     """
-    Wrapper function to perform the entire clustering process.
-    
-    Parameters:
-    - inputdata_filepath (str): Path to the input data CSV file.
-    - num_clusters (int): Number of superclusters to create.
-    - n_init (int): Number of times KMeans will be initialized.
-    - output_filepath (str): Path to save the final cluster assignments.
-    - random_seed (int, optional): Random seed for reproducibility.
-    
-    Returns:
-    - pd.DataFrame: DataFrame with cluster assignments.
+    Wrapper function to perform clustering on input data, create supergroups and subgroups,7
+
+    Parameters
+    ----------
+    inputdata_filepath : str
+        Path to the input data CSV file.
+    num_clusters : int
+        Number of superclusters to create.
+    n_init : int
+        Number of times KMeans will be initialized.
+    output_directory : str
+        Directory to save the final cluster assignments.
+    plot_directory : str
+        Directory to save generated plots.
+    random_seed : int, optional
+        Random seed for reproducibility.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with cluster assignments after supergroup and subgroup clustering.
     """
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
@@ -230,7 +238,8 @@ def clustering_wrapper(inputdata_filepath,
 
     create_clustergram(transformed_variable_df, 
                        n_init, 
-                       save_loc=plot_directory+"/supergroup_clustergram.png")
+                       save_loc=plot_directory+"/supergroup_clustergram.png",
+                       random_seed=random_seed)
     output_filepath = output_directory+"/supergroups_clusteroutput.csv"
 
     supergrouped_variable_df = run_kmeans(transformed_variable_df, 
@@ -240,12 +249,14 @@ def clustering_wrapper(inputdata_filepath,
                                           random_seed)
     create_subcluster_clustergrams(supergrouped_variable_df, 
                                    num_clusters, 
-                                   n_init)
+                                   n_init,
+                                   random_seed=random_seed)
     subcluster_nums = [3, 3, 3, 3, 3, 3, 3, 3]
     subgrouped_variable_df = run_subclustering(supergrouped_variable_df, 
                                                subcluster_nums, 
                                                num_clusters, 
-                                               n_init)
+                                               n_init,
+                                               random_seed=random_seed)
 
     
     return subgrouped_variable_df
@@ -263,7 +274,7 @@ if __name__ == "__main__":
     inputdata_filepath = "./area_classification/analysis/example_oacdata.csv"
     OUTPUT_DIR = "outputs"
     PLOT_DIR = "plots"
-    clustering_wrapper(inputdata_filepath,8,10,OUTPUT_DIR,PLOT_DIR,random_seed)
+    function_output = clustering_wrapper(inputdata_filepath,8,10,OUTPUT_DIR,PLOT_DIR,random_seed)
 
     # create outputs and plots directories if they do not exist
 
@@ -291,11 +302,11 @@ if __name__ == "__main__":
 
     # Example usage
     n_init = 10  # Use a low value for quick testing, increase for final results
-    create_clustergram(transformed_variable_df, n_init, save_loc=PLOT_DIR+"/supergroup_clustergram.png")
+    create_clustergram(transformed_variable_df, n_init, save_loc=PLOT_DIR+"/supergroup_clustergram.png", random_seed=random_seed)
 
     # Define the number of clusters (K). Choose K based on the clustergram plot.
     num_clusters = 8 
-    n_init = 100  #1000 is recommended for final results, but a lower value can be used for testing as it is faster
+    n_init = 10  #1000 is recommended for final results, but a lower value can be used for testing as it is faster
     output_filepath = OUTPUT_DIR+"/supergroups_clusteroutput.csv"
 
     # Run K-means clustering
@@ -304,7 +315,7 @@ if __name__ == "__main__":
     #supregrouped_variable_df contains the cluster assignments for each row in the input data, and the input data itself.
     
     # Create clustergrams for splitting each of the superclusters
-    create_subcluster_clustergrams(supergrouped_variable_df, num_clusters, n_init=10)
+    create_subcluster_clustergrams(supergrouped_variable_df, num_clusters, n_init=10,random_seed=random_seed)
 
     # We can now select the number of subclusters to split each of the supergroups into using the clustergrams above.
     # For this example, we choose three subclusters for each supergroup.
@@ -316,5 +327,7 @@ if __name__ == "__main__":
 
     # num clusters is the number of supergroups (set earlier)
     # n_init is the number of times the KMeans algorithm will be initialized (as before)
-    n_init = 1000
-    subgrouped_variable_df = run_subclustering(supergrouped_variable_df, subcluster_nums, num_clusters, n_init)
+    n_init = 10
+    subgrouped_variable_df = run_subclustering(supergrouped_variable_df, subcluster_nums, num_clusters, n_init,random_seed=random_seed)
+
+    print(subgrouped_variable_df.equals(function_output)) # Check if the output matches the function output
