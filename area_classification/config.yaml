@@ -6,3 +6,10 @@ working_directory : ~/Area_Classification
 #input_directory: data/inputs
 
 #output_directory : data/outputs
+
+input_data__filepath: 'temp/file/path.csv'
+number_of_clusters: 8
+number_of_times_k_means_initialised: 10 # 1000 for real run
+output_directory: 'temp/outputs/'
+plot_directory: 'temp/plots/'
+random_seed: 42
