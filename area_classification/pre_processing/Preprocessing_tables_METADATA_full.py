@@ -1,6 +1,7 @@
 # This script creates a metadata for Scotland's Local Authority Districts (LAD) tables.
 # It cleans/preprocesses the tables to a consistent format
-
+# This script has been ran on a sample of tables; needs to be ran on all of the (normal) tables
+# note that the functions are hard coded to our scotland tables
 
 import os
 import pandas as pd
@@ -15,7 +16,13 @@ from reformat_Scot_tables_functions import (
 # path to input directory containing the csv files to be processed
 input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/raw_data_sample' 
 # LAD code and names table
-lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
+CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
+
+
+#### NEED TO ACCOUNT FOR THE UV101b and UV103 and population density and migrant indictor in this script ###
+#### make use of functions: reformat_uv101b and reformat_uv103 in reformat_Scot_tables_functions.py ####
+### CHECK the outputs of the two functions above; at what point do they feed into this script? ####
+### migrant indicator and population density need functions; not yet created ####
 
 
 # create metadata table
@@ -36,9 +43,9 @@ meta_data_table = pd.DataFrame(
 metadata = extract_metadata_from_files(input_directory)
 
 # call in the function to replace council area names with their codes using the lookup file
-replace_ca19_names_with_codes(input_directory, lookup_file_path)
+replace_ca19_names_with_codes(input_directory, CA_lookup_file_path)
 
-# call in the function to remove rows with metadata/no data
+# call in the function to remove rows with metadata/no data (first 10 and bottom 3 rows)
 remove_rows(input_directory)
 
 # call in the function to replace variable names with their codes
@@ -46,14 +53,14 @@ remove_rows(input_directory)
 variable_names_ids = replace_variable_names_with_codes(input_directory)
 
 
-
+# TABLE_NAME TABLE_ID and UNIT are not being correctly identified.
+# CHECK this function 'extract_metadata_from_files' works correctly 
 # add to metadata table
 # Iterate over the metadata list and variable_names_ids list and add to the metadata table
 for (table_id, table_name, unit), (variable_names, variable_ids) in zip(metadata, variable_names_ids):
     # Exclude 'CA19' from variable_names and adjust variable_ids accordingly
     if 'CA19' in variable_names:
         variable_names = [name for name in variable_names if name != 'CA19']
-
     meta_data_table = pd.concat(
         [
             meta_data_table,
@@ -61,9 +68,9 @@ for (table_id, table_name, unit), (variable_names, variable_ids) in zip(metadata
                 {
                     "Variable_Name": variable_names,
                     "Variable_ID": variable_ids,
-                    "Table_ID": [table_id] * len(variable_names),
-                    "Table_Name": [table_name] * len(variable_names),
-                    "Unit": [unit] * len(variable_names),
+                    "Table_ID": table_id,
+                    "Table_Name": table_name,
+                    "Unit": unit,
                 }
             ) 
         ]
