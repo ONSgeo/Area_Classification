@@ -2,7 +2,7 @@ from area_classification.downloading_data.ew_lad_bulk_download import ew_downloa
 from area_classification.downloading_data.ni_lgd_downloading_data import ni_download
 # from area_classification.pre_processing. ADD PREPROCESSING OF SCOT
 from area_classification.pre_processing.pre_processing import pre_processing  
-from area_classification.analysis.Clustering_example import clustering_wrapper  
+from area_classification.analysis.clustering import clustering_wrapper  
 from area_classification.utilities.load_config import load_config
 
 
