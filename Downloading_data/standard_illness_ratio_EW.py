@@ -1,13 +1,53 @@
-# The following code has been taken from Jakub's script: https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Scripts/Transforming_Census_data.R
-# It has been translated from R into Python
-# This script will not run as the tables and headings are not standard 
-# The file referenced is from https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021
+# The following code is based on Jakub's script: https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Scripts/Transforming_Census_data.R
+# It has been translated from R into Python, and (will be) amended to include all UK countries, not just England and Wales.
+# EW file referenced is from https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021
 # TABLE 2 FOR OUTPUT AREAS OR TABLE 6 FOR LOCAL AUTHORITIES
 
+# Expected input
+# Area_code   |  age_group   |  Population  |  Disability_count
+#---------------------------------------------------------------
+# E06000001   |  0-14        |  1000        |  50
+#             |              |              |
 
-# we have run up to line 50 and this runs ok so far
-# Line 50 - this line is trying to filter out the rows where there is a string ([c]) instead of a number
+# ^^ Areas code for all of UK, age groups = 0_14_65_over and 15_64
 
+def SIR_calculation(df):
+    """
+    Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
+    
+    Parameters:
+        df (DataFrame): DataFrame containing columns 'Area_Code', 'Local_Authority', 'Count', 'Population',
+                        
+    Returns:
+        DataFrame: DataFrame with SIR values calculated.
+    """
+
+    # Get Ran (proportion of ill or disabled people for each age group at the national UK level)
+    df_nat_summary = df.groupby('age_group').agg(
+        sum_population=('population', 'sum'),
+        sum_disability_count=('disability_count', 'sum')).reset_index()
+    
+    # Calculate the proportion
+    df_nat_summary['prop'] = df_nat_summary['sum_disability_count'] / df_nat_summary['sum_population']
+
+    # df_nat_summary:
+    # age_group     | sum_population | sum_disability_count | prop
+    # ---------------------------------------------------------------
+    # 0_14_65_over  | 5000000        | 250000               | 0.05   
+
+    # Join the national proportions back to the original DataFrame
+    df = df.merge(df_nat_summary[['age_group', 'prop']], on='age_group', how='left', suffixes=('', '_nat'))
+
+    # Exp_ill for each age group (ill_prop * pop)
+    df['exp_ill'] = df['prop'] * df['population']    
+
+    # Sum exp ill
+    df_all = df.group_by('age_group').agg(
+        exp_ill_all = ('exp_ill', 'sum'))
+
+    # Calculate SIR for each Area Code
+    df['SIR'] = df_all.apply(lambda row: round((row['Disability_count'] / row['exp_ill_all']) * 100, 4), axis=1)
+    return df
 
 
 import pandas as pd
@@ -92,7 +132,7 @@ agg_data['SIR'] = agg_data.apply(lambda row: round((row['Count'] / (row['nat_pro
 # Check SIRs
 #print(agg_data.sort_values(by='SIR', ascending=True).head(15))
 
-## OUTPUT 
+## OUTPUT (check what output needs to look like)
 
 
 
