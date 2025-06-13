@@ -38,6 +38,10 @@ At this time the bulk files are only available for the output area (OA) geograph
 	* England and Wales - [disabilitycensus2021.xlsx](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ESTsbP6yeyJEqlAWqFI8E0MBKjSyzvNrxTzrfJozjRzYvA?e=LfgQr2&isSPOFile=1&xsdata=MDV8MDJ8fGQ0MTI1MTE5M2IzOTQ1MzU3NDM1MDhkZGFhNzQ2OTc5fDA3ODgwN2JmY2U4MjQ2ODhiY2UwMGQ4MTE2ODRkYzQ2fDB8MHw2Mzg4NTQxMzkxMTg5NzQwMDV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPakJrWkRkaU5ERTNNVFV4WkRRM1pUTTRZelF3TXpRME9UZ3paamRsWWpjeFFIUm9jbVZoWkM1Mk1pOXRaWE56WVdkbGN5OHhOelE1T0RFM01URXhOakE0fGRjY2Y5OGM4MTJkZDQ4YjA3NDM1MDhkZGFhNzQ2OTc5fDZjYzBhZjc0ZGE4ZjQ4NmJiNmU2ZWVhOWM2YzIwZjhm&sdata=b2RXMXY5azRTUjhYWlg1V2RVTjNIanJoVTJKbXAxUmVMN3pQcCs3REJFbz0%3D&ovuser=078807bf-ce82-4688-bce0-0d811684dc46%2CElla.Goodman%40ons.gov.uk)
 	* Northern Ireland - [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables)
   	* Scotland - Table[UV303](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ES29JjTPXwtOljbsv--2hyoBKPRG9DJfqIVUYKJbWrAeWA?e=wYiyEp) from [Flexible TableBuilder](https://www.scotlandscensus.gov.uk/search-the-census#/search-by)
+## Look ups
+* Selected_codes_Lookup
+* Local_Authority_Districts_(December_2022)_Names_and_Codes_UK was downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+
 ## Methodology / process description
 
 
