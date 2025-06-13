@@ -1,8 +1,9 @@
 import unittest
 import pandas as pd
+from pandas.testing import assert_frame_equal
 import os
 from tempfile import TemporaryDirectory
-from SelectVariables import select_variables
+from area_classification.pre_processing.select_variables import select_variables
 
 class TestSelectVariables(unittest.TestCase):
     def test_select_variables(self):
@@ -36,7 +37,4 @@ class TestSelectVariables(unittest.TestCase):
             expected_df = pd.DataFrame(expected_data)
 
             # Assert the result
-            pd.testing.assert_frame_equal(updated_base_df, expected_df)
-
-if __name__ == "__main__":
-    unittest.main()
+            assert_frame_equal(updated_base_df, expected_df)
