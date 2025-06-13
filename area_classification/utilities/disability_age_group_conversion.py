@@ -78,10 +78,12 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
 if __name__ == "__main__":
     filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
     df_scot = convert_disability_age_group_scotland(filepath_scot)
+    df_scot.to_csv("scot_disability_age_group_temp.csv", index=False)
     print(df_scot)
 
     filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
     df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
+    df_ni.to_csv("ni_disability_age_group_temp.csv", index=False)
     print(df_ni)
 
 
