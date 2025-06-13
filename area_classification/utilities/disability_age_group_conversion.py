@@ -35,7 +35,8 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
                 result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
 
     # need to load metadata table to convert council_area to code
-    scot_metadata = pd.read_csv("area_classification/downloading_data/")
+    # Use Function to convert these.
+    # scot_metadata = pd.read_csv("area_classification/downloading_data/")
     return result_df
 
 def convert_disability_age_group_england_wales(df: pd.DataFrame) -> pd.DataFrame:
