@@ -14,7 +14,7 @@ from reformat_Scot_tables_functions import (
 )
 
 # path to input directory containing the csv files to be processed
-input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/raw_data_sample' 
+input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/All_tables_test' 
 # LAD code and names table
 CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
 
@@ -23,6 +23,7 @@ CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2
 #### make use of functions: reformat_uv101b and reformat_uv103 in reformat_Scot_tables_functions.py ####
 ### CHECK the outputs of the two functions above; at what point do they feed into this script? ####
 ### migrant indicator and population density need functions; not yet created ####
+### Tables UV606 and UV604 are formatted slightly different, with an extra line at the top - need to account for these
 
 
 # create metadata table
@@ -38,9 +39,13 @@ meta_data_table = pd.DataFrame(
         ]
 )
 
+
 # function to extract metadata from files into table. 
 # 'metadata' is a list of table_name, table_id and unit variables
 metadata = extract_metadata_from_files(input_directory)
+# Debug: Print the metadata list to verify its structure
+print("Metadata extracted from files:")
+print(metadata)
 
 # call in the function to replace council area names with their codes using the lookup file
 replace_ca19_names_with_codes(input_directory, CA_lookup_file_path)
@@ -53,11 +58,20 @@ remove_rows(input_directory)
 variable_names_ids = replace_variable_names_with_codes(input_directory)
 
 
-# TABLE_NAME TABLE_ID and UNIT are not being correctly identified.
-# CHECK this function 'extract_metadata_from_files' works correctly 
+
+
 # add to metadata table
-# Iterate over the metadata list and variable_names_ids list and add to the metadata table
-for (table_id, table_name, unit), (variable_names, variable_ids) in zip(metadata, variable_names_ids):
+# Iterate over the metadata dict and variable_names_ids list and add to the metadata table
+
+for (meta, (variable_names, variable_ids)) in zip(metadata, variable_names_ids):
+    # Extract table_id, table_name, and unit from the metadata dictionary
+    table_id = meta.get("table_id", "")
+    table_name = meta.get("table_name", "")
+    unit = meta.get("unit", "")
+
+    print(f"Table ID: {table_id}, Table Name: {table_name}")
+    print(f"Variable Names: {variable_names}, Variable IDs: {variable_ids}")
+
     # Exclude 'CA19' from variable_names and adjust variable_ids accordingly
     if 'CA19' in variable_names:
         variable_names = [name for name in variable_names if name != 'CA19']
