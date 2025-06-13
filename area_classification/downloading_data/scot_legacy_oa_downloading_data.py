@@ -20,9 +20,11 @@ if __name__ == "__main__":
 
 
     #data dirs
-    url = "http://www.scotlandscensus.gov.uk/media/zz85kfinmf97whklasd98gfkadft5hj4f_Topic2H_20241120_1747/Census-2022-Output-Area-v1.zip"
+    url = "https://www.scotlandscensus.gov.uk/media/zz85kfinmf97whklasd98gfkadft5hj4f_Topic2H_20241120_1747/Census-2022-Output-Area-v1.zip"
     # Download the zip file
     r = requests.get(url)
+    if r.status_code != 200:
+        raise Exception(f"Failed to download Scottish data file from {url} with status code {r.status_code}")
     z = zipfile.ZipFile(BytesIO(r.content))
     z.extractall("./tmp")
 
@@ -45,6 +47,7 @@ if __name__ == "__main__":
         t_id = t_tab_loc.split(" - ")[0]
         if t_id == "Uv211b":
             t_id = "UV211b"  # eurgh
+        # extract the table name. extracts the portion of the filename after "-" and removes the file extension and store as t_name    
         t_name = t_tab_loc.split(" - ",1)[1].split(".")[0] #remove the code, but keep the full name (inc household when applicable)
         # load the csv file raw (not df) and print the first 5 lines
         with open(f"./tmp/{t_tab_loc}", "r") as f:
@@ -107,25 +110,24 @@ if __name__ == "__main__":
             if len(df) != 46363:
                 # skip the table if it doesn't have 46363 rows, this removes tmp/UV608 - National Statistics Socio-economic Classification (NS-SeC) of Household Reference Person (HRP).csv
                 # which only has 1 row for some reason
-                print(f"Table {t_id} has {len(df)} rows, not 46363")
+                print(f"Table {t_id} has {len(df)} rows, not 46363 as expected so we dont include it")
                 continue
 
                 # # validate data and types
             # check if all columns are numeric
-            #non_numeric = df.map(lambda x: not isinstance(x, (int, float)))
-            #if non_numeric.any().any():
-            #    print("Non-numeric data found in the following cells:")
-            #    print(df[non_numeric])
-                
-            #new code to do the above (as erroring on df.map) - Dan 09/04/2025
-            non_numeric = [col for col in df.columns if re.sub(r'\d+', '', df[col].dtype.name) not in ('int','float')]
-            if len(non_numeric):
+            non_numeric = df.map(lambda x: not isinstance(x, (int, float)))
+            if non_numeric.any().any():
                 print("Non-numeric data found in the following cells:")
                 print(df[non_numeric])
 
+
             # Create new column names with zero padding
             variable_names = df.columns
+            # create a list of new column names
+            # combine the t_id prefix adding a 4 digit zero padded number to the end 
+            # so 1 becomes 0001 for example 
             var_ids = [f"{t_id}{str(i).zfill(4)}" for i in range(1, len(variable_names) + 1)]
+            # replace the exsiting column names of the df with the newly generated column names stored in var_ids
             df.columns = var_ids
             # save to new csv and parquet
             df.to_csv(f"{CSV_DIR}/{t_id}.csv")
@@ -147,7 +149,7 @@ if __name__ == "__main__":
             )
 
     # Remove the temporary files and directory
-    # shutil.rmtree("./tmp") (commenting this out for the time being to get rid of permission error) - Dan 09/04/2025
+    shutil.rmtree("./tmp")
     # save metadata table
     # create full name column
     meta_data_table["Full_Name"] = (
