@@ -29,6 +29,11 @@ As census was conducted a year later in Scotland than England and Wales, and Nor
 
 Values for the Bangladsehi ethnic group are not avaialble to download for Northern Ireland as the values are so low they could be classed as disclosive. However we have decided to continue to factor in the is group for the other two censuses (EW and Scot).
 
+## Assumption 3: Standard Illness Ratio calculated from XX age
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+Origionally in the 2021 area classification ages were grouped into <15 and >65. This is not possible due to the split of ages across all three census' there gore we have tried to replicate with best data we had but couldn't split at XX age because this data was not available for all three census.
+
 ## Assumption 3: 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
