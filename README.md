@@ -18,12 +18,6 @@ Current focus:
 A table that describes each of the files in the repo (like we did for the automated mapping repo)
 
 ## Data
-Look up V60 variables
-Old	New 	Country
-	v1	
-	v2	
-![image](https://github.com/user-attachments/assets/f48baab0-5be5-40cf-a7fd-f21e7568f3f5)
-
 ### England and Wales
 Data for E&W is collected from the bulk download availble on their census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk). Table codes generally start with "TS".
 
