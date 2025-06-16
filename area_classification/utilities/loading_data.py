@@ -17,7 +17,33 @@ def load_data(filepath):
     
     return input_df
 
-def load_format_data(filepath:str, file_pattern:str, join_column_name:str):
+def load_format_data(filepath:str, file_pattern:str, join_column_name:str) -> pd.DataFrame:
+    """
+    function to load and format data downloaded from API calls
+
+    Parameters
+    ----------
+    filepath : str
+        path to the directory containing the data files
+    file_pattern : str
+        pattern to match the files to be loaded, e.g. "ts*.csv" for England and Wales data
+    join_column_name : str
+        column name to join the dataframes on, e.g. "LTLA" for England and Wales data
+
+    Returns
+    -------
+    pd.DataFrame
+        A combined dataframe contaiing all data question codes and values for each geo code
+
+    Raises
+    ------
+    FileNotFoundError
+        raises error if no files matching the pattern are found in the given filepath
+    ValueError
+        raises error if the number of columns in the merged dataframe does not match the expected number
+        expected number is the sum of columns in all files minus the join column which is only present in the first file
+        (i.e. len(file_list) - 1)
+    """    
 
     # load all of the data from the different tables, combine them into the format like example data 
     # first column will be geo code, others be questions and rows indicate responses 
@@ -51,17 +77,4 @@ if __name__ == "__main__":
     filepath = "C:/Users/dayj1/Office for National Statistics/Geospatial - LAD_data_downloaded/NI_LAD"
     ni_df = load_format_data(filepath, config["ni_file_pattern"],config["ni_join_column_name"])
     ni_df.to_csv("test_ni_concat.csv", index=False)
-
-    filepath = "C:/Users/dayj1/Office for National Statistics/Geospatial - LAD_data_downloaded/NI_LAD"
-    ni_df = load_format_data(filepath, config["ni_file_pattern"],config["ni_join_column_name"])
-    ni_df.to_csv("test_ni_concat.csv", index=False)
-
-
-    # print([f.replace(filepath, "") for f in ew_df])
-    # file_one = ew_df[0]
-    # df_one = pd.read_csv(file_one)
-    # df_two = pd.read_csv(ew_df[1])
-
-    # print(df_one.head(),df_two.head())
-    # print(df_one["LTLA"])
 
