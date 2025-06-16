@@ -6,6 +6,7 @@ from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.analysis.clustering import clustering_wrapper  
 from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.pre_processing import pre_processing    
+from area_classification.utilities.loading_data import load_format_data
 
 
 def main_pipeline():
@@ -15,13 +16,17 @@ def main_pipeline():
     config = load_config()
 
     # Step 1: Download england and wales data
-    ew_df = ew_lad_bulk_download(config)
+    ew_lad_bulk_download(config)
+    ew_df =load_format_data(config["input_data_filepath"], config["england_wales_file_pattern"],config["england_wales_join_column_name"])
+
 
     # Step 2: Download Northen Ireland data
-    ni_df = ni_lgd_download_data()
+    ni_lgd_download_data()
+    # Loading and getting into format to be used to process and combine
+    ni_df = load_format_data(config["input_data_filepath"], config["ni_file_pattern"],config["ni_join_column_name"])
 
     # Step 3: Processing of Scotland data
-    # scot_process()
+    # scot_df = scot_process()
 
     # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
@@ -37,7 +42,6 @@ def main_pipeline():
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"],)
 
-    # Step 6: Create outputs
 
 if __name__ == "__main__":
     main_pipeline()
