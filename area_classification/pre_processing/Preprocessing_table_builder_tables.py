@@ -1,3 +1,4 @@
+#LOOKS LIKE AN EARLIER VERSION, WAITING FOR TYDE TO RETURN FROM LEAVE TO CHECK THIS.
 #Top section removes unneeded lines of cotnent from CSVs, and puts CA19 in and tells you how many columns
 #Second section tells you how many variables assoicated to each table ID and prints them (UV)
 #Current issue - the columns are reporting to have 2 more columns in the CSV than in the varaible list, however only really one more in the actual CSV (for LAD code)

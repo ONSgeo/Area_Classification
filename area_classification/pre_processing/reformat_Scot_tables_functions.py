@@ -13,14 +13,23 @@ def reformat_uv101b(input_directory):
         input_directory (str): Path to the directory containing the input CSV files.
     """
     # Look for UV101b.csv in the directory
-    file_path = os.path.join(input_directory, "row_removal_UV101b.csv")
+    file_path = os.path.join(input_directory, "UV101b.csv")
     if not os.path.exists(file_path):
         print("No file named UV101b.csv found in the directory.")
         return
 
     # Load the CSV file
-    df = pd.read_csv(file_path, header=None)  # No header assumed for processing
-    df.columns = ['A', 'B', 'C', 'D', 'E']  # Assign column names for clarity
+    # This removes the first 12 rows which includes the Clackmannanshire, but if removing 11 df shape incorrect
+    # Adding in 6 column names as df has an empty column
+    df = pd.read_csv(file_path, skiprows=12, header=None, names=['A', 'B', 'C', 'D', 'E', 'F'])
+    print(df.columns)
+    df = pd.DataFrame(df)  
+    
+    #Remove the column F as empty
+    # Print the final column
+    print(df.iloc[:, -1]) 
+    # Remove the final column (F)
+    df = df.dropna(axis=1, how='all')
 
     # List to store results
     results = []
@@ -47,10 +56,13 @@ def reformat_uv101b(input_directory):
                     'Lives in a household': household_value,
                     'Lives in a communal establishment': communal_value
                 })
-
+            
+    
     # Save the results to a new CSV file
     if results:
         output_df = pd.DataFrame(results)
+        # Add Clakkmannanshire to the first row, first column as removed when reformatting and removing first 12 rows earlier
+        output_df.iloc[0, 0] = " Clackmannanshire"
         output_file_path = os.path.join(input_directory, "row_removal_UV101b_cleaned.csv")
         output_df.to_csv(output_file_path, index=False)
         print("Data formatting complete. Results saved to:", output_file_path)
@@ -102,8 +114,51 @@ def reformat_uv103(input_directory):
     print("Data formatting complete. Results saved to:", output_file_path)
 
 
+def reformat_migrant_indicator(input_directory):
+    """
+    Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total percentages
+    to be the second column so that is it consistent with other tables.
 
+    Args:
+        input_directory (str): Path to the directory containing the input CSV file
 
+    Parameters:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: The DataFrame with the last column moved to the second position.
+    """
+    # Look for migrant_indicator.csv in the directory
+    file_path = os.path.join(input_directory, "row_removal_migrant_indicator_percentage.csv")
+    if not os.path.exists(file_path):
+        print("No file named migrant_indicator.csv found in the directory.")
+        return
+
+    # Load the CSV file
+    df = pd.read_csv(file_path)
+        
+    # Remove the last row as this contains unneeded totals
+    df = df.iloc[:-1]
+
+    # Remove columns where all rows except column 1 are blank
+    empty_columns_removed_df = df.dropna(axis=1, how='all')
+    
+    # Look to see if there are more than two columns
+    columns = list(empty_columns_removed_df.columns)
+    if len(columns) < 2:
+        # If there are less than 2 columns, no change is needed
+        return df  
+    # Identify the last column
+    last_column = columns[-1] 
+    # Rearrange the columns to move the last column which it totals to the second position 
+    new_order = [columns[0], last_column] + columns[1:-1]
+    reformatted_df = empty_columns_removed_df[new_order]
+
+    # Save the new DataFrame to a CSV file
+    output_file_path = os.path.join(input_directory, "reorder_migrant_indicator_percentage.csv")
+    reformatted_df.to_csv(output_file_path, index=False)
+
+    print("Data formatting complete. Results saved to:", output_file_path)
 
 def extract_metadata_from_files(input_directory):
     print("Running extract_metadata_from_files...")

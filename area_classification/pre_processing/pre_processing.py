@@ -9,13 +9,15 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     print("placeholder for pre_processing")
 
     for df in [ew_df, ni_df, scot_df]:
+        #Standard Illness Ratio calculation
         df_temp = SIR(df)
-        df_temp = aggregate_variables(df_temp) #legacy version was aggregate_columns
-        if config["count or percent"] == "count":
-            # count or percent means we have downloaded the data as a count or a percent
-            df_temp = convert_to_percentages(df_temp)
+        #Convert counts to percentages
+        df_temp = convert_to_percentages(df_temp)
+        #Aggregate variables which need to be combined categories
+        df_temp = aggregate_variables(df_temp)
+        ##Select the 60 variables which are needed for the area classification             
         df_temp = select_variables(df_temp)
-   # need to find a way to overwrite ew_df, ni_df, scot_df with the processed data
 
+    #Combine the three data frames for censuses into one
     combined_df = combine_table(ew_df, ni_df, scot_df)
     return combined_df
