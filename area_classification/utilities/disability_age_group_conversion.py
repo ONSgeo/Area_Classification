@@ -25,13 +25,14 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
         mapping_dictionary = dict(zip(age_band_list, first_element_list))
         df["lower_age_band"] = df["age_band"].map(mapping_dictionary)
         age_band_names_and_bools = define_age_bands_and_bools(df, lower_age_band_col="lower_age_band")
+        limited_a_cols = [col for col in df.columns if "limited a" in str(col).lower()]
         for age_band_name, condition in age_band_names_and_bools.items():
 
             new_row = {
                 "council_area": la.split(". ")[1],
                 "age_group": age_band_name,
-                "total_population": df.loc[df["age_band"] == "Total", "All people"].values[0],
-                "total_disabled": df.loc[condition,"All people"].sum()
+                "total_population": df.loc[condition, "All people"].sum(),
+                "total_disabled": df.loc[condition, limited_a_cols].sum(axis=1).sum()
             }
             if 'result_df' not in locals():
                 result_df = pd.DataFrame([new_row])
@@ -102,6 +103,7 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
             "15-64": (ni_long_df["lower_age_band"]>=15) & (ni_long_df["lower_age_band"]<65),
         }
     disability_condition = ni_long_df["age_disability_group"].str.contains(r"limited a l.*", case=False, regex=True)
+    non_disability_condition = ni_long_df["age_disability_group"].str.contains(r"not limited", case=False, regex=True)
     result_df_list = []
     for (geo_code, geo_name), group_df in ni_long_df.groupby(["geography code", "geography"]):
         for age_band_name, condition in age_band_names_and_bools.items():
@@ -110,7 +112,7 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
                 "lgd": geo_name,
                 "age_group": age_band_name,
                 "total_disabled": group_df.loc[condition & disability_condition, "count"].sum(),
-                "total_population": group_df.loc[condition, "count"].sum()
+                "total_population": group_df.loc[condition & (disability_condition | non_disability_condition), "count"].sum()
             }
             result_df_list.append(new_row)
     result_df = pd.DataFrame(result_df_list)
@@ -118,26 +120,20 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    # filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
-    # df_scot = convert_disability_age_group_scotland(filepath_scot)
-    # df_scot.to_csv("scot_disability_age_group_temp.csv", index=False)
-    # print(df_scot)
+    filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
+    df_scot = convert_disability_age_group_scotland(filepath_scot)
+    df_scot.to_csv("scot_disability_age_group_temp.csv", index=False)
+    print(df_scot)
 
-    # filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
-    # df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
-    # df_ni.to_csv("ni_disability_age_group_temp.csv", index=False)
-    # print(df_ni)
+    filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
+    df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
+    df_ni.to_csv("ni_disability_age_group_temp.csv", index=False)
+    print(df_ni)
 
     filepath_ew = "disabilitycensus2021.xlsx"
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
     df_ew.to_csv("ew_disability_age_group_temp.csv", index=False)
     print(df_ew)
-
-
-    print(df_ew)
-
-    from area_classification.utilities.load_config import load_config
-    load_config
 
 
 #### CURRENT ISSUE WITH SUMS AND TOTALS. THE TOTAL OF ALL AGE COLUMNS DOES NOT EQUAL TOTAL GIVEN IN DF
