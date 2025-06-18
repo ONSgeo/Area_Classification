@@ -10,6 +10,23 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
      
 
 def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
+    """
+    function to convert disability age group data from Scotland into a standard format.
+    Data needs to be downloaded manually from Scotland Census website.
+
+    Parameters
+    ----------
+    filepath : str
+        filepath to the excel file containing the disability age group data.
+
+    Returns
+    -------
+    pd.DataFrame
+        disability data combined into two age groups: "<15 and >=65" and "15-64".
+        Columns: council_area, age_group, total_population, total_disabled.
+    -----------
+    Notes
+    """    
     all_sheets = pd.read_excel(filepath, sheet_name=None,skiprows=11)
     for key in ["template_rse", "format"]:
         # Removing unwanted sheets from the dictionary
@@ -18,8 +35,10 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
     for la, df in all_sheets.items():
         df = df.iloc[:-5].rename(columns={"Unnamed: 1" : "Sex", "Unnamed: 2":"age_band"}).drop(columns= 'Disability')
         df["sex"] = df["Sex"].ffill()
+        # Getting council area from the sheet name
         df["council_area"] = la.split(". ")[1]
         df = df.loc[df["sex"] == "All people"].drop(columns = "Sex")
+        # only needing all people not separated by sex 
         age_band_list = df["age_band"].tolist()[1:]
         first_element_list = [int(s.split()[0]) if isinstance(s, str) and len(s.split()) > 0 else '' for s in age_band_list]
         mapping_dictionary = dict(zip(age_band_list, first_element_list))
@@ -39,21 +58,28 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
             else:
                 result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
 
-    # need to load metadata table to convert council_area to code
+    # n
     # Use Function to convert these.
-    # scot_metadata = pd.read_csv("area_classification/downloading_data/")
-
+    # TODO: need to load metadata table to convert council_area to code
     return result_df
 
 def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
+    """
+    function to convert disability age group data from England and Wales into a standard format.
+    Data needs to be downloaded manually from the Office for National Statistics website.
+
+    Parameters
+    ----------
+    filepath : str
+        path to downloaded excel file
+
+    Returns
+    -------
+    pd.DataFrame
+        disability data combined into two age groups: "<15 and >=65" and "15-64".
+        Columns: Local Authority, Area Code, age_group, total_population, total_disabled.
+    """    
     df_ew = pd.read_excel(filepath, sheet_name="Table 6", skiprows=4)
-    # df_population = pd.read_excel(filepath, sheet_name="Table 5", skiprows=4)
-    # df_population = df_population.loc[
-    #     (df_population["Category"] == "Two category") &
-    #     (df_population["Sex"] == "Persons") &
-    #     (df_population["Disability status"] == "Disabled"),
-    #     ["Local Authority", "Area Code", "Population"]
-    # ]
     df_ew = df_ew.loc[(df_ew["Sex"]=="Persons")&(df_ew["Category"] == "Two category")] # Only want persons and age bands, dont need gender
     df_ew = df_ew[["Year", "Local Authority", "Area Code", "Category", "Disability status", "Age","Count","Population"]]
     df_ew["Count"] = df_ew["Count"].replace({'[c]': 0, '[x]': 0})
@@ -81,13 +107,24 @@ def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
 
             }
             result_df_list.append(new_row)
-    result_df = pd.DataFrame(result_df_list)
-    
-    # result_df = result_df.merge(df_population, on=["Local Authority", "Area Code"], how="outer")
-
-    return result_df
+    return pd.DataFrame(result_df_list)
 
 def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
+    """
+    function to convert disability age group data from Northern Ireland into a standard format.
+    Data needs to be downloaded manually from the Northern Ireland Statistics and Research Agency website.
+
+    Parameters
+    ----------
+    filepath : str
+        filepath to the excel file containing the disability age group data.
+
+    Returns
+    -------
+    pd.DataFrame
+        disability data combined into two age groups: "<15 and >=65" and "15-64".
+        Columns: lgd_code, lgd, age_group, total_population, total_disabled.
+    """    
     ni_df = pd.read_excel(filepath, sheet_name="LGD", skiprows=8).iloc[0:-14]
     ni_df.columns = ni_df.columns.str.replace('\n', '').str.lower()
     ni_df.columns = ni_df.columns.str.replace("usual residents aged ", "", regex=False)
@@ -134,6 +171,7 @@ if __name__ == "__main__":
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
     df_ew.to_csv("ew_disability_age_group_temp.csv", index=False)
     print(df_ew)
+    print("all saved to csv")
 
 
 #### CURRENT ISSUE WITH SUMS AND TOTALS. THE TOTAL OF ALL AGE COLUMNS DOES NOT EQUAL TOTAL GIVEN IN DF
