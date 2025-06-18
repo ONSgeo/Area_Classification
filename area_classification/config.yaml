@@ -10,8 +10,9 @@ working_directory : ~/Area_Classification
 input_data__filepath: 'temp/file/path.csv'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
-"output_directory": "./test_outputs/"
+output_directory: "./test_outputs/"
 plot_directory: 'temp/plots/'
+data_directory: '/data/'
 random_seed: 42
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
