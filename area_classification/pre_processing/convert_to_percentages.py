@@ -235,74 +235,115 @@ def validate_output(csv_folder_path: Union[str, Path],
         
     print("CSV files validated")
     
-def convert_to_percentages(metadata_filepath: Union[str, Path],
-                           metadata_table_id: str,
-                           metadata_variable_id: str,
-                           csv_folder_path: Union[str, Path],
-                           ignore_scaling_vars:  Optional[List[str]] = None) -> None:
+# def convert_to_percentages(metadata_filepath: Union[str, Path],
+#                            metadata_table_id: str,
+#                            metadata_variable_id: str,
+#                            csv_folder_path: Union[str, Path],
+#                            ignore_scaling_vars:  Optional[List[str]] = None) -> None:
     
-    """
-    This function converts variables to percentages of total counts and outputs the
-    CSVs to same directory as csv_folder_path with _percentages suffix.
+#     """
+#     This function converts variables to percentages of total counts and outputs the
+#     CSVs to same directory as csv_folder_path with _percentages suffix.
     
-    Parameters
-    ----------
-    metadata_filepath : Union[str, Path]
-        Path to metadata CSV file
-    metadata_table_id: str
-        Table ID associated with metadata
-    metadata_variable_id: str
-        Variable ID associated with metadata
-    csv_folder_path: Union[str, Path]
-        Path to folder containing CSV data
-    ignore_scaling_vars: Optional[List[str]]
-        Variables to ignore when scaling
+#     Parameters
+#     ----------
+#     metadata_filepath : Union[str, Path]
+#         Path to metadata CSV file
+#     metadata_table_id: str
+#         Table ID associated with metadata
+#     metadata_variable_id: str
+#         Variable ID associated with metadata
+#     csv_folder_path: Union[str, Path]
+#         Path to folder containing CSV data
+#     ignore_scaling_vars: Optional[List[str]]
+#         Variables to ignore when scaling
     
-    Returns
-    -------
-    None
+#     Returns
+#     -------
+#     None
     
-    Raises
-    ------
-    ValueError
-        If additional Variable IDs are present (besides geography) 
-        in CSV file that are not present in metadata table.
-    ValueError
-        If variable values are outside [0,100] range
-    FileNotFoundError
-        If Table ID not found in CSV folder path provided
+#     Raises
+#     ------
+#     ValueError
+#         If additional Variable IDs are present (besides geography) 
+#         in CSV file that are not present in metadata table.
+#     ValueError
+#         If variable values are outside [0,100] range
+#     FileNotFoundError
+#         If Table ID not found in CSV folder path provided
     
-    """
+#     """
     
-    metadata_table = pd.read_csv(metadata_filepath)
+#     metadata_table = pd.read_csv(metadata_filepath)
     
-    metadata_totals = get_metadata_totals(metadata_table = metadata_table,
-                                          metadata_table_id = metadata_table_id,
-                                          metadata_variable_id = metadata_variable_id)
+#     metadata_totals = get_metadata_totals(metadata_table = metadata_table,
+#                                           metadata_table_id = metadata_table_id,
+#                                           metadata_variable_id = metadata_variable_id)
     
-    csv_files = get_csv_files(csv_folder_path = csv_folder_path,
-                              metadata_totals = metadata_totals,
-                              metadata_table_id = metadata_table_id)
+#     csv_files = get_csv_files(csv_folder_path = csv_folder_path,
+#                               metadata_totals = metadata_totals,
+#                               metadata_table_id = metadata_table_id)
 
-    transform_input_data(csv_folder_path = csv_folder_path,
-                         metadata_table = metadata_table,
-                         metadata_totals = metadata_totals,
-                         metadata_table_id = metadata_table_id,
-                         metadata_variable_id = metadata_variable_id,
-                         csv_files = csv_files)
+#     transform_input_data(csv_folder_path = csv_folder_path,
+#                          metadata_table = metadata_table,
+#                          metadata_totals = metadata_totals,
+#                          metadata_table_id = metadata_table_id,
+#                          metadata_variable_id = metadata_variable_id,
+#                          csv_files = csv_files)
     
-    validate_output(csv_folder_path = csv_folder_path,
-                    metadata_table = metadata_table,
-                    metadata_totals = metadata_totals,
-                    metadata_table_id = metadata_table_id,
-                    metadata_variable_id = metadata_variable_id)  
+#     validate_output(csv_folder_path = csv_folder_path,
+#                     metadata_table = metadata_table,
+#                     metadata_totals = metadata_totals,
+#                     metadata_table_id = metadata_table_id,
+#                     metadata_variable_id = metadata_variable_id)  
 
 #--------------------- example -------------------#
-convert_to_percentages(r"Downloading_data\EW_LAD_Metadata.csv",
-                       metadata_table_id = 'Table_ID',
-                       metadata_variable_id = 'new_names',
-                       csv_folder_path = r"Downloading_data\EW_LAD")
+
+
+def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.DataFrame:
+
+    # Get list of column names
+    col_names = df.columns.tolist()
+    # Remove the last 4 digits from each column name (if present)
+    base_names = [col[:-4] if col[-4:].isdigit() else col for col in col_names]
+    # Get unique values
+    unique_base_names = sorted([name for name in set(base_names) if name != area_code_column_name])
+    total_code_suffix = "0001"  # Assuming the total column ends with '0001'
+    for form_code in unique_base_names:
+        total_column_name = form_code + total_code_suffix
+        df["temp_copy_column"] = df[total_column_name]  # Create a temporary copy of the total column
+        if total_column_name not in df.columns:
+            raise ValueError(f"Total column '{total_column_name}' not found in DataFrame.")
+        # Calculate percentages for each column
+        for col in df.columns:  
+            if col.startswith(form_code):
+                # Calculate percentage of the total column
+                df[col] = (df[col] / df["temp_copy_column"]) * 100
+                # Fill NaN values with 0
+                df[col] = df[col].fillna(0)
+                # Round to 3 decimal places
+                # df[col] = df[col].round(3)
+    df.drop(columns=["temp_copy_column"], inplace=True)  # Remove the temporary column
+
+    # Check that all values are within [0, 100]
+    for col in df.columns:
+        if col != area_code_column_name:
+            if not ((df[col] >= 0).all() and (df[col] <= 100).all()):
+                raise ValueError(f"Column {col} contains values outside the range [0, 100]")
+            
+    return df
     
     
-    
-    
+if __name__ == "__main__":
+    # Example usage
+
+    example_data = pd.read_csv("ew_concat.csv")
+    # format of combined data is ts???001 will be total,
+
+    df = convert_to_percentages(
+       example_data,
+       area_code_column_name = "LTLA"  # Assuming 'LTLA' is the area code column name
+    )
+    print(df)
+
+
