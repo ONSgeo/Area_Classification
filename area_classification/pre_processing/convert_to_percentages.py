@@ -311,9 +311,9 @@ def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.Da
     total_code_suffix = "0001"  # Assuming the total column ends with '0001'
     for form_code in unique_base_names:
         total_column_name = form_code + total_code_suffix
-        df["temp_copy_column"] = df[total_column_name]  # Create a temporary copy of the total column
         if total_column_name not in df.columns:
             raise ValueError(f"Total column '{total_column_name}' not found in DataFrame.")
+        df["temp_copy_column"] = df[total_column_name]  # Create a temporary copy of the total column
         # Calculate percentages for each column
         for col in df.columns:  
             if col.startswith(form_code):
@@ -321,6 +321,8 @@ def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.Da
                 df[col] = (df[col] / df["temp_copy_column"]) * 100
                 # Fill NaN values with 0
                 df[col] = df[col].fillna(0)
+                # replace infinite values with 0 (in case of division by zero)
+                df[col] = df[col].replace([float('inf'), -float('inf')], 0)
                 # Round to 3 decimal places
                 # df[col] = df[col].round(3)
     df.drop(columns=["temp_copy_column"], inplace=True)  # Remove the temporary column
