@@ -300,7 +300,7 @@ def validate_output(csv_folder_path: Union[str, Path],
 #--------------------- example -------------------#
 
 
-def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.DataFrame:
+def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str, excluded_form_code:list) -> pd.DataFrame:
 
     # Get list of column names
     col_names = df.columns.tolist()
@@ -309,13 +309,16 @@ def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.Da
     # Get unique values
     unique_base_names = sorted([name for name in set(base_names) if name != area_code_column_name])
     total_code_suffix = "0001"  # Assuming the total column ends with '0001'
+    excluded_columns = ["ts006",]
     for form_code in unique_base_names:
+        if form_code in excluded_columns:
+            continue  # Skip processing for excluded columns
         total_column_name = form_code + total_code_suffix
         if total_column_name not in df.columns:
             raise ValueError(f"Total column '{total_column_name}' not found in DataFrame.")
         df["temp_copy_column"] = df[total_column_name]  # Create a temporary copy of the total column
         # Calculate percentages for each column
-        for col in df.columns:  
+        for col in df.columns:
             if col.startswith(form_code):
                 # Calculate percentage of the total column
                 df[col] = (df[col] / df["temp_copy_column"]) * 100
@@ -329,7 +332,7 @@ def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str) -> pd.Da
 
     # Check that all values are within [0, 100]
     for col in df.columns:
-        if col != area_code_column_name:
+        if col != area_code_column_name and not any(col.startswith(excluded) for excluded in excluded_columns):
             if not ((df[col] >= 0).all() and (df[col] <= 100).all()):
                 raise ValueError(f"Column {col} contains values outside the range [0, 100]")
             
@@ -346,6 +349,7 @@ if __name__ == "__main__":
        example_data,
        area_code_column_name = "LTLA"  # Assuming 'LTLA' is the area code column name
     )
+    df.to_csv("converted_percentages.csv", index=False)  # Save the converted DataFrame to a new CSV file
     print(df)
 
 
