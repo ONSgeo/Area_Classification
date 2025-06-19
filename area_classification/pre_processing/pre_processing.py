@@ -19,6 +19,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     # file_configs = ew_file_configs['ew_file_configs']
     # Think this will work easier
     file_configs = load_config('area_classification/aggregation_setup.yaml')
+    file_configs = file_configs['ew_file_configs']
+    # need to generalise this, got a method for converting to percentages, but can 
+    # deal with it later
 
 
     for df in [ew_df, ni_df, scot_df]:
