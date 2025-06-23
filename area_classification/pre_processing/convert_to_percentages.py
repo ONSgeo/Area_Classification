@@ -165,6 +165,7 @@ def transform_input_data(csv_folder_path: Union[str, Path],
             if var not in ignore_vars:
             
                 table[var] = 100 * table[var] / table[total_var]
+                table[var] = table[var].fillna(0)
                 table[var] = table[var].apply(lambda x: round(x, 3))
         
         out_name = table_name + '_percentages.csv'
@@ -233,35 +234,83 @@ def validate_output(csv_folder_path: Union[str, Path],
                     raise ValueError(f"Column {var} in {file} file contains values outside range [0,100]")
         
     print("CSV files validated")
-                
-#------------Example with EW Data-------------------------#
-metadata_filepath_ew = r"Downloading_data\EW_LAD_Metadata.csv"
-csv_folder_path_ew = r"Downloading_data\EW_LAD"
 
-metadata_table = pd.read_csv(metadata_filepath_ew)
 
-metadata_totals = get_metadata_totals(metadata_table = metadata_table,
-                                      metadata_table_id = 'Table_ID',
-                                      metadata_variable_id = 'new_names')
+def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str, excluded_form_code:list = [], total_code_suffix:str = "0001") -> pd.DataFrame:
+    """
+    function to convert columns in a DataFrame to percentages of a total column.
 
-csv_files = get_csv_files(csv_folder_path = csv_folder_path_ew,
-                          metadata_totals = metadata_totals,
-                          metadata_table_id = 'Table_ID')
+    Parameters
+    ----------
+    df : pd.DataFrame
+        main dataframe to convert
+    area_code_column_name : str
+        column that contains area codes
+    excluded_form_code : list, optional
+        list form codes which should be excluded, by default []
+    total_code_suffix : str, optional
+        suffix for question which contains total, by default "0001"
 
-transform_input_data(csv_folder_path = csv_folder_path_ew,
-                     metadata_table = metadata_table,
-                     metadata_totals = metadata_totals,
-                     metadata_table_id = 'Table_ID',
-                     metadata_variable_id = 'new_names',
-                     csv_files = csv_files)
-        
-validate_output(csv_folder_path = csv_folder_path_ew,
-                metadata_table = metadata_table,
-                metadata_totals = metadata_totals,
-                metadata_table_id = 'Table_ID',
-                metadata_variable_id = 'new_names')   
+    Returns
+    -------
+    pd.DataFrame
+        returns the DataFrame with columns converted to percentages of their 
+        respective total columns.
+
+    Raises
+    ------
+    ValueError
+        raises an error if a total column is not found in the DataFrame or if 
+        any column contains values outside the range [0, 100].
+    """    
+
+    # Get list of column names
+    col_names = df.columns.tolist()
+    # Remove the last 4 digits from each column name (if present)
+    base_names = [col[:-4] if col[-4:].isdigit() else col for col in col_names]
+    # Get unique values
+    unique_base_names = sorted([name for name in set(base_names) if name != area_code_column_name])
+    for form_code in unique_base_names:
+        if form_code in excluded_form_code:
+            continue  # Skip processing for excluded columns
+        total_column_name = form_code + total_code_suffix
+        if total_column_name not in df.columns:
+            raise ValueError(f"Total column '{total_column_name}' not found in DataFrame.")
+        df["temp_copy_column"] = df[total_column_name]  # Create a temporary copy of the total column
+        # Calculate percentages for each column
+        for col in df.columns:
+            if col.startswith(form_code):
+                # Calculate percentage of the total column
+                df[col] = (df[col] / df["temp_copy_column"]) * 100
+                # Fill NaN values with 0
+                df[col] = df[col].fillna(0)
+                # replace infinite values with 0 (in case of division by zero)
+                df[col] = df[col].replace([float('inf'), -float('inf')], 0)
+                # Round to 3 decimal places
+                # df[col] = df[col].round(3)
+    df.drop(columns=["temp_copy_column"], inplace=True)  # Remove the temporary column
+
+    # Check that all values are within [0, 100]
+    for col in df.columns:
+        if col != area_code_column_name and not any(col.startswith(excluded) for excluded in excluded_form_code):
+            if not ((df[col] >= 0).all() and (df[col] <= 100).all()):
+                raise ValueError(f"Column {col} contains values outside the range [0, 100]")
+            
+    return df
     
     
-    
-    
-    
+if __name__ == "__main__":
+    # Example usage
+
+    example_data = pd.read_csv("ew_concat.csv")
+    # format of combined data is ts???001 will be total,
+
+    df = convert_to_percentages(
+       example_data,
+       area_code_column_name = "LTLA",  # Assuming 'LTLA' is the area code column name
+       excluded_form_code = ["ts006"]
+    )
+    df.to_csv("converted_percentages.csv", index=False)  # Save the converted DataFrame to a new CSV file
+    print(df)
+
+
