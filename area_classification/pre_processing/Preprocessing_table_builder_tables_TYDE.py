@@ -1,24 +1,25 @@
-# Top section removes unneeded lines of cotnent from CSVs, and puts CA19 instead of "Council Area 2019" 
+# Top section removes unneeded lines of content from CSVs, and puts CA19 instead of "Council Area 2019" 
 # the top section doesnt work for any tables that are further categorized e.g., uv101b or uv102b. the top metadata rows and bottom 3 rows may have to manually removed from these.
-# manually rename uv101b.csv to row_removal_UV101b.csv in the input directory before running this script
+#COMPARE THIS ONE WITH THE OTHER TABLUE BUILDER?!?!
 
 #Spreadsheets downloaded from table builder
 #pip install os
 import os
 import pandas as pd
-from reformat_Scot_tables_functions import reformat_uv101b, reformat_uv103 
+import numpy as np
+from reformat_Scot_tables_functions import reformat_uv101b, reformat_uv103, reformat_migrant_indicator
 
 # Paths to the folder and metadata file
 # input_directory = 'C:\\Users\\goodme\\Office for National Statistics\\Geospatial - LAD_data_downloaded\\Scotland_LA\\Percentages'  # Replace with your folder path
-input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/general_reformat_sample' 
-metadata_file = 'Downloading_data/Scotland_Census_2022_OA-download/output_data/Table_Metadata.csv'
+input_directory = 'D:/Repos/Area_Classification_data/Percentages' 
+metadata_file = 'D:/Repos/Area_Classification_data/scot_legacy_oa_table_metadata.csv'
 
 
 
 # Loop through all files in the folder
 for file_name in os.listdir(input_directory):
     # Skip files containing "UV101b" or "UV102b" because they require different formatting to remove rows and headers
-    if 'UV101b' in file_name or 'UV102b' in file_name or 'UV204' in file_name:
+    if 'UV101b' in file_name or 'UV102b' in file_name:
         print(f"Skipping file: {file_name}")
         continue
 
@@ -26,7 +27,7 @@ for file_name in os.listdir(input_directory):
     # Process only CSV files
     if file_name.endswith('.csv'):
         file_path = os.path.join(input_directory, file_name)
-        
+                
         # Check if the file name contains "row_removal"
         if 'row_removal' in file_name:
             print(f"{file_name} not had rows removed")
@@ -50,6 +51,13 @@ for file_name in os.listdir(input_directory):
             # Replace any cell in the DataFrame that says "Council Area 2019" with "CA19"
             df.replace("Council Area 2019", "CA19", inplace=True)
             
+            # See if the second row only has CA19 and empty cells
+            if df.iloc[1, 1:].isna().all():
+                # Remove the second row (index 1)
+                df = df.drop(index=1)
+                # Put CA19 in the top left cell
+                df.at[0, df.columns[0]] = "CA19"
+
             # Save the modified DataFrame to a new CSV file
             cleaned_file_path = os.path.join(input_directory, 'row_removal_' + file_name)
             df.to_csv(cleaned_file_path, index=False, header=False)
@@ -61,16 +69,10 @@ for file_name in os.listdir(input_directory):
         print(f"Processed: {file_name} -> Saved as: removed_metadata_rows_{file_name}")
         
 
-
-
-
-
-# run the functions to reformat these tables to be consistent with the others
+# run the functions to reformat specific tables to be consistent with the others
 reformat_uv103(input_directory)
+reformat_migrant_indicator(input_directory)
 reformat_uv101b(input_directory)
-
-
-# need a section to make column A begin at CA19, and to move the headings to be in line with CA19
 
 
 ### SECTION 2 ###

@@ -14,17 +14,22 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_exclude_form_code"
+        #Standard Illness Ratio calculation
         df_temp = SIR(dfs[key])
-        df_temp = aggregate_variables(df_temp)
-
+        #Convert counts to percentages
         df_temp = convert_to_percentages(
             df_temp, 
             area_code_column_name=config[join_column_name], 
             excluded_form_code=config[exclude_form_code_key]
         )
+        #Aggregate variables which need to be combined categories
+        df_temp = aggregate_variables(df_temp)
 
+
+        #Select the 60 variables which are needed for the area classification
         df_temp = select_variables(df_temp)
         dfs[key] = df_temp
 
+    #Combine the three data frames for censuses into one
     combined_df = combine_table(ew_df, ni_df, scot_df)
     return combined_df
