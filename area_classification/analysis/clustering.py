@@ -281,11 +281,12 @@ if __name__ == "__main__":
     # Running the script directly will be the same as running the notebook from original 
     # git repo
     # set a  random seed for reproducibility
-
+    from area_classification.utilities.load_config import load_config
+    config = load_config()
     random_seed = 507
     inputdata_filepath = "./area_classification/analysis/example_oacdata.csv"
-    OUTPUT_DIR = "outputs"
-    PLOT_DIR = "plots"
+    OUTPUT_DIR = config["output_directory"]
+    PLOT_DIR = config["plot_directory"]
     function_output = clustering_wrapper(inputdata_filepath,8,10,OUTPUT_DIR,PLOT_DIR,random_seed)
     # create outputs and plots directories if they do not exist
 
