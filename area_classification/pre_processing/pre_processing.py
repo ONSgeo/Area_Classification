@@ -18,7 +18,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_exclude_form_code"
-        #Standard Illness Ratio calculation
+        #Calculate the standard illness ratio (SIR) for each census
         df_temp = SIR(dfs[key])
         #Convert counts to percentages
         df_temp = convert_to_percentages(
@@ -26,8 +26,15 @@ def pre_processing(ew_df, ni_df, scot_df, config):
             area_code_column_name=config[join_column_name], 
             excluded_form_code=config[exclude_form_code_key]
         )
-        #Aggregate variables which need to be combined categories
+        #Aggregate variables which need to be combined categories (for just England)
         df_temp = aggregate_variables(df_temp)
+        #Aggregate variables (when running three census)
+        #if df = ew_df:
+        #    df_temp = Aggregating_variables_EW(df_temp)
+        #if df = ni_df:
+        #    df_temp = Aggregating_variables_NI(df_temp)
+        #if df = scot_df:
+        #    df_temp = Aggregating_variables_Scot(df_temp)
         # Config stuff needs to go here: 
         # with open('area_classification/aggregation_setup.yaml', 'r') as file:
         #     content = file.read()
@@ -39,11 +46,11 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # need to generalise this, got a method for converting to percentages, but can 
         # deal with it later
 
-        #Select the 60 variables which are needed for the area classification
+        #Select the 60 variables a used in previous itterations of the area classification
 
         df_temp = select_variables(df_temp)
         dfs[key] = df_temp
 
-    #Combine the three data frames for censuses into one
+    #Combine the three dataframes for censuses into one
     combined_df = combine_table(ew_df, ni_df, scot_df)
     return combined_df
