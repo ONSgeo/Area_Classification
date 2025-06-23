@@ -1,6 +1,10 @@
+import pandas as pd
+from area_classification.utilities.load_config import load_config
+
 # from area_classification.pre_processing.SIR import SIR
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
 # from area_classification.pre_processing.aggregate_variables import aggregate_variables
+from area_classification.pre_processing.Aggregating_variables import batch_ag_columns
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 
@@ -24,9 +28,19 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         )
         #Aggregate variables which need to be combined categories
         df_temp = aggregate_variables(df_temp)
-
+        # Config stuff needs to go here: 
+        # with open('area_classification/aggregation_setup.yaml', 'r') as file:
+        #     content = file.read()
+        # ew_file_configs = yaml.safe_load(content)
+        # file_configs = ew_file_configs['ew_file_configs']
+        # Think this will work easier
+        file_configs = load_config('area_classification/aggregation_setup.yaml')
+        file_configs = file_configs['ew_file_configs']
+        # need to generalise this, got a method for converting to percentages, but can 
+        # deal with it later
 
         #Select the 60 variables which are needed for the area classification
+
         df_temp = select_variables(df_temp)
         dfs[key] = df_temp
 
