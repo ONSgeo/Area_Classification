@@ -31,12 +31,12 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
     for key in ["template_rse", "format"]:
         # Removing unwanted sheets from the dictionary
         all_sheets.pop(key, None)
-    # Loop over each la and dataframe to sum number of disabled in each age band
-    for la, df in all_sheets.items():
+    # Loop over each lad and dataframe to sum number of disabled in each age band
+    for lad, df in all_sheets.items():
         df = df.iloc[:-5].rename(columns={"Unnamed: 1" : "Sex", "Unnamed: 2":"age_band"}).drop(columns= 'Disability')
         df["sex"] = df["Sex"].ffill()
         # Getting council area from the sheet name
-        df["council_area"] = la.split(". ")[1]
+        df["council_area"] = lad.split(". ")[1]
         df = df.loc[df["sex"] == "All people"].drop(columns = "Sex")
         # only needing all people not separated by sex 
         age_band_list = df["age_band"].tolist()[1:]
@@ -48,7 +48,7 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
         for age_band_name, condition in age_band_names_and_bools.items():
 
             new_row = {
-                "council_area": la.split(". ")[1],
+                "council_area": lad.split(". ")[1],
                 "age_group": age_band_name,
                 "total_population": df.loc[condition, "All people"].sum(),
                 "total_disabled": df.loc[condition, limited_a_cols].sum(axis=1).sum()
