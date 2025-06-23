@@ -13,10 +13,19 @@ number_of_times_k_means_initialised: 10 # 1000 for real run
 "output_directory": "./test_outputs/"
 plot_directory: 'temp/plots/'
 random_seed: 42
+
+
 england_wales_file_pattern: "ts???*.csv"
 england_wales_join_column_name: "LTLA"
+england_wales_excluded_form_code: ["ts006"]
+
 ni_file_pattern: "ni???.csv"
 ni_join_column_name: "LGD"
+ni_excluded_form_code: ["ts006"]
+
+scotland_join_column_name: "LGD"
+scotland_excluded_form_code: ["ts006"]
+
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
         "ts007",
