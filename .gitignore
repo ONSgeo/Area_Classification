@@ -889,3 +889,6 @@ docs/_linkcheck/
 *.csv
 *.xls
 *.xlsx
+
+# ignoring all contents of top level data folder
+data/

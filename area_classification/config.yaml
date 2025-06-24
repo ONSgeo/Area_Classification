@@ -7,16 +7,26 @@ working_directory : ~/Area_Classification
 
 #output_directory : data/outputs
 
-input_data_filepath: 'temp/file/path.csv'
+
+input_data__filepath: 'data/inputs/temp.csv'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
-"output_directory": "./test_outputs/"
-plot_directory: 'temp/plots/'
+"output_directory": "data/output_data/"
+plot_directory: 'data/plots/'
+data_directory: '/data/'
 random_seed: 42
+
 england_wales_file_pattern: "ts???*.csv"
 england_wales_join_column_name: "LTLA"
+england_wales_excluded_form_code: ["ts006"]
+
 ni_file_pattern: "ni???.csv"
 ni_join_column_name: "LGD"
+ni_excluded_form_code: ["ts006"]
+
+scotland_join_column_name: "LGD"
+scotland_excluded_form_code: ["ts006"]
+
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
         "ts007",

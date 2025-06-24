@@ -14,9 +14,9 @@ from reformat_Scot_tables_functions import (
 )
 
 # path to input directory containing the csv files to be processed
-input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/All_tables_test' 
+input_directory = 'D:/Repos/Area_Classificaiton_data/Percentages' 
 # LAD code and names table
-CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
+CA_lookup_file_path = "D:/Repos/Area_Classificaiton_data/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
 
 
 #### NEED TO ACCOUNT FOR THE UV101b and UV103 and population density and migrant indictor in this script ###
