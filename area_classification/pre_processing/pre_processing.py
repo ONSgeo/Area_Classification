@@ -27,15 +27,6 @@ def pre_processing(ew_df, ni_df, scot_df, config):
             excluded_form_code=config[exclude_form_code_key]
         )
         #Aggregate variables which need to be combined categories (for just England)
-        df_temp = aggregate_variables(df_temp)
-        #Aggregate variables (when running three census)
-        #if df = ew_df:
-        #    df_temp = Aggregating_variables_EW(df_temp)
-        #if df = ni_df:
-        #    df_temp = Aggregating_variables_NI(df_temp)
-        #if df = scot_df:
-        #    df_temp = Aggregating_variables_Scot(df_temp)
-        # Config stuff needs to go here: 
         # with open('area_classification/aggregation_setup.yaml', 'r') as file:
         #     content = file.read()
         # ew_file_configs = yaml.safe_load(content)
@@ -45,9 +36,19 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         file_configs = file_configs['ew_file_configs']
         # need to generalise this, got a method for converting to percentages, but can 
         # deal with it later
-
+        df_temp = batch_ag_columns(df_temp, file_configs)
+        #Aggregate variables (when running three census)
+        #if df = ew_df:
+        #    file_configs = file_configs['ew_file_configs']
+        #    df_temp = batch_ag_columns(df_temp, file_configs)
+        #if df = ni_df:
+        #    file_configs = file_configs['ni_file_configs']
+        #    df_temp = batch_ag_columns(df_temp, file_configs)
+        #if df = scot_df:
+        #    file_configs = file_configs['scot_file_configs']
+        #    df_temp = batch_ag_columns(df_temp, file_configs)
+        
         #Select the 60 variables a used in previous itterations of the area classification
-
         df_temp = select_variables(df_temp)
         dfs[key] = df_temp
 
