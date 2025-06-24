@@ -69,7 +69,6 @@ def extract_numeric_value(col_name):
     # Default to infinity if no match
     return int(match.group(1)) if match else float('inf')  
 
-
 if __name__ == "__main__":
     # Example usage
     from area_classification.utilities.load_config import load_config
