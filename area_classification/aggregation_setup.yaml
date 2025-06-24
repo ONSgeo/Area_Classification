@@ -1,5 +1,5 @@
 # England and Wales variables to aggregate using the variable codes
-ew_file_configs:
+ew_df_file_configs:
   - file_name: "ts045.csv"
     col_names:
       - ts0450004

@@ -30,20 +30,8 @@ def main_pipeline():
 
     # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
-
-    #Step 5: convert to percentages for each ew, ni and scot (if necessary for scot as issues with extraction)
-    # Assumption built in to function is that the total column names will be located as the first entry per table_id in metadata
-    # Needs to be adapted to actual use case (with config etc) but will look something like as shown
-
-    # populate as required for each of ew, ni, scot (needs adapting to use case)
-    for info in info_from_config:
-        convert_to_percentages(metadata_filepath = info["metadata_path"],
-                               metadata_table_id = info["metadata_table_id"],
-                               metadata_variable_id = info["metadata_variable_id"],
-                               csv_folder_path = info["csv_folder_path"],
-                               ignore_scaling_vars = info["ignore_scaling_cols"])
                            
-    # Step 6: Clustering
+    # Step 5: Clustering
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
     clustering_output = clustering_wrapper(

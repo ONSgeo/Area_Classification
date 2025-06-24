@@ -8,7 +8,7 @@ working_directory : ~/Area_Classification
 #output_directory : data/outputs
 
 
-input_data__filepath: 'data/inputs/temp.csv'
+input_data_filepath: 'data/inputs/temp.csv'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 "output_directory": "data/output_data/"
