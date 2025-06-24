@@ -4,8 +4,8 @@ Never married and never registered a civil partnership,ts0020002,TS002,Legal par
 Married or in a registered civil partnership,ts0020003,TS002,Legal partnership status,v03
 Separated or divorced,separated_divorced,TS002,Legal partnership status,v04
 One-person household,ts0030002,TS003,Household composition,v05
-Families with no children,no_children ,TS003,Household composition,v06
-Families dependent children,dependent_children ,TS003,Household composition,v07
+Families with no children,no_children,TS003,Household composition,v06
+Families dependent children,dependant_children,TS003,Household composition,v07
 Europe: United Kingdom,ts0040003,TS004,Country of birth,v08
 Europe: EU countries,ts0040004,TS004,Country of birth,v09
 Europe: Non-EU countries,ts0040009,TS004,Country of birth,v10
@@ -38,7 +38,7 @@ Semi-detached,ts0440003,TS044,Accommodation type,v36
 Terraced (including end-terrace),ts0440004,TS044,Accommodation type,v37
 Lives in a flat,flat,TS044,Accommodation type,v38
 Two or more cars or vans,cars_2_or_more,TS045,Car or van availability,v39
-Under occupation,under_occupation ,TS053,Occupancy rating for rooms,v40
+Under occupation,under_occupation,TS053,Occupancy rating for rooms,v40
 Overcrowding,overcrowding,TS053,Occupancy rating for rooms,v41
 Social rented,ts0540007,TS054,Tenure,v42
 Private rented,ts0540010,TS054,Tenure,v43
