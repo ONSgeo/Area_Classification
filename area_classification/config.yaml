@@ -1,0 +1,57 @@
+# Config file for the Area Classification project
+
+
+working_directory : ~/Area_Classification
+
+#input_directory: data/inputs
+
+#output_directory : data/outputs
+
+
+input_data_filepath: 'data/inputs/temp.csv'
+number_of_clusters: 8
+number_of_times_k_means_initialised: 10 # 1000 for real run
+"output_directory": "data/output_data/"
+plot_directory: 'data/plots/'
+data_directory: '/data/'
+random_seed: 42
+
+england_wales_file_pattern: "ts???*.csv"
+england_wales_join_column_name: "LTLA"
+england_wales_excluded_form_code: ["ts006"]
+
+ni_file_pattern: "ni???.csv"
+ni_join_column_name: "LGD"
+ni_excluded_form_code: ["ts006"]
+
+scotland_join_column_name: "LGD"
+scotland_excluded_form_code: ["ts006"]
+
+# These tables dont have OA data for England and Wales
+england_and_wales_table_codes_to_remove : [
+        "ts007",
+        "ts009",
+        "ts010",
+        "ts012",
+        "ts013",
+        "ts071",
+        "ts072",
+        "ts073",
+        "ts074",
+        "ts022",
+        "ts024",
+        "ts028",
+        "ts031",
+        "ts076",
+        "ts060",
+        "ts064",
+        "ts047",
+        "ts048",
+        "ts079",
+        "ts070",
+        "ts077",
+        "ts078",
+        "ts037asp",
+        "ts038asp",
+        "ts039asp"
+    ]

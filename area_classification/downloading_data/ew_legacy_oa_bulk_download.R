@@ -69,6 +69,8 @@ dir.create("./output_data/csv",recursive = TRUE)
 
 zip_urls <-  result <- setdiff(zip_urls, no_oa_tables)  # Remove the tables without OA
 
+
+
 for (url in zip_urls){
 
   dir.create("./tmp",recursive = TRUE)#create a temporary directory for unzipping
@@ -136,4 +138,4 @@ meta_data_table2 <- meta_data_table %>%
   mutate(Variable_Name = str_replace_all(old_names, ";.*", "")) %>%
   mutate(Variable_Name = str_replace_all(Variable_Name, paste0(Table_Name,": "), ""))
 
-write_csv(meta_data_table2, "Table_Metadata.csv")
+write_csv(meta_data_table2, "ew_legacy_oa_table_metadata.csv")

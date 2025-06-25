@@ -1,0 +1,61 @@
+variable name,variable_code,table_ID,table_name,new_code
+Lives in a communal establishment,ts0010003,TS001,Residency type,v01
+Never married and never registered a civil partnership,ts0020002,TS002,Legal partnership status,v02
+Married or in a registered civil partnership,ts0020003,TS002,Legal partnership status,v03
+Separated or divorced,separated_divorced,TS002,Legal partnership status,v04
+One-person household,ts0030002,TS003,Household composition,v05
+Families with no children,no_children,TS003,Household composition,v06
+Families dependent children,dependant_children,TS003,Household composition,v07
+Europe: United Kingdom,ts0040003,TS004,Country of birth,v08
+Europe: EU countries,ts0040004,TS004,Country of birth,v09
+Europe: Non-EU countries,ts0040009,TS004,Country of birth,v10
+Africa,ts0040011,TS004,Country of birth,v11
+Usual residents per square kilometre,ts0060001,TS006,Population density,v12
+Aged 4 years and under,ts007a0002,TS007A,Age structure,v13
+Aged 5 to 14,age_5_14,TS007A,Age structure,v14
+Aged 25 to 44,age_25_44,TS007A,Age structure,v15
+Aged 45 to 64,age_45_64,TS007A,Age structure,v16
+Aged 65 to 84,age_65_84,TS007A,Age structure,v17
+Aged 85 years and over,ts007a0019,TS007A,Age structure,v18
+Address one year ago is the same as the address of enumeration,ts0190002,TS019,Migrant Indicator,v19
+Bangladeshi,ts0210003,TS021,Ethnic group,v20
+Chinese,ts0210004,TS021,Ethnic group,v21
+Indian,ts0210005,TS021,Ethnic group,v22
+Pakistani,ts0210006,TS021,Ethnic group,v23
+Other Asian,ts0210007,TS021,Ethnic group,v24
+Black,ts0210008,TS021,Ethnic group,v25
+Mixed or Multiple ethnic groups,ts0210012,TS021,Ethnic group,v26
+White,ts0210017,TS021,Ethnic group,v27
+All household members have the same ethnic group,ts0230003,TS023,Multiple ethnic group,v28
+Cannot speak English well or at all,cannot_speak_English,TS029,Proficiency in English,v29
+No religion,ts0300002,TS030,Religion,v30
+Christian,ts0300003,TS030,Religion,v31
+Other religion,ts0300009,TS030,Religion,v32
+Standardised Illness Ratio,SIR,SIR,Disability,v33
+Provides unpaid care,provides_unpaid_care,TS039,Provision of unpaid care,v34
+Detached,ts0440002,TS044,Accommodation type,v35
+Semi-detached,ts0440003,TS044,Accommodation type,v36
+Terraced (including end-terrace),ts0440004,TS044,Accommodation type,v37
+Lives in a flat,flat,TS044,Accommodation type,v38
+Two or more cars or vans,cars_2_or_more,TS045,Car or van availability,v39
+Under occupation,under_occupation,TS053,Occupancy rating for rooms,v40
+Overcrowding,overcrowding,TS053,Occupancy rating for rooms,v41
+Social rented,ts0540007,TS054,Tenure,v42
+Private rented,ts0540010,TS054,Tenure,v43
+Ownership or shared ownership,ownership_or_shared,TS054,Tenure,v44
+Part-time,ts0590002,TS059,Hours worked,v45
+Full-time,ts0590005,TS059,Hours worked,v46
+L15 Full-time students,ts0620010,TS062,NS-SeC,v47
+1. Managers directors and senior officials,ts0630002,TS063,Occupation,v48
+2. Professional occupations,ts0630003,TS063,Occupation,v49
+3. Associate professional and technical occupations,ts0630004,TS063,Occupation,v50
+4. Administrative and secretarial occupations,ts0630005,TS063,Occupation,v51
+5. Skilled trades occupations,ts0630006,TS063,Occupation,v52
+6. Caring leisure and other service occupations,ts0630007,TS063,Occupation,v53
+7. Sales and customer service occupations,ts0630008,TS063,Occupation,v54
+8. Process plant and machine operatives,ts0630009,TS063,Occupation,v55
+9. Elementary occupations,ts0630010,TS063,Occupation,v56
+Economically active: Unemployed,ts0660013,TS066,Economic activity status,v57
+Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,TS067,Highest level of qualification,v58
+Level 3 qualifications,ts0670006,TS067,Highest level of qualification,v59
+Level 4 qualifications or above,ts0670007,TS067,Highest level of qualification,v60
