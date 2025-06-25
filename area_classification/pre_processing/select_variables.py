@@ -1,9 +1,8 @@
 import pandas as pd
-import os
 # Import the re module for regular expressions
 import re  
 
-def select_variables(df_temp, select_variables_lookup):
+def select_variables(df_temp, select_variables_lookup, user_config):
     """
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns.
@@ -11,7 +10,7 @@ def select_variables(df_temp, select_variables_lookup):
     Parameters:
     - df_temp (pd.DataFrame): The main DataFrame containing all data.
     - select_variables_lookup (str): Path to the CSV file containing the lookup information.
-
+    - user_config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
     Returns:
     - pd.DataFrame: A new DataFrame with only the specified columns.
     """
@@ -59,19 +58,8 @@ def select_variables(df_temp, select_variables_lookup):
     ordered_columns = [first_column] + ordered_remaining_columns
     filtered_df = filtered_df[ordered_columns]
 
-    # Define the folder path and file name
-    folder_path = "data/QA"
-    file_name = "select_variables_output.csv"
-
-    # Ensure the folder exists, create it if it doesn't
-    os.makedirs(folder_path, exist_ok=True)
-
-    # Construct the full file path
-    output_file_path = os.path.join(folder_path, file_name)
-
-    # Save the DataFrame to the constructed path
-    filtered_df.to_csv(output_file_path, index=False)
-    # Save the resulting DataFrame as a CSV file
-    #filtered_df.to_csv("/data/QA/select_variables_output", index=False)
+    # Save to data QA folder
+    output_file_path = user_config["qa_folder_path"] + "select_variables_output.csv"
+    df_temp.to_csv(output_file_path, index=False)
 
     return filtered_df
