@@ -12,9 +12,19 @@
 # ^^ Areas code for all of UK, age groups = 0_14_65_over and 15_64
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
-def SIR_calculation(df: pd.DataFrame) -> pd.DataFrame:
+def sir_processing(config):
+    # disability files by age -> sharepoint?
+    ew_disability_df = pd.read_csv(config[]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
+    ni_disability_df = pd.read_csv(config[]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
+    scotland_disability_df = pd.read_csv(config[]).rename(columns={'council_area': 'Area_Code', 'council_area_code': 'Local_Authority'})
+    combined_disability_df = pd.concat(
+        [ew_disability_df, ni_disability_df, scotland_disability_df],)
+    # Scotland excluded because it doesnt have council area codes 
+    sir_output_df = SIR_calculation(combined_disability_df, config)
+    return sir_output_df
+
+def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
     
@@ -52,7 +62,7 @@ def SIR_calculation(df: pd.DataFrame) -> pd.DataFrame:
     sir_qa_checks(df_all)
     return df_all
 
-def sir_qa_checks(df: pd.DataFrame) -> None:
+def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
     """
     Perform QA checks on the SIR DataFrame.
     
@@ -72,6 +82,10 @@ def sir_qa_checks(df: pd.DataFrame) -> None:
     for country_code_starts_with in [["E", "W"], ['S'], ['N']]:
         df_subset = df[df["Area_Code"].str.startswith(tuple(country_code_starts_with))]
         print(df_subset['SIR'].describe())
+
+        # Save to data QA folder
+    output_file_path = config["qa_folder_path"] + "select_variables_output.csv"
+    df.to_csv(output_file_path, index=False)
 
     # check that all records contain all of uk
     # Can add once we are working with all data
