@@ -58,9 +58,19 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
             else:
                 result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
 
-    # n
-    # Use Function to convert these.
-    # TODO: need to load metadata table to convert council_area to code
+    # Load the LAD codes and names lookup file
+    lookup_file_path = 'area_classification/pre_processing/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
+
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
+
+    # Strip spaces and convert to lowercase for consistent matching in the first column
+    result_df.iloc[:, 0] = result_df.iloc[:, 0].str.strip().str.lower()
+
+    # Replace values in the first column using the lookup dictionary
+    result_df.iloc[:, 0] = result_df.iloc[:, 0].map(lookup_dict).fillna(result_df.iloc[:, 0])  # Replace matching values, keep original if no match
+
     return result_df
 
 def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
