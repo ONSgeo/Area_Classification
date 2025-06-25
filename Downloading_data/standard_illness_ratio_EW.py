@@ -12,8 +12,9 @@
 # ^^ Areas code for all of UK, age groups = 0_14_65_over and 15_64
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
-def SIR_calculation(df):
+def SIR_calculation(df: pd.DataFrame) -> pd.DataFrame:
     """
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
     
@@ -28,7 +29,7 @@ def SIR_calculation(df):
     
     # Get Ran (proportion of ill or disabled people for each age group at the national UK level)
     df_nat_summary = df.groupby('age_group').agg(
-        sum_population=('Population', 'sum'),
+        sum_population=('total_population', 'sum'),
         sum_disability_count=('total_disabled', 'sum')).reset_index()
  
     df_nat_summary['nat_prop'] = df_nat_summary['sum_disability_count'] / df_nat_summary['sum_population']
@@ -38,7 +39,7 @@ def SIR_calculation(df):
     df = df.merge(df_nat_summary[['age_group', 'nat_prop']], on='age_group', how='left', suffixes=('', '_nat'))
 
     # Exp_ill for each age group (ill_prop * pop) 
-    df['exp_ill'] = df['nat_prop'] * df['Population']    
+    df['exp_ill'] = df['nat_prop'] * df['total_population']    
 
     # Sum exp ill and diisability count (across age groups, to get one value per geog)
     df_all = df.groupby(['Area_Code', 'Local_Authority']).agg(exp_ill_all=('exp_ill', 'sum'),
@@ -48,18 +49,53 @@ def SIR_calculation(df):
     df_all['SIR'] = df_all.apply(lambda row: round((row['disability_count'] / row['exp_ill_all']) * 100, 4), axis=1)
     return df_all
 
+def sir_qa_checks(df: pd.DataFrame) -> None:
+    """
+    Perform QA checks on the SIR DataFrame.
+    
+    Parameters:
+        df (DataFrame): DataFrame containing SIR values.
+        
+    Returns:
+        None
+    """
+    # Check if disability_count is int
+    assert df['disability_count'].dtype == 'int64', "Disability count should be of type int64"
+
+    # Check expected spatial distribution
+    print("SIR values distribution:")
+    print(df['SIR'].describe())
+
+    for country_code_starts_with in [["E", "W"], ['S'], ['N']]:
+        df_subset = df[df["Area_Code"].str.startswith(tuple(country_code_starts_with))]
+        print(df_subset['SIR'].describe())
+
+    # check that all records contain all of uk
+    # Can add once we are working with all data
+    # df["total_population"].sum() == sum(ew+scotland+ni)
 
 
-EW_df = pd.read_excel("C:/Users/parkes/Downloads/ew_disability_age_group_temp.xlsx") 
-EW_df.rename(columns={'Area Code': 'Area_Code'}, inplace=True)
-EW_df.rename(columns={'Local Authority': 'Local_Authority'}, inplace=True)
+if __name__ == "__main__":
 
-x = SIR_calculation(EW_df)
+    EW_df = pd.read_csv("D:\\repos\\output_area_classification_project\\Area_Classification\\ew_disability_age_group.csv") 
+    EW_df.rename(columns={'Area Code': 'Area_Code'}, inplace=True)
+    EW_df.rename(columns={'Local Authority': 'Local_Authority'}, inplace=True)
+
+    x = SIR_calculation(EW_df)
+    sir_qa_checks(x)
+
+    # Create mock data to test the SIR_calculation function
+
+    # result = SIR_calculation(mock_data)
+    # print(result)
+    #     'Local_Authority': ['LA1', 'LA1', 'LA2', 'LA2', 'LA3', 'LA3'],
+    #     'Area_Code': ['A1', 'A1', 'A2', 'A2', 'A3', 'A3'],
 
 
 
 
-
+# QA checks - Checked disability_count is int, checked SIR is %, Checked expected spatial distribution
+# Reasonably sure this is correct, but will need to be check once we use combined UK data as input.
 
 
 
