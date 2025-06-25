@@ -3,14 +3,18 @@ import os
 import numpy as np
 import csv
 
-# these functions are set up to reformat the Scotland tables and extract metadata from them.
+# these functions are set up to reformat the Scotland tables to be consistent with Eng/Wales/NI 
+# extract metadata from them to create a metadata table for Scotland
 
-def reformat_uv101b(input_directory):
+
+# Function to reformat the UV101b CSV file
+def reformat_uv101b(input_directory, CA_lookup_file_path):
     """
-    Function to reformat the UV101b CSV file in the given directory.
+    Function to reformat the UV101b CSV file so it has rows removed and CA codes instead of names.
     
     Args:
         input_directory (str): Path to the directory containing the input CSV files.
+        CA_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
     """
     # Look for UV101b.csv in the directory
     file_path = os.path.join(input_directory, "UV101b.csv")
@@ -18,17 +22,10 @@ def reformat_uv101b(input_directory):
         print("No file named UV101b.csv found in the directory.")
         return
 
-    # Load the CSV file
-    # This removes the first 12 rows which includes the Clackmannanshire, but if removing 11 df shape incorrect
-    # Adding in 6 column names as df has an empty column
+    # Load the CSV file and skip the first 12 rows
     df = pd.read_csv(file_path, skiprows=12, header=None, names=['A', 'B', 'C', 'D', 'E', 'F'])
-    print(df.columns)
-    df = pd.DataFrame(df)  
     
-    #Remove the column F as empty
-    # Print the final column
-    print(df.iloc[:, -1]) 
-    # Remove the final column (F)
+    # Remove the empty column (F)
     df = df.dropna(axis=1, how='all')
 
     # List to store results
@@ -36,7 +33,6 @@ def reformat_uv101b(input_directory):
 
     # Iterate through rows to extract relevant data
     for index, row in df.iterrows():
-        # Check if the row contains the word 'sex' in column A
         if str(row['A']).strip().lower() == 'sex':
             # Get the council area name (two rows above the 'sex' row)
             council_area = df.iloc[index - 2]['A'] if index - 2 >= 0 else None
@@ -56,14 +52,22 @@ def reformat_uv101b(input_directory):
                     'Lives in a household': household_value,
                     'Lives in a communal establishment': communal_value
                 })
-            
-    
-    # Save the results to a new CSV file
+
+    # Convert results to a DataFrame
     if results:
         output_df = pd.DataFrame(results)
-        # Add Clakkmannanshire to the first row, first column as removed when reformatting and removing first 12 rows earlier
-        output_df.iloc[0, 0] = " Clackmannanshire"
-        output_file_path = os.path.join(input_directory, "row_removal_UV101b_cleaned.csv")
+        # Add Clackmannanshire to the first row, first column
+        output_df.iloc[0, 0] = "Clackmannanshire"
+
+        # Load the LAD codes and names lookup file
+        lookup_df = pd.read_csv(CA_lookup_file_path)
+        lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
+
+        # Replace council area names with LAD codes
+        output_df['CA19'] = output_df['CA19'].str.strip().str.lower().map(lookup_dict).fillna(output_df['CA19'])
+
+        # Save the final DataFrame to a new CSV file
+        output_file_path = os.path.join(input_directory, "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
         print("Data formatting complete. Results saved to:", output_file_path)
     else:
@@ -72,24 +76,25 @@ def reformat_uv101b(input_directory):
 
 
 
-def reformat_uv103(input_directory):
+def reformat_uv103(input_directory, CA_lookup_file_path):
     """
-    Reformat the UV103 CSV file according to the specified requirements.
-    
+    Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
+
     Args:
         input_directory (str): Path to the directory containing the input CSV file.
+        CA_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
     """
     # Look for UV103.csv in the directory
-    file_path = os.path.join(input_directory, "row_removal_UV103.csv")
+    file_path = os.path.join(input_directory, "UV103.csv")
     if not os.path.exists(file_path):
         print("No file named UV103.csv found in the directory.")
         return
 
     # Load the CSV file
-    df = pd.read_csv(file_path, header=None)
+    df = pd.read_csv(file_path, skiprows=11, header=None)
 
     # Extract headers for columns B to CY (row 2 in the original file)
-    headers = ["CA19"] + df.iloc[1, 1:].tolist()
+    headers = ["Council Area 2019"] + df.iloc[1, 1:].tolist()
 
     # Extract council area names and corresponding data
     reformatted_data = []
@@ -107,38 +112,55 @@ def reformat_uv103(input_directory):
     # Remove rows where all columns except column A are blank
     reformatted_df = reformatted_df.dropna(how='all', subset=headers[1:])
 
-    # Save the new DataFrame to a CSV file
-    output_file_path = os.path.join(input_directory, "row_removal_UV103_cleaned.csv")
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(CA_lookup_file_path)
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
+
+    # Replace council area names with LAD codes
+    reformatted_df['Council Area 2019'] = (
+        reformatted_df['Council Area 2019']
+        .str.strip()
+        .str.lower()
+        .map(lookup_dict)
+        .fillna(reformatted_df['Council Area 2019'])
+    )
+    
+    # Replace the column name 'Council Area 2019' with 'CA19'
+    reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
+
+    # Save the reformatted DataFrame to a new CSV file
+    output_file_path = os.path.join(input_directory, "reformat_UV103.csv")
     reformatted_df.to_csv(output_file_path, index=False)
+    print(f"Data formatting complete. Results saved to: {output_file_path}")
 
-    print("Data formatting complete. Results saved to:", output_file_path)
 
 
-def reformat_migrant_indicator(input_directory):
+def reformat_migrant_indicator(input_directory, CA_lookup_file_path):
     """
     Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total percentages
-    to be the second column so that is it consistent with other tables.
+    to be the second column so that it is consistent with other tables.
+    Replace CA names with codes.
 
     Args:
         input_directory (str): Path to the directory containing the input CSV file
 
-    Parameters:
-        df (pd.DataFrame): The input DataFrame.
-
     Returns:
-        pd.DataFrame: The DataFrame with the last column moved to the second position.
+        None
     """
     # Look for migrant_indicator.csv in the directory
-    file_path = os.path.join(input_directory, "row_removal_migrant_indicator_percentage.csv")
+    file_path = os.path.join(input_directory, "migrant_indicator_percentage.csv")
     if not os.path.exists(file_path):
         print("No file named migrant_indicator.csv found in the directory.")
         return
 
     # Load the CSV file
-    df = pd.read_csv(file_path)
-        
-    # Remove the last row as this contains unneeded totals
-    df = df.iloc[:-1]
+    df = pd.read_csv(file_path, skiprows=10, header=None)
+
+    # Remove the last 3 rows
+    df = df.iloc[:-3, :]
+
+    # Remove the row where column A contains 'Total'
+    df = df[df.iloc[:, 0] != 'Total']
 
     # Remove columns where all rows except column 1 are blank
     empty_columns_removed_df = df.dropna(axis=1, how='all')
@@ -153,14 +175,61 @@ def reformat_migrant_indicator(input_directory):
     # Rearrange the columns to move the last column which it totals to the second position 
     new_order = [columns[0], last_column] + columns[1:-1]
     reformatted_df = empty_columns_removed_df[new_order]
+    
+    # Remove value from cell A1
+    reformatted_df.iloc[0, 0] = ""  # Remove the value in A1 (table name)
+    
+    if len(reformatted_df) > 1 and reformatted_df.shape[1] > 1:
+        # Move the values from row 1 (index 0) in columns B onward (index 1 onward) to row 2 (index 1)
+        reformatted_df.iloc[1, 1:] = reformatted_df.iloc[0, 1:].values
+    
+        # Clear the original values in row 1 (index 0) from column B onward (index 1 onward)
+        reformatted_df.iloc[0, 1:] = np.nan
+    
+        # Drop the first (empty) row and reset the index
+        reformatted_df = reformatted_df.drop(index=0).reset_index(drop=True)
+    
+    # Remove the row with default integer headers if it exists
+    reformatted_df.columns = reformatted_df.iloc[0]  # Set the first row as column headers
+    reformatted_df = reformatted_df[1:].reset_index(drop=True)  # Drop the first row and reset the index
+
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(CA_lookup_file_path)
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
+
+    # Replace council area names with LAD codes
+    reformatted_df['Council Area 2019'] = (
+        reformatted_df['Council Area 2019']
+        .str.strip()
+        .str.lower()
+        .map(lookup_dict)
+        .fillna(reformatted_df['Council Area 2019'])
+    )
+
+    # Replace the column name 'Council Area 2019' with 'CA19'
+    reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
     # Save the new DataFrame to a CSV file
-    output_file_path = os.path.join(input_directory, "reorder_migrant_indicator_percentage.csv")
+    output_file_path = os.path.join(input_directory, "reformat_migrant_indicator_percentage.csv")
     reformatted_df.to_csv(output_file_path, index=False)
 
     print("Data formatting complete. Results saved to:", output_file_path)
 
+
+
+
+
 def extract_metadata_from_files(input_directory):
+    """
+    Extracts metadata from CSV files in the specified input directory.
+    Special handling is applied for the 'migrant_indicator_percentage.csv' file. 
+
+    Returns:
+        A list of dictionaries, where each dictionary contains metadata for a file, including:
+        - table_id: The unique identifier for the table.
+        - table_name: The name of the table.
+        - unit: The unit of measure (e.g., "Person", "Household").
+    """
     print("Running extract_metadata_from_files...")
     la_files = os.listdir(input_directory)
     metadata = []  # List to store metadata for each file
@@ -171,8 +240,16 @@ def extract_metadata_from_files(input_directory):
         if 'reformat' in file:
             continue
 
+        # Check for migrant_indicator table and explicitly define its metadata
+        if file == "migrant_indicator_percentage.csv":  
+            metadata.append({
+                "table_id": "migrant_indicator", 
+                "table_name": "Migrant Indicator",  
+                "unit": "Person"  
+            })
+            continue  # Skip further processing for this specific table
 
-    for file in la_files:
+    
         t_tab_loc = file
         # Extract the table id
         table_id = os.path.splitext(t_tab_loc)[0]
@@ -239,9 +316,6 @@ def extract_metadata_from_files(input_directory):
 
 
 
-
-    
-
 def replace_ca19_names_with_codes(input_directory, lookup_file_path):
     """
     Replace council area names with council area codes in CSV files.
@@ -256,38 +330,42 @@ def replace_ca19_names_with_codes(input_directory, lookup_file_path):
 
 
     # Process each CSV file in the input directory
+    # Process each CSV file in the input directory, skipping uv101b.csv
     for file_name in os.listdir(input_directory):
-        if file_name.endswith(".csv"):  # Ensure it's a CSV file
-            file_path = os.path.join(input_directory, file_name)
+        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv":
+            continue
+        file_path = os.path.join(input_directory, file_name)
             
-            # Read the input CSV file
+        # Read the input CSV file
+        if "UV604" in file_name or "UV606" in file_name:
+            df = pd.read_csv(file_path, header=None, skiprows=11)
+        else:
             df = pd.read_csv(file_path, header=None, skiprows=10)
-            
-            # Locate the row where 'Council Area 2019' appears in column 1
-            if 0 in df.columns:  # Ensure column 0 exists in the input DataFrame
-                council_area_row_index = df[df.iloc[:, 0] == 'Council Area 2019'].index
-                if not council_area_row_index.empty:  # Check if the value exists
-                    start_index = council_area_row_index[0] + 1  # Start processing rows below this index
-                    
-                    # Slice the DataFrame to include only rows below the specified cell
-                    df_below = df.iloc[start_index:]
-                    
-                    # Strip spaces and convert to lowercase for consistent matching
-                    df_below.iloc[:, 0] = df_below.iloc[:, 0].str.strip().str.lower()
-                    
-                    # Replace values in column 0 using the lookup dictionary
-                    df_below.iloc[:, 0] = df_below.iloc[:, 0].map(lookup_dict).fillna(df_below.iloc[:, 0])  # Replace matching values, keep original if no match
-                    
-                    # Update the original DataFrame with the modified rows
-                    df.iloc[start_index:] = df_below
-                else:
-                    print(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
+        
+        # Locate the row where 'Council Area 2019' appears in column 1
+        if 0 in df.columns:  # Ensure column 0 exists in the input DataFrame
+            council_area_row_index = df[df.iloc[:, 0] == 'Council Area 2019'].index
+            if not council_area_row_index.empty:  # Check if the value exists
+                start_index = council_area_row_index[0] + 1  # Start processing rows below this index
+                
+                # Slice the DataFrame to include only rows below the specified cell
+                df_below = df.iloc[start_index:]
+                
+                # Strip spaces and convert to lowercase for consistent matching
+                df_below.iloc[:, 0] = df_below.iloc[:, 0].str.strip().str.lower()
+                
+                # Replace values in column 0 using the lookup dictionary
+                df_below.iloc[:, 0] = df_below.iloc[:, 0].map(lookup_dict).fillna(df_below.iloc[:, 0])  # Replace matching values, keep original if no match
+                
+                # Update the original DataFrame with the modified rows
+                df.iloc[start_index:] = df_below
             else:
-                print(f"Column 0 not found in {file_name}. Skipping replacement.")
-
-            # Save the reformat DataFrame to a new CSV file
-            reformat_file_path = os.path.join(input_directory, f"reformat_{file_name}")
-            df.to_csv(reformat_file_path, index=False, header=False)
+                print(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
+        else:
+            print(f"Column 0 not found in {file_name}. Skipping replacement.")
+        # Save the reformat DataFrame to a new CSV file
+        reformat_file_path = os.path.join(input_directory, f"reformat_{file_name}")
+        df.to_csv(reformat_file_path, index=False, header=False)
 
 
 
@@ -301,9 +379,11 @@ def remove_rows(input_directory):
     - input_directory (str): Path to the directory containing the CSV files.
     """
 
-    # Iterate through each file in the input directory
+    # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
     for file_name in os.listdir(input_directory):
-        if file_name.startswith("reformat_") and file_name.endswith(".csv"):  # Target only reformat CSV files
+        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv":
+            continue
+        if file_name.startswith("reformat_"):
             file_path = os.path.join(input_directory, file_name)
             
             try:
@@ -343,8 +423,8 @@ def remove_rows(input_directory):
 
 def replace_variable_names_with_codes(input_directory):
     """
-    Replace the variable names with the variable codes.
-    Modifies the files in place by performing specific preprocessing steps.
+    Replace the variable names with the variable ids.
+    Extract the variable name and variable ids for use in the metadata table. 
 
     Parameters:
     - input_directory (str): Path to the directory containing the CSV files.
@@ -366,21 +446,27 @@ def replace_variable_names_with_codes(input_directory):
             # Create new column names with zero padding, excluding the first column
             variable_names = df.columns
 
-            # Extract the table_id from the file name after "reformat_"
-            table_id = file_name.split("reformat_")[1].split(".")[0]
+            # Check if the file is 'reformat_migrant_indicator_percentage'
+            if file_name == "reformat_migrant_indicator_percentage.csv":
+                # For this specific table, keep variable IDs the same as variable names
+                # Replace whitespaces and slashes with underscores in variable IDs
+                variable_ids = [name.replace(" ", "_").replace("/", "_") for name in variable_names[1:]]  # Exclude the first column
+            else:
+                # Extract the table_id from the file name after "reformat_"
+                table_id = file_name.split("reformat_")[1].split(".")[0]
 
-            # Create a list of new column names
-            variable_ids = [f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))]
+                # Create a list of new column names
+                variable_ids = [f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))]
 
-            # Replace the existing column names of the df from column B onward with the newly generated column names stored in variable_ids
-            df.columns = [df.columns[0]] + variable_ids  # Keep column A unchanged, replace column B onward
+            # Replace the existing column names of the df from column B onward with the variable IDs
+            df.columns = [df.columns[0]] + list(variable_ids)  # Keep column A unchanged, replace column B onward
             # Print the new column names
             print("Updated column names:", df.columns.tolist())
 
-            # Drop the last column
-            df = df.iloc[:, :-1]  # Remove the last column from the DataFrame
+            # Drop the last column unless the file name is "reformat_UV101b.csv"
+            df = df.iloc[:, :-1] if file_name != "reformat_UV101b.csv" else df
 
-            # Save the modified DataFrame to a new file with the prefix "code_" added to the original file name
+            # Save the modified DataFrame 
             df.to_csv(file_path, index=False, header=True)
             print(f"Processed and saved as: {file_path}")
 

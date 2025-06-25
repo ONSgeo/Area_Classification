@@ -1,6 +1,6 @@
 # This script creates a metadata for Scotland's Local Authority Districts (LAD) tables.
 # It cleans/preprocesses the tables to a consistent format
-# This script has been ran on a sample of tables; needs to be ran on all of the (normal) tables
+# certain tables have their own re-formatting functions 
 # note that the functions are hard coded to our scotland tables
 
 import os
@@ -8,22 +8,22 @@ import pandas as pd
 import numpy as np
 from reformat_Scot_tables_functions import (
     extract_metadata_from_files, 
-    replace_variable_names_with_codes, 
     replace_ca19_names_with_codes, 
-    remove_rows
+    remove_rows,
+    reformat_uv101b,
+    reformat_uv103,
+    reformat_migrant_indicator,
+    replace_variable_names_with_codes, 
 )
 
 # path to input directory containing the csv files to be processed
-input_directory = 'D:/Repos/Area_Classificaiton_data/Percentages' 
+input_directory = 'D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/All_tables_test2' 
 # LAD code and names table
-CA_lookup_file_path = "D:/Repos/Area_Classificaiton_data/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
+CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
 
 
-#### NEED TO ACCOUNT FOR THE UV101b and UV103 and population density and migrant indictor in this script ###
-#### make use of functions: reformat_uv101b and reformat_uv103 in reformat_Scot_tables_functions.py ####
-### CHECK the outputs of the two functions above; at what point do they feed into this script? ####
-### migrant indicator and population density need functions; not yet created ####
-### Tables UV606 and UV604 are formatted slightly different, with an extra line at the top - need to account for these
+#### NEED TO ACCOUNT FOR population density in this script ###
+### population density need functions; not yet created ####
 
 
 # create metadata table
@@ -43,9 +43,7 @@ meta_data_table = pd.DataFrame(
 # function to extract metadata from files into table. 
 # 'metadata' is a list of table_name, table_id and unit variables
 metadata = extract_metadata_from_files(input_directory)
-# Debug: Print the metadata list to verify its structure
-print("Metadata extracted from files:")
-print(metadata)
+
 
 # call in the function to replace council area names with their codes using the lookup file
 replace_ca19_names_with_codes(input_directory, CA_lookup_file_path)
@@ -53,11 +51,13 @@ replace_ca19_names_with_codes(input_directory, CA_lookup_file_path)
 # call in the function to remove rows with metadata/no data (first 10 and bottom 3 rows)
 remove_rows(input_directory)
 
+reformat_uv101b(input_directory, CA_lookup_file_path)  # reformat the UV101b table
+reformat_uv103(input_directory, CA_lookup_file_path) # reformat the UV103 table
+reformat_migrant_indicator(input_directory, CA_lookup_file_path) # reformat the migrant indicator table
+
 # call in the function to replace variable names with their codes
 # 'variable_names_ids' is a list of variable_names and variable_ids variables
 variable_names_ids = replace_variable_names_with_codes(input_directory)
-
-
 
 
 # add to metadata table
