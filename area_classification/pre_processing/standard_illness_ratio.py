@@ -19,11 +19,11 @@ def SIR_calculation(df: pd.DataFrame) -> pd.DataFrame:
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
     
     Parameters:
-        df (DataFrame): DataFrame containing columns 'Area_Code', 'Local_Authority', 'Count', 'Population',
+        df (DataFrame): DataFrame containing columns 'Area_Code', 'Local_Authority', 'age_group', 'Count', 'Population',
         UK coverage
                         
     Returns:
-        DataFrame: DataFrame with SIR values calculated.
+        DataFrame: DataFrame with SIR values calculated. Output is not grouped by age
     """
 
     
@@ -47,6 +47,9 @@ def SIR_calculation(df: pd.DataFrame) -> pd.DataFrame:
 
     # Calculate SIR for each Area Code
     df_all['SIR'] = df_all.apply(lambda row: round((row['disability_count'] / row['exp_ill_all']) * 100, 4), axis=1)
+
+    # QA check the SIR dataframe before returning
+    sir_qa_checks(df_all)
     return df_all
 
 def sir_qa_checks(df: pd.DataFrame) -> None:
