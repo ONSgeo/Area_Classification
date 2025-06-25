@@ -295,7 +295,21 @@ def convert_to_percentages(df:pd.DataFrame, area_code_column_name: str, excluded
         if col != area_code_column_name and not any(col.startswith(excluded) for excluded in excluded_form_code):
             if not ((df[col] >= 0).all() and (df[col] <= 100).all()):
                 raise ValueError(f"Column {col} contains values outside the range [0, 100]")
-            
+
+    # Define the folder path and file name
+    folder_path = "data/QA"
+    file_name = "converted_percentages_output.csv"
+
+    # Ensure the folder exists, create it if it doesn't
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Construct the full file path
+    output_file_path = os.path.join(folder_path, file_name)
+
+    # Save the DataFrame to the constructed path
+    df.to_csv(output_file_path, index=False)
+    # Save the resulting DataFrame as a CSV file
+    #df.to_csv("/data/QA/converted_percentages_output", index=False)        
     return df
     
     
@@ -310,7 +324,7 @@ if __name__ == "__main__":
        area_code_column_name = "LTLA",  # Assuming 'LTLA' is the area code column name
        excluded_form_code = ["ts006"]
     )
-    df.to_csv("converted_percentages.csv", index=False)  # Save the converted DataFrame to a new CSV file
+    
     print(df)
 
 
