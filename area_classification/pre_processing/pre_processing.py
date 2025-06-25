@@ -3,7 +3,7 @@ from area_classification.utilities.load_config import load_config
 
 # from area_classification.pre_processing.SIR import SIR
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
-from area_classification.pre_processing.Aggregating_variables import batch_ag_columns
+from area_classification.pre_processing.aggregating_variables import batch_ag_columns
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 select_variables_lookup = "area_classification/pre_processing/EW_selected_codes_lookup.csv"
@@ -33,7 +33,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         df_temp = batch_ag_columns(df_temp, file_configs)
         
         #Select the 60 variables a used in previous itterations of the area classification
-        df_temp = select_variables(df_temp)
+        df_temp = select_variables(df_temp, select_variables_lookup)
    
   # need to find a way to overwrite ew_df, ni_df, scot_df with the processed data
 

@@ -1,6 +1,6 @@
 import pandas as pd
 import yaml
-
+import os
 
 def batch_ag_columns(df_temp, file_configs):
     """
@@ -29,7 +29,25 @@ def batch_ag_columns(df_temp, file_configs):
         # Add the new column by summing the specified columns
         df_temp[new_col_name] = df_temp[col_names].sum(axis=1)
         print(f"Added new column '{new_col_name}' to the DataFrame.")
+        
+        # Need to save using config instead!
+        #config["qa_folder_path"]
+        #output_file_path = config["qa_folder_path"] + "/name.csv"
+        #df_temp.to_csv(output_file_path, index=False)
+
+        # Define the folder path and file name
+        folder_path = "data/QA"
+        file_name = "aggregated_variables_output.csv"
+
+        # Ensure the folder exists, create it if it doesn't
+        os.makedirs(folder_path, exist_ok=True)
+
+        # Construct the full file path
+        output_file_path = os.path.join(folder_path, file_name)
+
+        # Save the DataFrame to the constructed path
+        df_temp.to_csv(output_file_path, index=False)
         # Temp dataframe saved out for QA
-        df_temp.to_csv("output.csv", index=False)
+        #df_temp.to_csv("/data/QA/aggregated_variables_output.csv", index=False)
         
     return df_temp
