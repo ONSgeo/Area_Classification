@@ -1,56 +1,65 @@
-import os
 import pandas as pd
+# Import the re module for regular expressions
+import re  
 
-def select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type):
+def select_variables(df_temp, select_variables_lookup, user_config):
     """
-    This function iterates through all CSV files in a directory and performs multiple join operations
-    with an existing base CSV file using specified columns.
+    Selects specific columns from a main DataFrame based on a lookup table
+    and returns a new DataFrame with only the specified columns.
 
     Parameters:
-    - input_dir (str): The directory containing the input CSV files to join.
-    - base_file (str): The path to the base CSV file to join with. Needs to have the LA code column in.
-    - lookup_file: path to the lookup file containing variable codes and their new names.
-    - selected_variables (list): A list of column names to add from the input files.
-    - join_column (str): The column name to join on.
-    - join_type (str): The type of join to perform. Options: 'left', 'inner', 'outer', 'right'.
+    - df_temp (pd.DataFrame): The main DataFrame containing all data.
+    - select_variables_lookup (str): Path to the CSV file containing the lookup information.
+    - user_config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
+    Returns:
+    - pd.DataFrame: A new DataFrame with only the specified columns.
     """
-    # Load the base file
-    base_df = pd.read_csv(base_file)
+    # Load the lookup table
+    lookup_df = pd.read_csv(select_variables_lookup)
 
-    # Process each CSV file in the input directory
-    for file_name in os.listdir(input_dir):
-        if file_name.endswith(".csv"):
-            file_path = os.path.join(input_dir, file_name)
-            current_df = pd.read_csv(file_path)
-            # Select only the required columns
-            selected_columns = [join_column] + [col for col in selected_variables if col in current_df.columns]
-            
-            # Perform the join if there are columns to add
-            if len(selected_columns) > 1:  # Ensure at least one column (besides join_column) is added
-                base_df = base_df.merge(current_df[selected_columns], on=join_column, how=join_type)
-                print(f"Columns added from file: {file_name}")
+    # Extract the columns to select and their new names
+    selected_columns = lookup_df['variable_code'].dropna().tolist()
+    new_code = dict(zip(lookup_df['variable_code'], lookup_df['new_code']))
+    
+    # Check for missing columns and log them
+    valid_columns = []
+    for col in selected_columns:
+        if col not in df_temp.columns:
+            print(f"Warning: Column '{col}' is missing in the temp DataFrame.")
+        else:
+            valid_columns.append(col)
+    
+    # Ensure the first column (area codes) of df_temp is included as the first column
+    first_column = df_temp.columns[0]
+    if first_column not in valid_columns:
+        valid_columns.insert(0, first_column)
+    
+    print(f"Columns to be selected: {valid_columns}")
+    
+    # Filter the main DataFrame to include only the valid columns
+    filtered_df = df_temp[valid_columns].copy()
 
-    # Rename columns in the base file based on the new_names dictionary
-    base_df.rename(columns=new_names, inplace=True)
+    # Rename the columns based on lookup table (V codes)
+    filtered_df.rename(columns=new_code, inplace=True)
 
-    # Save the updated base file
-    base_df.to_csv(base_file, index=False)
-    print(f"Updated base file: {base_file}")
+    # Keep the first column (area codes) in place and reorder the remaining columns
+    first_column = filtered_df.columns[0]
+    remaining_columns = filtered_df.columns[1:]
 
+    # Order the remaining columns based on the numeric value following 'v'
+    def extract_numeric_value(col_name):
+        match = re.search(r'v(\d+)', col_name)
+        # Default to infinity if no match
+        return int(match.group(1)) if match else float('inf')  
 
-if __name__ == "__main__":
-    # Parameters
-    input_dir = "C:/Users/dsouzt/Office for National Statistics/Geospatial - LAD_data_downloaded/EW_LAD"
-    base_file = "D:/Repos/Area_Classification/Area_Classification_Project/area_classification/pre_processing/base_file.csv"
-    lookup_file = "D:/Output_Area_Classification/Selected_codes_lookup.csv"
-    # this is the column name in the base file that will be used to join with the input files
-    join_column = "LTLA"
-    join_type = "left"
+    ordered_remaining_columns = sorted(remaining_columns, key=extract_numeric_value)
 
-    # Load columns and their new names from the lookup file
-    lookup_df = pd.read_csv(lookup_file)
-    selected_variables = lookup_df['variable_code'].dropna().tolist()
-    new_names = dict(zip(lookup_df['new_code'], lookup_df['new_name']))
+    # Combine the first column (area codes) with the reordered remaining columns
+    ordered_columns = [first_column] + ordered_remaining_columns
+    filtered_df = filtered_df[ordered_columns]
 
-    # Call the function
-    select_variables(input_dir, base_file, selected_variables, new_names, join_column, join_type)
+    # Save to data QA folder
+    output_file_path = user_config["qa_folder_path"] + "select_variables_output.csv"
+    df_temp.to_csv(output_file_path, index=False)
+
+    return filtered_df

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import pytest
 from pandas.testing import assert_frame_equal
-from area_classification.pre_processing.aggregate_columns import ag_columns
+from area_classification.pre_processing.Aggregating_variables import batch_ag_columns as ag_columns
 
 df_dummy = pd.DataFrame({'col_1': [1, 1, 2, 2, 5],
                 'col_2': [6, 7, 8, 9, 10],

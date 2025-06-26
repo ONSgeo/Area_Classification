@@ -254,12 +254,11 @@ def reformat_pop_density(input_directory):
 
 
 
-
-
 def extract_metadata_from_files(input_directory):
     """
     Extracts metadata from CSV files in the specified input directory.
     Special handling is applied for the 'migrant_indicator_percentage.csv' and 'population_density.csv' files. 
+
 
     Returns:
         A list of dictionaries, where each dictionary contains metadata for a file, including:
@@ -285,7 +284,6 @@ def extract_metadata_from_files(input_directory):
                 "unit": "Person"  
             })
             continue  # Skip further processing for this specific table
-
         
         # Check for population_density table and explicitly define its metadata
         if file == "population_density.csv":  
@@ -295,7 +293,6 @@ def extract_metadata_from_files(input_directory):
                 "unit": "Persons per square kilometer"  
             })
             continue  # Skip further processing for this specific table
-
     
         t_tab_loc = file
         # Extract the table id
@@ -498,8 +495,6 @@ def replace_variable_names_with_codes(input_directory):
                 # Explicitly define variable names and variable IDs
                 variable_names = ["Population density (number of usual residents per square kilometre)"]
                 variable_ids = ["population_density"]
-
-
             elif file_name == "reformat_migrant_indicator_percentage.csv":
                 # For this specific table, keep variable IDs the same as variable names
                 # Replace whitespaces and slashes with underscores in variable IDs

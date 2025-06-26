@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import numpy as np
 from scot_tables_preprocessing_functions import (
+
     extract_metadata_from_files, 
     replace_ca19_names_with_codes, 
     remove_rows,
@@ -14,11 +15,13 @@ from scot_tables_preprocessing_functions import (
     reformat_uv103,
     reformat_migrant_indicator,
     reformat_pop_density,
+
     replace_variable_names_with_codes, 
 )
 
 # path to input directory containing the csv files to be processed
 input_directory = input_directory = "D:/Output_Area_Classification/Scotland_downloaded/test_sample_percentages/metadata_creation_samples/All_tables_test2" 
+
 # LAD code and names table
 CA_lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"  
 
@@ -56,6 +59,7 @@ reformat_uv101b(input_directory, CA_lookup_file_path)  # reformat the UV101b tab
 reformat_uv103(input_directory, CA_lookup_file_path) # reformat the UV103 table
 reformat_migrant_indicator(input_directory, CA_lookup_file_path) # reformat the migrant indicator table
 reformat_pop_density(input_directory) # reformat the population density table
+
 
 # call in the function to replace variable names with their codes
 # 'variable_names_ids' is a list of variable_names and variable_ids variables
