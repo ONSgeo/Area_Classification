@@ -217,12 +217,49 @@ def reformat_migrant_indicator(input_directory, CA_lookup_file_path):
 
 
 
+def reformat_pop_density(input_directory):
+    """
+    Function to reformat the population density file so it has rows removed and column headers amended.
+    Output has CA codes
+    
+    Args:
+        input_directory (str): Path to the directory containing the input CSV files.
+    """
+    import os
+    import pandas as pd
+
+    # Look for population_density.csv in the directory
+    file_path = os.path.join(input_directory, "population_density.csv")
+    if not os.path.exists(file_path):
+        print("No file named population_density.csv found in the directory.")
+        return
+
+    # Load the CSV file, skip the first three rows, and specify the columns to load
+    df = pd.read_csv(file_path, skiprows=3, usecols=[0, 1, 2, 3])
+
+    # Rename columns using their index
+    df.columns.values[1] = "CA19"  # Rename the second column
+    df.columns.values[2] = "Population density (number of usual residents per square kilometre)"  # Rename the third column
+
+    # Remove the first and third columns by index
+    df = df.drop(df.columns[[0, 2]], axis=1)
+
+    # Check if the row contains 'S92000003' and remove the row if true. 
+    # 'S92000003' is the whole of Scotland
+    df = df[df.iloc[:, 0] != 'S92000003']
+
+    # Save to a CSV
+    output_file_path = os.path.join(input_directory, "reformat_population_density.csv")
+    df.to_csv(output_file_path, index=False)
+
+
+
 
 
 def extract_metadata_from_files(input_directory):
     """
     Extracts metadata from CSV files in the specified input directory.
-    Special handling is applied for the 'migrant_indicator_percentage.csv' file. 
+    Special handling is applied for the 'migrant_indicator_percentage.csv' and 'population_density.csv' files. 
 
     Returns:
         A list of dictionaries, where each dictionary contains metadata for a file, including:
@@ -246,6 +283,16 @@ def extract_metadata_from_files(input_directory):
                 "table_id": "migrant_indicator", 
                 "table_name": "Migrant Indicator",  
                 "unit": "Person"  
+            })
+            continue  # Skip further processing for this specific table
+
+        
+        # Check for population_density table and explicitly define its metadata
+        if file == "population_density.csv":  
+            metadata.append({
+                "table_id": "population_density", 
+                "table_name": "Population Density",  
+                "unit": "Persons per square kilometer"  
             })
             continue  # Skip further processing for this specific table
 
@@ -332,7 +379,7 @@ def replace_ca19_names_with_codes(input_directory, lookup_file_path):
     # Process each CSV file in the input directory
     # Process each CSV file in the input directory, skipping uv101b.csv
     for file_name in os.listdir(input_directory):
-        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv":
+        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv" and "population_density.csv":
             continue
         file_path = os.path.join(input_directory, file_name)
             
@@ -381,7 +428,7 @@ def remove_rows(input_directory):
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
     for file_name in os.listdir(input_directory):
-        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv":
+        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv" and "population_density.csv":
             continue
         if file_name.startswith("reformat_"):
             file_path = os.path.join(input_directory, file_name)
@@ -446,8 +493,14 @@ def replace_variable_names_with_codes(input_directory):
             # Create new column names with zero padding, excluding the first column
             variable_names = df.columns
 
-            # Check if the file is 'reformat_migrant_indicator_percentage'
-            if file_name == "reformat_migrant_indicator_percentage.csv":
+            # Check if the file is 'reformat_population_density.csv'
+            if file_name == "reformat_population_density.csv":
+                # Explicitly define variable names and variable IDs
+                variable_names = ["Population density (number of usual residents per square kilometre)"]
+                variable_ids = ["population_density"]
+
+
+            elif file_name == "reformat_migrant_indicator_percentage.csv":
                 # For this specific table, keep variable IDs the same as variable names
                 # Replace whitespaces and slashes with underscores in variable IDs
                 variable_ids = [name.replace(" ", "_").replace("/", "_") for name in variable_names[1:]]  # Exclude the first column
@@ -458,20 +511,27 @@ def replace_variable_names_with_codes(input_directory):
                 # Create a list of new column names
                 variable_ids = [f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))]
 
-            # Replace the existing column names of the df from column B onward with the variable IDs
-            df.columns = [df.columns[0]] + list(variable_ids)  # Keep column A unchanged, replace column B onward
+                # Replace the existing column names of the df from column B onward with the variable IDs
+                df.columns = [df.columns[0]] + list(variable_ids)  # Keep column A unchanged, replace column B onward
+
             # Print the new column names
             print("Updated column names:", df.columns.tolist())
 
-            # Drop the last column unless the file name is "reformat_UV101b.csv"
-            df = df.iloc[:, :-1] if file_name != "reformat_UV101b.csv" else df
+            # Drop the last column unless the file name is one of the specified files
+            if file_name not in [
+                "reformat_UV101b.csv",
+                "reformat_UV103.csv",
+                "reformat_migrant_indicator_percentage.csv",
+                "reformat_population_density.csv",
+            ]:
+                df = df.iloc[:, :-1]
 
             # Save the modified DataFrame 
             df.to_csv(file_path, index=False, header=True)
             print(f"Processed and saved as: {file_path}")
 
             # Append the variable_names and variable_ids to the results list
-            variable_names_ids.append((variable_names.tolist(), variable_ids))
+            variable_names_ids.append((variable_names, variable_ids))
         else:
             print(f"Skipping file: {file_name}")
     
