@@ -71,6 +71,9 @@ def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
     # Replace values in the first column using the lookup dictionary
     result_df.iloc[:, 0] = result_df.iloc[:, 0].map(lookup_dict).fillna(result_df.iloc[:, 0])  # Replace matching values, keep original if no match
 
+	# Save to data QA folder
+	#output_file_path = user_config["qa_folder_path"] + "Scot_disability_input.csv"
+    #result_df.to_csv(output_file_path, index=False)
     return result_df
 
 def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
