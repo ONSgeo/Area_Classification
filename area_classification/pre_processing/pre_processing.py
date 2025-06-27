@@ -12,23 +12,23 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     print("placeholder for pre_processing")
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = "area_classification/pre_processing/EW_selected_codes_lookup.csv"
-    dfs = {"england_wales": ew_df, "ni": ni_df, "scotland": scot_df}
+    dfs = {"england_wales": ew_df}#, "ni": ni_df, "scotland": scot_df}
 
     sir_output_df = sir_processing(config)
 
     for key in dfs:
         # make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
-        exclude_form_code_key = key + "_exclude_form_code"
+        exclude_form_code_key = key + "_excluded_form_code"
         #Calculate the standard illness ratio (SIR) for each census
         #Convert counts to percentages
         df_temp = convert_to_percentages(
-            dfs[key], 
+            dfs[key].copy(), 
             area_code_column_name=config[join_column_name], 
             excluded_form_code=config[exclude_form_code_key]
         )
         #Aggregate variables which need to be combined categories (for just England)
-        file_config = aggregation_config[key + 'file_configs']
+        file_config = aggregation_config[key + '_file_configs']
         df_temp = batch_ag_columns(df_temp, file_config, config)
 
         # Joining to add SIR column into main df
@@ -45,3 +45,15 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     combined_df = pd.concat([dfs["england_wales"], dfs["ni"], dfs["scotland"]], ignore_index=True)
 
     return combined_df
+
+
+if __name__ == "__main__":
+    # Example usage
+    config = load_config('area_classification/config.yaml')
+
+    ew_df = pd.read_csv('ew_concat.csv')  # Replace with actual path
+    ni_df = None
+    scot_df = None
+
+    processed_df = pre_processing(ew_df, ni_df, scot_df, config)
+    print(processed_df.head())
