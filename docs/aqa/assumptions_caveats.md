@@ -32,9 +32,18 @@ Values for the Bangladsehi ethnic group are not avaialble to download for Northe
 ## Assumption 3: Standard Illness Ratio calculated from XX age
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
+
 Origionally in the 2021 area classification ages were grouped into <15 and >65. This is not possible due to the split of ages across all three census' there gore we have tried to replicate with best data we had but couldn't split at XX age because this data was not available for all three census.
 
-## Assumption 3: 
+## Assumption 4: Combined area codes for disability data
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+In the England and Wales disability Census data 2021 provides combined values for the areas below. We have assumed the SIR values is the same for both of the areas within the combined as these are proprotions. 
+E09000001 and E09000033 - City of London and Westminster
+E06000052 and E06000053 - Cornwall and Isles of Scilly
+
+## Assumption 5: 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
