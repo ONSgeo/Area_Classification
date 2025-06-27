@@ -12,7 +12,6 @@ number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 output_directory: "data/output_data/"
 plot_directory: 'data/plots/'
-data_directory: '/data/'
 random_seed: 42
 
 select_variables_lookup: "area_classification/pre_processing/EW_selected_codes_lookup.csv"
