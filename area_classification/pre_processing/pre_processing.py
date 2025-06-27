@@ -5,14 +5,13 @@ from area_classification.pre_processing.convert_to_percentages import convert_to
 from area_classification.pre_processing.Aggregating_variables import batch_ag_columns
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
-select_variables_lookup = "area_classification/pre_processing/EW_selected_codes_lookup.csv"
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
     print("placeholder for pre_processing")
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
-    select_variables_lookup = "area_classification/pre_processing/EW_selected_codes_lookup.csv"
-    dfs = {"england_wales": ew_df}#, "ni": ni_df, "scotland": scot_df}
+    select_variables_lookup = config["select_variables_lookup"]
+    dfs = {"england_wales": ew_df, "ni": ni_df}#, "scotland": scot_df}
 
     sir_output_df = sir_processing(config)
 
@@ -42,7 +41,12 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         dfs[key] = df_temp
     
     #Combine the three dataframes for censuses into one
-    combined_df = pd.concat([dfs["england_wales"], dfs["ni"], dfs["scotland"]], ignore_index=True)
+    combined_df = pd.concat([dfs["england_wales"], dfs["ni"]], ignore_index=True)#, dfs["scotland"]], ignore_index=True)
+
+    # setting combined to england and wales for testing only!
+    # combined_df = dfs["england_wales"]
+
+    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni.csv", index=False)
 
     return combined_df
 
@@ -52,8 +56,8 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
 
     ew_df = pd.read_csv('ew_concat.csv')  # Replace with actual path
-    ni_df = None
+    ni_df = pd.read_csv('ni_concat.csv')
     scot_df = None
 
     processed_df = pre_processing(ew_df, ni_df, scot_df, config)
-    print(processed_df.head())
+    print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)

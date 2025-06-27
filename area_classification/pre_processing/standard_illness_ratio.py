@@ -15,9 +15,9 @@ import pandas as pd
 
 def sir_processing(config):
     # disability files by age -> sharepoint?
-    # ew_disability_df = pd.read_csv(config[]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
-    # ni_disability_df = pd.read_csv(config[]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
-    # scotland_disability_df = pd.read_csv(config[]).rename(columns={'council_area': 'Area_Code', 'council_area_code': 'Local_Authority'})
+    ew_disability_df = pd.read_csv(config["england_wales_disability_file"]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
+    ni_disability_df = pd.read_csv(config["ni_disability_file"]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
+    scotland_disability_df = None#pd.read_csv(config[]).rename(columns={'council_area': 'Area_Code', 'council_area_code': 'Local_Authority'})
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df],)
     # Scotland excluded because it doesnt have council area codes 

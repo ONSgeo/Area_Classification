@@ -76,5 +76,5 @@ if __name__ == "__main__":
 
     filepath = "C:/Users/dayj1/Office for National Statistics/Geospatial - LAD_data_downloaded/NI_LAD"
     ni_df = load_format_data(filepath, config["ni_file_pattern"],config["ni_join_column_name"])
-    ni_df.to_csv("test_ni_concat.csv", index=False)
+    ni_df.to_csv("ni_concat.csv", index=False)
 
