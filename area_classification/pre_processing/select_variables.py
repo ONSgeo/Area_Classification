@@ -37,29 +37,25 @@ def select_variables(df_temp, select_variables_lookup, user_config):
     print(f"Columns to be selected: {valid_columns}")
     
     # Filter the main DataFrame to include only the valid columns
-    filtered_df = df_temp[valid_columns].copy()
-
     # Rename the columns based on lookup table (V codes)
-    filtered_df.rename(columns=new_code, inplace=True)
+    filtered_df = df_temp[valid_columns].copy().rename(columns=new_code)
 
     # Keep the first column (area codes) in place and reorder the remaining columns
     first_column = filtered_df.columns[0]
-    remaining_columns = filtered_df.columns[1:]
-
-    # Order the remaining columns based on the numeric value following 'v'
-    def extract_numeric_value(col_name):
-        match = re.search(r'v(\d+)', col_name)
-        # Default to infinity if no match
-        return int(match.group(1)) if match else float('inf')  
-
-    ordered_remaining_columns = sorted(remaining_columns, key=extract_numeric_value)
+    remaining_columns = filtered_df.columns[1:]    
 
     # Combine the first column (area codes) with the reordered remaining columns
-    ordered_columns = [first_column] + ordered_remaining_columns
+    ordered_columns = [first_column] +  sorted(remaining_columns)
     filtered_df = filtered_df[ordered_columns]
 
     # Save to data QA folder
     output_file_path = user_config["qa_folder_path"] + "select_variables_output.csv"
-    df_temp.to_csv(output_file_path, index=False)
+    filtered_df.to_csv(output_file_path, index=False)
 
     return filtered_df
+
+# Order the remaining columns based on the numeric value following 'v'
+def extract_numeric_value(col_name):
+    match = re.search(r'v(\d+)', col_name)
+    # Default to infinity if no match
+    return int(match.group(1)) if match else float('inf')  
