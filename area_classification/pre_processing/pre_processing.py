@@ -46,6 +46,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
         #Select the 60 variables a used in previous itterations of the area classification
         df_temp = select_variables(df_temp, select_variables_lookup, config)
+        df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
         # overwriting original df with processed df
         dfs[key] = df_temp
@@ -54,9 +55,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     combined_df = pd.concat([dfs["england_wales"], dfs["ni"]], ignore_index=True)#, dfs["scotland"]], ignore_index=True)
 
     # setting combined to england and wales for testing only!
-    combined_df = dfs["england_wales"]
+    # combined_df = dfs["england_wales"]
 
-    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew.csv", index=False)
+    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni.csv", index=False)
 
     return combined_df
 
