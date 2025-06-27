@@ -3,8 +3,115 @@ import os
 import numpy as np
 import csv
 
-# these functions are set up to reformat the Scotland tables to be consistent with Eng/Wales/NI 
-# extract metadata from them to create a metadata table for Scotland
+
+def scot_reformatting_wrapper(input_directory: str, 
+                              CA_lookup_file_path: str, 
+                              config: dict):
+    """
+    Wrapper function to perform the reformatting of the Scotland tables to be consistent with tables 
+    downloaded for England and Wales and Northern Ireland and extract metadata from Scotland tables
+    to create a metadata table for Scotland.
+    
+    Certain tables have their own re-formatting functions.
+
+    Note that the functions are hard coded to our scotland tables.
+    
+Parameters:
+    - input_directory (str): Path to the input directory containing the CSV files.
+    - CA_lookup_file_path (str): Path to the lookup file for council area names and codes.
+    - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
+
+    Returns
+    -------
+    ######pd.DataFrame
+       #######DataFrame with cluster assignments after supergroup and subgroup clustering.
+    """
+    # Create an empty metadata table
+    meta_data_table = pd.DataFrame(
+        columns=[
+            "Table_Name",
+            "Variable_Name",
+            "Variable_id",
+            "Table_ID",
+            "Type",
+            "Unit",
+            "Full_Name"
+        ]
+    )
+
+    # function to extract metadata from files into table. 
+    # 'metadata' is a list of table_name, table_id and unit variabless
+    metadata = extract_metadata_from_files(input_directory)
+
+    # Replace council area names with their codes using look up
+    replace_ca19_names_with_codes(input_directory, CA_lookup_file_path)
+
+    # Remove rows with metadata/no data (first 10 and bottom 3 rows)
+    remove_rows(input_directory)
+
+    # Reformat specific tables (UV101b, UV103, migrant indicator and population density table)
+    reformat_uv101b(input_directory, CA_lookup_file_path)
+    reformat_uv103(input_directory, CA_lookup_file_path)
+    reformat_migrant_indicator(input_directory, CA_lookup_file_path)
+    reformat_pop_density(input_directory)
+
+    # Replace variable names with their codes
+    # 'variable_names_ids' is a list of variable_names and variable_ids variables
+    variable_names_ids = replace_variable_names_with_codes(input_directory, config = config)
+
+
+    # Add to metadata table
+    # Iterate over the metadata dict and variable_names_ids list and add to the metadata table
+    for (meta, (variable_names, variable_ids)) in zip(metadata, variable_names_ids):
+        # Extract table_id, table_name, and unit from the metadata dictionary
+        table_id = meta.get("table_id", "")
+        table_name = meta.get("table_name", "")
+        unit = meta.get("unit", "")
+
+        print(f"Table ID: {table_id}, Table Name: {table_name}")
+        print(f"Variable Names: {variable_names}, Variable IDs: {variable_ids}")
+
+        # Exclude 'CA19' from variable_names and adjust variable_ids accordingly
+        if 'CA19' in variable_names:
+            variable_names = [name for name in variable_names if name != 'CA19']
+        meta_data_table = pd.concat(
+            [
+                meta_data_table,
+                pd.DataFrame(
+                    {
+                        "Variable_Name": variable_names,
+                        "Variable_ID": variable_ids,
+                        "Table_ID": table_id,
+                        "Table_Name": table_name,
+                        "Unit": unit,
+                    }
+                )
+            ]
+        )
+
+    # Create full name column
+    meta_data_table["Full_Name"] = (
+        meta_data_table["Table_Name"] + " - " + meta_data_table["Variable_Name"]
+    )
+    meta_data_table = meta_data_table[["Variable_Name", "Variable_ID", "Table_ID", "Table_Name", "Type", "Unit", "Full_Name"]]
+
+    # Manually set Type to 'Percentage' for all tables
+    meta_data_table['Type'] = 'Percentage'
+    # Update the type for population density to ratio
+    meta_data_table.loc[meta_data_table['Variable_ID'] == 'population_density', 'Type'] = 'Ratio'
+
+    # Saving to QA currently, may need to move
+    output_file_path = os.path.join(config["qa_folder_path"], "scot_LAD_table_metadata.csv")
+
+    # Save the metadata table to the specified path
+    meta_data_table.to_csv(output_file_path, index=False)
+    print(f"Metadata table saved to: {output_file_path}")
+
+    # Concat the Scot tables
+    concat_reformatted_tables(config = config)
+   
+
+
 
 
 # Function to reformat the UV101b CSV file
@@ -13,8 +120,8 @@ def reformat_uv101b(input_directory, CA_lookup_file_path):
     Function to reformat the UV101b CSV file so it has rows removed and CA codes instead of names.
     
     Args:
-        input_directory (str): Path to the directory containing the input CSV files.
-        CA_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
+        - input_directory (str): Path to the directory containing the input CSV files.
+        - CA_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
     """
     # Look for UV101b.csv in the directory
     file_path = os.path.join(input_directory, "UV101b.csv")
@@ -81,8 +188,8 @@ def reformat_uv103(input_directory, CA_lookup_file_path):
     Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
 
     Args:
-        input_directory (str): Path to the directory containing the input CSV file.
-        CA_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
+        - input_directory (str): Path to the directory containing the input CSV file.
+        - CA_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
     """
     # Look for UV103.csv in the directory
     file_path = os.path.join(input_directory, "UV103.csv")
@@ -142,8 +249,8 @@ def reformat_migrant_indicator(input_directory, CA_lookup_file_path):
     Replace CA names with codes.
 
     Args:
-        input_directory (str): Path to the directory containing the input CSV file
-
+        - input_directory (str): Path to the directory containing the input CSV file
+        - CA_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
     Returns:
         None
     """
@@ -223,7 +330,7 @@ def reformat_pop_density(input_directory):
     Output has CA codes
     
     Args:
-        input_directory (str): Path to the directory containing the input CSV files.
+        - input_directory (str): Path to the directory containing the input CSV files.
     """
     import os
     import pandas as pd
@@ -367,6 +474,7 @@ def replace_ca19_names_with_codes(input_directory, lookup_file_path):
     Parameters:
     - input_directory (str): Path to the directory containing input CSV files.
     - lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
+    
     """
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
@@ -465,13 +573,14 @@ def remove_rows(input_directory):
 
 
 
-def replace_variable_names_with_codes(input_directory):
+def replace_variable_names_with_codes(input_directory, config):
     """
     Replace the variable names with the variable ids.
     Extract the variable name and variable ids for use in the metadata table. 
 
     Parameters:
     - input_directory (str): Path to the directory containing the CSV files.
+    - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
 
     Returns:
     - List of tuples containing variable_names and variable_ids for each processed file.
@@ -522,7 +631,8 @@ def replace_variable_names_with_codes(input_directory):
                 df = df.iloc[:, :-1]
 
             # Save the modified DataFrame 
-            df.to_csv(file_path, index=False, header=True)
+            QA_file_path = os.path.join(config["qa_folder_path"], file_name)
+            df.to_csv(QA_file_path, index=False, header=True)
             print(f"Processed and saved as: {file_path}")
 
             # Append the variable_names and variable_ids to the results list
@@ -533,3 +643,44 @@ def replace_variable_names_with_codes(input_directory):
     # Return the list of results
     return variable_names_ids
 
+def concat_reformatted_tables(config):
+    """
+    Concatenates all CSV files in the QA folder that start with "reformat"
+    and saves the result to a new CSV file.
+
+    Args:
+        config (dict): A configuration dictionary containing the "qa_folder_path" key.
+
+    Returns:
+        pd.DataFrame: The concatenated DataFrame.
+    """
+
+
+    #Concat reformatted tables
+    folder_path = config["qa_folder_path"] 
+    # List all files in the folder that start with "reformat"
+    files = [f for f in os.listdir(folder_path) if f.startswith("reformat") and f.endswith(".csv")]
+
+    # Initialize an empty list to store DataFrames
+    dataframes = []
+
+    # Loop through the files and read them into DataFrames
+    for i, file in enumerate(files):
+        file_path = os.path.join(folder_path, file)
+        df = pd.read_csv(file_path)  # Read the CSV file
+        
+        # Ignore the first column for all tables except the first one
+        if i > 0:
+            df = df.iloc[:, 1:]  # Select all columns except the first one
+        
+        dataframes.append(df)  # Append the DataFrame to the list
+
+    # Concatenate all DataFrames into one
+    result = pd.concat(dataframes, axis = 1, ignore_index=False)
+
+    # Save the concatenated DataFrame to a new CSV file (optional)
+    concatenated_file_path = os.path.join(config["qa_folder_path"], "scot_concatenated_result.csv")
+    result.to_csv(concatenated_file_path, index=False)
+    print(f"Concatenated table saved to: {concatenated_file_path}")
+
+    return result

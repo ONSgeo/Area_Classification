@@ -46,8 +46,16 @@ Table codes generally start with "UV".
 * [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/pre_processing/Selected_codes_lookup.csv) has been created to run the EW, NI and Scot area classification for LAD. This will need updating if choosing to run at another level of geography or different combination of census'.
 * Local_Authority_Districts_(December_2022)_Names_and_Codes_UK was downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
 
+
 ## Methodology / process description
 
+### Set Up
+#### Data download
+
+Do the manual data downloads first before running any of the scripts. Ensure they are in the same directory where the downloads will be stored. 
+
+#### Look ups
+A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo data folder, if saved elsewhere update the file path in the config.yaml.
 
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.

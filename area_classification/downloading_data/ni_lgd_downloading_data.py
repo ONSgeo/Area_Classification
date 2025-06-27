@@ -27,6 +27,44 @@ def ni_lgd_download_data(config):
 
     meta_data_table = download_ni_lgd_data(config)
     format_and_export_ni_metadata_table(meta_data_table, config)
+    reformat_pop_density_ni(config)
+
+
+
+def reformat_pop_density_ni(config):
+    """
+    Function to reformat Northern Ireland Local Government District (LGD) population density data.
+    Data needs to be downloaded manually from Scotland Census website.
+
+    Parameters
+    ----------
+    input_directory : str
+        Path to the directory containing the input Excel file.
+
+    Returns
+    -------
+    pd.DataFrame
+        Table with only rows/columns we need and hectare converted to km2.
+    Columns: CA19, population_density
+    """
+
+    # Load only the first sheet of the Excel file
+    df = pd.read_excel(config["ni_pop_density_filepath"], sheet_name=0, skiprows=5, header=0, index_col=None)
+
+    # Remove the first and third columns by index
+    df = df.drop(df.columns[[0, 2, 3,5]], axis=1)
+
+    # Rename columns using their index
+    df.columns.values[0] = "CA19"  # Rename the second column
+
+    # Convert hectares to km²
+    df.iloc[:, 1] = df.iloc[:, 1] / 100  # Convert hectares to km²
+    df.columns.values[1] = "population_density"  # Rename 
+    
+    # Save to a CSV
+    df.to_csv(os.path.join(config["qa_folder_path"],"ni_population_density.csv"), index=False)
+
+    
 
 
 def download_ni_lgd_data(config:dict)-> pd.DataFrame:
