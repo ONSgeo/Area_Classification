@@ -604,10 +604,12 @@ def replace_variable_names_with_codes(input_directory, config):
                 # Explicitly define variable names and variable IDs
                 variable_names = ["Population density (number of usual residents per square kilometre)"]
                 variable_ids = ["population_density"]
+                df.columns = [df.columns[0]] + list(variable_ids)
             elif file_name == "reformat_migrant_indicator_percentage.csv":
                 # For this specific table, keep variable IDs the same as variable names
                 # Replace whitespaces and slashes with underscores in variable IDs
                 variable_ids = [name.replace(" ", "_").replace("/", "_") for name in variable_names[1:]]  # Exclude the first column
+                df.columns = [df.columns[0]] + list(variable_ids)
             else:
                 # Extract the table_id from the file name after "reformat_"
                 table_id = file_name.split("reformat_")[1].split(".")[0]
