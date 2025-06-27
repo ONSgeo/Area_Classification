@@ -15,9 +15,9 @@ def batch_ag_columns(df_temp, file_configs, user_config):
     Returns:
     - pd.DataFrame: The updated DataFrame with new aggregated columns.
     """
-    for config in file_configs:
-        col_names = config['col_names']
-        new_col_name = config['new_col_name']
+    for key in file_configs:
+        col_names = file_configs[key]
+        new_col_name = key
 
          # Check if all columns in col_names exist in df_temp
         missing_cols = [col for col in col_names if col not in df_temp.columns]
@@ -30,7 +30,7 @@ def batch_ag_columns(df_temp, file_configs, user_config):
         print(f"Added new column '{new_col_name}' to the DataFrame.")
         
         # Save to data QA folder
-        output_file_path = user_config["qa_folder_path"] + "aggregated_variables_output.csv"
-        df_temp.to_csv(output_file_path, index=False)
+    output_file_path = user_config["qa_folder_path"] + "aggregated_variables_output.csv"
+    df_temp.to_csv(output_file_path, index=False)
         
     return df_temp

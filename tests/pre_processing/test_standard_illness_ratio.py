@@ -1,9 +1,15 @@
 import pandas as pd
 from area_classification.pre_processing.standard_illness_ratio import SIR_calculation
 from pathlib import Path
+import pytest
+from unittest.mock import patch
 
+@pytest.fixture(scope="class")
+def mock_to_csv():
+    with patch("pandas.DataFrame.to_csv") as mock_to_csv:
+        yield mock_to_csv
 
-def test_SIR_calculation():
+def test_SIR_calculation(mock_to_csv):
     mock_data = pd.DataFrame({
         "Area_Code": ['S1', 'S1', 'S2', 'S2', 'S3', 'S3'],
         'Local_Authority': ['LA1', 'LA1', 'LA2', 'LA2', 'LA3', 'LA3'],
@@ -11,9 +17,10 @@ def test_SIR_calculation():
         'total_population': [100, 200, 150, 250, 120, 180],
         'total_disabled': [10, 20, 12, 24, 12, 22]
     })
+    config = {"qa_folder_path": ''
+    }
 
-
-    df_output = SIR_calculation(mock_data)
+    df_output = SIR_calculation(mock_data,config)
     output = df_output[["Area_Code","Local_Authority", "SIR"]]
     expected_output = pd.read_csv(Path("tests/data/sir_test_expected_output.csv")).rename(columns = {"SIR_expected": "SIR"})
     pd.testing.assert_frame_equal(output, expected_output, check_dtype=False)

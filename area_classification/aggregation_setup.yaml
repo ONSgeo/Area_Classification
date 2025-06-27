@@ -1,108 +1,69 @@
 # England and Wales variables to aggregate using the variable codes
-ew_df_file_configs:
-  # file_name: "ts045.csv"
-    col_names:
-      - ts0450004
-      - ts0450005
-    new_col_name: cars_2_or_more
+england_wales_file_configs:
+  cars_2_or_more: [ts0450004, ts0450005]
+  separated_divorced: [ts0020010, ts0020013]
+  dependant_children: [ts0030009, ts0030013, ts0030016, ts0030021]
+  cannot_speak_English: [ts0290006, ts0290007]
+  provides_unpaid_care: [ts0390003, ts0390006, ts0390009]
+  flat: [ts0440005, ts0440006, ts0440008]
+  under_occupation: [ts0530002, ts0530003]
+  overcrowding: [ts0530005, ts0530006]
+  ownership_or_shared: [ts0540002, ts0540005]
+  level_1_2_and_appr: [ts0670003, ts0670004, ts0670005]
+  age_5_14: [ts007a0003, ts007a0004]
+  age_25_44: [ts007a0007, ts007a0008, ts007a0009, ts007a0010]
+  age_45_64: [ts007a0011, ts007a0012, ts007a0013, ts007a0014]
+  age_65_84: [ts007a0015, ts007a0016, ts007a0017, ts007a0018]
+  no_children: [ts0030008, ts0030012]
 
-  # file_name: "ts002.csv"
-    col_names:
-      - ts0020010
-      - ts0020013
-    new_col_name: separated_divorced
+# Northern Ireland variables to aggregate using the variable codes
+ni_file_configs:
+  separated_divorced: [ni1370005, ni1370006]
+  flat: [ni0030005, ni0030006, ni0030007]
+  under_occupation: [ni1530002, ni1530003]
+  level_1_2_and_appr: [ni1100003, ni1100004, ni1100005]
+  age_5_14: [ni0120003, ni0120004]
+  age_25_44: [ni0120007, ni0120008, ni0120009, ni0120010]
+  age_45_64: [ni0120011, ni0120012, ni0120013, ni0120014]
+  age_65_84: [ni0120015, ni0120016, ni0120017, ni0120018]
+  united_kingdom: [ni0330002, ni0330003]
+  eu_countries: [ni0330004, ni0330005]
+  economically_active: [ni0500005, ni0500007]
 
-  # file_name: "ts003.csv"
-    col_names:
-      - ts0030009
-      - ts0030013
-      - ts0030016
-      - ts0030021
-    new_col_name: dependant_children
+# separated_divorced - DONE
+# dependant_children - this already has one variable (household with dependent children - ni2390003)
+# cannot_speak_English - this already has one variable (Main language is not English: cannot speak English or cannot speak English well - ni0570004)
+# provides_unpaid_care - this already has one variable (provides 1 or more hours of unpaid care per week - ni1270003)
+# flat - DONE
+# cars_2_or_more - this already has the one variable (2 or more cars or van available - ni2210004)
+# under_occupation - DONE
+# overcrowding - this already has the one variavle (Occupancy rating (rooms) of -1 or less - ni1520003)
+# ownership_or_shared - this already has one variable (Owner occupied - ni1070002)
+# level_1_2_and_appr - DONE
+# age_5_14 - DONE
+# age_25_44 - DONE
+# age_45_64 - DONE
+# age_65_84 - DONE
+# no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
+# united_kingdom - DONE. This has to be derived for NI only
+# eu_countries - DONE. This has to be derived for NI only
+# economically_active - DONE 
 
-  # file_name: "ts029.csv"
-    col_names:
-      - ts0290006
-      - ts0290007
-    new_col_name: cannot_speak_English
+# Scotland variables to aggregate using the variable codes
+scot_file_configs:
+  separated_divorced: [UV1040004, UV1040005]
+  dependant_children: [UV1120009, UV1120010, UV1120022, UV1120023]
+  cannot_speak_English: [UV2100010, UV2100011]
+  cars_2_or_more: [UV4050004, UV4050005, UV4050006]
+  under_occupation: [UV4150002, UV4150003]
+  level_1_2_and_appr: [UV5010003, UV5010004, UV5010005]
+  age_4_and_under: [UV1030002, UV1030003, UV1030004, UV1030005, UV1030006]
+  age_5_14: [UV1030007, UV1030008, UV1030009, UV1030010, UV1030011, UV1030012, UV1030013, UV1030014, UV1030015, UV1030016]
+  age_25_44: [UV1030027, UV1030028, UV1030029, UV1030030, UV1030031, UV1030032, UV1030033, UV1030034, UV1030035, UV1030036, UV1030037, UV1030038, UV1030039, UV1030040, UV1030041, UV1030042, UV1030043, UV1030044, UV1030045, UV1030046]
+  age_45_64: [UV1030047, UV1030048, UV1030049, UV1030050, UV1030051, UV1030052, UV1030053, UV1030054, UV1030055, UV1030056, UV1030057, UV1030058, UV1030059, UV1030060, UV1030061, UV1030062, UV1030063, UV1030064, UV1030065, UV1030066]
+  age_65_84: [UV1030067, UV1030068, UV1030069, UV1030070, UV1030071, UV1030072, UV1030073, UV1030074, UV1030075, UV1030076, UV1030077, UV1030078, UV1030079, UV1030080, UV1030081, UV1030082, UV1030083, UV1030084, UV1030085, UV1030086]
+  age_85_and_over: [UV1030087, UV1030088, UV1030089, UV1030090, UV1030091, UV1030092, UV1030093, UV1030094, UV1030095, UV1030096, UV1030097, UV1030098, UV1030099, UV1030100, UV1030101, UV1030102]
+  no_children: [UV1120008, UV1120013]
+  economically_active: [UV6010012, UV6010023]
+  christian: [UV2050002, UV2050003, UV2050004]
 
-  # file_name: "ts039.csv"
-    col_names:
-      - ts0390003
-      - ts0390006
-      - ts0390009
-    new_col_name: provides_unpaid_care
-
-  # file_name: "ts044.csv"
-    col_names:
-      - ts0440005
-      - ts0440006
-      - ts0440008
-    new_col_name: flat
-
-  # file_name: "ts053.csv"
-    col_names:
-      - ts0530002
-      - ts0530003
-    new_col_name: under_occupation
-
-  # file_name: "ts053.csv"
-    col_names:
-      - ts0530005
-      - ts0530006
-    new_col_name: overcrowding
-
-  # file_name: "ts054.csv"
-    col_names:
-      - ts0540002
-      - ts0540005
-    new_col_name: ownership_or_shared
-
-  # file_name: "ts067.csv"
-    col_names:
-      - ts0670003
-      - ts0670004
-      - ts0670005
-    new_col_name: level_1_2_and_appr
-
-  # file_name: "ts007a.csv"
-    col_names:
-      - ts007a0003
-      - ts007a0004
-    new_col_name: age_5_14
-
-  # file_name: "ts007a.csv"
-    col_names:
-      - ts007a0007
-      - ts007a0008
-      - ts007a0009
-      - ts007a0010
-    new_col_name: age_25_44
-
-  # file_name: "ts007a.csv"
-    col_names:
-      - ts007a0011
-      - ts007a0012
-      - ts007a0013
-      - ts007a0014
-    new_col_name: age_45_64
-
-  # file_name: "ts007a.csv"
-    col_names:
-      - ts007a0015
-      - ts007a0016
-      - ts007a0017
-      - ts007a0018
-    new_col_name: age_65_84
-
-  # file_name: "ts003.csv"
-    col_names:
-      - ts0030008
-      - ts0030012
-    new_col_name: no_children
-
-
-
-#ni_df_file_configs:
-
-#scot_df_file_configs:

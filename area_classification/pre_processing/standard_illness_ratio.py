@@ -15,9 +15,9 @@ import pandas as pd
 
 def sir_processing(config):
     # disability files by age -> sharepoint?
-    ew_disability_df = pd.read_csv(config[]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
-    ni_disability_df = pd.read_csv(config[]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
-    scotland_disability_df = pd.read_csv(config[]).rename(columns={'council_area': 'Area_Code', 'council_area_code': 'Local_Authority'})
+    ew_disability_df = pd.read_csv(config["output_directory"]+config["england_wales_disability_file"]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
+    ni_disability_df = pd.read_csv(config["output_directory"]+config["ni_disability_file"]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
+    scotland_disability_df = pd.read_csv(config["output_directory"]+config["scotland_disability_file"]).rename(columns={'council_area': 'Area_Code'})
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df],)
     # Scotland excluded because it doesnt have council area codes 
@@ -59,7 +59,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     df_all['SIR'] = df_all.apply(lambda row: round((row['disability_count'] / row['exp_ill_all']) * 100, 4), axis=1)
 
     # QA check the SIR dataframe before returning
-    sir_qa_checks(df_all)
+    sir_qa_checks(df_all, config)
     return df_all
 
 def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
@@ -73,6 +73,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
         None
     """
     # Check if disability_count is int
+    
     assert df['disability_count'].dtype == 'int64', "Disability count should be of type int64"
 
     # Check expected spatial distribution
@@ -84,7 +85,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
         print(df_subset['SIR'].describe())
 
         # Save to data QA folder
-    output_file_path = config["qa_folder_path"] + "select_variables_output.csv"
+    output_file_path = config["qa_folder_path"] + "sir_calculation_qa_output.csv"
     df.to_csv(output_file_path, index=False)
 
     # check that all records contain all of uk
