@@ -5,16 +5,20 @@ working_directory : ~/Area_Classification
 
 #input_directory: data/inputs
 
-#output_directory : data/outputs
 "qa_folder_path": './data/QA/'
 
 input_data_filepath: 'data/inputs/temp.csv'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
-"output_directory": "data/output_data/"
+output_directory: "data/output_data/"
 plot_directory: 'data/plots/'
 data_directory: '/data/'
 random_seed: 42
+
+select_variables_lookup: "area_classification/pre_processing/EW_selected_codes_lookup.csv"
+england_wales_disability_file: "ew_disability_age_group.csv"
+ni_disability_file: "ni_disability_age_group.csv"
+scotland_disability_file: "scot_disability_age_group.csv"
 
 england_wales_file_pattern: "ts???*.csv"
 england_wales_join_column_name: "LTLA"
