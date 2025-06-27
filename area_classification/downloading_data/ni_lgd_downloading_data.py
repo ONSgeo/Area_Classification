@@ -31,7 +31,7 @@ def ni_lgd_download_data(config):
 
 
 
-def reformat_pop_density_ni(filepath:str) -> pd.DataFrame:
+def reformat_pop_density_ni(config):
     """
     Function to reformat Northern Ireland Local Government District (LGD) population density data.
     Data needs to be downloaded manually from Scotland Census website.
@@ -49,7 +49,7 @@ def reformat_pop_density_ni(filepath:str) -> pd.DataFrame:
     """
 
     # Load only the first sheet of the Excel file
-    df = pd.read_excel(filepath, sheet_name=0, skiprows=5, header=0, index_col=None)
+    df = pd.read_excel(config["ni_pop_density_filepath"], sheet_name=0, skiprows=5, header=0, index_col=None)
 
     # Remove the first and third columns by index
     df = df.drop(df.columns[[0, 2, 3,5]], axis=1)
@@ -62,7 +62,7 @@ def reformat_pop_density_ni(filepath:str) -> pd.DataFrame:
     df.columns.values[1] = "population_density"  # Rename 
     
     # Save to a CSV
-    df.to_csv(os.path.join(config["output_path"],"ni_population_density.csv"), index=False)
+    df.to_csv(os.path.join(config["qa_folder_path"],"ni_population_density.csv"), index=False)
 
     
 
