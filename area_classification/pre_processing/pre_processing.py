@@ -8,7 +8,6 @@ from area_classification.pre_processing.combine_tables import combine_table
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
-    print("placeholder for pre_processing")
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = config["select_variables_lookup"]
     dfs = {"england_wales": ew_df, "ni": ni_df}#, "scotland": scot_df}
@@ -65,7 +64,6 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 if __name__ == "__main__":
     # Example usage
     config = load_config('area_classification/config.yaml')
-
     ew_df = pd.read_csv('ew_concat.csv')  # Replace with actual path
     ni_df = pd.read_csv('ni_concat.csv')
     scot_df = None

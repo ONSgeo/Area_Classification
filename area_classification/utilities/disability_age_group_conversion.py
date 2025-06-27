@@ -170,17 +170,17 @@ if __name__ == "__main__":
     config = load_config()
     filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
     df_scot = convert_disability_age_group_scotland(filepath_scot)
-    df_scot.to_csv(config["data_directory"]+"scot_disability_age_group.csv", index=False)
+    df_scot.to_csv(config["output_directory"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
     filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
     df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
-    df_ni.to_csv(config["data_directory"]+"ni_disability_age_group.csv", index=False)
+    df_ni.to_csv(config["output_directory"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
     filepath_ew = "disabilitycensus2021.xlsx"
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
-    df_ew.to_csv(config["data_directory"]+"ew_disability_age_group.csv", index=False)
+    df_ew.to_csv(config["output_directory"]+"ew_disability_age_group.csv", index=False)
     print(df_ew)
     print("all saved to csv")
 
