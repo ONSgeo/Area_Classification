@@ -140,7 +140,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         df.columns = var_ids
 
         # save to csv
-        df.to_csv(config["output_path"] + f"/{t_id}.csv")
+        df.to_csv(config["input_data_directory"] + f"/{t_id}.csv")
 
         meta_data_table = pd.concat(
             [
@@ -188,7 +188,7 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
 
     # manually set Type to 'Count' for all tables
     meta_data_table["Type"] = "Count"
-    meta_data_table.to_csv(os.path.join(config["output_path"],"ni_lgd_table_metadata.csv"), index=False)
+    meta_data_table.to_csv(os.path.join(config["input_data_directory"],"ni_lgd_table_metadata.csv"), index=False)
 
 
 def get_available_variables():
