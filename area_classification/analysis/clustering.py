@@ -248,7 +248,7 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, n_init=10,
         print(f"Cluster: {cluster}, {len(cluster_df)} geographies in cluster")
  
         # Define save location
-        save_loc = os.path.join(PLOT_DIR, f"subcluster_clustergram_cluster{cluster}.png")
+        save_loc = os.path.join(plot_dir, f"subcluster_clustergram_cluster{cluster}.png")
         print(f"Saving clustergram to {save_loc}")
 
         # Generate clustergram
