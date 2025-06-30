@@ -227,7 +227,7 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
 # For OAC the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 # Example code for creating the first layer of subclusters (groups) is below
 
-def create_subcluster_clustergrams(output_df, PLOT_DIR, num_clusters, n_init=10, random_seed=None):
+def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, n_init=10, random_seed=None):
     """
     Generate and save clustergrams for each supercluster.
     This function loops through the existing clusters and creates a clustergram 
