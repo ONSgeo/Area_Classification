@@ -255,7 +255,7 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, n_init=10,
         create_clustergram(cluster_df, num_clusters, n_init=n_init, save_loc=save_loc, random_seed=random_seed)
 
 
-def run_subclustering(input_df, OUTPUT_DIR, subcluster_nums, num_clusters, n_init= 1000, random_seed = None) -> pd.DataFrame:
+def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters, n_init= 1000, random_seed = None) -> pd.DataFrame:
     """
     Runs subclustering for each supergroup using KMeans and returns a modified DataFrame with subcluster labels.
     
