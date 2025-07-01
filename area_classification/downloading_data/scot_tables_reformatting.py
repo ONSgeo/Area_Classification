@@ -467,17 +467,17 @@ def extract_metadata_from_files(input_directory):
 
 
 
-def replace_ca19_names_with_codes(input_directory, lookup_file_path):
+def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
     """
     Replace council area names with council area codes in CSV files.
 
     Parameters:
     - input_directory (str): Path to the directory containing input CSV files.
-    - lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
+    - LAD_lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
     
     """
     # Load the LAD codes and names lookup file
-    lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
+    lookup_df = pd.read_csv(LAD_lookup_file_path)  # Assuming the file has headers
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
 
 

@@ -9,11 +9,26 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
      return age_band_names_and_bools
      
 
-def convert_disability_age_group_scotland(filepath: str) -> pd.DataFrame:
+def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str) -> pd.DataFrame:
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
-    """
+
+    Parameters
+    ----------
+    filepath : str
+        filepath to the excel file containing the disability age group data.
+    LAD_lookup_filepath : str
+        filepath to the csv file containing the Local Authority Districts Names and CodesUK.
+
+    Returns
+    -------
+    pd.DataFrame
+        disability data combined into two age groups: "<15 and >=65" and "15-64".
+        Columns: council_area, age_group, total_population, total_disabled.
+    -----------
+    Notes
+    """    
     # Read the CSV file
     df = pd.read_csv(filepath, skiprows=10, header=None)
     df.columns = ["A", "B", "C", "D", "E", "F"]
@@ -77,9 +92,8 @@ def convert_disability_age_group_scotland(filepath: str) -> pd.DataFrame:
                     result_df = pd.DataFrame([new_row])
                 else:
                     result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
-    
     # Load the LAD codes and names lookup file
-    lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"
+    lookup_file_path = LAD_lookup_filepath
     lookup_df = pd.read_csv(lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
 
@@ -185,20 +199,21 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    config = load_config()
+    config = load_config('area_classification/config.yaml')
+    LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
     filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
-    df_scot = convert_disability_age_group_scotland(filepath_scot)
-    df_scot.to_csv(config["output_directory"]+"scot_disability_age_group.csv", index=False)
+    df_scot = convert_disability_age_group_scotland(filepath_scot, LAD_lookup_file_path)
+    df_scot.to_csv(config["qa_folder_path"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
     filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
     df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
-    df_ni.to_csv(config["output_directory"]+"ni_disability_age_group.csv", index=False)
+    df_ni.to_csv(config["qa_folder_path"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
     filepath_ew = "disabilitycensus2021.xlsx"
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
-    df_ew.to_csv(config["output_directory"]+"ew_disability_age_group.csv", index=False)
+    df_ew.to_csv(config["qa_folder_path"]+"ew_disability_age_group.csv", index=False)
     print(df_ew)
     print("all saved to csv")
 
