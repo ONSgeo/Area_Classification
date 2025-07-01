@@ -38,7 +38,7 @@ def main_pipeline():
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
         plot_directory=config["plot_directory"],
-        random_seed=config["random_seed"],)
+        random_seed=config["random_seed"])
 
 
 if __name__ == "__main__":
