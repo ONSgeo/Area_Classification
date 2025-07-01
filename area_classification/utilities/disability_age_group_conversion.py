@@ -9,67 +9,82 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
      return age_band_names_and_bools
      
 
-def convert_disability_age_group_scotland(filepath:str) -> pd.DataFrame:
+def convert_disability_age_group_scotland(filepath: str) -> pd.DataFrame:
     """
-    function to convert disability age group data from Scotland into a standard format.
-    Data needs to be downloaded manually from Scotland Census website.
+    Function to convert disability age group data from Scotland into a standard format,
+    iterating based on council areas.
+    """
+    # Read the CSV file
+    df = pd.read_csv(filepath, skiprows=10, header=None)
+    df.columns = ["A", "B", "C", "D", "E", "F"]
+    
+    # Initialize an empty DataFrame to store results
+    result_df = pd.DataFrame()
 
-    Parameters
-    ----------
-    filepath : str
-        filepath to the excel file containing the disability age group data.
+    # Iterate through rows to extract relevant data
+    for index, row in df.iterrows():
+        if str(row.iloc[0]).strip().lower() == 'sex':  # Look in the first column
+            # Get the council area name (two rows above the 'sex' row)
+            council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from the first column
+            
+            # Ensure council_area is not None before proceeding
+            if council_area is None:
+                raise ValueError(f"Council area could not be determined at row {index}.")
+            
+            # Process the current council area
+            # Find the index of the row where the value in the 'Sex' column is 'Sex'
+            sex_row_index = index
+            
+            # Keep only the 21 rows after the 'Sex' row (all people rows)
+            council_df = df.iloc[sex_row_index + 1 : sex_row_index + 22].copy()
+            
+            # Rename columns for clarity
+            council_df = council_df.rename(columns={'A': "Sex", 'B': "age_band"})
+            
+            # Extract 'age_band' column
+            age_band_list = council_df["age_band"].tolist()[1:]
+            
+            # Extract the first number from each age band string
+            first_element_list = [int(s.split()[0]) if isinstance(s, str) and len(s.split()) > 0 else '' for s in age_band_list]
+            
+            # Map each age band to its lower boundary
+            mapping_dictionary = dict(zip(age_band_list, first_element_list))
+            council_df["lower_age_band"] = council_df["age_band"].map(mapping_dictionary)
+            
+            # select columns to convert to numeric
+            columns_to_convert = council_df.columns[2:]  # Select all columns starting from the 3rd column onward
 
-    Returns
-    -------
-    pd.DataFrame
-        disability data combined into two age groups: "<15 and >=65" and "15-64".
-        Columns: council_area, age_group, total_population, total_disabled.
-    -----------
-    Notes
-    """    
-    all_sheets = pd.read_excel(filepath, sheet_name=None,skiprows=11)
-    for key in ["template_rse", "format"]:
-        # Removing unwanted sheets from the dictionary
-        all_sheets.pop(key, None)
-    # Loop over each lad and dataframe to sum number of disabled in each age band
-    for lad, df in all_sheets.items():
-        df = df.iloc[:-5].rename(columns={"Unnamed: 1" : "Sex", "Unnamed: 2":"age_band"}).drop(columns= 'Disability')
-        df["sex"] = df["Sex"].ffill()
-        # Getting council area from the sheet name
-        df["council_area"] = lad.split(". ")[1]
-        df = df.loc[df["sex"] == "All people"].drop(columns = "Sex")
-        # only needing all people not separated by sex 
-        age_band_list = df["age_band"].tolist()[1:]
-        first_element_list = [int(s.split()[0]) if isinstance(s, str) and len(s.split()) > 0 else '' for s in age_band_list]
-        mapping_dictionary = dict(zip(age_band_list, first_element_list))
-        df["lower_age_band"] = df["age_band"].map(mapping_dictionary)
-        age_band_names_and_bools = define_age_bands_and_bools(df, lower_age_band_col="lower_age_band")
-        limited_a_cols = [col for col in df.columns if "limited a" in str(col).lower()]
-        for age_band_name, condition in age_band_names_and_bools.items():
+            # Convert the selected columns to numeric
+            for col in columns_to_convert:
+                council_df[col] = pd.to_numeric(council_df[col], errors="coerce")
+            
+            # Call the function to define age bands and conditions
+            age_band_names_and_bools = define_age_bands_and_bools(council_df, lower_age_band_col="lower_age_band")
 
-            new_row = {
-                "council_area": lad.split(". ")[1],
-                "age_group": age_band_name,
-                "total_population": df.loc[condition, "All people"].sum(),
-                "total_disabled": df.loc[condition, limited_a_cols].sum(axis=1).sum()
-            }
-            if 'result_df' not in locals():
-                result_df = pd.DataFrame([new_row])
-            else:
-                result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
-
+            # Find columns that contain 'limited a' in their name
+            # Define limited_a_cols as a list of column names
+            limited_a_cols = ["D", "E"]
+    
+            for age_band_name, condition in age_band_names_and_bools.items():
+                new_row = {
+                    "CA19": council_area,
+                    "age_group": age_band_name,
+                    "total_population": council_df.loc[condition, "C"].sum(),
+                    "total_disabled": council_df.loc[condition, limited_a_cols].sum(axis=1).sum()
+                }
+                #result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
+                if 'result_df' not in locals():
+                    result_df = pd.DataFrame([new_row])
+                else:
+                    result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
+    
     # Load the LAD codes and names lookup file
-    lookup_file_path = 'area_classification/pre_processing/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
+    lookup_file_path = "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"
+    lookup_df = pd.read_csv(lookup_file_path)
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
 
-    # Load the LAD codes and names lookup file
-    lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
-    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
-
-    # Strip spaces and convert to lowercase for consistent matching in the first column
-    result_df.iloc[:, 0] = result_df.iloc[:, 0].str.strip().str.lower()
-
-    # Replace values in the first column using the lookup dictionary
-    result_df.iloc[:, 0] = result_df.iloc[:, 0].map(lookup_dict).fillna(result_df.iloc[:, 0])  # Replace matching values, keep original if no match
+    # Replace council area names with LAD codes
+    result_df["CA19"] = result_df["CA19"].str.strip().str.lower().map(lookup_dict).fillna(result_df["CA19"])
 
     return result_df
 
