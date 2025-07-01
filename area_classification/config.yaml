@@ -21,6 +21,10 @@ england_wales_disability_file: "ew_disability_age_group.csv"
 ni_disability_file: "ni_disability_age_group.csv"
 scotland_disability_file: "scot_disability_age_group.csv"
 
+england_wales_disability_input: "disabilitycensus2021.xlsx"
+ni_disability_input: "census-2021-ms-d02.xlsx"
+scotland_disability_input: "table_2025-06-11_15-20-42.xlsx"
+
 england_wales_file_pattern: "ts???*.csv"
 england_wales_join_column_name: "LTLA"
 england_wales_excluded_form_code: ["ts006"]
