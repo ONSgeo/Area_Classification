@@ -314,65 +314,12 @@ if __name__ == "__main__":
     # set a  random seed for reproducibility
     from area_classification.utilities.load_config import load_config
     config = load_config()
-    random_seed = 507
-    inputdata_filepath = "D:/Repos/Area_Classification_data/TEST/select_variables_output.csv"
-    output_dir = config["output_directory"]
-    plot_dir = config["plot_directory"]
-    function_output = clustering_wrapper(inputdata_filepath,8,10,output_dir,plot_dir,random_seed)
-    # create outputs and plots directories if they do not exist
-
-    os.makedirs(output_dir, exist_ok=True)
-    os.makedirs(plot_dir, exist_ok=True)
-
-    # load the input data from a csv file 
-    # The names of the columns are not important, BUT;
-    # the first column should be the geography code (e.g., Output Area or Local Authority District),
-    # which will be used as the DataFrame index.
-    # The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
-
-    # File path to the dataset
     inputdata_filepath = "D:/Repos/Area_Classification_data/TEST/select_variables_output.csv"
 
-    # Load the dataset
-    variable_df = load_data(inputdata_filepath)
-    # show first 5 rows of the dataset
-    
-    ## Data transformation
-    # Transform the input data to make it more suitable for clustering
+    function_output = clustering_wrapper(input_dataframe_or_filepath= inputdata_filepath, 
+                                         num_clusters= config["number_of_clusters"],
+                                         n_init = config["number_of_times_k_means_initialised"], 
+                                         output_directory = config["output_directory"],
+                                         plot_directory= config["plot_directory"],
+                                         random_seed = config["random_seed"])
 
-    # Apply the transformation and standardization to the input data
-    transformed_variable_df = transform_and_standardize_data(variable_df)
-
-    # Example usage
-    num_clusters = 8 
-    n_init = 10  # Use a low value for quick testing, increase for final results
-    create_clustergram(transformed_variable_df, n_init, save_loc=plot_dir+"/supergroup_clustergram.png", random_seed=random_seed)
-
-    # Define the number of clusters (K). Choose K based on the clustergram plot.
-    num_clusters = 8 
-    n_init = 10  #1000 is recommended for final results, but a lower value can be used for testing as it is faster
-    output_filepath = output_dir+"/supergroups_clusteroutput.csv"
-
-    # Run K-means clustering
-    supergrouped_variable_df = run_kmeans(transformed_variable_df, num_clusters, n_init, output_filepath = output_filepath, random_seed=random_seed)
-
-    #supregrouped_variable_df contains the cluster assignments for each row in the input data, and the input data itself.
-    
-    # Create clustergrams for splitting each of the superclusters
-    num_clusters = 8
-    create_subcluster_clustergrams(supergrouped_variable_df, plot_dir, num_clusters, n_init=10, save_loc=plot_dir+"/subgroup_clustergram.png", random_seed=random_seed)
-    
-    # We can now select the number of subclusters to split each of the supergroups into using the clustergrams above.
-    # For this example, we choose three subclusters for each supergroup.
-    # The length of the list must match num_clusters (the number of supergroups).
-
-    subcluster_nums = [3, 3, 3, 3, 3, 3, 3, 3]
-    # Example with different number of subclusters for each supergroup
-    # subcluster_nums = [2, 4, 2, 2, 5, 2, 3, 3]
-
-    # num clusters is the number of supergroups (set earlier)
-    # n_init is the number of times the KMeans algorithm will be initialized (as before)
-    n_init = 10
-    subgrouped_variable_df = run_subclustering(supergrouped_variable_df, subcluster_nums, num_clusters, n_init,random_seed=random_seed)
-
-    print(subgrouped_variable_df.equals(function_output)) # Check if the output matches the function output
