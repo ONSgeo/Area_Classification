@@ -12,6 +12,7 @@
 # ^^ Areas code for all of UK, age groups = 0_14_65_over and 15_64
 
 import pandas as pd
+import os
 
 def sir_processing(config):
     # disability files by age -> sharepoint?
@@ -84,7 +85,10 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
         df_subset = df[df["Area_Code"].str.startswith(tuple(country_code_starts_with))]
         print(df_subset['SIR'].describe())
 
-        # Save to data QA folder
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+
+    # Save to data QA folder
     output_file_path = config["qa_folder_path"] + "sir_calculation_qa_output.csv"
     df.to_csv(output_file_path, index=False)
 

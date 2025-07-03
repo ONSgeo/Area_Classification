@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.standard_illness_ratio import sir_processing
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
@@ -58,6 +59,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
     # setting combined to england and wales for testing only!
     # combined_df = dfs["england_wales"]
+    
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
     combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni.csv", index=False)
 

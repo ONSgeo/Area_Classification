@@ -1,6 +1,7 @@
 import pandas as pd
 # Import the re module for regular expressions
 import re  
+import os
 
 def select_variables(df_temp, lookup_df, user_config):
     """
@@ -45,6 +46,9 @@ def select_variables(df_temp, lookup_df, user_config):
     # Combine the first column (area codes) with the reordered remaining columns
     ordered_columns = [first_column] +  sorted(remaining_columns)
     filtered_df = filtered_df[ordered_columns]
+
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(user_config["qa_folder_path"]), exist_ok=True)
 
     # Save to data QA folder
     output_file_path = user_config["qa_folder_path"] + "select_variables_output.csv"

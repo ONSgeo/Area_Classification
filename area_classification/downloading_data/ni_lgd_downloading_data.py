@@ -139,8 +139,11 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         var_ids = [f"{t_id}{str(i).zfill(4)}" for i in range(1, len(variable_names) + 1)]
         df.columns = var_ids
 
+        # Ensure output directory exists
+        os.makedirs(os.path.dirname(config["output_directory"]), exist_ok=True)
+
         # save to csv
-        df.to_csv(config["output_path"] + f"/{t_id}.csv")
+        df.to_csv(config["output_directory"] + f"/{t_id}.csv")
 
         meta_data_table = pd.concat(
             [
@@ -188,7 +191,7 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
 
     # manually set Type to 'Count' for all tables
     meta_data_table["Type"] = "Count"
-    meta_data_table.to_csv(os.path.join(config["output_path"],"ni_lgd_table_metadata.csv"), index=False)
+    meta_data_table.to_csv(os.path.join(config["output_directory"],"ni_lgd_table_metadata.csv"), index=False)
 
 
 def get_available_variables():
