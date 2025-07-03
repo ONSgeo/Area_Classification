@@ -2,7 +2,7 @@ from area_classification.utilities.load_config import load_config
 from area_classification.utilities.loading_data import load_format_data
 from area_classification.downloading_data.ew_lad_bulk_download import ew_lad_bulk_download
 from area_classification.downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
-# from area_classification.pre_processing. ADD PREPROCESSING OF SCOT
+from area_classification.downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.analysis.clustering import clustering_wrapper      
 
@@ -24,7 +24,7 @@ def main_pipeline():
     ni_df = load_format_data(config["input_data_filepath"], config["ni_file_pattern"],config["ni_join_column_name"])
 
     # Step 3: Processing of Scotland data
-    # scot_df = scot_process()
+    # scot_reformatting_wrapper(input_directory, LAD_lookup_file_path, config)
 
     # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
