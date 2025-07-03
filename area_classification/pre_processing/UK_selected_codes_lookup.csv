@@ -118,37 +118,37 @@ Economically active: Unemployed,economically_active ,ni050,Economic Activity - 1
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,ni110,Qualifications (Highest Level),ni,v58
 Level 3 qualifications,ni1100006,ni110,Qualifications (Highest Level),ni,v59
 Level 4 qualifications or above,ni1100007,ni110,Qualifications (Highest Level),ni,v60
-Lives in a communal establishment,UV101b0043,UV101b,Usual resident population by sex by age (6),scot,v01
+Lives in a communal establishment,UV101b0003,UV101b,Usual resident population by sex by age (6),scot,v01
 Never married and never registered a civil partnership,UV1040002,UV104,Marital and civil partnership status,scot,v02
 Married or in a registered civil partnership,UV1040003,UV104,Marital and civil partnership status,scot,v03
 Separated or divorced,separated_divorced,UV104,Marital and civil partnership status,scot,v04
 One-person household,UV1120002,UV112,Household composition - People,scot,v05
-Families with no children,no_children ,UV112,Household composition - People,scot,v06
-Families dependent children,dependent_children ,UV112,Household composition - People,scot,v07
-Europe: United Kingdom,UV204b0043,UV204b,Country of birth (14) by sex by age (6),scot,v08
-Europe: EU countries,UV204b0022,UV204b,Country of birth (14) by sex by age (6),scot,v09
-Europe: Non-EU countries,UV204b0253,UV204b,Country of birth (14) by sex by age (6),scot,v10
-Africa,UV2060007,UV206,Passports held,scot,v11
+Families with no children,no_children,UV112,Household composition - People,scot,v06
+Families dependent children,dependant_children,UV112,Household composition - People,scot,v07
+Europe: United Kingdom,UV2040003,UV204,Country of birth ,scot,v08
+Europe: EU countries,UV2040010,UV204,Country of birth,scot,v09
+Europe: Non-EU countries,UV2040027,UV204,Country of birth ,scot,v10
+Africa,UV2040031,UV204,Country of birth,scot,v11
 Population density (number of usual residents per square kilometre) ,population_density,population_density,Population density,scot,v12
-Aged 4 years and under,UV102b0002,UV102b,Age (20) by sex,scot,v13
-Aged 5 to 14,age_5_14,UV102b,Age (20) by sex,scot,v14
-Aged 25 to 44,age_25_44,UV102b,Age (20) by sex,scot,v15
-Aged 45 to 64,age_45_64,UV102b,Age (20) by sex,scot,v16
-Aged 65 to 84,age_65_84,UV102b,Age (20) by sex,scot,v17
-Aged 85 years and over,UV102b0021,UV102b,Age (20) by sex,scot,v18
+Aged 4 years and under,age_4_and_under,UV103,Age,scot,v13
+Aged 5 to 14,age_5_14,UV103,Age,scot,v14
+Aged 25 to 44,age_25_44,UV103,Age,scot,v15
+Aged 45 to 64,age_45_64,UV103,Age,scot,v16
+Aged 65 to 84,age_65_84,UV103,Age,scot,v17
+Aged 85 years and over,age_85_and_over,UV103,Age,scot,v18
 Address one year ago is the same as the address of enumeration,Same_as_the_address_of_enumeration,migrant_indicator,Migrant Indicator,scot,v19
-Bangladeshi,UV201b0085,UV201b,Ethnic group (19) by age (6),scot,v20
-Chinese,UV201b0092,UV201b,Ethnic group (19) by age (6),scot,v21
-Indian,UV201b0078,UV201b,Ethnic group (19) by age (6),scot,v22
-Pakistani,UV201b0071,UV201b,Ethnic group (19) by age (6),scot,v23
-Other Asian,UV201b0099,UV201b,Ethnic group (19) by age (6),scot,v24
-Black,UV201b0127,UV201b,Ethnic group (19) by age (6),scot,v25
-Mixed or Multiple ethnic groups,UV201b0057,UV201b,Ethnic group (19) by age (6),scot,v26
-White,UV201b0008,UV201b,Ethnic group (19) by age (6),scot,v27
+Bangladeshi,UV2010013,UV201,Ethnic group (21) ,scot,v20
+Chinese,UV2010014,UV201,Ethnic group (21) ,scot,v21
+Indian,UV2010012,UV201,Ethnic group (21) ,scot,v22
+Pakistani,UV2010011,UV201,Ethnic group (21) ,scot,v23
+Other Asian,UV2010015,UV201,Ethnic group (21) ,scot,v24
+Black,UV2010021,UV201,Ethnic group (21) ,scot,v25
+Mixed or Multiple ethnic groups,UV2010009,UV201,Ethnic group (21) ,scot,v26
+White,UV2010002,UV201,Ethnic group (21) ,scot,v27
 All household members have the same ethnic group,UV2030003,UV203,Multiple ethnic groups,scot,v28
 Cannot speak English well or at all,cannot_speak_English,UV210,English language skills,scot,v29
 No religion,UV2050012,UV205,Religion,scot,v30
-Christian,christian ,UV205,Religion,scot,v31
+Christian,christian,UV205,Religion,scot,v31
 Other religion,UV2050011,UV205,Religion,scot,v32
 Standardised Illness Ratio,SIR,SIR,Disability,scot,v33
 Provides unpaid care,UV3010003,UV301,Provision of unpaid care,scot,v34
@@ -174,7 +174,7 @@ L15 Full-time students,UV6070017,UV607,National Statistics Socio-economic Classi
 7 Sales and customer service occupations,UV6060028,UV606,Occupation,scot,v54
 8 Process plant and machine operatives,UV6060031,UV606,Occupation,scot,v55
 9 Elementary occupations,UV6060034,UV606,Occupation,scot,v56
-Economically active: Unemployed,economically_active ,UV601,Economic activity,scot,v57
+Economically active: Unemployed,economically_active,UV601,Economic activity,scot,v57
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,UV501,Highest level of qualification,scot,v58
 Level 3 qualifications,UV5010006,UV501,Highest level of qualification,scot,v59
 Level 4 qualifications or above,UV5010007,UV501,Highest level of qualification,scot,v60

@@ -5,9 +5,11 @@ working_directory : ~/Area_Classification
 
 #input_directory: data/inputs
 
+"LAD_lookup_file_path": 'area_classification/downloading_data/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
+"scot_input_folder": 'D:/Repos/Area_Classification_data'
+select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
+
 "qa_folder_path": './data/QA/'
-
-
 ni_pop_density_filepath: 'D:/Output_Area_Classification/NI_downloaded_csv/pop_density/census-2021-ms-a14-LGD.xlsx' 
 input_data_directory: 'data/inputs/'
 number_of_clusters: 8
@@ -17,6 +19,7 @@ plot_directory: 'data/plots/'
 random_seed: 42
 
 select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
+
 england_wales_disability_file: "ew_disability_age_group.csv"
 ni_disability_file: "ni_disability_age_group.csv"
 scotland_disability_file: "scot_disability_age_group.csv"
