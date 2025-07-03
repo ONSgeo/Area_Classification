@@ -4,7 +4,7 @@
 # TABLE 2 FOR OUTPUT AREAS OR TABLE 6 FOR LOCAL AUTHORITIES
 
 # Expected input
-# Area_code   |  age_group   |  Population  |  Disability_count
+# area_code   |  age_group   |  Population  |  Disability_count
 #---------------------------------------------------------------
 # E06000001   |  0-14        |  1000        |  50
 #             |              |              |
@@ -12,12 +12,45 @@
 # ^^ Areas code for all of UK, age groups = 0_14_65_over and 15_64
 
 import pandas as pd
+import os
+
+from area_classification.utilities.disability_age_group_conversion import (
+    convert_disability_age_group_england_wales,
+    convert_disability_age_group_northern_ireland,
+    convert_disability_age_group_scotland,
+)
+
 
 def sir_processing(config):
     # disability files by age -> sharepoint?
-    ew_disability_df = pd.read_csv(config["output_directory"]+config["england_wales_disability_file"]).rename(columns={'Area Code': 'Area_Code', 'Local Authority': 'Local_Authority'})
-    ni_disability_df = pd.read_csv(config["output_directory"]+config["ni_disability_file"]).rename(columns={'lgd_code': 'Area_Code', 'lgd': 'Local_Authority'})
-    scotland_disability_df = pd.read_csv(config["output_directory"]+config["scotland_disability_file"]).rename(columns={'council_area': 'Area_Code'})
+    # Check if required files exist in the input directory
+    required_files = [
+        config["england_wales_disability_file"],
+        config["ni_disability_file"],
+        config["scotland_disability_file"]
+    ]
+    missing_files = []
+    for file in required_files:
+        file_path = os.path.join(config["input_data_directory"], file)
+        if not os.path.isfile(file_path):
+            missing_files.append(file)
+
+    if config["england_wales_disability_file"] in missing_files:
+        print(f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory.")
+        convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
+    if config["ni_disability_file"] in missing_files:
+        print(f"Warning: The file {config['ni_disability_file']} was not found in the input directory.")
+        convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
+    if config["scotland_disability_file"] in missing_files:
+        convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
+        print(f"Warning: The file {config['scotland_disability_file']} was not found in the input directory.")        
+
+
+        print(f"Warning: The following files were not found: {missing_files}")
+
+    ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
+    ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
+    scotland_disability_df = pd.read_csv(config["input_data_directory"]+config["scotland_disability_file"])
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df],)
     # Scotland excluded because it doesnt have council area codes 
@@ -29,7 +62,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
     
     Parameters:
-        df (DataFrame): DataFrame containing columns 'Area_Code', 'Local_Authority', 'age_group', 'Count', 'Population',
+        df (DataFrame): DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population',
         UK coverage
                         
     Returns:
@@ -52,7 +85,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     df['exp_ill'] = df['nat_prop'] * df['total_population']    
 
     # Sum exp ill and diisability count (across age groups, to get one value per geog)
-    df_all = df.groupby(['Area_Code', 'Local_Authority']).agg(exp_ill_all=('exp_ill', 'sum'),
+    df_all = df.groupby(['area_code']).agg(exp_ill_all=('exp_ill', 'sum'),
                                                           disability_count=('total_disabled', 'sum')).reset_index()
 
     # Calculate SIR for each Area Code
@@ -81,10 +114,13 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
     print(df['SIR'].describe())
 
     for country_code_starts_with in [["E", "W"], ['S'], ['N']]:
-        df_subset = df[df["Area_Code"].str.startswith(tuple(country_code_starts_with))]
+        df_subset = df[df["area_code"].str.startswith(tuple(country_code_starts_with))]
         print(df_subset['SIR'].describe())
 
-        # Save to data QA folder
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+
+    # Save to data QA folder
     output_file_path = config["qa_folder_path"] + "sir_calculation_qa_output.csv"
     df.to_csv(output_file_path, index=False)
 
@@ -94,20 +130,21 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
 
 
 if __name__ == "__main__":
-
+    from area_classification.utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
     EW_df = pd.read_csv("D:\\repos\\output_area_classification_project\\Area_Classification\\ew_disability_age_group.csv") 
-    EW_df.rename(columns={'Area Code': 'Area_Code'}, inplace=True)
-    EW_df.rename(columns={'Local Authority': 'Local_Authority'}, inplace=True)
+    EW_df.rename(columns={'Area Code': 'area_code'}, inplace=True)
+    EW_df.rename(columns={'Local Authority': 'local_authority'}, inplace=True)
 
-    x = SIR_calculation(EW_df)
+    x = sir_processing(config)
     sir_qa_checks(x)
 
     # Create mock data to test the SIR_calculation function
 
     # result = SIR_calculation(mock_data)
     # print(result)
-    #     'Local_Authority': ['LA1', 'LA1', 'LA2', 'LA2', 'LA3', 'LA3'],
-    #     'Area_Code': ['A1', 'A1', 'A2', 'A2', 'A3', 'A3'],
+    #     'local_authority': ['LA1', 'LA1', 'LA2', 'LA2', 'LA3', 'LA3'],
+    #     'area_code': ['A1', 'A1', 'A2', 'A2', 'A3', 'A3'],
 
 
 
@@ -143,10 +180,10 @@ if __name__ == "__main__":
 
 # renaming columns using underscores instead of spaces
 #ill_prop_2021.rename(columns={
-#    'Local Authority': 'Local_Authority',
+#    'Local Authority': 'local_authority',
 #    "Disability status": "Disability_status",
 #    "Age-specific Percentage": "Age_specific_perc",
-#    "Area Code": "Area_Code"
+#    "Area Code": "area_code"
 #}, inplace=True)
 
 
@@ -194,7 +231,7 @@ if __name__ == "__main__":
 
 # Count = Ii; Population = Pai
 
-#agg_data = ill_prop_2021.groupby(['Area_Code', 'Local_Authority'])[['Count', 'Population']].sum().reset_index()
+#agg_data = ill_prop_2021.groupby(['area_code', 'local_authority'])[['Count', 'Population']].sum().reset_index()
 #print(agg_data.head())
 
 # Get ran (proportion of disabled people in group a (all age groups for now) at the national level)
@@ -229,8 +266,8 @@ if __name__ == "__main__":
 
 
 
-# aggregating the data to create count and sum of the data by 'Area_Code' and 'sir_age_band'
-#ill_prop_2021 = ill_prop_2021.groupby(["Area_Code", "sir_age_band"]).agg(
+# aggregating the data to create count and sum of the data by 'area_code' and 'sir_age_band'
+#ill_prop_2021 = ill_prop_2021.groupby(["area_code", "sir_age_band"]).agg(
 #    count=("Count", "sum"),
 #    population=("Population", "sum")
 #).reset_index()

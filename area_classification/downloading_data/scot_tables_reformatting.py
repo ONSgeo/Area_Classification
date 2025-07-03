@@ -100,6 +100,9 @@ Parameters:
     # Update the type for population density to ratio
     meta_data_table.loc[meta_data_table['Variable_ID'] == 'population_density', 'Type'] = 'Ratio'
 
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+
     # Saving to QA currently, may need to move
     output_file_path = os.path.join(config["qa_folder_path"], "scot_LAD_table_metadata.csv")
 
@@ -172,7 +175,7 @@ def reformat_uv101b(input_directory, LAD_lookup_file_path):
 
         # Replace council area names with LAD codes
         output_df['CA19'] = output_df['CA19'].str.strip().str.lower().map(lookup_dict).fillna(output_df['CA19'])
-
+        
         # Save the final DataFrame to a new CSV file
         output_file_path = os.path.join(input_directory, "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
@@ -467,17 +470,17 @@ def extract_metadata_from_files(input_directory):
 
 
 
-def replace_ca19_names_with_codes(input_directory, lookup_file_path):
+def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
     """
     Replace council area names with council area codes in CSV files.
 
     Parameters:
     - input_directory (str): Path to the directory containing input CSV files.
-    - lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
+    - LAD_lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
     
     """
     # Load the LAD codes and names lookup file
-    lookup_df = pd.read_csv(lookup_file_path)  # Assuming the file has headers
+    lookup_df = pd.read_csv(LAD_lookup_file_path)  # Assuming the file has headers
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
 
 
@@ -680,6 +683,9 @@ def concat_reformatted_tables(config):
     # Concatenate all DataFrames into one
     result = pd.concat(dataframes, axis = 1, ignore_index=False)
 
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    
     # Save the concatenated DataFrame to a new CSV file (optional)
     concatenated_file_path = os.path.join(config["qa_folder_path"], "scot_concatenated_result.csv")
     result.to_csv(concatenated_file_path, index=False)

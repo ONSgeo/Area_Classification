@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def batch_ag_columns(df_temp, file_configs, user_config):
     """
@@ -28,8 +29,11 @@ def batch_ag_columns(df_temp, file_configs, user_config):
         # Add the new column by summing the specified columns
         df_temp[new_col_name] = df_temp[col_names].sum(axis=1)
         print(f"Added new column '{new_col_name}' to the DataFrame.")
-        
-        # Save to data QA folder
+
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(user_config["qa_folder_path"]), exist_ok=True)
+
+    # Save to data QA folder
     output_file_path = user_config["qa_folder_path"] + "aggregated_variables_output.csv"
     df_temp.to_csv(output_file_path, index=False)
         
