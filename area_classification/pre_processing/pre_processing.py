@@ -7,6 +7,10 @@ from area_classification.pre_processing.Aggregating_variables import batch_ag_co
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 
+import sys
+import os
+
+
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
@@ -55,7 +59,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         dfs[key] = df_temp
     
     #Combine the three dataframes for censuses into one
-    combined_df = pd.concat([dfs["england_wales"], dfs["ni"]], ignore_index=True)#, dfs["scotland"]], ignore_index=True)
+    combined_df = pd.concat([dfs["england_wales"], dfs["ni"], dfs["scotland"]], ignore_index=True)
 
     # setting combined to england and wales for testing only!
     # combined_df = dfs["england_wales"]
@@ -63,7 +67,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
-    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni.csv", index=False)
+    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni_scot.csv", index=False)
 
     return combined_df
 
@@ -71,9 +75,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 if __name__ == "__main__":
     # Example usage
     config = load_config('area_classification/config.yaml')
-    ew_df = pd.read_csv('ew_concat.csv')  # Replace with actual path
-    ni_df = pd.read_csv('ni_concat.csv')
-    scot_df = None
+    ew_df = pd.read_csv('D:/Output_Area_Classification/All_tables/ew_concat.csv')  # Replace with actual path
+    ni_df = pd.read_csv('D:/Output_Area_Classification/All_tables/ni_concat.csv')
+    scot_df = pd.read_csv("D:/Output_Area_Classification/All_tables/scot_concatenated_result.csv")
 
     processed_df = pre_processing(ew_df, ni_df, scot_df, config)
     print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)

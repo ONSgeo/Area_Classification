@@ -5,9 +5,9 @@ working_directory : ~/Area_Classification
 
 #input_directory: data/inputs
 
-"LAD_lookup_file_path": 'area_classification/downloading_data/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
-"scot_input_folder": 'D:/Repos/Area_Classification_data'
-select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
+"LAD_lookup_file_path": "D:/Output_Area_Classification/Local_Authority_Districts_2022_Names_and_Codes_UK.csv"
+"scot_input_folder": "D:/Output_Area_Classification/Scotland_downloaded/Percentages"
+select_variables_lookup: "D:/Output_Area_Classification/Select_variables_investigate/Scot_Selected_Codes_Lookup_v2.csv"
 
 "qa_folder_path": './data/QA/'
 ni_pop_density_filepath: 'D:/Output_Area_Classification/NI_downloaded_csv/pop_density/census-2021-ms-a14-LGD.xlsx' 
