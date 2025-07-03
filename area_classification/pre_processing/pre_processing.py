@@ -10,6 +10,8 @@ from area_classification.pre_processing.combine_tables import combine_table
 def pre_processing(ew_df, ni_df, scot_df, config):
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = config["select_variables_lookup"]
+    # Load the lookup table
+    lookup_df = pd.read_csv(select_variables_lookup)
     dfs = {"england_wales": ew_df, "ni": ni_df}#, "scotland": scot_df}
 
     sir_output_df = sir_processing(config)
@@ -44,6 +46,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
             if not match_in_sir.empty:
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
         #Select the 60 variables a used in previous itterations of the area classification
+        select_variables_lookup = lookup_df[lookup_df["country"] == key]
         df_temp = select_variables(df_temp, select_variables_lookup, config)
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 

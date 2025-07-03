@@ -2,7 +2,7 @@ import pandas as pd
 # Import the re module for regular expressions
 import re  
 
-def select_variables(df_temp, select_variables_lookup, user_config):
+def select_variables(df_temp, lookup_df, user_config):
     """
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns.
@@ -14,8 +14,6 @@ def select_variables(df_temp, select_variables_lookup, user_config):
     Returns:
     - pd.DataFrame: A new DataFrame with only the specified columns.
     """
-    # Load the lookup table
-    lookup_df = pd.read_csv(select_variables_lookup)
 
     # Extract the columns to select and their new names
     selected_columns = lookup_df['variable_code'].dropna().tolist()
