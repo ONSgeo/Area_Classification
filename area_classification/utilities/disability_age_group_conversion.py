@@ -1,5 +1,6 @@
 import pandas as pd
 from area_classification.utilities.load_config import load_config
+from pathlib import Path
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
      age_band_names_and_bools = {
@@ -9,7 +10,9 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
      return age_band_names_and_bools
      
 
-def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str) -> pd.DataFrame:
+      
+def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.DataFrame:
+
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
@@ -18,8 +21,8 @@ def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str)
     ----------
     filepath : str
         filepath to the excel file containing the disability age group data.
-    LAD_lookup_filepath : str
-        filepath to the csv file containing the Local Authority Districts Names and CodesUK.
+    config : str
+        main config for pipeline
 
     Returns
     -------
@@ -29,6 +32,7 @@ def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str)
     -----------
     Notes
     """    
+
     # Read the CSV file
     df = pd.read_csv(filepath, skiprows=10, header=None)
     df.columns = ["A", "B", "C", "D", "E", "F"]
@@ -92,8 +96,9 @@ def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str)
                     result_df = pd.DataFrame([new_row])
                 else:
                     result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
+
     # Load the LAD codes and names lookup file
-    lookup_file_path = LAD_lookup_filepath
+    lookup_file_path = config["LAD_lookup_filepath"]
     lookup_df = pd.read_csv(lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
 
@@ -103,9 +108,10 @@ def convert_disability_age_group_scotland(filepath:str, LAD_lookup_filepath:str)
 	# Save to data QA folder
 	#output_file_path = user_config["qa_folder_path"] + "Scot_disability_input.csv"
     #result_df.to_csv(output_file_path, index=False)
+
     return result_df
 
-def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
+def convert_disability_age_group_england_wales(filepath: str, config: dict) -> pd.DataFrame:
     """
     function to convert disability age group data from England and Wales into a standard format.
     Data needs to be downloaded manually from the Office for National Statistics website.
@@ -114,6 +120,8 @@ def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
     ----------
     filepath : str
         path to downloaded excel file
+    config : str
+        main config for pipeline
 
     Returns
     -------
@@ -124,6 +132,7 @@ def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
     df_ew = pd.read_excel(filepath, sheet_name="Table 6", skiprows=4)
     df_ew = df_ew.loc[(df_ew["Sex"]=="Persons")&(df_ew["Category"] == "Two category")] # Only want persons and age bands, dont need gender
     df_ew = df_ew[["Year", "Local Authority", "Area Code", "Category", "Disability status", "Age","Count","Population"]]
+    df_ew = df_ew.rename(columns={"Local Authority": "local_authority", "Area Code": "area_code"})
     df_ew["Count"] = df_ew["Count"].replace({'[c]': 0, '[x]': 0})
     df_ew["Population"] = df_ew["Population"].replace({'[c]': 0, '[x]': 0})
     # Extract the first integer from the Age column for comparison
@@ -134,11 +143,11 @@ def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
         df_ew.loc[condition, "age_group"] = age_band_name
 
     result_df_list = []
-    for (geo_name, geo_code), group_df in df_ew.groupby(["Local Authority", "Area Code"]):
+    for (geo_name, geo_code), group_df in df_ew.groupby(["local_authority", "area_code"]):
         for age_band_name, condition in age_band_names_and_bools.items():
             new_row = {
-                "Area Code": geo_code,
-                "Local Authority": geo_name,
+                "area_code": geo_code,
+                "local_authority": geo_name,
                 "age_group": age_band_name,
                 "total_disabled": group_df.loc[
                     (group_df["age_group"] == age_band_name) &
@@ -149,9 +158,14 @@ def convert_disability_age_group_england_wales(filepath: str) -> pd.DataFrame:
 
             }
             result_df_list.append(new_row)
-    return pd.DataFrame(result_df_list)
 
-def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
+    result_df = pd.DataFrame(result_df_list)
+    output_path = Path(config["input_data_directory"]) / "ew_disability_age_group.csv"
+    result_df.to_csv(output_path, index=False)
+        
+    return result_df
+
+def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> pd.DataFrame:
     """
     function to convert disability age group data from Northern Ireland into a standard format.
     Data needs to be downloaded manually from the Northern Ireland Statistics and Research Agency website.
@@ -160,7 +174,9 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
     ----------
     filepath : str
         filepath to the excel file containing the disability age group data.
-
+    config : str
+        main config for pipeline
+        
     Returns
     -------
     pd.DataFrame
@@ -187,14 +203,16 @@ def convert_disability_age_group_northern_ireland(filepath:str) -> pd.DataFrame:
     for (geo_code, geo_name), group_df in ni_long_df.groupby(["geography code", "geography"]):
         for age_band_name, condition in age_band_names_and_bools.items():
             new_row = {
-                "lgd_code": geo_code,
-                "lgd": geo_name,
+                "area_code": geo_code,
+                "local_authority": geo_name,
                 "age_group": age_band_name,
                 "total_disabled": group_df.loc[condition & disability_condition, "count"].sum(),
                 "total_population": group_df.loc[condition & (disability_condition | non_disability_condition), "count"].sum()
             }
             result_df_list.append(new_row)
     result_df = pd.DataFrame(result_df_list)
+    output_path = Path(config["input_data_directory"]) / "ni_disability_age_group.csv"
+    result_df.to_csv(output_path, index=False)
     return result_df
 
 
@@ -202,18 +220,20 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
     filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
-    df_scot = convert_disability_age_group_scotland(filepath_scot, LAD_lookup_file_path)
+
+    df_scot = convert_disability_age_group_scotland(filepath_scot,config)
     df_scot.to_csv(config["qa_folder_path"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
     filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
-    df_ni = convert_disability_age_group_northern_ireland(filepath_ni)
+    df_ni = convert_disability_age_group_northern_ireland(filepath_ni,config)
     df_ni.to_csv(config["qa_folder_path"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
     filepath_ew = "disabilitycensus2021.xlsx"
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
     df_ew.to_csv(config["qa_folder_path"]+"ew_disability_age_group.csv", index=False)
+
     print(df_ew)
     print("all saved to csv")
 
