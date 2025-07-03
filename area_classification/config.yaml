@@ -11,17 +11,22 @@ select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_l
 
 "qa_folder_path": './data/QA/'
 ni_pop_density_filepath: 'D:/Output_Area_Classification/NI_downloaded_csv/pop_density/census-2021-ms-a14-LGD.xlsx' 
-input_data_filepath: 'data/inputs/temp.csv'
+input_data_directory: 'data/inputs/'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 output_directory: "data/output_data/"
 plot_directory: 'data/plots/'
 random_seed: 42
 
+select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
 
 england_wales_disability_file: "ew_disability_age_group.csv"
 ni_disability_file: "ni_disability_age_group.csv"
 scotland_disability_file: "scot_disability_age_group.csv"
+
+england_wales_disability_input: "disabilitycensus2021.xlsx"
+ni_disability_input: "census-2021-ms-d02.xlsx"
+scotland_disability_input: "scotland_disability_table_builder.xlsx"
 
 england_wales_file_pattern: "ts???*.csv"
 england_wales_join_column_name: "LTLA"

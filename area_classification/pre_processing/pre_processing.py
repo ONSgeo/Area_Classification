@@ -36,14 +36,14 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # needed for select_variable function
         # look at output of sir, split area codes which contain and
         # fuzzy match - E4378949315 -> E4378949315 and E4383415436
-        df_temp = pd.merge(df_temp,sir_output_df[["Area_Code","SIR"]],how = "left", left_on = config[join_column_name], right_on = "Area_Code").drop(columns=["Area_Code"])
+        df_temp = pd.merge(df_temp,sir_output_df[["area_code","SIR"]],how = "left", left_on = config[join_column_name], right_on = "area_code").drop(columns=["area_code"])
         
         # Check cases where SIR is NaN and try to match with sir_output_df
         # This is a workaround for cases where the area code in the main df does not match exactly with the area code in the sir_output_df
         # Occurs where Area code is combined for small areas 
         for idx, row in df_temp[df_temp["SIR"].isna()].iterrows():
             area_code = row[config[join_column_name]]
-            match_in_sir = sir_output_df[sir_output_df["Area_Code"].str.contains(str(area_code), na=False)]
+            match_in_sir = sir_output_df[sir_output_df["area_code"].str.contains(str(area_code), na=False)]
             if not match_in_sir.empty:
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
         #Select the 60 variables a used in previous itterations of the area classification
