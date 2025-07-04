@@ -21,10 +21,11 @@ def main_pipeline():
 
 
     # Step 2: Download Northen Ireland data
-    ni_lgd_download_data()
+    ni_lgd_download_data(config)
     # Loading and getting into format to be used to process and combine
-    ni_df = load_format_data(config["input_data_filepath"], config["ni_file_pattern"],config["ni_join_column_name"])
-
+    ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+    ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
+  
     # Step 3: Processing of Scotland data
     # scot_reformatting_wrapper(input_directory, LAD_lookup_file_path, config)
 

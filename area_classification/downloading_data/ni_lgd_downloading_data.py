@@ -61,8 +61,11 @@ def reformat_pop_density_ni(config):
     df.iloc[:, 1] = df.iloc[:, 1] / 100  # Convert hectares to km²
     df.columns.values[1] = "population_density"  # Rename 
     
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
+
     # Save to a CSV
-    df.to_csv(os.path.join(config["qa_folder_path"],"ni_population_density.csv"), index=False)
+    df.to_csv(os.path.join(config["input_data_directory"],"ni_population_density.csv"), index=False)
 
     
 
@@ -139,12 +142,15 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         var_ids = [f"{t_id}{str(i).zfill(4)}" for i in range(1, len(variable_names) + 1)]
         df.columns = var_ids
 
+        output_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+        
         # Ensure output directory exists
-        os.makedirs(os.path.dirname(config["output_directory"]), exist_ok=True)
-
+        os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
         # save to csv
-        df.to_csv(config["input_data_directory"] + f"/{t_id}.csv")
-        #df.to_csv(config["output_directory"] + f"/{t_id}.csv")
+        df.to_csv(output_csv_path + f"/{t_id}.csv")
+
+
+
 
 
         meta_data_table = pd.concat(
@@ -195,7 +201,6 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
     meta_data_table["Type"] = "Count"
 
     meta_data_table.to_csv(os.path.join(config["input_data_directory"],"ni_lgd_table_metadata.csv"), index=False)
-    #meta_data_table.to_csv(os.path.join(config["output_directory"],"ni_lgd_table_metadata.csv"), index=False)
 
 
 
