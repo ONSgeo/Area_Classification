@@ -11,16 +11,17 @@ from area_classification.pre_processing.combine_tables import combine_table
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
-    select_variables_lookup = config["select_variables_lookup"]
-    dfs = {"england_wales": ew_df, "ni": ni_df} #"scotland": scot_df}
+    select_variables_lookup = pd.read_csv(config["select_variables_lookup"])
+    dfs = {"ew": ew_df, "ni": ni_df, "scot": scot_df}
 
+    #Calculate the standard illness ratio (SIR) for each census
     sir_output_df = sir_processing(config)
 
     for key in dfs:
         # make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_excluded_form_code"
-        #Calculate the standard illness ratio (SIR) for each census
+        
         #Convert counts to percentages
         df_temp = convert_to_percentages(
             dfs[key].copy(), 
@@ -47,22 +48,22 @@ def pre_processing(ew_df, ni_df, scot_df, config):
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
 
         #Select the 60 variables a used in previous itterations of the area classification
-        select_variables_lookup = lookup_df[lookup_df["country"] == key]
-        df_temp = select_variables(df_temp, select_variables_lookup, config)
+        country_variables_lookup = select_variables_lookup[select_variables_lookup["country"] == key]
+        df_temp = select_variables(df_temp, country_variables_lookup, config)
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
         # overwriting original df with processed df
         dfs[key] = df_temp
     
     #Combine the three dataframes for censuses into one
-    combined_df = pd.concat([dfs["england_wales"], dfs["ni"], dfs["scotland"]], ignore_index=True)
+    combined_df = pd.concat([dfs["ew"], dfs["ni"], dfs["scot"]], ignore_index=True)
 
 
     # setting combined to england and wales for testing only!
-    # combined_df = dfs["england_wales"]
+    # combined_df = dfs["ew"]
                                             
     #Ensure QA directory exists
-                                            os.makedirs(os.psth.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
     combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni_scot.csv", index=False)
 

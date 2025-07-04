@@ -1,5 +1,5 @@
 # England and Wales variables to aggregate using the variable codes
-england_wales_file_configs:
+ew_file_configs:
   cars_2_or_more: [ts0450004, ts0450005]
   separated_divorced: [ts0020010, ts0020013]
   dependant_children: [ts0030009, ts0030013, ts0030016, ts0030021]

@@ -11,9 +11,10 @@ working_directory : ~/Area_Classification
 
 #The LAD lookup table should be saved in inputs
 LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
-#The manually downloaded Scot tables should be saved in inputs
-scot_input_folder: 'data/inputs/scot_downloads'
-
+#The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
+ew_input_folder: 'data/inputs/ew_downloads/'
+ni_input_folder: 'data/inputs/ni_downloads/'
+scot_input_folder: 'data/inputs/scot_downloads/'
 
 select_variables_lookup: 'area_classification/pre_processing/UK_selected_codes_lookup.csv'
 
@@ -21,6 +22,7 @@ qa_folder_path: './data/QA/'
 
 ni_pop_density_filepath: 'D:/Repos/Area_Classification_data/census-2021-ms-a14-LGD.xlsx' 
 input_data_directory: 'data/inputs/'
+
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 #output_directory: 'data/output_data/'
@@ -28,7 +30,7 @@ number_of_times_k_means_initialised: 10 # 1000 for real run
 plot_directory: 'data/plots/'
 random_seed: 42
 
-select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
+select_variables_lookup: "data/lookups/UK_selected_codes_lookup.csv"
 
 england_wales_disability_file: "ew_disability_age_group.csv"
 ni_disability_file: "ni_disability_age_group.csv"
@@ -36,18 +38,18 @@ scotland_disability_file: "scot_disability_age_group.csv"
 
 england_wales_disability_input: "disabilitycensus2021.xlsx"
 ni_disability_input: "census-2021-ms-d02.xlsx"
-scotland_disability_input: "scotland_disability_table_builder.xlsx"
+scotland_disability_input: "UV303a.csv"
 
-england_wales_file_pattern: "ts???*.csv"
-england_wales_join_column_name: "LTLA"
-england_wales_excluded_form_code: ["ts006"]
+ew_file_pattern: "ts???*.csv"
+ew_join_column_name: "LTLA"
+ew_excluded_form_code: ["ts006"]
 
 ni_file_pattern: "ni???.csv"
 ni_join_column_name: "LGD"
 ni_excluded_form_code: ["ts006"]
 
-scotland_join_column_name: "LGD"
-scotland_excluded_form_code: ["ts006"]
+scot_join_column_name: "LGD"
+scot_excluded_form_code: ["ts006"]
 
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
