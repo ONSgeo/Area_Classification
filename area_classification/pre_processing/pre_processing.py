@@ -47,7 +47,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
 
         #Select the 60 variables a used in previous itterations of the area classification
-        select_variables_lookup = lookup_df[lookup_df["country"] == key
+        select_variables_lookup = lookup_df[lookup_df["country"] == key]
         df_temp = select_variables(df_temp, select_variables_lookup, config)
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
