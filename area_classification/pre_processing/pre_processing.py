@@ -22,12 +22,16 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_excluded_form_code"
         
-        #Convert counts to percentages
-        df_temp = convert_to_percentages(
-            dfs[key].copy(), 
-            area_code_column_name=config[join_column_name], 
-            excluded_form_code=config[exclude_form_code_key]
-        )
+        if key == "scot":
+            print("Key 'scot' skipped as already precentages")
+        else:
+        # Perform processing here
+                        #Convert counts to percentages
+            df_temp = convert_to_percentages(
+                dfs[key].copy(), 
+                area_code_column_name=config[join_column_name], 
+                excluded_form_code=config[exclude_form_code_key]
+            )
         #Aggregate variables which need to be combined categories (for just England)
         file_config = aggregation_config[key + '_file_configs']
         df_temp = batch_ag_columns(df_temp, file_config, config)
