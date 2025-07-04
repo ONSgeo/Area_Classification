@@ -53,9 +53,14 @@ Table codes generally start with "UV".
 Within the data folder, create two new folders one called 'inputs', and another called 'lookups'. 
 
 Within the data/inputs folder create another folder called 'scot_inputs'
-Save the Scot tables into data/inputs/scot_inputs.
+Save the Scot tables into data/inputs/scot_inputs. List scot tables to download. includding UV303a which is Scot diability data.
 
 Within the data/lookups folder, save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+
+Manually save England and Wales disability data [disabilitycensus2021.xlsx from our SharePoint](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ESTsbP6yeyJEqlAWqFI8E0MBKjSyzvNrxTzrfJozjRzYvA?e=LfgQr2&isSPOFile=1&xsdata=MDV8MDJ8fGQ0MTI1MTE5M2IzOTQ1MzU3NDM1MDhkZGFhNzQ2OTc5fDA3ODgwN2JmY2U4MjQ2ODhiY2UwMGQ4MTE2ODRkYzQ2fDB8MHw2Mzg4NTQxMzkxMTg5NzQwMDV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPakJrWkRkaU5ERTNNVFV4WkRRM1pUTTRZelF3TXpRME9UZ3paamRsWWpjeFFIUm9jbVZoWkM1Mk1pOXRaWE56WVdkbGN5OHhOelE1T0RFM01URXhOakE0fGRjY2Y5OGM4MTJkZDQ4YjA3NDM1MDhkZGFhNzQ2OTc5fDZjYzBhZjc0ZGE4ZjQ4NmJiNmU2ZWVhOWM2YzIwZjhm&sdata=b2RXMXY5azRTUjhYWlg1V2RVTjNIanJoVTJKbXAxUmVMN3pQcCs3REJFbz0%3D&ovuser=078807bf-ce82-4688-bce0-0d811684dc46%2CElla.Goodman%40ons.gov.uk) into data/inputs/ew_downloads folder 
+
+Manually save Northern Ireland and Wales disability data * Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables) into data/inputs/ni_downloads folder 
+
 
 #### Data download
 

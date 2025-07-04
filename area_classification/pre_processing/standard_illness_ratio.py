@@ -37,20 +37,20 @@ def sir_processing(config):
 
     if config["england_wales_disability_file"] in missing_files:
         print(f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory.")
-        convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
+        convert_disability_age_group_england_wales(config["ew_input_folder"] + config["england_wales_disability_input"], config)
     if config["ni_disability_file"] in missing_files:
         print(f"Warning: The file {config['ni_disability_file']} was not found in the input directory.")
-        convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
+        convert_disability_age_group_northern_ireland(config["ni_input_folder"] + config["ni_disability_input"], config)
     if config["scotland_disability_file"] in missing_files:
-        convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
+        convert_disability_age_group_scotland(config["scot_input_folder"] + config["scotland_disability_input"], config)
         print(f"Warning: The file {config['scotland_disability_file']} was not found in the input directory.")        
 
 
         print(f"Warning: The following files were not found: {missing_files}")
 
-    ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
-    ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
-    scotland_disability_df = pd.read_csv(config["input_data_directory"]+config["scotland_disability_file"])
+    ew_disability_df = pd.read_csv(config["ew_input_folder"]+config["england_wales_disability_file"])
+    ni_disability_df = pd.read_csv(config["ni_input_folder"]+config["ni_disability_file"])
+    scotland_disability_df = pd.read_csv(config["scot_input_folder"]+config["scotland_disability_file"])
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df],)
     # Scotland excluded because it doesnt have council area codes 
