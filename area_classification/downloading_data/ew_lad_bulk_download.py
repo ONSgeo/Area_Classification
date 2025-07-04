@@ -61,11 +61,7 @@ def get_census_table_urls(config: dict) -> list:
 
     # Remove the tables without OA
     zip_urls = list(set(zip_urls) - set(no_oa_tables))
-
-    # Create output directories for the census tables
-    os.makedirs("./output_data/csv", exist_ok=True)
-    # os.makedirs("./output_data/parquet", exist_ok=True)  # Commented out as in the R code
-
+    
     return zip_urls
 
 def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
@@ -147,7 +143,8 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         df.rename(columns={"geography code": "LTLA"}, inplace=True)
 
         # Write the DataFrame to a CSV file
-        output_csv_path = os.path.join("./test_outputs/", f"{t_name}.csv")
+        output_csv_path = os.path.join(config["input_data_filepath"], "./ew_downloads/", f"{t_name}.csv")
+
         os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
         df.to_csv(output_csv_path, index=False)
 
@@ -181,8 +178,12 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
         .assign(Variable_Name=lambda df: df['Variable_Name'].str.replace(
             df['Table_Name'] + ': ', '', regex=False))
     )
+    
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["output_directory"]), exist_ok=True)
+
     # Write the resulting DataFrame to a CSV file
-    meta_data_table.to_csv(os.path.join(config["output_directory"], "ew_lad_table_metadata.csv"), index=False)
+    meta_data_table.to_csv(os.path.join(config["input_data_directory"], "ew_lad_table_metadata.csv"), index=False)
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ def main_pipeline():
 
     # Step 1: Download england and wales data
     ew_lad_bulk_download(config)
-    ew_df =load_format_data(config["input_data_filepath"], config["england_wales_file_pattern"],config["england_wales_join_column_name"])
+    ew_df = load_format_data(config["input_data_filepath"], config["england_wales_file_pattern"],config["england_wales_join_column_name"])
 
 
     # Step 2: Download Northen Ireland data
