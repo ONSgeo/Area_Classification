@@ -50,6 +50,13 @@ Table codes generally start with "UV".
 ## Methodology / process description
 
 ### Set Up
+Within the data folder, create two new folders one called 'inputs', and another called 'lookups'. 
+
+Within the data/inputs folder create another folder called 'scot_inputs'
+Save the Scot tables into data/inputs/scot_inputs.
+
+Within the data/lookups folder, save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+
 #### Data download
 
 Do the manual data downloads first before running any of the scripts. Ensure they are in the same directory where the downloads will be stored. 

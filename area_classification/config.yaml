@@ -2,8 +2,19 @@
 
 working_directory : ~/Area_Classification
 
-LAD_lookup_file_path: 'area_classification/downloading_data/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
-scot_input_folder: 'D:/Repos/Area_Classification_data'
+#File paths which will need amending
+
+
+
+#File paths which should not need amending
+
+
+#The LAD lookup table should be saved in inputs
+LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
+#The manually downloaded Scot tables should be saved in inputs
+scot_input_folder: 'data/inputs/scot_downloads'
+
+
 select_variables_lookup: 'area_classification/pre_processing/UK_selected_codes_lookup.csv'
 
 qa_folder_path: './data/QA/'
