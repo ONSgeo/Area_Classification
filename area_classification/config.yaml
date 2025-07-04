@@ -12,8 +12,6 @@ working_directory : ~/Area_Classification
 #The LAD lookup table should be saved in inputs
 LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
-ew_input_folder: 'data/inputs/ew_downloads/'
-ni_input_folder: 'data/inputs/ni_downloads/'
 scot_input_folder: 'data/inputs/scot_downloads/'
 
 select_variables_lookup: 'area_classification/pre_processing/UK_selected_codes_lookup.csv'
@@ -36,9 +34,9 @@ england_wales_disability_file: "ew_disability_age_group.csv"
 ni_disability_file: "ni_disability_age_group.csv"
 scotland_disability_file: "scot_disability_age_group.csv"
 
-england_wales_disability_input: "disabilitycensus2021.xlsx"
-ni_disability_input: "census-2021-ms-d02.xlsx"
-scotland_disability_input: "UV303a.csv"
+england_wales_disability_input: "ew_downloads/disabilitycensus2021.xlsx"
+ni_disability_input: "ni_downloads/census-2021-ms-d02.xlsx"
+scotland_disability_input: "scot_downloads/UV303a.csv"
 
 ew_file_pattern: "ts???*.csv"
 ew_join_column_name: "LTLA"
@@ -48,8 +46,8 @@ ni_file_pattern: "ni???.csv"
 ni_join_column_name: "LGD"
 ni_excluded_form_code: ["ts006"]
 
-scot_join_column_name: "LGD"
-scot_excluded_form_code: ["ts006"]
+scot_join_column_name: "CA19"
+scot_excluded_form_code: ["population_density"]
 
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
