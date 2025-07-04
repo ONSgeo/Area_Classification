@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import numpy as np
 import csv
+from functools import reduce
 
 
 def scot_reformatting_wrapper(input_directory: str, 
@@ -101,10 +102,10 @@ Parameters:
     meta_data_table.loc[meta_data_table['Variable_ID'] == 'population_density', 'Type'] = 'Ratio'
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
     # Saving to QA currently, may need to move
-    output_file_path = os.path.join(config["qa_folder_path"], "scot_LAD_table_metadata.csv")
+    output_file_path = os.path.join(config["input_data_directory"], "scot_LAD_table_metadata.csv")
 
     # Save the metadata table to the specified path
     meta_data_table.to_csv(output_file_path, index=False)
@@ -635,6 +636,9 @@ def replace_variable_names_with_codes(input_directory, config):
             ]:
                 df = df.iloc[:, :-1]
 
+             # Ensure QA directory exists
+            os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+            
             # Save the modified DataFrame 
             QA_file_path = os.path.join(config["qa_folder_path"], file_name)
             df.to_csv(QA_file_path, index=False, header=True)
@@ -670,24 +674,26 @@ def concat_reformatted_tables(config):
     dataframes = []
 
     # Loop through the files and read them into DataFrames
-    for i, file in enumerate(files):
+    for file in files:
         file_path = os.path.join(folder_path, file)
         df = pd.read_csv(file_path)  # Read the CSV file
         
-        # Ignore the first column for all tables except the first one
-        if i > 0:
-            df = df.iloc[:, 1:]  # Select all columns except the first one
+        # Extract the first column as the join key and the rest as the data
+        join_key = df.iloc[:, 0]  # First column
+        data = df.iloc[:, 1:]  # All columns except the first one
         
-        dataframes.append(df)  # Append the DataFrame to the list
+        # Add the join key as an index to the DataFrame for merging
+        data.index = join_key
+        dataframes.append(data)  # Append the DataFrame to the list
 
-    # Concatenate all DataFrames into one
-    result = pd.concat(dataframes, axis = 1, ignore_index=False)
-
+    # Merge all DataFrames on their index (the first column of each file which is area code)
+    result = reduce(lambda left, right: pd.merge(left, right, left_index=True, right_index=True, how='outer'), dataframes)
+    
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
     
     # Save the concatenated DataFrame to a new CSV file (optional)
-    concatenated_file_path = os.path.join(config["qa_folder_path"], "scot_concatenated_result.csv")
+    concatenated_file_path = os.path.join(config["input_data_directory"], "CA19_concat.csv")
     result.to_csv(concatenated_file_path, index=False)
     print(f"Concatenated table saved to: {concatenated_file_path}")
 
