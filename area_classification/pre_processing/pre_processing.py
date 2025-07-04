@@ -9,7 +9,7 @@ from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
-def pre_processing(ew_df, ni_df, scot_df config):
+def pre_processing(ew_df, ni_df, scot_df, config):
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = config["select_variables_lookup"]
     dfs = {"england_wales": ew_df, "ni": ni_df} #"scotland": scot_df}
