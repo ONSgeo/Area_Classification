@@ -1,3 +1,4 @@
+import os
 from area_classification.utilities.load_config import load_config
 from area_classification.utilities.loading_data import load_format_data
 from area_classification.downloading_data.ew_lad_bulk_download import ew_lad_bulk_download
@@ -15,7 +16,8 @@ def main_pipeline():
 
     # Step 1: Download england and wales data
     ew_lad_bulk_download(config)
-    ew_df = load_format_data(config["input_data_filepath"], config["england_wales_file_pattern"],config["england_wales_join_column_name"])
+    ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
+    ew_df = load_format_data(ew_input_csv_path, config["england_wales_file_pattern"],config["england_wales_join_column_name"], config)
 
 
     # Step 2: Download Northen Ireland data
