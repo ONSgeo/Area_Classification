@@ -11,11 +11,13 @@ scot_input_folder: 'D:/Repos/Area_Classification_data'
 select_variables_lookup: "area_classification/pre_processing/UK_selected_codes_lookup.csv"
 
 qa_folder_path: './data/QA/'
+
 ni_pop_density_filepath: 'D:/Output_Area_Classification/NI_downloaded_csv/pop_density/census-2021-ms-a14-LGD.xlsx' 
 input_data_directory: 'data/inputs/'
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 output_directory: 'data/output_data/'
+
 plot_directory: 'data/plots/'
 random_seed: 42
 

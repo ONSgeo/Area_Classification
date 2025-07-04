@@ -1,4 +1,5 @@
 import pandas as pd
+import sys
 import os
 from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.standard_illness_ratio import sir_processing
@@ -7,17 +8,11 @@ from area_classification.pre_processing.Aggregating_variables import batch_ag_co
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 
-import sys
-import os
-
-
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
-def pre_processing(ew_df, ni_df, scot_df, config):
+def pre_processing(ew_df, ni_df, scot_df config):
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = config["select_variables_lookup"]
-    # Load the lookup table
-    lookup_df = pd.read_csv(select_variables_lookup)
-    dfs = {"england_wales": ew_df, "ni": ni_df}#, "scotland": scot_df}
+    dfs = {"england_wales": ew_df, "ni": ni_df} #"scotland": scot_df}
 
     sir_output_df = sir_processing(config)
 
@@ -47,11 +42,12 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # Occurs where Area code is combined for small areas 
         for idx, row in df_temp[df_temp["SIR"].isna()].iterrows():
             area_code = row[config[join_column_name]]
-            match_in_sir = sir_output_df[sir_output_df["area_code"].str.contains(str(area_code), na=False)]
+            match_in_sir = sir_output_df[sir_output_df["Area_Code"].str.contains(str(area_code), na=False)]
             if not match_in_sir.empty:
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
+
         #Select the 60 variables a used in previous itterations of the area classification
-        select_variables_lookup = lookup_df[lookup_df["country"] == key]
+        select_variables_lookup = lookup_df[lookup_df["country"] == key
         df_temp = select_variables(df_temp, select_variables_lookup, config)
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
@@ -61,11 +57,12 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     #Combine the three dataframes for censuses into one
     combined_df = pd.concat([dfs["england_wales"], dfs["ni"], dfs["scotland"]], ignore_index=True)
 
+
     # setting combined to england and wales for testing only!
     # combined_df = dfs["england_wales"]
-    
-    # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+                                            
+    #Ensure QA directory exists
+                                            os.makedirs(os.psth.dirname(config["qa_folder_path"]), exist_ok=True)
 
     combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni_scot.csv", index=False)
 
@@ -75,9 +72,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 if __name__ == "__main__":
     # Example usage
     config = load_config('area_classification/config.yaml')
-    ew_df = pd.read_csv('D:/Output_Area_Classification/All_tables/ew_concat.csv')  # Replace with actual path
-    ni_df = pd.read_csv('D:/Output_Area_Classification/All_tables/ni_concat.csv')
-    scot_df = pd.read_csv("D:/Output_Area_Classification/All_tables/scot_concatenated_result.csv")
+    ew_df = pd.read_csv('ew_concat.csv')  # Replace with actual path
+    ni_df = pd.read_csv('ni_concat.csv')
+    #scot_df = pd.read_csv('scot_concat.csv')
 
     processed_df = pre_processing(ew_df, ni_df, scot_df, config)
     print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)
