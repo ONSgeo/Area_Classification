@@ -488,7 +488,7 @@ def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
     # Process each CSV file in the input directory
     # Process each CSV file in the input directory, skipping uv101b.csv
     for file_name in os.listdir(input_directory):
-        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv" and "population_density.csv":
+        if file_name.lower() in ["uv101b.csv", "uv303a.csv", "uv103.csv", "migrant_indicator_percentage.csv", "population_density.csv"]:
             continue
         file_path = os.path.join(input_directory, file_name)
             
@@ -670,31 +670,36 @@ def concat_reformatted_tables(config):
     # List all files in the folder that start with "reformat"
     files = [f for f in os.listdir(folder_path) if f.startswith("reformat") and f.endswith(".csv")]
 
-    # Initialize an empty list to store DataFrames
-    dataframes = []
+    # Initialize the result DataFrame
+    result = None
 
     # Loop through the files and read them into DataFrames
     for file in files:
         file_path = os.path.join(folder_path, file)
+        print(file_path)
         df = pd.read_csv(file_path)  # Read the CSV file
         
-        # Extract the first column as the join key and the rest as the data
+        # Extract the first column as the join key
         join_key = df.iloc[:, 0]  # First column
-        data = df.iloc[:, 1:]  # All columns except the first one
+        #print(join_key)
         
-        # Add the join key as an index to the DataFrame for merging
-        data.index = join_key
-        dataframes.append(data)  # Append the DataFrame to the list
+        if result is None:
+            # For the first file, include all columns and set the first column as the index
+            result = df.copy()  # Keep all columns, including the join key
+            print(result)
+            result.set_index(result.columns[0], inplace=True)  # Set the first column as the index
+        else:
+            # For subsequent files, exclude the first column and merge based on the join key
+            data = df.set_index(df.columns[0]).iloc[:, :]  # Set the first column as the index
+            result = pd.merge(result, data, left_index=True, right_index=True, how='outer')
+            print(result)
 
-    # Merge all DataFrames on their index (the first column of each file which is area code)
-    result = reduce(lambda left, right: pd.merge(left, right, left_index=True, right_index=True, how='outer'), dataframes)
-    
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
     
     # Save the concatenated DataFrame to a new CSV file (optional)
     concatenated_file_path = os.path.join(config["input_data_directory"], "CA19_concat.csv")
-    result.to_csv(concatenated_file_path, index=False)
+    result.to_csv(concatenated_file_path, index=True)
     print(f"Concatenated table saved to: {concatenated_file_path}")
 
     return result
