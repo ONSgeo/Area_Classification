@@ -2,40 +2,27 @@
 
 working_directory : ~/Area_Classification
 
-#File paths which will need amending
-
-
-
-#File paths which should not need amending
-
-#The LAD and select codes lookup tables should be saved in the lookups folder
+#*****FILE PATHS WHICH MAT NEED AMENDING*****
+#The LAD lookup tables should be saved in the lookups folder
 LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
-select_variables_lookup: 'area_classification/data/lookups/UK_selected_codes_lookup.csv'
+
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: 'data/inputs/scot_downloads/'
 
-select_variables_lookup: "data/lookups/UK_selected_codes_lookup.csv"
+# Manually downloaded table file paths
+ni_pop_density_filepath: 'data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx' 
+
+#*****FILE PATHS WHICH SHOULD NOT NEED AMENDING*****
+# Variables lookup
+select_variables_lookup: 'data/lookups/UK_selected_codes_lookup.csv'
+
+#General file paths
+input_data_directory: 'data/inputs'
 qa_folder_path: './data/QA/'
-
-ni_pop_density_filepath: "data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx" 
-input_data_directory: "data/inputs"
-number_of_clusters: 8
-number_of_times_k_means_initialised: 10 # 1000 for real run
-#output_directory: 'data/output_data/'
-
+output_directory: 'data/output_data/'
 plot_directory: 'data/plots/'
-random_seed: 42
 
-select_variables_lookup: "data/lookups/UK_selected_codes_lookup.csv"
-
-england_wales_disability_file: "ew_disability_age_group.csv"
-ni_disability_file: "ni_disability_age_group.csv"
-scotland_disability_file: "scot_disability_age_group.csv"
-
-england_wales_disability_input: "ew_downloads/disabilitycensus2021.xlsx"
-ni_disability_input: "ni_downloads/census-2021-ms-d02.xlsx"
-scotland_disability_input: "scot_downloads/UV303a.csv"
-
+#Downloading data config
 ew_file_pattern: "ts???*.csv"
 ew_join_column_name: "LTLA"
 ew_excluded_form_code: ["ts006"]
@@ -46,6 +33,20 @@ ni_excluded_form_code: ["population_density"]
 
 scot_join_column_name: "CA19"
 scot_excluded_form_code: ["population_density"]
+
+#SIR config
+england_wales_disability_file: "ew_disability_age_group.csv"
+ni_disability_file: "ni_disability_age_group.csv"
+scotland_disability_file: "scot_disability_age_group.csv"
+
+england_wales_disability_input: "ew_downloads/disabilitycensus2021.xlsx"
+ni_disability_input: "ni_downloads/census-2021-ms-d02.xlsx"
+scotland_disability_input: "scot_downloads/UV303a.csv"
+
+#Clustering config
+number_of_clusters: 8
+number_of_times_k_means_initialised: 10 # 1000 for real run
+random_seed: 42
 
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [

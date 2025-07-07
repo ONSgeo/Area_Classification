@@ -676,23 +676,19 @@ def concat_reformatted_tables(config):
     # Loop through the files and read them into DataFrames
     for file in files:
         file_path = os.path.join(folder_path, file)
-        print(file_path)
         df = pd.read_csv(file_path)  # Read the CSV file
         
         # Extract the first column as the join key
         join_key = df.iloc[:, 0]  # First column
-        #print(join_key)
         
         if result is None:
             # For the first file, include all columns and set the first column as the index
             result = df.copy()  # Keep all columns, including the join key
-            print(result)
             result.set_index(result.columns[0], inplace=True)  # Set the first column as the index
         else:
             # For subsequent files, exclude the first column and merge based on the join key
             data = df.set_index(df.columns[0]).iloc[:, :]  # Set the first column as the index
             result = pd.merge(result, data, left_index=True, right_index=True, how='outer')
-            print(result)
 
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)

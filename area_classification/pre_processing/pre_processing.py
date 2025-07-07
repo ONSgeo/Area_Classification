@@ -69,9 +69,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     combined_df = pd.concat([dfs["ew"], dfs["ni"], dfs["scot"]], ignore_index=True)
                                             
     #Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
-    combined_df.to_csv(config["qa_folder_path"]+"pre_processed_data_ew_ni_scot.csv", index=False)
+    combined_df.to_csv(config["input_data_directory"]+"pre_processed_data_ew_ni_scot.csv", index=False)
 
     return combined_df
 
