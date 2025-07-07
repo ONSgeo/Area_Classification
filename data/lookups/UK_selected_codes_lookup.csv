@@ -97,7 +97,7 @@ Semi-detached,ni1990003,ni199,Accommodation Type,ni,v36
 Terraced (including end-terrace),ni1990004,ni199,Accommodation Type,ni,v37
 Lives in a flat,flat,ni003,Household: Accommodation Type,ni,v38
 Two or more cars or vans,ni2210004,ni221,Car or Van Availability - 3 Categories,ni,v39
-Under occupation,under_occupation ,ni153,Household: Rooms (Occupancy Rating),ni,v40
+Under occupation,under_occupation,ni153,Household: Rooms (Occupancy Rating),ni,v40
 Overcrowding,ni1520003,ni152,Household: Rooms (Occupancy Rating) - 3 Categories,ni,v41
 Social rented,ni1070003,ni107,Household: Tenure - 5 Categories,ni,v42
 Private rented,ni1070004,ni107,Household: Tenure - 5 Categories,ni,v43
@@ -114,7 +114,7 @@ L15 Full-time students,ni1490017,ni149,National Statistics Socio-economic Classi
 7. Sales and customer service occupations,ni1550008,ni155,Occupation (Current) - 10 Categories,ni,v54
 8. Process plant and machine operatives,ni1550009,ni155,Occupation (Current) - 10 Categories,ni,v55
 9. Elementary occupations,ni1550010,ni155,Occupation (Current) - 10 Categories,ni,v56
-Economically active: Unemployed,economically_active ,ni050,Economic Activity - 12 Categories,ni,v57
+Economically active: Unemployed,economically_active,ni050,Economic Activity - 12 Categories,ni,v57
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,ni110,Qualifications (Highest Level),ni,v58
 Level 3 qualifications,ni1100006,ni110,Qualifications (Highest Level),ni,v59
 Level 4 qualifications or above,ni1100007,ni110,Qualifications (Highest Level),ni,v60
