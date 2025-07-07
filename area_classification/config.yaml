@@ -14,13 +14,12 @@ LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Na
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: 'data/inputs/scot_downloads/'
 
-select_variables_lookup: 'area_classification/pre_processing/UK_selected_codes_lookup.csv'
+select_variables_lookup: "data/lookups/UK_selected_codes_lookup.csv"
 
-qa_folder_path: './data/QA/'
+qa_folder_path: "data/QA/"
 
-ni_pop_density_filepath: 'D:/Repos/Area_Classification_data/census-2021-ms-a14-LGD.xlsx' 
-input_data_directory: 'data/inputs/'
-
+ni_pop_density_filepath: "data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx" 
+input_data_directory: "data/inputs"
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
 #output_directory: 'data/output_data/'
@@ -42,9 +41,9 @@ ew_file_pattern: "ts???*.csv"
 ew_join_column_name: "LTLA"
 ew_excluded_form_code: ["ts006"]
 
-ni_file_pattern: "ni???.csv"
+ni_file_pattern: "ni*.csv"
 ni_join_column_name: "LGD"
-ni_excluded_form_code: ["ts006"]
+ni_excluded_form_code: ["population_density"]
 
 scot_join_column_name: "CA19"
 scot_excluded_form_code: ["population_density"]
