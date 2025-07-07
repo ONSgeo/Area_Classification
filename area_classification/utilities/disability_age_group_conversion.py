@@ -105,6 +105,9 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     # Replace council area names with LAD codes
     result_df["CA19"] = result_df["CA19"].str.strip().str.lower().map(lookup_dict).fillna(result_df["CA19"])
 
+    output_path = Path(config["input_data_directory"]) / "scot_disability_age_group.csv"
+    result_df.to_csv(output_path, index=False)
+
 	# Save to data QA folder
 	#output_file_path = user_config["qa_folder_path"] + "Scot_disability_input.csv"
     #result_df.to_csv(output_file_path, index=False)
