@@ -48,11 +48,11 @@ def sir_processing(config):
 
         print(f"Warning: The following files were not found: {missing_files}")
 
-    ew_disability_df = pd.read_csv(config["ew_input_folder"]+config["england_wales_disability_file"])
-    ni_disability_df = pd.read_csv(config["ni_input_folder"]+config["ni_disability_file"])
-    scotland_disability_df = pd.read_csv(config["scot_input_folder"]+config["scotland_disability_file"])
+    ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
+    ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
+    scotland_disability_df = pd.read_csv(config["input_data_directory"]+config["scotland_disability_file"])
     combined_disability_df = pd.concat(
-        [ew_disability_df, ni_disability_df, scotland_disability_df],)
+        [ew_disability_df, ni_disability_df, scotland_disability_df])
     # Scotland excluded because it doesnt have council area codes 
     sir_output_df = SIR_calculation(combined_disability_df, config)
     return sir_output_df
