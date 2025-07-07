@@ -42,7 +42,7 @@ ew_excluded_form_code: ["ts006"]
 
 ni_file_pattern: "ni???.csv"
 ni_join_column_name: "LGD"
-ni_excluded_form_code: ["ts006"]
+ni_excluded_form_code: ["population_density"]
 
 scot_join_column_name: "CA19"
 scot_excluded_form_code: ["population_density"]
