@@ -44,23 +44,19 @@ Table codes generally start with "UV".
 
 ## Look ups
 * [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/pre_processing/Selected_codes_lookup.csv) has been created to run the EW, NI and Scot area classification for LAD. This will need updating if choosing to run at another level of geography or different combination of census'.
-* Local_Authority_Districts_(December_2022)_Names_and_Codes_UK was downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
-
+* A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo in 'data/lookups' folder, if saved elsewhere update the file path in the config.yaml.
 
 ## Methodology / process description
 
 ### Set Up
-Within the data folder, create two new folders one called 'inputs', and another called 'lookups'. 
+Within the data folder, a folder called 'lookups' should already exist. In this 'data/lookups' download save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
 
-Within the data/lookups folder, save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+Going back to the 'data' folder, create a new folder called 'inputs'.
 
-Manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021) into data/inputs/ew_downloadsfolder. The file name should be 'disabilitycensus2021.xlsx'.
-
-Manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables) into data/inputs/ni_downloads folder. The file should be named 'census-2021-ms-d02.xlsx'.
-
-Within the data/inputs folder create another folder called 'scot_inputs'
-Download and save the following Scot tables into data/inputs/scot_inputs: 
-
+Within the 'data/inputs' folder create three new folders:
+* 'ew_downloads'. In this folder manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
+* 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.
+* 'scot_downloads'. In this folder Download and save the following Scot tables into data/inputs/scot_inputs: 
 | table_ID |	table_name |	country |
 | -------- |   ---------- |   ------- |
 | UV101b |	Usual resident population by sex by age (6) |	scot|
@@ -82,20 +78,15 @@ Download and save the following Scot tables into data/inputs/scot_inputs:
 | UV606 |	Occupation |	scot|
 | UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
-Additionally download and save: 
-* The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
-* Scotlands's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx).
-* Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml).
-
-
+   - Additionally in the 'data/inputs/scot_downloads' folder download and save: 
+      - The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
+      - Scotlands's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx).The file should be renamed 'population_density.csv'.
+      - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
 
 
 #### Data download
 
 Do the manual data downloads first before running any of the scripts. Ensure they are in the same directory where the downloads will be stored. 
-
-#### Look ups
-A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo data folder, if saved elsewhere update the file path in the config.yaml.
 
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
