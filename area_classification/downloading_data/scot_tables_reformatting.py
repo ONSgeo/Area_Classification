@@ -126,6 +126,7 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     Args:
         - scot_input_folder (str): Path to the directory containing the input CSV files.
         - LAD_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
+        - config (dict): Configuration dictionary.
     """
     # Look for UV101b.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV101b.csv")
@@ -193,6 +194,7 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     Args:
         - scot_input_folder (str): Path to the directory containing the input CSV file.
         - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
+        - config (dict): Configuration dictionary.
     """
     # Look for UV103.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV103.csv")
@@ -254,6 +256,7 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     Args:
         - scot_input_folder (str): Path to the directory containing the input CSV file
         - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
+        - config (dict): Configuration dictionary.
     Returns:
         None
     """
@@ -334,6 +337,7 @@ def reformat_pop_density(scot_input_folder, config):
     
     Args:
         - scot_input_folder (str): Path to the directory containing the input CSV files.
+        - config (dict): Configuration dictionary.
     """
     import os
     import pandas as pd
@@ -477,6 +481,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     Parameters:
     - scot_input_folder (str): Path to the directory containing input CSV files.
     - LAD_lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
+    - config (dict): Configuration dictionary.
     
     """
     # Load the LAD codes and names lookup file
@@ -531,7 +536,7 @@ def remove_rows(config):
     Modifies the files in place by performing specific preprocessing steps.
 
     Parameters:
-    - scot_input_folder (str): Path to the directory containing the CSV files.
+    - config (dict): Configuration dictionary.
     """
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
