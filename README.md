@@ -60,7 +60,9 @@ Manually download and save Northern Ireland disability data [MS-D02 Long-term he
 
 Within the data/inputs folder create another folder called 'scot_inputs'
 Download and save the following Scot tables into data/inputs/scot_inputs: 
+
 | table_ID |	table_name |	country |
+| -------- |   ---------- |   ------- |
 | UV101b |	Usual resident population by sex by age (6) |	scot|
 | UV103 |	Age |	scot|
 | UV104 |	Marital and civil partnership status |	scot|
