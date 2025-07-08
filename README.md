@@ -50,9 +50,12 @@ Table codes generally start with "UV".
 
 ### Set Up - folders and download data
 
-As mentioned aboce, some data requires manual downlaods, so before running any of the scripts, ensure the data listed balow has been downloaded and saved in the correct locations listed. 
+As mentioned above, some data requires manual downlaods, so before running any of the scripts, ensure the data listed balow has been downloaded and saved in the correct locations listed.
 
-Within the data folder, a folder called 'lookups' should already exist. In this 'data/lookups' download save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+
+When your repository is cloned, find the repository within your file explorer.
+Locate the 'data' folder, a folder called 'lookups' should already exist. In this 'data/lookups' folder download save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
 
 Going back to the 'data' folder, create a new folder called 'inputs'.
 
