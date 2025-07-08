@@ -17,7 +17,7 @@ ni_pop_density_filepath: 'data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx'
 select_variables_lookup: 'data/lookups/UK_selected_codes_lookup.csv'
 
 #General file paths
-input_data_directory: 'data/inputs'
+input_data_directory: 'data/inputs/'
 qa_folder_path: './data/QA/'
 output_directory: 'data/output_data/'
 plot_directory: 'data/plots/'

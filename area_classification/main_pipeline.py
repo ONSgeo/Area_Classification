@@ -26,8 +26,7 @@ def main_pipeline():
     ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
-    #MANUALLY Create a folder in data / inputs / scot_downloads to save the Scot tables to
-    # Step 3: Processing of Scotland data
+    # Step 3: Processing of Scotland data which was manually downloaded
     scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
 
     # Step 4: pre-processing
