@@ -58,7 +58,7 @@ Going back to the 'data' folder, create a new folder called 'inputs'.
 
 Within the 'data/inputs' folder create three new folders:
 * 'ew_downloads'. In this folder manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
-* 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.
+* 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx). The file should be named 'census-2021-ms-d02.xlsx'.
      - Within the 'data/inputs/ni_downlaods' also save Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.
 * 'scot_downloads'. In this folder Download and save the following Scot tables into data/inputs/scot_inputs:
   
