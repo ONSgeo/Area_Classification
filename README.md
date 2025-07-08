@@ -48,7 +48,10 @@ Table codes generally start with "UV".
 
 ## Methodology / process description
 
-### Set Up
+### Set Up - folders and download data
+
+As mentioned aboce, some data requires manual downlaods, so before running any of the scripts, ensure the data listed balow has been downloaded and saved in the correct locations listed. 
+
 Within the data folder, a folder called 'lookups' should already exist. In this 'data/lookups' download save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
 
 Going back to the 'data' folder, create a new folder called 'inputs'.
@@ -86,9 +89,7 @@ Within the 'data/inputs' folder create three new folders:
       - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
 
 
-#### Data download
 
-Do the manual data downloads first before running any of the scripts. Ensure they are in the same directory where the downloads will be stored. 
 
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
