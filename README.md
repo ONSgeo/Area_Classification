@@ -60,27 +60,25 @@ Manually download and save Northern Ireland disability data [MS-D02 Long-term he
 
 Within the data/inputs folder create another folder called 'scot_inputs'
 Download and save the following Scot tables into data/inputs/scot_inputs: 
-table_ID	table_name	country
-UV101b	Usual resident population by sex by age (6)	scot
-UV103	Age	scot
-UV104	Marital and civil partnership status	scot
-UV112	Household composition - People	scot
-UV201	Ethnic group (21) 	scot
-UV203	Multiple ethnic groups	scot
-UV204	Country of birth 	scot
-UV205	Religion	scot
-UV210	English language skills	scot
-UV301	Provision of unpaid care	scot
-UV401	Accommodation type - People	scot
-UV403	Household tenure - People	scot
-UV405	Car or van availability	scot
-UV415	Occupancy rating for bedrooms	scot
-UV501	Highest level of qualification	scot
-UV601	Economic activity	scot
-UV601	Economic activity	scot
-UV606	Occupation	scot
-UV607	National Statistics Socio-economic Classification (NS-SeC)	scot
-![image](https://github.com/user-attachments/assets/744c044b-2e10-43ad-b0dd-893a54bbfd48)
+| table_ID |	table_name |	country |
+| UV101b |	Usual resident population by sex by age (6) |	scot|
+| UV103 |	Age |	scot|
+| UV104 |	Marital and civil partnership status |	scot|
+| UV112 |	Household composition - People |	scot|
+| UV201 |	Ethnic group (21) | 	scot|
+| UV203 |	Multiple ethnic groups |	scot|
+| UV204 |	Country of birth | 	scot|
+| UV205 |	Religion |	scot|
+| UV210 |	English language skills |	scot|
+| UV301 |	Provision of unpaid care |	scot|
+| UV401 |	Accommodation type - People |	scot|
+| UV403 |	Household tenure - People |	scot|
+| UV405 |	Car or van availability |	scot|
+| UV415 |	Occupancy rating for bedrooms |	scot|
+| UV501 |	Highest level of qualification |	scot|
+| UV601 |	Economic activity |	scot|
+| UV606 |	Occupation |	scot|
+| UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
 Additionally download and save: 
 * The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
