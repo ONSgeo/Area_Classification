@@ -28,8 +28,8 @@ Data for E&W is collected from the bulk download availble on their census data p
 Data for NI is collected from the bulk download availble on their census data platforms ([NISRA flexible table builder](https://build.nisra.gov.uk/en/)). Table codes generally start with "ni".
 
 **Exceptions:**
-* Northern Ireland Census 2021 - [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). Popultion density for NI at other levels of geography is availble on [the UK Data Service](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density) **Note:** NI population density is in hectare's where as the others are in square KM, so this is converted in the code.
 * Ethnic group for Bangladeshi - this data is not available for Northern Ireland 2021 - read more in the [assumptions_caveats.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/aqa/assumptions_caveats.md)
+* Northern Ireland Census 2021 - [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). Popultion density for NI at other levels of geography is availble on [the UK Data Service](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density) **Note:** NI population density is in hectare's where as the others are in square KM, so this is converted in the code.
 * Northern Ireland disability data required to calculate SIR - [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables)
   
 ### Scotland
@@ -56,6 +56,7 @@ Going back to the 'data' folder, create a new folder called 'inputs'.
 Within the 'data/inputs' folder create three new folders:
 * 'ew_downloads'. In this folder manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
 * 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.
+     - Within the 'data/inputs/ni_downlaods' also save Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.
 * 'scot_downloads'. In this folder Download and save the following Scot tables into data/inputs/scot_inputs:
   
 | table_ID |	table_name |	country |
