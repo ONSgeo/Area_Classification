@@ -5,7 +5,7 @@ import csv
 from functools import reduce
 
 
-def scot_reformatting_wrapper(input_directory: str, 
+def scot_reformatting_wrapper(scot_input_folder: str, 
                               LAD_lookup_file_path: str, 
                               config: dict):
     """
@@ -18,7 +18,7 @@ def scot_reformatting_wrapper(input_directory: str,
     Note that the functions are hard coded to our scotland tables.
     
 Parameters:
-    - input_directory (str): Path to the input directory containing the CSV files.
+    - scot_input_folder (str): Path to the input directory containing the CSV files.
     - LAD_lookup_file_path (str): Path to the lookup file for council area names and codes.
     - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
 
@@ -42,23 +42,23 @@ Parameters:
 
     # function to extract metadata from files into table. 
     # 'metadata' is a list of table_name, table_id and unit variabless
-    metadata = extract_metadata_from_files(input_directory)
+    metadata = extract_metadata_from_files(scot_input_folder)
 
     # Replace council area names with their codes using look up
-    replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path)
+    replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, config)
 
     # Remove rows with metadata/no data (first 10 and bottom 3 rows)
-    remove_rows(input_directory)
+    remove_rows(config)
 
     # Reformat specific tables (UV101b, UV103, migrant indicator and population density table)
-    reformat_uv101b(input_directory, LAD_lookup_file_path)
-    reformat_uv103(input_directory, LAD_lookup_file_path)
-    reformat_migrant_indicator(input_directory, LAD_lookup_file_path)
-    reformat_pop_density(input_directory)
+    reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config)
+    reformat_uv103(scot_input_folder, LAD_lookup_file_path, config)
+    reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config)
+    reformat_pop_density(scot_input_folder, config)
 
     # Replace variable names with their codes
     # 'variable_names_ids' is a list of variable_names and variable_ids variables
-    variable_names_ids = replace_variable_names_with_codes(input_directory, config = config)
+    variable_names_ids = replace_variable_names_with_codes(config)
 
 
     # Add to metadata table
@@ -119,16 +119,16 @@ Parameters:
 
 
 # Function to reformat the UV101b CSV file
-def reformat_uv101b(input_directory, LAD_lookup_file_path):
+def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     """
     Function to reformat the UV101b CSV file so it has rows removed and CA codes instead of names.
     
     Args:
-        - input_directory (str): Path to the directory containing the input CSV files.
+        - scot_input_folder (str): Path to the directory containing the input CSV files.
         - LAD_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
     """
     # Look for UV101b.csv in the directory
-    file_path = os.path.join(input_directory, "UV101b.csv")
+    file_path = os.path.join(scot_input_folder, "UV101b.csv")
     if not os.path.exists(file_path):
         print("No file named UV101b.csv found in the directory.")
         return
@@ -178,25 +178,24 @@ def reformat_uv101b(input_directory, LAD_lookup_file_path):
         output_df['CA19'] = output_df['CA19'].str.strip().str.lower().map(lookup_dict).fillna(output_df['CA19'])
         
         # Save the final DataFrame to a new CSV file
-        output_file_path = os.path.join(input_directory, "reformat_UV101b.csv")
+        output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
-        print("Data formatting complete. Results saved to:", output_file_path)
     else:
         print("No relevant data found in UV101b.csv.")
 
 
 
 
-def reformat_uv103(input_directory, LAD_lookup_file_path):
+def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     """
     Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
 
     Args:
-        - input_directory (str): Path to the directory containing the input CSV file.
+        - scot_input_folder (str): Path to the directory containing the input CSV file.
         - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
     """
     # Look for UV103.csv in the directory
-    file_path = os.path.join(input_directory, "UV103.csv")
+    file_path = os.path.join(scot_input_folder, "UV103.csv")
     if not os.path.exists(file_path):
         print("No file named UV103.csv found in the directory.")
         return
@@ -240,26 +239,26 @@ def reformat_uv103(input_directory, LAD_lookup_file_path):
     reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
     # Save the reformatted DataFrame to a new CSV file
-    output_file_path = os.path.join(input_directory, "reformat_UV103.csv")
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV103.csv")
     reformatted_df.to_csv(output_file_path, index=False)
     print(f"Data formatting complete. Results saved to: {output_file_path}")
 
 
 
-def reformat_migrant_indicator(input_directory, LAD_lookup_file_path):
+def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     """
     Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total percentages
     to be the second column so that it is consistent with other tables.
     Replace CA names with codes.
 
     Args:
-        - input_directory (str): Path to the directory containing the input CSV file
+        - scot_input_folder (str): Path to the directory containing the input CSV file
         - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
     Returns:
         None
     """
     # Look for migrant_indicator.csv in the directory
-    file_path = os.path.join(input_directory, "migrant_indicator_percentage.csv")
+    file_path = os.path.join(scot_input_folder, "migrant_indicator_percentage.csv")
     if not os.path.exists(file_path):
         print("No file named migrant_indicator.csv found in the directory.")
         return
@@ -321,26 +320,26 @@ def reformat_migrant_indicator(input_directory, LAD_lookup_file_path):
     reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
     # Save the new DataFrame to a CSV file
-    output_file_path = os.path.join(input_directory, "reformat_migrant_indicator_percentage.csv")
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_migrant_indicator_percentage.csv")
     reformatted_df.to_csv(output_file_path, index=False)
 
     print("Data formatting complete. Results saved to:", output_file_path)
 
 
 
-def reformat_pop_density(input_directory):
+def reformat_pop_density(scot_input_folder, config):
     """
     Function to reformat the population density file so it has rows removed and column headers amended.
     Output has CA codes
     
     Args:
-        - input_directory (str): Path to the directory containing the input CSV files.
+        - scot_input_folder (str): Path to the directory containing the input CSV files.
     """
     import os
     import pandas as pd
 
     # Look for population_density.csv in the directory
-    file_path = os.path.join(input_directory, "population_density.csv")
+    file_path = os.path.join(scot_input_folder, "population_density.csv")
     if not os.path.exists(file_path):
         print("No file named population_density.csv found in the directory.")
         return
@@ -360,12 +359,12 @@ def reformat_pop_density(input_directory):
     df = df[df.iloc[:, 0] != 'S92000003']
 
     # Save to a CSV
-    output_file_path = os.path.join(input_directory, "reformat_population_density.csv")
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_population_density.csv")
     df.to_csv(output_file_path, index=False)
 
 
 
-def extract_metadata_from_files(input_directory):
+def extract_metadata_from_files(scot_input_folder):
     """
     Extracts metadata from CSV files in the specified input directory.
     Special handling is applied for the 'migrant_indicator_percentage.csv' and 'population_density.csv' files. 
@@ -378,7 +377,7 @@ def extract_metadata_from_files(input_directory):
         - unit: The unit of measure (e.g., "Person", "Household").
     """
     print("Running extract_metadata_from_files...")
-    la_files = os.listdir(input_directory)
+    la_files = os.listdir(scot_input_folder)
     metadata = []  # List to store metadata for each file
 
     
@@ -410,7 +409,7 @@ def extract_metadata_from_files(input_directory):
         table_id = os.path.splitext(t_tab_loc)[0]
 
         # Open the CSV file and extract row 5
-        with open(os.path.join(input_directory, t_tab_loc), "r") as f:
+        with open(os.path.join(scot_input_folder, t_tab_loc), "r") as f:
             reader = csv.reader(f)
             rows = list(reader)
             
@@ -471,12 +470,12 @@ def extract_metadata_from_files(input_directory):
 
 
 
-def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
+def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, config):
     """
     Replace council area names with council area codes in CSV files.
 
     Parameters:
-    - input_directory (str): Path to the directory containing input CSV files.
+    - scot_input_folder (str): Path to the directory containing input CSV files.
     - LAD_lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
     
     """
@@ -487,10 +486,10 @@ def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
 
     # Process each CSV file in the input directory
     # Process each CSV file in the input directory, skipping uv101b.csv
-    for file_name in os.listdir(input_directory):
+    for file_name in os.listdir(scot_input_folder):
         if file_name.lower() in ["uv101b.csv", "uv303a.csv", "uv103.csv", "migrant_indicator_percentage.csv", "population_density.csv"]:
             continue
-        file_path = os.path.join(input_directory, file_name)
+        file_path = os.path.join(scot_input_folder, file_name)
             
         # Read the input CSV file
         if "UV604" in file_name or "UV606" in file_name:
@@ -520,27 +519,27 @@ def replace_ca19_names_with_codes(input_directory, LAD_lookup_file_path):
         else:
             print(f"Column 0 not found in {file_name}. Skipping replacement.")
         # Save the reformat DataFrame to a new CSV file
-        reformat_file_path = os.path.join(input_directory, f"reformat_{file_name}")
+        reformat_file_path = os.path.join(config["qa_folder_path"], f"reformat_{file_name}")
         df.to_csv(reformat_file_path, index=False, header=False)
 
 
 
 
-def remove_rows(input_directory):
+def remove_rows(config):
     """
     Processes all CSV files in the input directory that start with 'reformat_'.
     Modifies the files in place by performing specific preprocessing steps.
 
     Parameters:
-    - input_directory (str): Path to the directory containing the CSV files.
+    - scot_input_folder (str): Path to the directory containing the CSV files.
     """
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
-    for file_name in os.listdir(input_directory):
+    for file_name in os.listdir(config["qa_folder_path"]):
         if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv" and "population_density.csv":
             continue
         if file_name.startswith("reformat_"):
-            file_path = os.path.join(input_directory, file_name)
+            file_path = os.path.join(config["qa_folder_path"], file_name)
             
             try:
                 # Read the CSV file
@@ -577,13 +576,13 @@ def remove_rows(input_directory):
 
 
 
-def replace_variable_names_with_codes(input_directory, config):
+def replace_variable_names_with_codes(config):
     """
     Replace the variable names with the variable ids.
     Extract the variable name and variable ids for use in the metadata table. 
 
     Parameters:
-    - input_directory (str): Path to the directory containing the CSV files.
+    - scot_input_folder (str): Path to the directory containing the CSV files.
     - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
 
     Returns:
@@ -592,10 +591,10 @@ def replace_variable_names_with_codes(input_directory, config):
     variable_names_ids = []  # Initialize a list to store variable_names and variable_ids for each file
 
     # Iterate through each file in the input directory
-    for file_name in os.listdir(input_directory):
+    for file_name in os.listdir(config["qa_folder_path"]):
         print(f"Checking file: {file_name}")  # Debugging print statement
         if "reformat_" in file_name and file_name.endswith(".csv"):  # Target only relevant CSV files
-            file_path = os.path.join(input_directory, file_name)
+            file_path = os.path.join(config["qa_folder_path"], file_name)
             
             # Read the CSV file
             df = pd.read_csv(file_path, on_bad_lines='warn', header=0)
@@ -651,6 +650,8 @@ def replace_variable_names_with_codes(input_directory, config):
     
     # Return the list of results
     return variable_names_ids
+
+
 
 def concat_reformatted_tables(config):
     """
