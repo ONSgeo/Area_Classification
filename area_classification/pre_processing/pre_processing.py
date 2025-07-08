@@ -48,7 +48,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # Occurs where Area code is combined for small areas 
         for idx, row in df_temp[df_temp["SIR"].isna()].iterrows():
             area_code = row[config[join_column_name]]
-            match_in_sir = sir_output_df[sir_output_df["Area_Code"].str.contains(str(area_code), na=False)]
+            match_in_sir = sir_output_df[sir_output_df["area_code"].str.contains(str(area_code), na=False)]
             if not match_in_sir.empty:
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
 
