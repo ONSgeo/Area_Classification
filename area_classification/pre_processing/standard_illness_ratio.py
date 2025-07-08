@@ -132,7 +132,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    EW_df = pd.read_csv("D:\\repos\\output_area_classification_project\\Area_Classification\\ew_disability_age_group.csv") 
+    EW_df = pd.read_csv("data/inputs/ew_disability_age_group.csv") 
     EW_df.rename(columns={'Area Code': 'area_code'}, inplace=True)
     EW_df.rename(columns={'Local Authority': 'local_authority'}, inplace=True)
 
