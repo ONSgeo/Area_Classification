@@ -22,7 +22,12 @@ def ni_lgd_download_data(config):
     Parameters
     ----------
     config : dict
-        main pipeline config dictionary
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the downloaded data and metadata as CSV files in the specified input directory.
     """    
 
     meta_data_table = download_ni_lgd_data(config)
@@ -38,8 +43,8 @@ def reformat_pop_density_ni(config):
 
     Parameters
     ----------
-    input_directory : str
-        Path to the directory containing the input Excel file.
+    config : dict
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
@@ -79,7 +84,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
     Parameters
     ----------
     config : dict
-        main pipeline config dictionary containing output path and other settings.
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
@@ -179,7 +184,12 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
     meta_data_table : pd.DataFrame
         ni metadata table to format and export
     config : dict
-        main pipeline config dictionary
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the formatted metadata table as a CSV file in the specified input directory.
     """    
     # rename units to match other scripts
     meta_data_table["Unit"] = meta_data_table["Unit"].replace(
@@ -212,8 +222,11 @@ def get_available_variables():
     parses the HTML content to extract table data, and returns the data as a list of lists.
     Each inner list represents a row in the table, containing the text content of each cell.
 
-    Returns:
-        list of list of str: A list where each element is a list representing a row of table data.
+    Returns
+    -------
+    list of lists
+        A list containing rows of table data, where each row is a list of cell values.
+        Each row also includes a column indicating whether the data is for PEOPLE or HOUSEHOLD.
     """
             
     table_data = []
@@ -241,19 +254,23 @@ def fetch_data(var_code, var_name, var_unit):
     This function constructs a URL based on the provided variable code, variable name, 
     and variable unit, then sends a GET request to fetch the corresponding data in CSV format.
 
-    Args:
+    Parameters
+    ----------
         var_code (str): The code of the variable to fetch.
         var_name (str): The name of the variable to fetch.
         var_unit (str): The unit of the variable to fetch.
 
-    Returns:
+    Returns
+    -------
         bytes: The content of the response if the request is successful.
         None: If the request fails, logs an error message and returns None.
 
-    Raises:
+    Raises
+    ------
         requests.exceptions.RequestException: If there is an issue with the HTTP request.
 
-    Notes:
+    Notes
+    -----
         - Some variables in the list may not have the correct dimensions (e.g., urban/rural).
         - Some variables may not be available at the Data Zone (DZ) level.
     """

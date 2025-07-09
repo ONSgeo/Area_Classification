@@ -40,7 +40,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     filepath : str
         filepath to the csv file containing the disability age group data.
     config : str
-        main config for pipeline
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
@@ -140,7 +140,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
     filepath : str
         path to downloaded excel file
     config : str
-        main config for pipeline
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
@@ -195,7 +195,7 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
     filepath : str
         filepath to the excel file containing the disability age group data.
     config : str
-        main config for pipeline
+        Configuration dictionary containing paths and file names.
         
     Returns
     -------

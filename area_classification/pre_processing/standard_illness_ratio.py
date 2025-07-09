@@ -22,6 +22,18 @@ from area_classification.utilities.disability_age_group_conversion import (
 
 
 def sir_processing(config):
+    """
+    Process disability data to calculate the Standard Illness Ratio (SIR) for each area code.
+
+    Parameters:
+    -----------
+    config (dict): Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    pd.DataFrame: DataFrame with SIR values calculated for each area code.
+    """
+
     # disability files by age -> sharepoint?
     # Check if required files exist in the input directory
     required_files = [
