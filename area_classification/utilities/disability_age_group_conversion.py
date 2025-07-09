@@ -105,7 +105,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     # Replace council area names with LAD codes
     result_df["CA19"] = result_df["CA19"].str.strip().str.lower().map(lookup_dict).fillna(result_df["CA19"])
 
-    df.rename(columns={'CA19': 'area_code'}, inplace=True)
+    result_df.rename(columns={'CA19': 'area_code'}, inplace=True)
     output_path = Path(config["input_data_directory"]) / "scot_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
 
