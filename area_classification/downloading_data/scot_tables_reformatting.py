@@ -112,7 +112,7 @@ Parameters:
     print(f"Metadata table saved to: {output_file_path}")
 
     # Concat the Scot tables
-    concat_reformatted_tables(config = config)
+    return concat_reformatted_tables(config=config).reset_index(drop=False)
    
 
 
