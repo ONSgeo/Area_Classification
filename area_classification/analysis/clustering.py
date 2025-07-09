@@ -51,7 +51,8 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
     elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
         # If a DataFrame is provided, use it directly
         print("Using provided DataFrame for clustering.")
-        variable_df = input_dataframe_or_filepath.copy()
+        variable_df = input_dataframe_or_filepath.copy().fillna(0)
+        # need to add code to check which columns contains zeros and warns
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
 
@@ -232,6 +233,9 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
                   the assigned cluster for each row.
     """
     df = input_df.copy()
+    if num_clusters > len(df):
+        print(f"Warning: Reducing num_clusters from {num_clusters} to {len(df)} (number of samples).")
+        num_clusters = len(df)
     # Initialize the K-means model
     kmeans_model = KMeans(n_clusters=num_clusters, max_iter=1000, random_state=random_seed, n_init=n_init)
     
