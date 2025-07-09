@@ -5,7 +5,17 @@ from functools import reduce
 
 def load_data(filepath):
     """
-    Input some docstring here ....
+    Function to load data from a CSV file and handle missing values.
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the CSV file to be loaded.
+    
+    Returns
+    -------
+    pd.DataFrame
+        A pandas DataFrame containing the data from the CSV file.
     """
     input_df = pd.read_csv(filepath, index_col=0)
     

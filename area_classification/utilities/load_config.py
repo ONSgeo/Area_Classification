@@ -5,6 +5,7 @@ def replace_username_in_dict(d, username: str, placeholder: str = "{USERNAME}"):
     """
     Recursively replaces all instances of a placeholder in a dictionary or list with
     the provided username.
+
     Parameters
     ----------
     d : dict, list, or str
@@ -14,6 +15,7 @@ def replace_username_in_dict(d, username: str, placeholder: str = "{USERNAME}"):
         The username to replace the placeholder with.
     placeholder : str, optional
         The string to be replaced by the username. Default is "{USERNAME}".
+        
     Returns
     -------
     dict, list, or str

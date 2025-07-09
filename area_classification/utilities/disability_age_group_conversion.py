@@ -3,6 +3,22 @@ from area_classification.utilities.load_config import load_config
 from pathlib import Path
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
+     """
+     Function to define age bands and their corresponding boolean conditions based on the lower age band column.
+
+     Parameters
+     ----------
+        df : pd.DataFrame
+            DataFrame containing the lower age band column.
+        lower_age_band_col : str
+            Name of the column containing the lower age band values.
+
+    Returns
+    -------
+        dict
+            Dictionary with age band names as keys and boolean conditions as values.
+
+     """
      age_band_names_and_bools = {
             "<15 and >=65": (df[lower_age_band_col]<15)|(df[lower_age_band_col]>=65),
             "15-64": (df[lower_age_band_col]>=15) & (df[lower_age_band_col]<65),
@@ -16,11 +32,13 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
+    Data needs to be downloaded manually from ??? (SP: where can users download the csv file for this?)
+    Output is written to a csv file in the input_data_directory
 
     Parameters
     ----------
     filepath : str
-        filepath to the excel file containing the disability age group data.
+        filepath to the csv file containing the disability age group data.
     config : str
         main config for pipeline
 
@@ -115,6 +133,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
     """
     function to convert disability age group data from England and Wales into a standard format.
     Data needs to be downloaded manually from the Office for National Statistics website.
+    Output is written to a csv file in the input_data_directory
 
     Parameters
     ----------
@@ -169,6 +188,7 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
     """
     function to convert disability age group data from Northern Ireland into a standard format.
     Data needs to be downloaded manually from the Northern Ireland Statistics and Research Agency website.
+    Output is written to a csv file in the input_data_directory
 
     Parameters
     ----------
