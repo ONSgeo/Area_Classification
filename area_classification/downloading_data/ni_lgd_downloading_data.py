@@ -55,7 +55,7 @@ def reformat_pop_density_ni(config):
     df = df.drop(df.columns[[0, 2, 3,5]], axis=1)
 
     # Rename columns using their index
-    df.columns.values[0] = "CA19"  # Rename the second column
+    df.columns.values[0] = "LGD"  # Rename the second column
 
     # Convert hectares to km²
     df.iloc[:, 1] = df.iloc[:, 1] / 100  # Convert hectares to km²
@@ -65,7 +65,14 @@ def reformat_pop_density_ni(config):
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
     # Save to a CSV
-    df.to_csv(os.path.join(config["input_data_directory"],"ni_population_density.csv"), index=False)
+    output_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+        
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
+    # save to output_csv_path
+    df.to_csv(output_csv_path + "ni_population_density.csv", index=False)
+    
+    
 
     
 

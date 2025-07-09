@@ -98,16 +98,16 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
                     result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
 
     # Load the LAD codes and names lookup file
-    lookup_file_path = config["LAD_lookup_filepath"]
+    lookup_file_path = config["LAD_lookup_file_path"]
     lookup_df = pd.read_csv(lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
 
     # Replace council area names with LAD codes
     result_df["CA19"] = result_df["CA19"].str.strip().str.lower().map(lookup_dict).fillna(result_df["CA19"])
 
-	# Save to data QA folder
-	#output_file_path = user_config["qa_folder_path"] + "Scot_disability_input.csv"
-    #result_df.to_csv(output_file_path, index=False)
+    df.rename(columns={'CA19': 'area_code'}, inplace=True)
+    output_path = Path(config["input_data_directory"]) / "scot_disability_age_group.csv"
+    result_df.to_csv(output_path, index=False)
 
     return result_df
 
@@ -219,20 +219,20 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
 if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
-    filepath_scot = 'C:/Users/dayj1/Downloads/table_2025-06-11_15-20-42.xlsx'
-
+    
+    filepath_scot = 'data/inputs/ni_downloads/UV303a.csv'
     df_scot = convert_disability_age_group_scotland(filepath_scot,config)
-    df_scot.to_csv(config["qa_folder_path"]+"scot_disability_age_group.csv", index=False)
+    df_scot.to_csv(config["input_data_directory"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
-    filepath_ni = "C:/Users/dayj1/Downloads/census-2021-ms-d02.xlsx"
+    filepath_ni = "data/inputs/ni_downloads/census-2021-ms-d02.xlsx"
     df_ni = convert_disability_age_group_northern_ireland(filepath_ni,config)
-    df_ni.to_csv(config["qa_folder_path"]+"ni_disability_age_group.csv", index=False)
+    df_ni.to_csv(config["input_data_directory"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
-    filepath_ew = "disabilitycensus2021.xlsx"
+    filepath_ew = "data/inputs/ew_downloads/disabilitycensus2021.xlsx"
     df_ew = convert_disability_age_group_england_wales(filepath_ew)
-    df_ew.to_csv(config["qa_folder_path"]+"ew_disability_age_group.csv", index=False)
+    df_ew.to_csv(config["input_data_directory"]+"ew_disability_age_group.csv", index=False)
 
     print(df_ew)
     print("all saved to csv")

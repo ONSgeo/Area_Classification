@@ -22,14 +22,14 @@ A table that describes each of the files in the repo (like we did for the automa
 Data for E&W is collected from the bulk download availble on their census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk). Table codes generally start with "TS".
 
 **Exceptions**
-* England and Wales disability data required to calculate SIR -[disabilitycensus2021.xlsx on our SharePoint](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ESTsbP6yeyJEqlAWqFI8E0MBKjSyzvNrxTzrfJozjRzYvA?e=LfgQr2&isSPOFile=1&xsdata=MDV8MDJ8fGQ0MTI1MTE5M2IzOTQ1MzU3NDM1MDhkZGFhNzQ2OTc5fDA3ODgwN2JmY2U4MjQ2ODhiY2UwMGQ4MTE2ODRkYzQ2fDB8MHw2Mzg4NTQxMzkxMTg5NzQwMDV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPakJrWkRkaU5ERTNNVFV4WkRRM1pUTTRZelF3TXpRME9UZ3paamRsWWpjeFFIUm9jbVZoWkM1Mk1pOXRaWE56WVdkbGN5OHhOelE1T0RFM01URXhOakE0fGRjY2Y5OGM4MTJkZDQ4YjA3NDM1MDhkZGFhNzQ2OTc5fDZjYzBhZjc0ZGE4ZjQ4NmJiNmU2ZWVhOWM2YzIwZjhm&sdata=b2RXMXY5azRTUjhYWlg1V2RVTjNIanJoVTJKbXAxUmVMN3pQcCs3REJFbz0%3D&ovuser=078807bf-ce82-4688-bce0-0d811684dc46%2CElla.Goodman%40ons.gov.uk)
+* England and Wales disability data required to calculate SIR -[disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021)
   
 ### Northern Ireland
 Data for NI is collected from the bulk download availble on their census data platforms ([NISRA flexible table builder](https://build.nisra.gov.uk/en/)). Table codes generally start with "ni".
 
 **Exceptions:**
-* Northern Ireland Census 2021 - [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). Popultion density for NI at other levels of geography is availble on [the UK Data Service](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density) **Note:** NI population density is in hectare's where as the others are in square KM, so this is converted in the code.
 * Ethnic group for Bangladeshi - this data is not available for Northern Ireland 2021 - read more in the [assumptions_caveats.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/aqa/assumptions_caveats.md)
+* Northern Ireland Census 2021 - [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). Popultion density for NI at other levels of geography is availble on [the UK Data Service](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density) **Note:** NI population density is in hectare's where as the others are in square KM, so this is converted in the code.
 * Northern Ireland disability data required to calculate SIR - [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables)
   
 ### Scotland
@@ -44,31 +44,68 @@ Table codes generally start with "UV".
 
 ## Look ups
 * [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/pre_processing/Selected_codes_lookup.csv) has been created to run the EW, NI and Scot area classification for LAD. This will need updating if choosing to run at another level of geography or different combination of census'.
-* Local_Authority_Districts_(December_2022)_Names_and_Codes_UK was downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
-
+* A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo in 'data/lookups' folder, if saved elsewhere update the file path in the config.yaml.
 
 ## Methodology / process description
 
-### Set Up
-Within the data folder, create two new folders one called 'inputs', and another called 'lookups'. 
+### Set Up - folders and download data
 
-Within the data/inputs folder create another folder called 'scot_inputs'
-Save the Scot tables into data/inputs/scot_inputs. List scot tables to download. includding UV303a which is Scot diability data.
+As mentioned above, some data requires manual downlaods, so before running any of the scripts, ensure the data listed balow has been downloaded and saved in the correct locations listed.
 
-Within the data/lookups folder, save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
+Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 
-Manually save England and Wales disability data [disabilitycensus2021.xlsx from our SharePoint](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ESTsbP6yeyJEqlAWqFI8E0MBKjSyzvNrxTzrfJozjRzYvA?e=LfgQr2&isSPOFile=1&xsdata=MDV8MDJ8fGQ0MTI1MTE5M2IzOTQ1MzU3NDM1MDhkZGFhNzQ2OTc5fDA3ODgwN2JmY2U4MjQ2ODhiY2UwMGQ4MTE2ODRkYzQ2fDB8MHw2Mzg4NTQxMzkxMTg5NzQwMDV8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPakJrWkRkaU5ERTNNVFV4WkRRM1pUTTRZelF3TXpRME9UZ3paamRsWWpjeFFIUm9jbVZoWkM1Mk1pOXRaWE56WVdkbGN5OHhOelE1T0RFM01URXhOakE0fGRjY2Y5OGM4MTJkZDQ4YjA3NDM1MDhkZGFhNzQ2OTc5fDZjYzBhZjc0ZGE4ZjQ4NmJiNmU2ZWVhOWM2YzIwZjhm&sdata=b2RXMXY5azRTUjhYWlg1V2RVTjNIanJoVTJKbXAxUmVMN3pQcCs3REJFbz0%3D&ovuser=078807bf-ce82-4688-bce0-0d811684dc46%2CElla.Goodman%40ons.gov.uk) into data/inputs/ew_downloads folder 
+When your repository is cloned, find the repository within your file explorer.
+Locate the 'data' folder, a folder called 'lookups' should already exist. In this 'data/lookups' folder download save the Local_Authority_Districts_(December_2022)_Names_and_Codes_UK which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/search?q=NAC_LAD&sort=Date%20Created%7Ccreated%7Cdesc)
 
-Manually save Northern Ireland and Wales disability data * Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables) into data/inputs/ni_downloads folder 
+Going back to the 'data' folder, create a new folder called 'inputs'.
 
+Within the 'data/inputs' folder create three new folders:
+* 'ew_downloads'. In this folder manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
+* 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx). The file should be named 'census-2021-ms-d02.xlsx'.
+     - Within the 'data/inputs/ni_downlaods' also save Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.
+* 'scot_downloads'. In this folder Download and save the following Scot tables into data/inputs/scot_inputs:
+  
+| table_ID |	table_name |	country |
+| -------- |   ---------- |   ------- |
+| UV101b |	Usual resident population by sex by age (6) |	scot|
+| UV103 |	Age |	scot|
+| UV104 |	Marital and civil partnership status |	scot|
+| UV112 |	Household composition - People |	scot|
+| UV201 |	Ethnic group (21) | 	scot|
+| UV203 |	Multiple ethnic groups |	scot|
+| UV204 |	Country of birth | 	scot|
+| UV205 |	Religion |	scot|
+| UV210 |	English language skills |	scot|
+| UV301 |	Provision of unpaid care |	scot|
+| UV401 |	Accommodation type - People |	scot|
+| UV403 |	Household tenure - People |	scot|
+| UV405 |	Car or van availability |	scot|
+| UV415 |	Occupancy rating for bedrooms |	scot|
+| UV501 |	Highest level of qualification |	scot|
+| UV601 |	Economic activity |	scot|
+| UV606 |	Occupation |	scot|
+| UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
-#### Data download
+   - Additionally in the 'data/inputs/scot_downloads' folder download and save: 
+      - The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
+      - Scotlands's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx).The file should be renamed 'population_density.csv'.
+      - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
 
-Do the manual data downloads first before running any of the scripts. Ensure they are in the same directory where the downloads will be stored. 
+## Output
+## Limitations
+## Future scope
+## Contacts / authors / 
+[ONS Geography inbox](https://github.com/ONSgeo/Access_To_Amenities/blob/main/ONS.Geography@ons.gov.uk)
 
-#### Look ups
-A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo data folder, if saved elsewhere update the file path in the config.yaml.
+## Acknowledgements
+Thanks to Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the ONS Data Science Office for their early code which formed the basis of this repo.
+[ONS Data Science Office](https://github.com/Geographic-Data-Service)
+[Census_2021_Output_Areas](https://github.com/Geographic-Data-Service/Census_2021_Output_Areas) (England and Wales)
+[Scotland_Census_2022_OA](https://github.com/Geographic-Data-Service/Scotland_Census_2022_OA)
+[Northern_Ireland_Census_2022_Data_Zone](https://github.com/Geographic-Data-Service/Northern_Ireland_Census_2022_Data_Zone)
+[Geodemographic Python Example](https://github.com/ogoodwin505/pygeodem)
 
+# Previous README:
 ### Census 2021 Output Areas (legacy ReadME)
 This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
 
@@ -95,23 +132,6 @@ The python code:
 
 The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 
-### Scotland Census 
-
-
-## Output
-## Limitations
-## Future scope
-## Contacts / authors / 
-
-## Acknowledgements
-Thanks to Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the ONS Data Science Office for their early code which formed the basis of this repo.
-[ONS Data Science Office](https://github.com/Geographic-Data-Service)
-[Census_2021_Output_Areas](https://github.com/Geographic-Data-Service/Census_2021_Output_Areas) (England and Wales)
-[Scotland_Census_2022_OA](https://github.com/Geographic-Data-Service/Scotland_Census_2022_OA)
-[Northern_Ireland_Census_2022_Data_Zone](https://github.com/Geographic-Data-Service/Northern_Ireland_Census_2022_Data_Zone)
-[Geodemographic Python Example](https://github.com/ogoodwin505/pygeodem)
-
-# Previous README:
 ## Geodemographic Python Example  
 
 This repository contains the workflow for producing a geodemographic classification in Python using k-means clustering. It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).  

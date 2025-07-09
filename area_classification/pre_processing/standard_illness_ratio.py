@@ -48,11 +48,11 @@ def sir_processing(config):
 
         print(f"Warning: The following files were not found: {missing_files}")
 
-    ew_disability_df = pd.read_csv(config["ew_input_folder"]+config["england_wales_disability_file"])
-    ni_disability_df = pd.read_csv(config["ni_input_folder"]+config["ni_disability_file"])
-    scotland_disability_df = pd.read_csv(config["scot_input_folder"]+config["scotland_disability_file"])
+    ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
+    ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
+    scotland_disability_df = pd.read_csv(config["input_data_directory"]+config["scotland_disability_file"])
     combined_disability_df = pd.concat(
-        [ew_disability_df, ni_disability_df, scotland_disability_df],)
+        [ew_disability_df, ni_disability_df, scotland_disability_df])
     # Scotland excluded because it doesnt have council area codes 
     sir_output_df = SIR_calculation(combined_disability_df, config)
     return sir_output_df
@@ -132,7 +132,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    EW_df = pd.read_csv("D:\\repos\\output_area_classification_project\\Area_Classification\\ew_disability_age_group.csv") 
+    EW_df = pd.read_csv("data/inputs/ew_disability_age_group.csv") 
     EW_df.rename(columns={'Area Code': 'area_code'}, inplace=True)
     EW_df.rename(columns={'Local Authority': 'local_authority'}, inplace=True)
 
