@@ -35,6 +35,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     As mentioned in the main README for this repo, disability data for Scotland needs to be downloaded manually 
     from the Scotland's Census Flexible Table Builder (UV303a) and saved into the 'data/inputs/scot_downloads folder.
     The file should be named 'UV303a.csv'.
+
     Output is written to a csv file in the input_data_directory
 
     Parameters
@@ -138,6 +139,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
     manually from the Office for National Statistics (ONS) website as it is not available in the bulk download. 
     It should have been manually saved into the 'data/inputs/ew_downloads folder. The file name should be 
     'disabilitycensus2021.xlsx'.
+
     Output is written to a csv file in the input_data_directory
 
     Parameters
