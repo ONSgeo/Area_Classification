@@ -8,12 +8,19 @@ def select_variables(df_temp, lookup_df, user_config):
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns.
 
-    Parameters:
-    - df_temp (pd.DataFrame): The main DataFrame containing all data.
-    - select_variables_lookup (str): Path to the CSV file containing the lookup information.
-    - user_config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
-    Returns:
-    - pd.DataFrame: A new DataFrame with only the specified columns.
+    Parameters
+    ----------
+    df_temp : pd.DataFrame
+        The main DataFrame containing all data.
+    select_variables_lookup : str
+        Path to the CSV file containing the lookup information.
+    user_config : dict
+        A dictionary containing user configuration settings, including the path to save the output file or QA.
+    
+    Returns
+    -------
+    pd.DataFrame 
+        A new DataFrame with only the specified columns.
     """
 
     # Extract the columns to select and their new names

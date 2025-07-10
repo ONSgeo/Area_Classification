@@ -11,6 +11,27 @@ from area_classification.analysis.clustering import clustering_wrapper
 def main_pipeline():
     """
     Main pipeline to process area classification data.
+
+    This function runs the entire pipeline for creation of the Local Authority District area classification 
+    clusters, including downloading, formatting, pre-processing, and clustering.
+
+    Steps
+    -----
+    1. Download and process England and Wales data.
+    2. Download and process Northern Ireland data.
+    3. Process manually downloaded Scotland data.
+    4. Perform pre-processing on combined data.
+    5. Perform clustering on the pre-processed data.
+
+    Parameters
+    ----------
+    None
+
+    Notes
+    -----
+    - The configuration file `area_classification/config.yaml` is loaded to provide all necessary settings.
+    - The clustering step assumes pre-processed data is saved locally and loads it during clustering. 
+
     """
     config = load_config('area_classification/config.yaml')
 
@@ -36,7 +57,7 @@ def main_pipeline():
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
     clustering_output = clustering_wrapper(
-        input_dataframe_or_filepath= config["input_data__filepath"],
+        input_dataframe_or_filepath= config["preprocessed_input_table"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],

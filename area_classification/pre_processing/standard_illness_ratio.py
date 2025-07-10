@@ -25,13 +25,15 @@ def sir_processing(config):
     """
     Process disability data to calculate the Standard Illness Ratio (SIR) for each area code.
 
-    Parameters:
+    Parameters
     -----------
-    config (dict): Configuration dictionary containing paths and file names.
+    config : dict
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
-    pd.DataFrame: DataFrame with SIR values calculated for each area code.
+    pd.DataFrame
+        DataFrame with SIR values calculated for each area code.
     """
 
     # disability files by age -> sharepoint?
@@ -73,12 +75,16 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
     
-    Parameters:
-        df (DataFrame): DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population',
+    Parameters
+    ----------
+    df : DataFrame
+        DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population',
         UK coverage
                         
-    Returns:
-        DataFrame: DataFrame with SIR values calculated. Output is not grouped by age
+    Returns
+    -------
+    DataFrame
+        DataFrame with SIR values calculated. Output is not grouped by age
     """
 
     
@@ -111,10 +117,13 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
     """
     Perform QA checks on the SIR DataFrame.
     
-    Parameters:
-        df (DataFrame): DataFrame containing SIR values.
+    Parameters
+    ----------
+    df : DataFrame
+        DataFrame containing SIR values.
         
-    Returns:
+    Returns
+    -------
         None
     """
     # Check if disability_count is int

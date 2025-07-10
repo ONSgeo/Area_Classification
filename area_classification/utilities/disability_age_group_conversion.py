@@ -32,7 +32,8 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
-    Data needs to be downloaded manually from ??? (SP: where can users download the csv file for this?)
+    As mentioned in the main README for this repo, disability data for Scotland needs to be downloaded manually 
+    from the Scotland's Census Flexible Table Builder (UV303a).
     Output is written to a csv file in the input_data_directory
 
     Parameters
@@ -132,7 +133,8 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
 def convert_disability_age_group_england_wales(filepath: str, config: dict) -> pd.DataFrame:
     """
     function to convert disability age group data from England and Wales into a standard format.
-    Data needs to be downloaded manually from the Office for National Statistics website.
+    As mentioned in the main README for this repo, disability data for England and Wales needs to be downloaded 
+    manually from the Office for National Statistics (ONS) website.
     Output is written to a csv file in the input_data_directory
 
     Parameters
@@ -187,7 +189,8 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
 def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> pd.DataFrame:
     """
     function to convert disability age group data from Northern Ireland into a standard format.
-    Data needs to be downloaded manually from the Northern Ireland Statistics and Research Agency website.
+    As mentioned in the main README for this repo, disability data for Northern Ireland needs to be downloaded 
+    manually from the Northern Ireland Statistics and Research Agency (NISRA) website.
     Output is written to a csv file in the input_data_directory
 
     Parameters

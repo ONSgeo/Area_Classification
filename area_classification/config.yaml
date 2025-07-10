@@ -21,6 +21,7 @@ input_data_directory: 'data/inputs/'
 qa_folder_path: './data/QA/'
 output_directory: 'data/output_data/'
 plot_directory: 'data/plots/'
+preprocessed_input_table: 'data/inputs/pre_processed_data_ew_ni_scot.csv'
 
 
 number_of_clusters: 8
