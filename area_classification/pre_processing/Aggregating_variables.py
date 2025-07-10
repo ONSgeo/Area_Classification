@@ -6,15 +6,20 @@ def batch_ag_columns(df_temp, file_configs, user_config):
     This function aggregates specified columns in a temporary DataFrame, aggregates specified columns,
     adds new columns, and updates the DataFrame in-memory.
 
-    Parameters:
-    - df_temp (pd.DataFrame): The temporary DataFrame to update.
-    - file_config (list of dict): A list of dictionaries where each dictionary contains:
-        - 'col_names' (list): List of column names to aggregate.
-        - 'new_col_name' (str): Name of the new column to create.
-    - user_config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
+    Parameters
+    ----------
+    df_temp : pd.DataFrame 
+        The temporary DataFrame to update.
+    file_config : list of dict
+        A list of dictionaries where each dictionary contains:
+            - 'col_names' (list): List of column names to aggregate.
+            - 'new_col_name' (str): Name of the new column to create.
+    user_config : dict
+        A dictionary containing user configuration settings, including the path to save the output file or QA.
 
     Returns:
-    - pd.DataFrame: The updated DataFrame with new aggregated columns.
+    pd.DataFrame
+        The updated DataFrame with new aggregated columns.
     """
     for key in file_configs:
         col_names = file_configs[key]

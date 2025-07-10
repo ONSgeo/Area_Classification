@@ -5,11 +5,14 @@ def parse_raw_data(raw_data):
     """
     Parses raw CSV-like string data into a list of dictionaries.
     
-    Args:
-        raw_data (str): Multi-line string with CSV-like format.
+    Parameters
+    ----------
+    raw_data : str
+        Multi-line string with CSV-like format.
     
     Returns:
-        list: A list of dictionaries representing the rows of data.
+    list
+        A list of dictionaries representing the rows of data.
     """
     # Use StringIO to treat the string as a file
     csv_reader = csv.DictReader(StringIO(raw_data.strip()))
@@ -19,10 +22,14 @@ def create_final_code_csv(file_name, columns, rows):
     """
     Creates a CSV file with the specified column names and row data.
 
-    Args:
-        file_name (str): The name of the CSV file to create.
-        columns (list): A list of column names for the CSV file.
-        rows (list): A list of dictionaries, where each dictionary represents a row of data.
+    Parameters
+    ----------
+    file_name : str
+        The name of the CSV file to create.
+    columns : list
+        A list of column names for the CSV file.
+    rows : list
+        A list of dictionaries, where each dictionary represents a row of data.
     """
     try:
         # Open the file in write mode

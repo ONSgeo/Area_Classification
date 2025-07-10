@@ -191,6 +191,8 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         # Replace council area names with LAD codes
         output_df['CA19'] = output_df['CA19'].str.strip().str.lower().map(lookup_dict).fillna(output_df['CA19'])
         
+        # Ensure QA directory exists
+        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
         # Save the final DataFrame to a new CSV file
         output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
@@ -262,6 +264,8 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     # Replace the column name 'Council Area 2019' with 'CA19'
     reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
     # Save the reformatted DataFrame to a new CSV file
     output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV103.csv")
     reformatted_df.to_csv(output_file_path, index=False)
@@ -351,6 +355,9 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     # Replace the column name 'Council Area 2019' with 'CA19'
     reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+
     # Save the new DataFrame to a CSV file
     output_file_path = os.path.join(config["qa_folder_path"], "reformat_migrant_indicator_percentage.csv")
     reformatted_df.to_csv(output_file_path, index=False)
@@ -399,6 +406,9 @@ def reformat_pop_density(scot_input_folder, config):
     # 'S92000003' is the whole of Scotland
     df = df[df.iloc[:, 0] != 'S92000003']
 
+    # Ensure QA directory exists
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    
     # Save to a CSV
     output_file_path = os.path.join(config["qa_folder_path"], "reformat_population_density.csv")
     df.to_csv(output_file_path, index=False)
@@ -575,6 +585,10 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
                 print(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
         else:
             print(f"Column 0 not found in {file_name}. Skipping replacement.")
+        
+        # Ensure QA directory exists
+        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+        
         # Save the reformat DataFrame to a new CSV file
         reformat_file_path = os.path.join(config["qa_folder_path"], f"reformat_{file_name}")
         df.to_csv(reformat_file_path, index=False, header=False)
@@ -627,6 +641,9 @@ def remove_rows(config):
                 # Drop the first (empty) row and reset the index
                 df = df.drop(index=0).reset_index(drop=True)
                 
+                #Check the save location exists
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
                 # Save the modified DataFrame back to the same file (edit in place)
                 df.to_csv(file_path, index=False, header=False)
                 print(f"Processed and reformat: {file_name}")

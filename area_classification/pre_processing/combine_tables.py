@@ -1,14 +1,20 @@
 def combine_table(table1, table2, table3):
     """
     Combines three tables into one by stacking them under each other.
+    
+    Parameters
+    ----------
+        table1 : list of lists
+            The first table.
+        table2 : list of lists
+            The second table.
+        table3 : list of lists
+            The third table.
  
-    Args:
-        table1 (list of lists): The first table.
-        table2 (list of lists): The second table.
-        table3 (list of lists): The third table.
- 
-    Returns:
-        list of lists: A single table with all rows from the three tables combined.
+    Returns
+    -------
+    list of lists
+        A single table with all rows from the three tables combined.
     """
     combined_table = table1 + table2 + table3
     return combined_table

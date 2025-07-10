@@ -10,6 +10,46 @@ from area_classification.pre_processing.combine_tables import combine_table
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
+    """
+    Processes to prepare the census data from England, Wales, Northern Ireland, and Scotland to ensure 
+    consistency of datasets before being fed into clustering algorithm.
+
+    Parameters
+    ----------
+    ew_df : pd.DataFrame
+        DataFrame containing census data for England and Wales.
+    ni_df : pd.DataFrame
+        DataFrame containing census data for Northern Ireland.
+    scot_df : pd.DataFrame
+        DataFrame containing census data for Scotland.
+    config : dict
+        Configuration dictionary containing paths and settings/
+
+    Returns
+    -------
+    pd.DataFrame
+        Combined and pre-processed DataFrame containing data for England, Wales, Northern Ireland, 
+        and Scotland, for the 60 specific variables required for area classification clustering.
+
+    Notes
+    -----
+    - The function calculates the Standard Illness Ratio (SIR) for each census.
+    - Converts counts to percentages for England, Wales and Northern Ireland.
+    - Aggregates variables based on the configuration for each country individually.
+    - Joins SIR data to the main DataFrame and handles cases where area codes do not match exactly.
+    - Selects the specific 60 variables based on a lookup table.
+    - Saves intermediate and final outputs to CSV files.
+
+    Raises
+    ------
+    FileNotFoundError
+        If any of the required configuration files or paths are missing.
+    KeyError
+        If required keys are missing in the `config` dictionary.
+    ValueError
+        If there are issues with data merging or transformations.
+
+    """
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     select_variables_lookup = pd.read_csv(config["select_variables_lookup"])
     dfs = {"ew": ew_df, "ni": ni_df, "scot": scot_df}
