@@ -8,6 +8,19 @@ import os
 
 # Function to normalize values for comparison
 def float_value(value):
+    """
+    Convert a value to float if possible, otherwise return the original value.
+
+    Parameters
+    ----------
+    value 
+        The value to be converted.
+
+    Returns
+    -------
+    float or original value
+        The converted float value if possible, otherwise the original value.
+    """
     try:
         # Try to convert to float for numeric comparison
         return float(value)
@@ -17,6 +30,21 @@ def float_value(value):
 
 # Function that takes 2 csv files and checks that they are identical
 def check_csv_files_identical(file1, file2):
+    """
+    Check if two CSV files are identical by comparing their rows (pairwise comparison of row contents, and overall number of rows).
+
+    Parameters
+    ----------
+    file1 : str
+        Path to the first CSV file.
+    file2 : str
+        Path to the second CSV file.
+    
+    Returns
+    -------
+    bool
+        True if the files are identical, False otherwise.
+    """
     with open(file1, 'r') as f1, open(file2, 'r') as f2:
         reader1 = csv.reader(f1)
         reader2 = csv.reader(f2)
@@ -45,6 +73,21 @@ def check_csv_files_identical(file1, file2):
 
 # Iterate check_csv_files_identical over all files in 2 folders
 def check_csv_files_in_folders(folder1, folder2):
+    """
+    Check if all CSV files in two folders are identical.
+
+    Parameters
+    ----------
+    folder1 : str
+        Path to the first folder containing CSV files.
+    folder2 : str
+        Path to the second folder containing CSV files.
+
+    Returns
+    -------
+    bool
+        True if all files are identical, False otherwise.
+    """
     files1 = set(os.listdir(folder1))
     files2 = set(os.listdir(folder2))
 

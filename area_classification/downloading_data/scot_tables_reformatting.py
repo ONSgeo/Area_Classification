@@ -17,15 +17,19 @@ def scot_reformatting_wrapper(scot_input_folder: str,
 
     Note that the functions are hard coded to our scotland tables.
     
-Parameters:
-    - scot_input_folder (str): Path to the input directory containing the CSV files.
-    - LAD_lookup_file_path (str): Path to the lookup file for council area names and codes.
-    - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the input directory containing the CSV files.
+    LAD_lookup_file_path: str
+        Path to the lookup file for council area names and codes.
+    config: dict
+        Configuration dictionary containing paths and file names.
 
     Returns
     -------
-    ######pd.DataFrame
-       #######DataFrame with cluster assignments after supergroup and subgroup clustering.
+    None
+        Metadata table is saved as a csv to the specified output path in the config dictionary.
     """
     # Create an empty metadata table
     meta_data_table = pd.DataFrame(
@@ -123,10 +127,19 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     """
     Function to reformat the UV101b CSV file so it has rows removed and CA codes instead of names.
     
-    Args:
-        - scot_input_folder (str): Path to the directory containing the input CSV files.
-        - LAD_lookup_file_path (str): Path to the lookup file containing LAD codes and names.
-        - config (dict): Configuration dictionary.
+    Parameters
+    ----------
+     scot_input_folder: str 
+        Path to the directory containing the input CSV files.
+    LAD_lookup_file_path: str 
+        Path to the lookup file containing LAD codes and names.
+    config: dict
+        Configuration dictionary containing paths and file names.
+    
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
     # Look for UV101b.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV101b.csv")
@@ -191,10 +204,19 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     """
     Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
 
-    Args:
-        - scot_input_folder (str): Path to the directory containing the input CSV file.
-        - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
-        - config (dict): Configuration dictionary.
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the directory containing the input CSV file.
+    LAD_lookup_file_path: str
+        Path to the lookup file containing Counil area (CA) codes and names.
+    config: dict
+        Configuration dictionary containing paths and file names.
+    
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
     # Look for UV103.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV103.csv")
@@ -253,12 +275,19 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     to be the second column so that it is consistent with other tables.
     Replace CA names with codes.
 
-    Args:
-        - scot_input_folder (str): Path to the directory containing the input CSV file
-        - LAD_lookup_file_path (str): Path to the lookup file containing Counil area (CA) codes and names.
-        - config (dict): Configuration dictionary.
-    Returns:
-        None
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the directory containing the input CSV file
+    LAD_lookup_file_path: str
+        Path to the lookup file containing Counil area (CA) codes and names.
+    config: dict
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
     # Look for migrant_indicator.csv in the directory
     file_path = os.path.join(scot_input_folder, "migrant_indicator_percentage.csv")
@@ -335,9 +364,17 @@ def reformat_pop_density(scot_input_folder, config):
     Function to reformat the population density file so it has rows removed and column headers amended.
     Output has CA codes
     
-    Args:
-        - scot_input_folder (str): Path to the directory containing the input CSV files.
-        - config (dict): Configuration dictionary.
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the directory containing the input CSV files.
+    config: dict
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
     import os
     import pandas as pd
@@ -373,9 +410,15 @@ def extract_metadata_from_files(scot_input_folder):
     Extracts metadata from CSV files in the specified input directory.
     Special handling is applied for the 'migrant_indicator_percentage.csv' and 'population_density.csv' files. 
 
+    Parameters
+    ----------
+    scot_input_folder : str
+        Path to the directory containing the input CSV files.
 
-    Returns:
-        A list of dictionaries, where each dictionary contains metadata for a file, including:
+    Returns
+    -------
+    List
+        A list of dictionaries containing metadata for each file, including:
         - table_id: The unique identifier for the table.
         - table_name: The name of the table.
         - unit: The unit of measure (e.g., "Person", "Household").
@@ -478,10 +521,19 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     """
     Replace council area names with council area codes in CSV files.
 
-    Parameters:
-    - scot_input_folder (str): Path to the directory containing input CSV files.
-    - LAD_lookup_file_path (str): Path to the lookup CSV file containing council area names and codes.
-    - config (dict): Configuration dictionary.
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the directory containing input CSV files.
+    LAD_lookup_file_path: str
+        Path to the lookup CSV file containing council area names and codes.
+    config: dict 
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function modifies the CSV files in place and saves them to the specified output path in the config dictionary.
     
     """
     # Load the LAD codes and names lookup file
@@ -535,8 +587,15 @@ def remove_rows(config):
     Processes all CSV files in the input directory that start with 'reformat_'.
     Modifies the files in place by performing specific preprocessing steps.
 
-    Parameters:
-    - config (dict): Configuration dictionary.
+    Parameters
+    ----------
+    config: dict) 
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function modifies the 'reformat_' CSV files in place
     """
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
@@ -586,12 +645,17 @@ def replace_variable_names_with_codes(config):
     Replace the variable names with the variable ids.
     Extract the variable name and variable ids for use in the metadata table. 
 
-    Parameters:
-    - scot_input_folder (str): Path to the directory containing the CSV files.
-    - config (dict): A dictionary containing user configuration settings, including the path to save the output file or QA.
+    Parameters
+    ----------
+    scot_input_folder: str
+        Path to the directory containing the CSV files.
+    config: dict
+        Configuration dictionary containing paths and file names.
 
-    Returns:
-    - List of tuples containing variable_names and variable_ids for each processed file.
+    Returns
+    -------
+    variable_names_ids: list
+        A list of tuples, each containing a list of variable names and a list of variable ids for each processed file.
     """
     variable_names_ids = []  # Initialize a list to store variable_names and variable_ids for each file
 
@@ -663,11 +727,15 @@ def concat_reformatted_tables(config):
     Concatenates all CSV files in the QA folder that start with "reformat"
     and saves the result to a new CSV file.
 
-    Args:
-        config (dict): A configuration dictionary containing the "qa_folder_path" key.
+    Parameters
+    ----------
+    config: dict 
+        Configuration dictionary containing paths and file names.
 
-    Returns:
-        pd.DataFrame: The concatenated DataFrame.
+    Returns
+    -------
+    pd.DataFrame
+        The concatenated DataFrame.
     """
 
 

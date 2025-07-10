@@ -20,6 +20,11 @@ def ew_lad_bulk_download(config: dict):
     ----------
     config : dict
         main config for pipeline
+    
+    Returns
+    -------
+    None
+        The function saves the downloaded data as CSV files in the specified output directory.
     """
     zip_urls = get_census_table_urls(config)
 
@@ -167,6 +172,11 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
         produced by the `download_and_unzip_data` function.
     config : dict
         main pipeline config dictionary containing output directory.
+
+    Returns
+    --------
+    None
+        The function saves the formatted metadata table as a CSV file in the specified output directory.
     """    
     # TODO: Add a unit test to this function to check its processing everything correctly
     # Format the lookup table
