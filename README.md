@@ -86,9 +86,9 @@ Within the 'data/inputs' folder create three new folders:
 | UV606 |	Occupation |	scot|
 | UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
-   - Additionally in the 'data/inputs/scot_downloads' folder download and save: 
+   - Additionally, in the 'data/inputs/scot_downloads' folder download and save: 
       - The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
-      - Scotlands's Census 2022: Ususal resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx).The file should be renamed 'population_density.csv'.
+      - Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.csv'.
       - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
 
 ## Output
