@@ -128,7 +128,7 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                                                num_clusters=num_clusters, 
                                                n_init=n_init,
                                                random_seed=random_seed)
-    
+    print("subcluster run completed.")
     return subgrouped_variable_df
 
 def load_data(filepath):
@@ -153,11 +153,15 @@ def transform_and_standardize_data(df):
     1. Apply the inverse hyperbolic sine (arcsinh) transformation to reduce skewness.
     2. Perform min-max scaling to normalize the data to a range of [0, 1].
     
-    Args:
-        df (pd.DataFrame): Input dataframe with numerical data to transform.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input dataframe with numerical data to transform.
     
-    Returns:
-        pd.DataFrame: Transformed and standardized dataframe.
+    Returns
+    -------
+    pd.DataFrame
+        Transformed and standardized dataframe.
     """
     df = np.arcsinh(df) # Apply inverse hyperbolic sine transformation
     df = (df - df.min()) / (df.max() - df.min()) # Apply min-max scaling
@@ -180,13 +184,19 @@ def create_clustergram(df, num_clusters, n_init, save_loc, random_seed=None):
     times the algorithm runs with different centroid seeds. The final result is the 
     best outcome based on inertia/WCSS (within-cluster sum of squares).
 
-    Parameters:
-    - df (pd.DataFrame or np.ndarray): The input data for clustering.
-    - num_clusters (int): The number of clusters.
-    - n_init (int): Number of k-means runs with different initial centroid seeds. 
+    Parameters
+    ----------
+    df : pd.DataFrame or np.ndarray
+        The input data for clustering.
+    num_clusters : int
+        The number of clusters.
+    n_init : int
+        Number of k-means runs with different initial centroid seeds. 
                   Higher values (e.g., ~1000) improve solution stability but increase runtime.
-    - save_loc (str): File path to save the clustergram plot.
-    - random_seed (int, optional): Random seed for reproducibility.
+    save_loc : str
+        File path to save the clustergram plot.
+    random_seed : int, optional
+        Random seed for reproducibility.
     """
     # Validate the number of clusters
     if len(df) < num_clusters:
@@ -218,19 +228,25 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
     This function applies K-means clustering to the provided dataset, assigns cluster 
     labels to each row, and saves the cluster assignments as a lookup table.
 
-    Parameters:
-    input_df (pd.DataFrame): The input dataset to be clustered.
-    num_clusters (int): The number of clusters (K) to create.
-    n_init (int): Number of times the K-means algorithm runs with different initial 
-                  centroid seeds. The best result based on inertia/WCSS is chosen. 
-                  A higher value (e.g., ~1000) is recommended for final results, 
-                  but a lower value can be used for testing.
-    output_filepath (str): Path to save the resulting cluster assignments.
-    random_seed (int, optional): Random seed for reproducibility.
+    Parameters
+    ----------
+    input_df : pd.DataFrame
+        The input dataset to be clustered.
+    num_clusters : int
+        The number of clusters (K) to create.
+    n_init : int
+        Number of times the K-means algorithm runs with different initial centroid seeds. 
+        The best result based on inertia/WCSS is chosen. A higher value (e.g., ~1000) is 
+        recommended for final results, but a lower value can be used for testing.
+    output_filepath : str
+        Path to save the resulting cluster assignments.
+    random_seed : int, optional
+        Random seed for reproducibility.
 
     Returns:
-    pd.DataFrame: The input DataFrame with an added 'cluster' column containing 
-                  the assigned cluster for each row.
+    pd.DataFrame
+        The input DataFrame with an added 'cluster' column containing 
+        the assigned cluster for each row.
     """
     df = input_df.copy()
     if num_clusters > len(df):
@@ -264,11 +280,17 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, drop_colum
     Generate and save clustergrams for each supercluster.
     This function loops through the existing clusters and creates a clustergram 
     for each
-    Parameters:
-    output_df (pd.DataFrame): DataFrame containing cluster assignments.
-    num_clusters (int): The total number of clusters to iterate over.
-    plot_dir
-    n_init (int, optional): The number of times KMeans will be initialized. Defaults to 10. Increase for more stable results.
+    
+    Parameters
+    ----------
+    output_df : pd.DataFrame
+        DataFrame containing cluster assignments.
+    num_clusters : int
+        The total number of clusters to iterate over.
+    plot_dir : str
+        Path to save the resulting clustergram plots.
+    n_init : int, optional
+        The number of times KMeans will be initialized. Defaults to 10. Increase for more stable results.
                             
 
     """
@@ -291,14 +313,21 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     """
     Runs subclustering for each supergroup using KMeans and returns a modified DataFrame with subcluster labels.
     
-    Parameters:
-    - output_df (pd.DataFrame): The original DataFrame containing data and cluster assignments.
-    - subcluster_nums (list): A list specifying the number of subclusters to split each supergroup into.
-    - num_clusters (int): The total number of supergroups.
-    - n_init (int, optional): The number of times KMeans will be initialized. Defaults to 100. Increase for more stable results.
+    Parameters
+    ----------
+    output_df : pd.DataFrame
+        The original DataFrame containing data and cluster assignments.
+    subcluster_nums : list
+        A list specifying the number of subclusters to split each supergroup into.
+    num_clusters : int
+        The total number of supergroups.
+    n_init : int, optional
+        The number of times KMeans will be initialized. Defaults to 100. Increase for more stable results.
 
-    Returns:
-    - pd.DataFrame: A new the output dataFrame with an added 'subcluster' column.
+    Returns
+    -------
+    pd.DataFrame
+        A new the output dataFrame with an added 'subcluster' column.
     """
 
     # create a directory to save the subcluster outputs

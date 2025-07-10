@@ -19,11 +19,11 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the input directory containing the CSV files.
-    LAD_lookup_file_path: str
+    LAD_lookup_file_path : str
         Path to the lookup file for council area names and codes.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -129,11 +129,11 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     
     Parameters
     ----------
-     scot_input_folder: str 
+     scot_input_folder : str 
         Path to the directory containing the input CSV files.
-    LAD_lookup_file_path: str 
+    LAD_lookup_file_path : str 
         Path to the lookup file containing LAD codes and names.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
     
     Returns
@@ -208,11 +208,11 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
 
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the directory containing the input CSV file.
-    LAD_lookup_file_path: str
+    LAD_lookup_file_path : str
         Path to the lookup file containing Counil area (CA) codes and names.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
     
     Returns
@@ -281,11 +281,11 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
 
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the directory containing the input CSV file
-    LAD_lookup_file_path: str
+    LAD_lookup_file_path : str
         Path to the lookup file containing Counil area (CA) codes and names.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -373,9 +373,9 @@ def reformat_pop_density(scot_input_folder, config):
     
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the directory containing the input CSV files.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -533,11 +533,11 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
 
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the directory containing input CSV files.
-    LAD_lookup_file_path: str
+    LAD_lookup_file_path : str
         Path to the lookup CSV file containing council area names and codes.
-    config: dict 
+    config : dict 
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -603,7 +603,7 @@ def remove_rows(config):
 
     Parameters
     ----------
-    config: dict) 
+    config : dict) 
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -664,9 +664,9 @@ def replace_variable_names_with_codes(config):
 
     Parameters
     ----------
-    scot_input_folder: str
+    scot_input_folder : str
         Path to the directory containing the CSV files.
-    config: dict
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -746,7 +746,7 @@ def concat_reformatted_tables(config):
 
     Parameters
     ----------
-    config: dict 
+    config : dict 
         Configuration dictionary containing paths and file names.
 
     Returns
