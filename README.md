@@ -91,7 +91,7 @@ Within the 'data/inputs' folder create three new folders:
       - Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.csv'.
       - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
 #### Set Up - folders and download data diagram
-Your file structure should look like the following. Text in red are the folders and file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
+Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 <img width="646" height="1080" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/d3b389f3-d1bb-4c38-bb20-7ca665703dd9" />
 
 ## Output
