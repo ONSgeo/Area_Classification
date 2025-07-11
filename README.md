@@ -94,6 +94,7 @@ Within the 'data/inputs' folder create three new folders:
 Your file structure should look like the following. Text in red are the folders and file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 <img width="882" height="1079" alt="area classification file structure for README" src="https://github.com/user-attachments/assets/afcc603f-7c0d-45e7-a0a1-17070fa57219" />
 
+<img width="1088" height="814" alt="area classification file structure for README (2)" src="https://github.com/user-attachments/assets/ce350d2d-2fc6-4bb3-953c-d3a6f85aefea" />
 
 ## Output
 ## Limitations
