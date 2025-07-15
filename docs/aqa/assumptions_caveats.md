@@ -43,7 +43,13 @@ In the England and Wales disability Census data 2021 provides combined values fo
 E09000001 and E09000033 - City of London and Westminster
 E06000052 and E06000053 - Cornwall and Isles of Scilly
 
-## Assumption 5: 
+## Assumption 5: Using the Local Authoirty District look up table for 2022
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+Plain text
+
+## Assumption 6: 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
