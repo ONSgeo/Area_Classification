@@ -63,7 +63,13 @@ Within the 'data/inputs' folder create three new folders:
 * 'ew_downloads'. In this folder manually download and save England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
 * 'ni_downloads'. In this folder manually download and save Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx). The file should be named 'census-2021-ms-d02.xlsx'.
      - Within the 'data/inputs/ni_downlaods' also save Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924). and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.
-* 'scot_downloads'. In this folder download and save the following Scotland tables:
+* 'scot_downloads'. In this folder download and save the following Scotland tables from the [Scotland Census table builder search](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). For each table:
+   - Select data from 2022
+   - Select data by location - Local authority (CA2019) - 'Select all'
+   - Use the Search function to find the table IDs listed below
+   - Click the table settings top right, and select 'display as percentages'
+   - Then use the dropdown to the left of the Download table button to select 'Comma Separated Value (.csv)'
+   - Click 'Download table':
   
 | table_ID |	table_name |	country |
 | -------- |   ---------- |   ------- |
