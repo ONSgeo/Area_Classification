@@ -52,10 +52,10 @@ Table codes generally start with "UV".
 
 As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct locations listed.
 
-Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar)
+Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
 
 When your repository is cloned, find the repository within your file explorer.
-Locate the 'data' folder, a folder called 'lookups' should already exist. In this 'data/lookups' folder download save the [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore) which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/)
+Locate the 'data' folder, a folder called 'lookups' should already exist. In this 'data/lookups' folder save the [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore) file which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/).
 
 Going back to the 'data' folder, create a new folder called 'inputs'.
 
@@ -67,8 +67,8 @@ Within the 'data/inputs' folder create three new folders:
    - Select data from 2022
    - Select data by location - Local authority (CA2019) - 'Select all'
    - Use the Search function to find the table IDs listed below
-   - Click the table settings top right, and select 'display as percentages'
-   - Then use the dropdown to the left of the Download table button to select 'Comma Separated Value (.csv)'
+   - Click the 'Table Settings' button in the top right of the table viewer, and select 'Display as percentages' -> 'Row'
+   - Then use the dropdown to the left of the 'Download table' button to select 'Comma Separated Value (.csv)'
    - Click 'Download table':
   
 | table_ID |	table_name |	country |
@@ -93,9 +93,9 @@ Within the 'data/inputs' folder create three new folders:
 | UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
    - Additionally, in the 'data/inputs/scot_downloads' folder download and save: 
-      - The Scottish disability data Table[UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
+      - The Scottish disability data [UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
       - Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.csv'.
-      - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage'.
+      - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage.csv'.
 #### Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 <img width="646" height="1080" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/d3b389f3-d1bb-4c38-bb20-7ca665703dd9" />
