@@ -1,0 +1,1 @@
+# Cluster variables mean averages
