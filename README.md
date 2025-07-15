@@ -39,7 +39,7 @@ Table codes generally start with "UV".
 **Exceptions:**
 * Scotland's Census 2022: Usual  resident population density, Council Areas in [Table 4 in Scotland's Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx) Population density was downloaded 15 April 2025.
 * Migrant indicator is available on the [Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). Manually downloaded 22 April 2025.
-* Scotland disability data required to calculate SIR - Table[UV303a](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ERDnFH1wu_dMkMZ-uArn5pUBRv9ilznhCWD9tzZSNhLYdA?e=3g9mzZ) from [Flexible TableBuilder](https://www.scotlandscensus.gov.uk/search-the-census#/search-by)
+* Scotland disability data required to calculate SIR - Table [UV303a](https://officenationalstatistics.sharepoint.com/:x:/s/Geospat/ERDnFH1wu_dMkMZ-uArn5pUBRv9ilznhCWD9tzZSNhLYdA?e=3g9mzZ) from [Flexible TableBuilder](https://www.scotlandscensus.gov.uk/search-the-census#/search-by)
 
 
 ## Look ups
