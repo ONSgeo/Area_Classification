@@ -1,4 +1,5 @@
 # WORK IN DEVELOPMENT
+This repository contains the workflow for downlaoding, pre-processing, and performing analysis using k-means clustering to createa Area Classification for Local Authority District level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 # Background
 Area Classification
@@ -100,65 +101,39 @@ Within the 'data/inputs' folder create three new folders:
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 <img width="646" height="1080" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/d3b389f3-d1bb-4c38-bb20-7ca665703dd9" />
 
-## Output
-## Limitations
-## Future scope
-## Contacts / authors / 
-[ONS Geography inbox](https://github.com/ONSgeo/Access_To_Amenities/blob/main/ONS.Geography@ons.gov.uk)
-
-## Acknowledgements
-Thanks to Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the ONS Data Science Office for their early code which formed the basis of this repo.
-[ONS Data Science Office](https://github.com/Geographic-Data-Service)
-[Census_2021_Output_Areas](https://github.com/Geographic-Data-Service/Census_2021_Output_Areas) (England and Wales)
-[Scotland_Census_2022_OA](https://github.com/Geographic-Data-Service/Scotland_Census_2022_OA)
-[Northern_Ireland_Census_2022_Data_Zone](https://github.com/Geographic-Data-Service/Northern_Ireland_Census_2022_Data_Zone)
-[Geodemographic Python Example](https://github.com/ogoodwin505/pygeodem)
-
-# Previous README:
-### Census 2021 Output Areas (legacy ReadME)
-This repository contains code to download and clean all Output Area level data for the England and Wales 2021 Census.
-
-The R code:
-
-* Download the bulk census data from [Nomis](https://www.nomisweb.co.uk/sources/census_2021_bulk)
-* Import the Output Area level data into R
-* Create new variable names based on the sequential ordering of the variables and the table identification code
-* Create a metadata lookup table providing the link between the new names and the original names
-* Export the OA data as both CSV and Parquet files
-
-The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
-
-### Northern Ireland Census 2021 Data Zones (legacy ReadMe)
-This repository contains code to download and clean all Data Zone level data for the Northen Irish 2021 Census
+## Process
+The flow diagram shows the stages of the area classification proccess
+<img width="475" height="349" alt="Methods_diagram" src="https://github.com/user-attachments/assets/224dcb2f-2544-47bc-aac9-234907619bbf" />
+<span style="color: red;">THIS NEEDS REVISITING AND UPDATING - LINK ON SHAREPOINT</span> .
 
 The python code:
+* Download the bulk census data from [Nomis](https://www.nomisweb.co.uk/sources/census_2021_bulk)
+* Import the LTLA Area level data into python
+* Create new variable names based on the sequential ordering of the variables and the table identification code
+* Merges all of the variables for Northern Ireland into one table
+* Create a metadata lookup table providing the link between the new names and the original names
 
 * Finds the available variables from the [NISRA Table Builder](https://build.nisra.gov.uk/)
 * Scrapes the tables for each variable using beautiful soup
 * Create new variable names based on the sequential ordering of the variables and the table identification code
+* Merges all of the variables for Northern Ireland into one table
 * Create a metadata lookup table providing the link between the new names and the original names
-* Export the data zone data as both CSV and Parquet files
+
 
 The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
+## Output
+Lookup tables allocating each area code for the Local Authority Districts equivlents in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
 
-## Geodemographic Python Example  
+## Limitations
+## Future scope
+This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
+## Contacts / authors / 
+[ONS Geography inbox](https://github.com/ONSgeo/Access_To_Amenities/blob/main/ONS.Geography@ons.gov.uk)
 
-This repository contains the workflow for producing a geodemographic classification in Python using k-means clustering. It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).  
-
-### Files  
-- **Main notebook:** `1_geodemographic_example.ipynb`  
-- **Requirements:** Dependencies are listed in `requirements.txt`  
-- **Example data:** `example_oacdata.csv`  
-
-### Setup (dependencies)
-The dependencies can be installed from inside the notebook.
-
-Alternatively;
-#### Using `pip` and a virtual environment  
-Create and activate a virtual environment:  
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
-pip install -r requirements.txt
-```
-
+## Acknowledgements
+Thanks to Jakub Wyszomierski (jakubwyszomierski), Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the Geographic Dara Service for their early code which formed the starting point of this repo.
+[Geographic Data Service](https://github.com/Geographic-Data-Service)
+[Census_2021_Output_Areas](https://github.com/Geographic-Data-Service/Census_2021_Output_Areas) (England and Wales)
+[Scotland_Census_2022_OA](https://github.com/Geographic-Data-Service/Scotland_Census_2022_OA)
+[Northern_Ireland_Census_2022_Data_Zone](https://github.com/Geographic-Data-Service/Northern_Ireland_Census_2022_Data_Zone)
+[Geodemographic Python Example](https://github.com/ogoodwin505/pygeodem)
