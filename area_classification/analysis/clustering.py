@@ -1,6 +1,8 @@
 ## Geodemographic python example
-# This notebook contains the workflow for producing a geodemographic classification in python using k-means clustering. 
-#It follows a simplified process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
+# This notebook contains the workflow for producing a geodemographic classification in 
+# python using k-means clustering. It follows a simplified process, similar to that 
+# described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
+# Note: Supergroup = cluster, group = subcluster, subgroup = subsubcluster.
 
 # Import necessary libraries
 import pandas as pd
@@ -9,6 +11,7 @@ from sklearn.cluster import KMeans
 from clustergram import Clustergram
 import matplotlib.pyplot as plt
 import os
+import time
 
 def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame, 
                        num_clusters: int,
@@ -59,7 +62,7 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
     transformed_variable_df = transform_and_standardize_data(variable_df)
     print("Transformed and standardized data completed.")
 
-    # Validate num_clusters
+    # Validate num_clusters compared to input data
     if len(transformed_variable_df) < num_clusters:
         print(f"Warning: Reducing num_clusters from {num_clusters} to {len(transformed_variable_df)}.")
         num_clusters = len(transformed_variable_df)
@@ -70,7 +73,10 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                        save_loc=plot_directory+"/supergroup_clustergram.png",
                        random_seed=random_seed)
     output_filepath = output_directory+"/supergroups_clusteroutput.csv"
-    print("create cluster completed.")
+    print("create supergroup clustergrams completed.")
+
+    # Add a break
+    input("Press Enter to continue with supergroups creation...")
 
     supergroup_variable_df = run_kmeans(transformed_variable_df, 
                                           num_clusters, 
@@ -84,6 +90,8 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
         print(f"Warning: Reducing num_clusters from {num_clusters} to {len(supergroup_variable_df)}.")
         num_clusters = len(supergroup_variable_df)
 
+    # Add a break
+    input("Press Enter to continue to move onto groups...")
 
     # Call the function with the adjusted number of clusters
     # Have to be careful with this, if we try and group 10 data points in 11 clusters it will fail
@@ -96,10 +104,13 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                                    n_init=n_init,
                                    random_seed=random_seed)
     print("group clustergrams completed.")
+    
+    # Add a break
+    input("Press Enter to continue with the subcluster numbers below for groups creation...")
     group_numbers = [3, 3, 3, 3, 3, 3, 3, 3]
 
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
-                                            output_dir=output_directory, 
+                                            output_dir=f"{output_directory}group", 
                                             subcluster_nums=group_numbers,
                                             drop_columns=["cluster"], 
                                             column_name="subcluster",
@@ -109,6 +120,9 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                                             random_seed=random_seed)
     print("groups cluster run completed.")
 
+    # Add a break
+    input("Press Enter to continue to move onto subgroup...")
+
     create_subcluster_clustergrams(output_df=grouped_variable_df,
                                    plot_dir=plot_directory, 
                                    num_clusters=num_clusters, 
@@ -116,11 +130,14 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                                    cluster_col_name='subcluster',
                                    n_init=n_init,
                                    random_seed=random_seed)
-    print("Subcluster clustergrams completed.")
+    print("subgroup clustergrams completed.")
+    # Add a break
+    input("Press Enter to continue with the cluster numbers below for subgroups creation...")
+
     subgroup_nums = [3, 3, 3, 3, 3, 3, 3, 3]
 
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
-                                               output_dir=output_directory, 
+                                               output_dir=f"{output_directory}subgroup", 
                                                subcluster_nums=subgroup_nums, 
                                                drop_columns=['cluster', 'subcluster'],
                                                column_name="subsubcluster",
@@ -128,7 +145,9 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
                                                num_clusters=num_clusters, 
                                                n_init=n_init,
                                                random_seed=random_seed)
-    print("subcluster run completed.")
+    print("subgroup cluster run completed.")
+    
+    print("Final output for supergroup, group and subgroup saved to outputs_data folder")
     return subgrouped_variable_df
 
 def load_data(filepath):
@@ -218,7 +237,7 @@ def create_clustergram(df, num_clusters, n_init, save_loc, random_seed=None):
     plt.savefig(save_loc)  # Save figure
     # plt.show()  # Display plot
 
-## Supergroup Clustering
+## Clusters = supergroup
 # Run kmeans to cluster the geographies in K clusters (supergroups)
 
 def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.csv", random_seed=None):
@@ -271,9 +290,8 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
 
 
 
-## Subgroups
-# For OAC the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
-# Example code for creating the first layer of subclusters (groups) is below
+## Subclusters = groups and subgroups
+# For LAD area classification the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 
 def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, drop_columns,cluster_col_name, n_init=10, random_seed=None):
     """
@@ -366,8 +384,7 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
         df.loc[cluster_df.index, column_name] = subcluster_output_df[column_name]
 
     # Save the final output
-    df[[column_name]].to_csv(output_dir+"/subgroups_clusteroutput.csv")
-    print("Final output saved to outputs/subgroups_clusteroutput.csv")
+    df[[column_name]].to_csv(output_dir+"/subclustering_output.csv")
 
     return df  # Return the modified DataFrame with clusters and subclusters
 
@@ -378,9 +395,8 @@ if __name__ == "__main__":
     # set a  random seed for reproducibility
     from area_classification.utilities.load_config import load_config
     config = load_config()
-    inputdata_filepath = "./area_classification/analysis/example_oacdata.csv"
 
-    function_output = clustering_wrapper(input_dataframe_or_filepath= inputdata_filepath, 
+    function_output = clustering_wrapper(input_dataframe_or_filepath= config["preprocessed_input_table"],
                                          num_clusters= config["number_of_clusters"],
                                          n_init = config["number_of_times_k_means_initialised"], 
                                          output_directory = config["output_directory"],

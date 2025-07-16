@@ -63,6 +63,9 @@ def main_pipeline():
         output_directory=config["output_directory"],
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
+    
+    # Step 6: Post processing
+    post_processing = post_process_cluster_table(output_folder, file_name, keep_column, split_column)
 
 
 if __name__ == "__main__":
