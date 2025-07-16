@@ -35,11 +35,23 @@ def batch_ag_columns(df_temp, file_configs, user_config):
         df_temp[new_col_name] = df_temp[col_names].sum(axis=1)
         print(f"Added new column '{new_col_name}' to the DataFrame.")
 
+    # # Extract the value in row 0, column 0
+    # if not df_temp.empty:
+    #     country_lad_code = str(df_temp.iloc[0, 0])  # Convert to string for use in the file name
+    # else:
+    #     country_lad_code = "N/A"  # Handle empty DataFrame case
+
+    # Extract the header of column 1
+    if not df_temp.empty:
+        country_lad_code = str(df_temp.columns[0])  # Convert to string for use in the file name
+    else:
+        country_lad_code = "N/A"  # Handle empty DataFrame case
+
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(user_config["qa_folder_path"]), exist_ok=True)
 
-    # Save to data QA folder
-    output_file_path = user_config["qa_folder_path"] + "aggregated_variables_output.csv"
+    # Save to data QA folder with cell A1 value in the file name
+    output_file_path = f"{user_config['qa_folder_path']}aggregated_variables_output_{country_lad_code}.csv"
     df_temp.to_csv(output_file_path, index=False)
         
     return df_temp
