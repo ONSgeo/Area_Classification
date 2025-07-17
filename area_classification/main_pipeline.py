@@ -6,6 +6,7 @@ from area_classification.downloading_data.ni_lgd_downloading_data import ni_lgd_
 from area_classification.downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.analysis.clustering import clustering_wrapper      
+from area_classification.post_processing.post_processing import post_process_cluster_table      
 
 
 def main_pipeline():
@@ -65,7 +66,7 @@ def main_pipeline():
         random_seed=config["random_seed"])
     
     # Step 6: Post processing
-    post_processing = post_process_cluster_table(output_folder, file_name, keep_column, split_column)
+    #post_processing = post_process_cluster_table(output_folder, file_name, keep_column, split_column)
 
 
 if __name__ == "__main__":
