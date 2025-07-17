@@ -1,8 +1,13 @@
 # UK standardised mean
-
+# NOTE FINAL ISSUE HERE IS THE TOTALS FOR THOSE WHICH ARE IN THE AGGREGATION SET UP
+# ARE NOT CONVERTING TO V CODES YET!
 import os
 import pandas as pd
 import yaml
+
+from area_classification.utilities.load_config import load_config
+from area_classification.pre_processing.aggregating_variables import batch_ag_columns
+
 
 
 def make_unique_columns(columns):
@@ -39,6 +44,7 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
     output_file : str
         Path to save the resulting table.
     """
+    
     # Read the lookup file to get the list of variable codes and their corresponding new codes
     lookup_df = pd.read_csv(lookup_file)
     if 'variable_code' not in lookup_df.columns or 'new_code' not in lookup_df.columns:
@@ -46,8 +52,7 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
     variable_codes = set(lookup_df['variable_code'].dropna())
     partial_codes = {code[:-1] + '1' for code in variable_codes if len(code) > 1}
     code_mapping = dict(zip(lookup_df['variable_code'], lookup_df['new_code']))
-    #v_to_formid = dict(zip(lookup_df['table_ID'].str.lower()+'0001', lookup_df['new_code']+'_total', ))
-    
+        
     #Add two new columns to the look up for the totals
     lookup_df["total_code"] = lookup_df["new_code"]+"_total"
     condition = lookup_df["variable_code"].str[-4:].apply(lambda x: x.isdigit())
@@ -56,7 +61,6 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
 
     # Find rows where total_column is False
     false_total_rows = lookup_df[lookup_df['total_column'] == False]
-
     # Update the values in the 'total_column' to variable_code_total for these rows
     lookup_df.loc[lookup_df['total_column'] == False, 'total_column'] = (
         false_total_rows['variable_code'] + '_total'
@@ -67,18 +71,6 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
     with open('area_classification/aggregation_setup.yaml', 'r') as file:
         yaml_data = yaml.safe_load(file)
 
-    # # Access the scot_file_configs section
-    # ew_file_configs = yaml_data.get('ew_file_configs', {})
-    # ni_file_configs = yaml_data.get('ni_file_configs', {})
-    # scot_file_configs = yaml_data.get('scot_file_configs', {})
-
-    # # Create a mapping from the codes in the lists to their corresponding keys
-    # code_to_key_mapping_ew = {code: key for key, codes in ew_file_configs.items() for code in codes}
-    # code_to_key_mapping_ni = {code: key for key, codes in ni_file_configs.items() for code in codes}
-    # code_to_key_mapping_scot = {code: key for key, codes in scot_file_configs.items() for code in codes}
-    # # Merge the three dictionaries
-    # code_to_key_mapping = {**code_to_key_mapping_ew, **code_to_key_mapping_ni, **code_to_key_mapping_scot}
-
     # Access file configurations and create a combined mapping in one step
     code_to_key_mapping = {
         code: key
@@ -87,7 +79,6 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
         for code in codes
     }
 
-    print(code_to_key_mapping)
     # Create a new dictionary with modified keys and values for the totals of those in the aggregation config
     agg_total_code_to_key_mapping = {key[:-4] + '0001': value + '_total' for key, value in code_to_key_mapping.items()}
     print(agg_total_code_to_key_mapping)
@@ -101,27 +92,25 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
         if file_name.startswith("aggregated_variables_output"):  
             file_path = os.path.join(inputs_folder, file_name)
             df = pd.read_csv(file_path)
-
+            
             # Find columns that match the variable codes
             matching_columns = [col for col in df.columns if col in variable_codes]
 
             # Find columns in the DataFrame that have header names in code_to_key_mapping
-            aggregation_matching_columns = [col for col in df.columns if col in code_to_key_mapping]
-            # Handle columns ending with '0001'
-            columns_ending_0001 = [
-                col for col in df.columns if col.endswith("0001")
-            ]
-               
-            # renamed_columns_ending_0001 = {
-            #     col: f"{code_mapping[col[:-4]]}_total" for col in columns_ending_0001
-            # }
+            aggregation_total_matching_columns = [col for col in df.columns if col in agg_total_code_to_key_mapping]
+            
+            # Extract the column headers from the 'total_column' in the lookup file
+            total_columns = lookup_df["total_column"].dropna().tolist()
 
+            # Find columns in df that match the headers in total_columns
+            matching_columns_totals = [col for col in df.columns if col in total_columns]
+            
             # Combine matched columns and total columns
-            all_matching_columns = matching_columns + columns_ending_0001 + aggregation_matching_columns
+            all_matching_columns = matching_columns + matching_columns_totals + aggregation_total_matching_columns
 
             if all_matching_columns:
                 # Extract the matching columns
-                extracted_subset = df[all_matching_columns].copy()  # Use .copy() to avoid SettingWithCopyWarning
+                extracted_subset = df[all_matching_columns].copy()
     
                 # Bring the first column of the original table to the front
                 first_column = df.iloc[:, 0]  # Get the first column
@@ -137,12 +126,13 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
                     total_column_mapping = dict(zip(lookup_df['total_column'], lookup_df['total_code']))
                 #Rename some columns
                 # Combine all column mappings into a single dictionary
-                combined_mapping = {**code_to_key_mapping, **total_column_mapping, **code_mapping, **agg_total_code_to_key_mapping}
+                combined_mapping = {**total_column_mapping, **code_mapping, **agg_total_code_to_key_mapping}
                 # Rename columns using the combined mapping and print the result
                 extracted_subset.rename(columns=combined_mapping, inplace=True)
                 # Ensure unique column names before concatenation
                 extracted_subset.columns = make_unique_columns(extracted_subset.columns)
                 print(extracted_subset)
+
                 # Concatenate the extracted data
                 extracted_data = pd.concat([extracted_data, extracted_subset], ignore_index=True)
     
@@ -152,6 +142,8 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
         totals_row[extracted_data.columns[0]] = "Total"  # Add a label for the first column
         extracted_data = pd.concat([extracted_data, pd.DataFrame([totals_row])], ignore_index=True)
 
+ 
+    print("Updated DataFrame columns:", df.columns)
     # Reorder the remaining columns alphabetically excluding the first column (LAD)
     # Get the first column
     first_column = extracted_data.columns[0]
@@ -166,6 +158,6 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
 # Example usage
 inputs_folder = "D:/Repos/Area_Classification/data/QA"
 lookup_file = "D:/Repos/Area_Classification/data/lookups/UK_selected_codes_lookup.csv"
-output_file = "D:/Repos/Area_Classification/data/extracted_data3.csv"
+output_file = "D:/Repos/Area_Classification/data/extracted_data.csv"
 
 extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file)
