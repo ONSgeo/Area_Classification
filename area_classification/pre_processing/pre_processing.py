@@ -4,7 +4,7 @@ import os
 from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.standard_illness_ratio import sir_processing
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
-from area_classification.pre_processing.Aggregating_variables import batch_ag_columns
+from area_classification.pre_processing.aggregating_variables import batch_ag_columns
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.combine_tables import combine_table
 

@@ -4,9 +4,9 @@ import pandas as pd
 
 def post_process_cluster_table(output_folder, file_name, keep_column, split_column):
     """
-    Finds a the cluster output, then keeps the data in one column (LAD_codes), and separates all
-    characters in another column (cluster codes) into seperate columns for supergroup, group and 
-    subgroup.
+    Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
+    characters in another column (cluster codes) into separate columns for supergroup, group, and 
+    subgroup. Converts the final character in the subgroup column to a number (a=1, b=2, c=3, etc.).
 
     Parameters
     ----------
@@ -43,20 +43,23 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
     # Keep the specified column
     kept_data = df[[keep_column]]
 
-    # Split the characters in the specified column into separate columns
-    split_data = df[split_column].apply(lambda x: list(str(x)))  # Ensure the value is treated as a string
-    split_df = pd.DataFrame(split_data.tolist())
+    # Process the split_column to create the required columns
+    supergroup = df[split_column].apply(lambda x: str(x)[0] if pd.notna(x) else "")
+    group = df[split_column].apply(lambda x: str(x)[:2] if pd.notna(x) else "")
+    subgroup = df[split_column].apply(lambda x: str(x) if pd.notna(x) else "")
 
-    # Rename the first three columns with custom names and the rest dynamically
-    column_names = ['supergroup', 'group', 'subgroup'] + [f"char_{i+4}" for i in range(split_df.shape[1] - 3)]
-    split_df.columns = column_names[:split_df.shape[1]]
+    # Convert the final character in the subgroup column to a number
+    def convert_final_char_to_number(value):
+        if pd.notna(value) and len(value) > 0:
+            final_char = value[-1].lower()
+            if 'a' <= final_char <= 'z':  # Check if it's a letter
+                return value[:-1] + str(ord(final_char) - ord('a') + 1)
+        return value
 
-    # Combine the kept column with the split columns
-    result_df = pd.concat([kept_data, split_df], axis=1)
+    subgroup = subgroup.apply(convert_final_char_to_number)
 
-    # Convert 'subgroup' column values from letters to numbers (a=1, b=2, c=3, etc.)
-    if 'subgroup' in result_df.columns:
-        result_df['subgroup'] = result_df['subgroup'].str.lower().map(lambda x: ord(x) - ord('a') + 1 if isinstance(x, str) else x)
+    # Combine the kept column with the processed columns
+    result_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
 
     # Save the resulting DataFrame to a new file
     output_file = os.path.join(output_folder, f"processed_{file_name}")
@@ -69,7 +72,7 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
 output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
 post_process_cluster_table(
     output_folder=output_folder, 
-    file_name="subgroups_clusteroutput.csv", 
+    file_name="subclustering_output.csv", 
     keep_column='LAD_code', 
     split_column='subsubcluster'
 )
