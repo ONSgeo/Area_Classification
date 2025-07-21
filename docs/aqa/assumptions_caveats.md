@@ -49,7 +49,29 @@ E06000052 and E06000053 - Cornwall and Isles of Scilly
 
 Plain text
 
-## Assumption 6: 
+## Assumption 6 / Decision log: to include ts0440007 
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+In the interim solution for the aggregation of 'Flat', Jakub aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9,
+Accommodation type
+Flat = 
+NM_1549_1_7       (Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement) + 
+NM_1549_1_8       (Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)) +
+NM_1549_1_9       (Unshared dwelling: Flat, maisonette or apartment: In commercial building)
+
+This did not include "ts0440007 - Accommodation type: Part of another converted building, for example, former school, church or warehouse" we have made the decision to include this in the England and Wales aggregation for Flats since NI and Scot includes: 
+NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
+- ni0030005 Household: Accommodation Type: Flat, maisonette or apartment: Purpose-built block of flats
+- ni0030006 Household: Accommodation Type: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)
+- ni0030007 Household: Accommodation Type: Flat, maisonette or apartment: In a commercial building (for example in an office building, hotel, or over a shop)
+
+Scotland includes UV4010006 which is "Flat, maisonette or apartment: Total" and includes:
+- UV4010007 Flat, maisonette or apartment: Purpose-built block of flats or tenement
+- UV4010008 Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)
+- UV4010009 Flat, maisonette or apartment: In a commercial building
+
+## Assumption 7: 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
