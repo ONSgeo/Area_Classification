@@ -5,7 +5,7 @@ ew_file_configs:
   dependant_children: [ts0030009, ts0030013, ts0030016, ts0030021]
   cannot_speak_English: [ts0290006, ts0290007]
   provides_unpaid_care: [ts0390003, ts0390006, ts0390009]
-  flat: [ts0440005, ts0440006, ts0440008]
+  flat: [ts0440005, ts0440006, ts0440007, ts0440008]
   under_occupation: [ts0530002, ts0530003]
   overcrowding: [ts0530005, ts0530006]
   ownership_or_shared: [ts0540002, ts0540005]
@@ -28,7 +28,6 @@ ni_file_configs:
   age_65_84: [ni0120015, ni0120016, ni0120017, ni0120018]
   united_kingdom: [ni0330002, ni0330003]
   eu_countries: [ni0330004, ni0330005]
-  economically_active: [ni0500005, ni0500007]
 
 # separated_divorced - DONE
 # dependant_children - this already has one variable (household with dependent children - ni2390003)
@@ -52,7 +51,7 @@ ni_file_configs:
 # Scotland variables to aggregate using the variable codes
 scot_file_configs:
   separated_divorced: [UV1040004, UV1040005]
-  dependant_children: [UV1120009, UV1120010, UV1120022, UV1120023]
+  dependant_children: [UV1120009, UV1120010, UV1120022, UV1120023, UV1120014, UV1120015, UV1120018, UV1120019 ]
   cannot_speak_English: [UV2100010, UV2100011]
   cars_2_or_more: [UV4050004, UV4050005, UV4050006]
   under_occupation: [UV4150002, UV4150003]
@@ -64,7 +63,6 @@ scot_file_configs:
   age_65_84: [UV1030067, UV1030068, UV1030069, UV1030070, UV1030071, UV1030072, UV1030073, UV1030074, UV1030075, UV1030076, UV1030077, UV1030078, UV1030079, UV1030080, UV1030081, UV1030082, UV1030083, UV1030084, UV1030085, UV1030086]
   age_85_and_over: [UV1030087, UV1030088, UV1030089, UV1030090, UV1030091, UV1030092, UV1030093, UV1030094, UV1030095, UV1030096, UV1030097, UV1030098, UV1030099, UV1030100, UV1030101, UV1030102]
   no_children: [UV1120008, UV1120013]
-  economically_active: [UV6010012, UV6010023]
   christian: [UV2050002, UV2050003, UV2050004]
 
 # separated_divorced - DONE
