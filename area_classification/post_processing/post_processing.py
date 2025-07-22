@@ -1,5 +1,8 @@
 # Post clustering wrapper
 #INITAL PLACE HOLDER SCRIPT - NOTE DOES NOT RUN!
+from area_classification.post_processing.table_restructure import post_process_cluster_table  
+from area_classification.post_processing.UK_standardised_mean import extract_matching_and_partial_columns  
+from area_classification.post_processing.cluster_variables_mean import get_cluster_means  
 
 def post_processing(post_process_args, extract_columns_args, cluster_means_args):
     """
