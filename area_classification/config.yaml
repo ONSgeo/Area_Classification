@@ -42,7 +42,7 @@ scot_excluded_form_code: ["population_density"]
 
 #SIR config
 england_wales_disability_file: 'ew_disability_age_group.csv'
-ni_disability_file: ''ni_disability_age_group.csv'
+ni_disability_file: 'ni_disability_age_group.csv'
 scotland_disability_file: 'scot_disability_age_group.csv'
 
 england_wales_disability_input: 'ew_downloads/disabilitycensus2021.xlsx'
