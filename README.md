@@ -99,7 +99,7 @@ Within the 'data/inputs' folder create three new folders:
       - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage.csv'.
 #### Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
-<img width="646" height="1080" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/d3b389f3-d1bb-4c38-bb20-7ca665703dd9" />
+<img width="646" height="1080" alt="area classification file structure for README" src="https://github.com/user-attachments/assets/a3cea68c-c3b8-478e-86c4-d0664ba61b9f" />
 
 ## Process
 The flow diagram shows the stages of the area classification proccess
