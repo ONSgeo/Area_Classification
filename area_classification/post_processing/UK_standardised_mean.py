@@ -1,13 +1,11 @@
 # UK standardised mean
-# NOTE FINAL ISSUE HERE IS THE TOTALS FOR THOSE WHICH ARE IN THE AGGREGATION SET UP
-# ARE NOT CONVERTING TO V CODES YET!
+# NOTE ISSUE HERE IS SOME OF THE TOTAL COLUMNS FOR SCOT MISSING
 import os
 import pandas as pd
 import yaml
 
 from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.aggregating_variables import batch_ag_columns
-
 
 
 def make_unique_columns(columns):
@@ -50,7 +48,6 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
     if 'variable_code' not in lookup_df.columns or 'new_code' not in lookup_df.columns:
         raise ValueError("The lookup file must contain 'variable_code' and 'new_code' columns.")
     variable_codes = set(lookup_df['variable_code'].dropna())
-    partial_codes = {code[:-1] + '1' for code in variable_codes if len(code) > 1}
     code_mapping = dict(zip(lookup_df['variable_code'], lookup_df['new_code']))
         
     #Add two new columns to the look up for the totals
@@ -135,22 +132,46 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
 
                 # Concatenate the extracted data
                 extracted_data = pd.concat([extracted_data, extracted_subset], ignore_index=True)
+
+    # Remove columns where the header ends with "_total_1"
+    extracted_data = extracted_data[[col for col in extracted_data.columns if not col.endswith("_total_1")]]
+
+    print("Updated DataFrame columns:", df.columns)    
+    # Process column headers in df
+    updated_columns = []
+    for col in extracted_data.columns:
+        if col.endswith("_total"):  # Check if the last 6 characters are "_total"
+            base_name = col[:-6]  # Extract the part before "_total"
+            
+            # Find the base_name in the variable_code column of the lookup
+            if base_name in code_mapping:
+                # Replace the base_name with the corresponding new_code
+                new_name = f"{code_mapping[base_name]}_total"
+                updated_columns.append(new_name)
+            else:
+                updated_columns.append(col)  # Keep the original name if not found in the lookup
+        else:
+            updated_columns.append(col)  # Keep the original name if it doesn't end with "_total"
+
+    # Update the column names in df
+    extracted_data.columns = updated_columns
+
+    # Ensure df has unique column names by removing duplicate columns.
+    extracted_data = extracted_data.loc[:, ~extracted_data.columns.duplicated()]
     
-    # Add a totals row
+    # Add a totals row at the bottom of the table
     if not extracted_data.empty:
         totals_row = extracted_data.iloc[:, 1:].sum(numeric_only=True)  # Sum numeric columns (excluding the first column)
         totals_row[extracted_data.columns[0]] = "Total"  # Add a label for the first column
         extracted_data = pd.concat([extracted_data, pd.DataFrame([totals_row])], ignore_index=True)
-
- 
-    print("Updated DataFrame columns:", df.columns)
+     
     # Reorder the remaining columns alphabetically excluding the first column (LAD)
     # Get the first column
     first_column = extracted_data.columns[0]
     remaining_columns = sorted(extracted_data.columns[1:])
     reordered_columns = [first_column] + remaining_columns
     extracted_data = extracted_data[reordered_columns]
-    
+
     # Save the extracted data to the output file
     extracted_data.to_csv(output_file, index=False)
     print(f"Extracted data saved to: {output_file}")
