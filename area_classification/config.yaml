@@ -4,7 +4,7 @@ working_directory : ~/Area_Classification
 
 #*****FILE PATHS WHICH MAY NEED AMENDING*****
 #The LAD lookup tables should be saved in the lookups folder
-LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_UK.csv'
+LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
 #Clustering config
 number_of_clusters: 8
