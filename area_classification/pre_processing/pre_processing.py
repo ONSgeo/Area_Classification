@@ -1,12 +1,12 @@
 import pandas as pd
 import sys
 import os
-from area_classification.utilities.load_config import load_config
-from area_classification.pre_processing.standard_illness_ratio import sir_processing
-from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
-from area_classification.pre_processing.aggregating_variables import batch_ag_columns
-from area_classification.pre_processing.select_variables import select_variables
-from area_classification.pre_processing.combine_tables import combine_table
+from utilities.load_config import load_config
+from pre_processing.standard_illness_ratio import sir_processing
+from pre_processing.convert_to_percentages import convert_to_percentages
+from pre_processing.aggregating_variables import batch_ag_columns
+from pre_processing.select_variables import select_variables
+from pre_processing.combine_tables import combine_table
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
