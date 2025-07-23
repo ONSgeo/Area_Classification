@@ -54,6 +54,9 @@ def main_pipeline():
 
     # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
+
+    # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
+     
                            
     # Step 5: Clustering
     # This assumes the data is saved locally and then loads during clustering. 
