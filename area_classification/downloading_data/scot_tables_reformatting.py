@@ -44,6 +44,9 @@ def scot_reformatting_wrapper(scot_input_folder: str,
         ]
     )
 
+    #Change the only xlsx (pop_density) in the folder to csv
+    extract_pop_density_table(scot_input_folder)
+
     # function to extract metadata from files into table. 
     # 'metadata' is a list of table_name, table_id and unit variabless
     metadata = extract_metadata_from_files(scot_input_folder)
@@ -63,7 +66,6 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     # Replace variable names with their codes
     # 'variable_names_ids' is a list of variable_names and variable_ids variables
     variable_names_ids = replace_variable_names_with_codes(config)
-
 
     # Add to metadata table
     # Iterate over the metadata dict and variable_names_ids list and add to the metadata table
@@ -365,6 +367,40 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     print("Data formatting complete. Results saved to:", output_file_path)
 
 
+
+def extract_pop_density_table(scot_input_folder):
+    """
+    Extracts the 'Table 4' sheet from an Excel file, saves it as a CSV, 
+    and deletes the original Excel file.
+
+    Parameters:
+        scot_input_folder (str): Path to the folder containing the Excel file.
+
+    Returns:
+        None
+    """
+    # Define file paths
+    population_density_xlsx = os.path.join(scot_input_folder, "population_density.xlsx")
+    population_density_csv = os.path.join(scot_input_folder, "population_density.csv")
+
+    # Check if the input file exists
+    if not os.path.exists(population_density_xlsx):
+        print(f"No file named {population_density_xlsx} found in the directory.")
+        return
+
+    try:
+        # Load only the sheet named 'Table 4'
+        df = pd.read_excel(population_density_xlsx, sheet_name="Table 4")
+        
+        # Save the extracted sheet as a CSV
+        df.to_csv(population_density_csv, index=False)
+        print(f"Sheet 'Table 4' has been saved as {population_density_csv}.")
+        
+        # Remove the original Excel file
+        os.remove(population_density_xlsx)
+        print(f"The file {population_density_xlsx} has been deleted from the folder.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def reformat_pop_density(scot_input_folder, config):
     """
