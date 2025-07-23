@@ -3,6 +3,7 @@
 # Post processing of the cluster assignments
 import os
 import pandas as pd
+from utilities.load_config import load_config
 
 def post_process_cluster_table(output_folder, file_name, keep_column, split_column):
     """
@@ -71,7 +72,8 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
     return result_df
 
 # Example usage
-output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
+config = load_config('area_classification/config.yaml')
+output_folder = os.path.join(config["output_directory"], "/subgroup")
 post_process_cluster_table(
     output_folder=output_folder, 
     file_name="subclustering_output.csv", 
