@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import yaml
 
-from area_classification.utilities.load_config import load_config
+from utilities.load_config import load_config
 from pre_processing.aggregating_variables import batch_ag_columns
 
 

@@ -65,7 +65,7 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
     result_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
 
     # Save the resulting DataFrame to a new file
-    output_file = os.path.join(output_folder, f"processed_{file_name}")
+    output_file = os.path.join(output_folder, f"Processed_{file_name}")
     result_df.to_csv(output_file, index=False)
     print(f"Processed file saved to: {output_file}")
 
