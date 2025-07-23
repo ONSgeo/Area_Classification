@@ -177,8 +177,10 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
     print(f"Extracted data saved to: {output_file}")
 
 # Example usage
-inputs_folder = "D:/Repos/Area_Classification/data/QA"
-lookup_file = "D:/Repos/Area_Classification/data/lookups/UK_selected_codes_lookup.csv"
-output_file = "D:/Repos/Area_Classification/data/extracted_data.csv"
+config = load_config('area_classification/config.yaml')
+inputs_folder = config["qa_folder_path"] 
+lookup_file = config["select_variables_lookup"]
+output_file = os.path.join(config["output_directory"], "/extracted_data.csv")
+
 
 extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file)
