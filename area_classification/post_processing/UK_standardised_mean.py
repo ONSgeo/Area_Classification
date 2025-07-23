@@ -180,7 +180,7 @@ def extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file
 config = load_config('area_classification/config.yaml')
 inputs_folder = config["qa_folder_path"] 
 lookup_file = config["select_variables_lookup"]
-output_file = os.path.join(config["output_directory"], "/extracted_data.csv")
+output_file = os.path.join(config["output_directory"], "extracted_data.csv")
 
 
 extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file)
