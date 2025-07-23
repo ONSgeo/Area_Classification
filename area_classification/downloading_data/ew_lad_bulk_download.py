@@ -8,7 +8,7 @@ from zipfile import ZipFile
 from glob import glob
 from shutil import rmtree
 # import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
-from area_classification.utilities.load_config import load_config
+from utilities.load_config import load_config
 import tempfile
 
 def ew_lad_bulk_download(config: dict):

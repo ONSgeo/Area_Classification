@@ -4,7 +4,7 @@ working_directory : ~/Area_Classification
 
 #*****FILE PATHS WHICH MAY NEED AMENDING*****
 #The LAD lookup tables should be saved in the lookups folder
-LAD_lookup_file_path: 'data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
+LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
 #Clustering config
 number_of_clusters: 8
@@ -13,20 +13,20 @@ random_seed: 42
 
 #*****FILE PATHS WHICH SHOULD NOT NEED AMENDING*****
 # Variables lookup
-select_variables_lookup: 'data/lookups/UK_selected_codes_lookup.csv'
+select_variables_lookup: './data/lookups/UK_selected_codes_lookup.csv'
 
 #General file paths
-input_data_directory: 'data/inputs/'
+input_data_directory: './data/inputs/'
 qa_folder_path: './data/QA/'
-output_directory: 'data/output_data/'
-plot_directory: 'data/plots/'
-preprocessed_input_table: 'data/inputs/pre_processed_data_ew_ni_scot.csv'
+output_directory: './data/output_data/'
+plot_directory: './data/plots/'
+preprocessed_input_table: './data/inputs/pre_processed_data_ew_ni_scot.csv'
 
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
-scot_input_folder: 'data/inputs/scot_downloads/'
+scot_input_folder: './data/inputs/scot_downloads/'
 
 # Manually downloaded population density table file path
-ni_pop_density_filepath: 'data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx' 
+ni_pop_density_filepath: './data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx' 
 
 #Downloading data config
 ew_file_pattern: 'ts???*.csv'
