@@ -95,7 +95,7 @@ Within the 'data/inputs' folder create three new folders:
 
    - Additionally, in the 'data/inputs/scot_downloads' folder download and save: 
       - The Scottish disability data [UV303a](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.
-      - Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.csv'.
+      - Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.
       - Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator_percentage.csv'.
 #### Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
