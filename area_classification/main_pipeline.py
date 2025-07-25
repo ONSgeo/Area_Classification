@@ -5,6 +5,7 @@ from downloading_data.ew_lad_bulk_download import ew_lad_bulk_download
 from downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
 from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
+from pre_processing.filter_variables import drop_variables_pre_clustering
 from analysis.clustering import clustering_wrapper      
 #from post_processing.post_processing import post_processing      
 #Can be removed when wrapper sorted
@@ -56,13 +57,15 @@ def main_pipeline():
     pre_processing(ew_df , ni_df, scot_df, config)
 
     # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
-     
+    # If not running the full 60 variables, update the 'variables_to_drop' in the config
+    # and then run the following code before clustering.
+    drop_variables_pre_clustering(config)
                            
     # Step 5: Clustering
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
     clustering_output = clustering_wrapper(
-        input_dataframe_or_filepath= config["preprocessed_input_table"],
+        input_dataframe_or_filepath= config["pre_clustering_data"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],

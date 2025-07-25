@@ -6,6 +6,23 @@ working_directory : ~/Area_Classification
 #The LAD lookup tables should be saved in the lookups folder
 LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
+#Varaibles chosen
+variables_to_drop  : [
+        "v07", # Families with no children
+        "v09", # Europe: United Kingdom
+        "v11", # Africa
+        "v20", # Bangladeshi (variable not available for NI at this level of geography)
+        "v23", # Pakistani
+        "v32", # Other religion
+        "v40", # Under occupation
+        "v41", # Overcrowding    
+        "v42", # Social rented
+        "v60"  # Level 4 qualifications or above 
+        ]
+
+# Data to use in clustering
+pre_clustering_data: './data/inputs/pre_clustering_data.csv'
+
 #Clustering config
 number_of_clusters: 8
 number_of_times_k_means_initialised: 10 # 1000 for real run
@@ -20,7 +37,6 @@ input_data_directory: './data/inputs/'
 qa_folder_path: './data/QA/'
 output_directory: './data/output_data/'
 plot_directory: './data/plots/'
-preprocessed_input_table: './data/inputs/pre_processed_data_ew_ni_scot.csv'
 
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: './data/inputs/scot_downloads/'
