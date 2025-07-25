@@ -75,4 +75,14 @@ Scotland includes UV4010006 which is "Flat, maisonette or apartment: Total" and 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
+[Country of Birth - 9 Categories](https://build.nisra.gov.uk/en/custom/data?d=PEOPLE&v=LGD14&v=COB_AGG9) was used for NI. To harmonise with EW and Scot, we require the total for all EU countries. We have there for “Europe: Ireland” and “Europe: Other EU countries” together however with a caveat. The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However if someone just answered Ireland (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU) so they are coded to Non-EU as there is no way to determine which is the correct classification for these responses.
+
+## Assumption 8: 
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
 Plain text
+
+
+
+
