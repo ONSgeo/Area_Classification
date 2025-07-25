@@ -65,6 +65,10 @@ england_wales_disability_input: 'ew_downloads/disabilitycensus2021.xlsx'
 ni_disability_input: 'ni_downloads/census-2021-ms-d02.xlsx'
 scotland_disability_input: 'scot_downloads/UV303a.csv'
 
+#Post clustering table restructure
+keep_column: 'LAD_code' #Name of the column to keep as-is.
+split_column: 'subsubcluster' # Name of the column to split into separate characters.
+
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
         "ts007",

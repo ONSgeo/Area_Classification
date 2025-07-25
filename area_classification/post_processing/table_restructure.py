@@ -5,7 +5,9 @@ import os
 import pandas as pd
 from utilities.load_config import load_config
 
-def post_process_cluster_table(output_folder, file_name, keep_column, split_column):
+def post_process_cluster_table(config: dict,
+                                output_folder: str,
+                                file_name: str):
     """
     Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
     characters in another column (cluster codes) into separate columns for supergroup, group, and 
@@ -13,20 +15,21 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
 
     Parameters
     ----------
+    config : dict
+        Configuration dictionary containing paths and file names.
     output_folder : str
         Path to the folder containing the file.
     file_name : str
         Name of the file to process.
-    keep_column : str
-        Name of the column to keep as-is.
-    split_column : str
-        Name of the column to split into separate characters.
-
     Returns
     -------
     pd.DataFrame
         A DataFrame with the kept column and characters from the split column in custom-named columns.
     """
+    
+    keep_column= config["keep_column"]
+    split_column= config["split_column"]
+
     # Construct the file path
     file_path = os.path.join(output_folder, file_name)
     
@@ -73,11 +76,8 @@ def post_process_cluster_table(output_folder, file_name, keep_column, split_colu
 
 # Example usage
 config = load_config('area_classification/config.yaml')
-output_folder = os.path.join(config["output_directory"], "/subgroup")
-post_process_cluster_table(
+output_folder = os.path.join(config["output_directory"], "subgroup")
+post_process_cluster_table(config,
     output_folder=output_folder, 
     file_name="subclustering_output.csv", 
-    keep_column='LAD_code', 
-    split_column='subsubcluster'
 )
-
