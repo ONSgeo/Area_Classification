@@ -68,6 +68,9 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     variable_names_ids = replace_variable_names_with_codes(config)
 
     # Add to metadata table
+    # Manually add 'UV303a' entries to metadata and variable_names_ids lists
+    metadata.append({"table_id": "UV303a", "table_name": "Disability by sex by age (20)", "unit": "Person"})
+    variable_names_ids.append((["Disability"], ["UV303a"]))
     # Iterate over the metadata dict and variable_names_ids list and add to the metadata table
     for (meta, (variable_names, variable_ids)) in zip(metadata, variable_names_ids):
         # Extract table_id, table_name, and unit from the metadata dictionary
@@ -475,8 +478,8 @@ def extract_metadata_from_files(scot_input_folder):
 
     
     for file in la_files:
-        # Skip files that contain 'reformat' in their name
-        if 'reformat' in file:
+        # Skip the disability file 'UV303a.csv'
+        if file == "UV303a.csv":
             continue
 
         # Check for migrant_indicator table and explicitly define its metadata
@@ -511,19 +514,30 @@ def extract_metadata_from_files(scot_input_folder):
             if len(rows) >= 4:
                 row_4 = rows[3][0]  # Extract the first column of row 4
                 
-                # Extract the portion after the second hyphen
-                parts = row_4.split('-')
-                if len(parts) > 2:
-                    # Extract the portion after the second hyphen
-                    table_name = parts[2].strip()
-                    
-                    # If there's a third hyphen, extract only the part before it
-                    if len(parts) > 3:
-                        table_name = parts[2].split('-', 1)[0].strip()
-                    
-                    # If the word 'All' is present, extract only the part before 'All'
-                    if 'All' in table_name:
-                        table_name = table_name.split('All', 1)[0].strip()
+                # Special case for UV607.csv
+                if t_tab_loc.lower() == "uv607.csv":
+                    # Extract the portion after the second hyphen and ignore further hyphens
+                    parts = row_4.split('-')
+                    if len(parts) > 2:
+                        # Combine everything after the second hyphen into one string
+                        table_name = '-'.join(parts[2:]).strip()
+                        # If 'All' is present, extract only the part before 'All'
+                        if 'All' in table_name:
+                            table_name = table_name.split('All', 1)[0].strip()
+                else:
+                    # Default behavior for other files
+                    parts = row_4.split('-')
+                    if len(parts) > 2:
+                        # Extract the portion after the second hyphen
+                        table_name = parts[2].strip()
+                        
+                        # If there's a third hyphen, extract only the part before it
+                        if len(parts) > 3:
+                            table_name = parts[2].split('-', 1)[0].strip()
+                        
+                        # If the word 'All' is present, extract only the part before 'All'
+                        if 'All' in table_name:
+                            table_name = table_name.split('All', 1)[0].strip()
     
 
             # Initialize table_includes with a default value
@@ -595,7 +609,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
         file_path = os.path.join(scot_input_folder, file_name)
             
         # Read the input CSV file
-        if "UV604" in file_name or "UV606" in file_name:
+        if "UV606" in file_name:
             df = pd.read_csv(file_path, header=None, skiprows=11)
         else:
             df = pd.read_csv(file_path, header=None, skiprows=10)
