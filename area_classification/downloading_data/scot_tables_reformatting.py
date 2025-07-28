@@ -110,6 +110,9 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     # Update the type for population density to ratio
     meta_data_table.loc[meta_data_table['Variable_ID'] == 'population_density', 'Type'] = 'Ratio'
 
+    # Drop rows where Variable_Name contains 'Unnamed'
+    meta_data_table = meta_data_table[~meta_data_table["Variable_Name"].str.contains("Unnamed", na=False)]
+
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
