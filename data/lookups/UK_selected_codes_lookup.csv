@@ -59,7 +59,7 @@ Economically active: Unemployed,ts0660013,TS066,Economic activity status,ew,v57
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,TS067,Highest level of qualification,ew,v58
 Level 3 qualifications,ts0670006,TS067,Highest level of qualification,ew,v59
 Level 4 qualifications or above,ts0670007,TS067,Highest level of qualification,ew,v60
-Lives in a communal establishment,ni1920003,ni129,Residence Type,ni,v01
+Lives in a communal establishment,ni1920003,ni192,Residence Type,ni,v01
 Never married and never registered a civil partnership,ni1370002,ni137,Marital and Civil Partnership Status,ni,v02
 Married or in a registered civil partnership,ni1380002,ni138,Marital and Civil Partnership Status - 3 Categories,ni,v03
 Separated or divorced,separated_divorced,ni137,Marital and Civil Partnership Status,ni,v04
