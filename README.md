@@ -44,7 +44,7 @@ Table codes generally start with "UV".
 
 
 ## Look ups
-* [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/pre_processing/Selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
+* [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
 * A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo in 'data/lookups' folder, if saved elsewhere update the file path in the config.yaml.
 
 ## Methodology / process description
@@ -90,6 +90,7 @@ Within the 'data/inputs' folder create three new folders:
 | UV415 |	Occupancy rating for bedrooms |	scot|
 | UV501 |	Highest level of qualification |	scot|
 | UV601 |	Economic activity |	scot|
+| UV604 |	Hours worked |	scot|
 | UV606 |	Occupation |	scot|
 | UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
 
