@@ -64,6 +64,9 @@ scot_file_configs:
   age_85_and_over: [UV1030087, UV1030088, UV1030089, UV1030090, UV1030091, UV1030092, UV1030093, UV1030094, UV1030095, UV1030096, UV1030097, UV1030098, UV1030099, UV1030100, UV1030101, UV1030102]
   no_children: [UV1120008, UV1120013]
   christian: [UV2050002, UV2050003, UV2050004]
+  hours_part: [UV6040002, UV6040003]
+  hours_full: [UV6040004, UV6040005]
+
 
 # separated_divorced - DONE
 # dependant_children - DONE
@@ -84,3 +87,5 @@ scot_file_configs:
 # no_children - DONE
 # economically_active - DONE this is a single variable for EW
 # christian - DONE
+# hours_part - DONE
+# hours_full - DONE
