@@ -1,5 +1,6 @@
 # Create a totals table for counts
 # only runs when in the 'area_classification' directory - working document 
+
 import os
 import pandas as pd
 
@@ -68,19 +69,25 @@ def select_totals_columns(inputs_folder, lookup_file, output_file):
                     select_df.drop(columns=[variable], inplace=True)
                     continue
                 if variable.startswith("v"):  # Only process variable columns
-                    # Find the corresponding total column in the lookup
-                    match = country_lookup_df.loc[country_lookup_df["new_code"] == variable, "table_ID_with_suffix"]
-                    if not match.empty:
-                        total_column = match.values[0]  # Get the matching total column name (e.g., ts0010001)
-
-                        # Debug: Check if the total column exists in the aggregated variables file
-                        if total_column in agg_df.columns:
-                            # Add the total column to the select DataFrame
-                            select_df[f"{variable}_total"] = agg_df[total_column]
-                        else:
-                            print(f"Warning: Total column '{total_column}' not found in agg file.")
+                    # Special case for v19 in Scotland
+                    if country == "scot" and variable == "v19":
+                        total_column = "Total"  # Directly set the total column to 'Total'
                     else:
-                        print(f"Warning: No match found for variable '{variable}' in lookup_df for {country}.")
+                        # Find the corresponding total column in the lookup
+                        match = country_lookup_df.loc[country_lookup_df["new_code"] == variable, "table_ID_with_suffix"]
+                        if not match.empty:
+                            total_column = match.values[0]  # Get the matching total column name (e.g., ts0010001)
+                        else:
+                            print(f"Warning: No match found for variable '{variable}' in lookup_df for {country}.")
+                            continue
+                    
+                    
+                    # Debug: Check if the total column exists in the aggregated variables file
+                    if total_column in agg_df.columns:
+                        # Add the total column to the select DataFrame
+                        select_df[f"{variable}_total"] = agg_df[total_column]
+                    else:
+                        print(f"Warning: Total column '{total_column}' not found in agg file.")
 
             # Append the processed DataFrame to the list
             processed_dfs.append(select_df)
