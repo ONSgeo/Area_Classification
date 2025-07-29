@@ -612,7 +612,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
         file_path = os.path.join(scot_input_folder, file_name)
             
         # Read the input CSV file
-        if "UV606" in file_name:
+        if "UV606" in file_name or "UV604" in file_name: 
             df = pd.read_csv(file_path, header=None, skiprows=11)
         else:
             df = pd.read_csv(file_path, header=None, skiprows=10)
