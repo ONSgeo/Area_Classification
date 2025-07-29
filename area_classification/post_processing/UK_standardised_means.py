@@ -18,14 +18,14 @@ def process_csv(input_file, output_file):
     columns_to_remove = ['V12', 'V33']
     df = df.drop(columns=columns_to_remove, errors='ignore')
 
-    # Define the conditions and corresponding row names
+    # Define the row names and corresponding first letter of the area codes
     conditions = {
         'EW_total': ['E', 'W'],  # Codes starting with 'E' or 'W'
         'NI_total': ['N'],      # Codes starting with 'NI'
         'Scot_total': ['S']     # Codes starting with 'UV'
     }
 
-    # Calculate totals for each condition and append them in one operation
+    # Calculate totals for each condition and append them
     total_rows = []
     first_column = df.columns[0]
 
@@ -40,15 +40,15 @@ def process_csv(input_file, output_file):
         # Collect the total row for later concatenation
         total_rows.append(total_row)
 
-    # Append all total rows to the DataFrame at once
+    # Append all total rows to the DataFrame
     df = pd.concat([df, pd.DataFrame(total_rows)], ignore_index=True)
 
-    # Efficiently calculate percentages for all 'v' columns
     v_columns = [col for col in df.columns if col.startswith('v') and not col.endswith('_total')]
 
     # Dictionary to store new columns
     new_columns = {}
 
+    # Calculate percentages for columns based on V code and V_totals
     for column in v_columns:
         total_column = f"{column}_total"  # Find the corresponding total column
         if total_column in df.columns:  # Ensure the total column exists
@@ -56,24 +56,20 @@ def process_csv(input_file, output_file):
             percentage_column = f"{column}_percentage"
             new_columns[percentage_column] = (df[column] / df[total_column]) * 100
 
-    # Add all new columns to the DataFrame at once
+    # Add all new columns to the DataFrame
     df = pd.concat([df, pd.DataFrame(new_columns)], axis=1)
 
-    # Sort the columns alphabetically missing the first column (area code)
+    # Sort the columns alphabetically excluding the first column (area code)
     first_column = df.columns[0]
     sorted_columns = sorted(df.columns[1:])
     df = df[[first_column] + sorted_columns]
 
-    # Ensure the first column and index are strings for filtering
+    # Keep the rows which are for totals (UK, EW, NI and Scot)
     rows_to_keep = df.iloc[:, 0].astype(str).str.contains('_total')
-
-    # Keep rows that satisfy both conditions
     df = df[rows_to_keep]
 
-    # Identify columns that end with '_percentage', ignoring the first column
-    columns_to_keep = df.columns[1:][df.columns[1:].str.endswith('_percentage')]
-
-    # Retain the first column and the identified columns
+    # Retain the first column and the columns which are '_percentage'
+    columns_to_keep = df.columns[1:][df.columns[1:].str.endswith('_percentage')]   
     df = df[[df.columns[0]] + list(columns_to_keep)]
 
     # Save the updated DataFrame back to a CSV file
