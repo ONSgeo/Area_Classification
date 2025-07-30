@@ -1,7 +1,5 @@
 #Table_restructure
 
-#ADD IN NAMES BASED ON LOOK UP
-
 # Post processing of the cluster assignments
 import os
 import pandas as pd
