@@ -4,10 +4,9 @@
 import os
 import pandas as pd
 from utilities.load_config import load_config
+config = load_config('area_classification/config.yaml')
 
-def post_process_cluster_table(config: dict,
-                                output_folder: str,
-                                file_name: str):
+def post_process_cluster_table(config):
     """
     Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
     characters in another column (cluster codes) into separate columns for supergroup, group, and 
@@ -26,12 +25,15 @@ def post_process_cluster_table(config: dict,
     pd.DataFrame
         A DataFrame with the kept column and characters from the split column in custom-named columns.
     """
-    
+
+    output_folder = os.path.join(config["output_directory"], "subgroup")
+    file_name="subclustering_output.csv"
+    file_path = os.path.join(output_folder, file_name) 
+
+
     keep_column= config["keep_column"]
     split_column= config["split_column"]
 
-    # Construct the file path
-    file_path = os.path.join(output_folder, file_name)
     
     # Check if the file exists
     if not os.path.exists(file_path):
@@ -65,41 +67,35 @@ def post_process_cluster_table(config: dict,
     subgroup = subgroup.apply(convert_final_char_to_number)
 
     # Combine the kept column with the processed columns
-    result_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
+    post_process_cluster_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
 
     # Load the LAD lookup file into a DataFrame
     lad_lookup_file_path = config["LAD_lookup_file_path"]
     lad_lookup = pd.read_csv(lad_lookup_file_path)
 
     # Add in the LAD names
-    result_df = result_df.merge(
+    post_process_cluster_df = post_process_cluster_df.merge(
         lad_lookup[['LAD22CD', 'LAD22NM']],  # Select only the necessary columns
-        left_on='LAD_code',                      # Column in result_df
+        left_on='LAD_code',                      # Column in post_process_cluster_df
         right_on='LAD22CD',                 # Column in lad_lookup
-        how='left'                          # Use a left join to keep all rows in result_df
+        how='left'                          # Use a left join to keep all rows in post_process_cluster_df
     )
 
     # Drop the LAD22CD column after the join if it's no longer needed
-    result_df = result_df.drop(columns=['LAD22CD'])
+    post_process_cluster_df = post_process_cluster_df.drop(columns=['LAD22CD'])
 
     # Rename the LAD22NM column to LAD_name
-    result_df = result_df.rename(columns={'LAD22NM': 'LAD_name'})
+    post_process_cluster_df = post_process_cluster_df.rename(columns={'LAD22NM': 'LAD_name'})
 
     # Move the LAD_name column to the first position
-    columns = ['LAD_name'] + [col for col in result_df.columns if col != 'LAD_name']
-    result_df = result_df[columns]
+    columns = ['LAD_name'] + [col for col in post_process_cluster_df.columns if col != 'LAD_name']
+    post_process_cluster_df = post_process_cluster_df[columns]
 
     # Save the resulting DataFrame to a new file
     output_file = os.path.join(output_folder, f"Processed_{file_name}")
-    result_df.to_csv(output_file, index=False)
+    post_process_cluster_df.to_csv(output_file, index=False)
     print(f"Processed file saved to: {output_file}")
 
-    return result_df
+    return post_process_cluster_df
 
-# Example usage
-config = load_config('area_classification/config.yaml')
-output_folder = os.path.join(config["output_directory"], "subgroup")
-post_process_cluster_table(config,
-    output_folder=output_folder, 
-    file_name="subclustering_output.csv", 
-)
+post_process_cluster_table(config)
