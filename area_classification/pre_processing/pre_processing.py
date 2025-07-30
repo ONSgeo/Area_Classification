@@ -3,9 +3,10 @@ import sys
 import os
 from utilities.load_config import load_config
 from pre_processing.standard_illness_ratio import sir_processing
-from pre_processing.convert_to_percentages import convert_to_percentages
 from pre_processing.aggregating_variables import batch_ag_columns
 from pre_processing.select_variables import select_variables
+from pre_processing.totals_columns_select_uk import inputs_folder, lookup_file, output_file, select_totals_columns
+from pre_processing.convert_to_percentages import convert_to_percentages
 from pre_processing.combine_tables import combine_table
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
@@ -61,17 +62,8 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_excluded_form_code"
-        
-        if key == "scot":
-            print("Key 'scot' skipped as already precentages")
-            df_temp = dfs[key]
-        else:
-        # Convert counts to percentages
-           df_temp = convert_to_percentages(
-               dfs[key].copy(), 
-               area_code_column_name=config[join_column_name], 
-               excluded_form_code=config[exclude_form_code_key]
-           )
+
+        df_temp = dfs[key]
 
         #Aggregate variables which need to be combined categories (for just England)
         file_config = aggregation_config[key + '_file_configs']
@@ -104,17 +96,20 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
         # overwriting original df with processed df
         dfs[key] = df_temp
-    
-    #Combine the three dataframes for censuses into one    
-    combined_df = pd.concat([dfs["ew"], dfs["ni"], dfs["scot"]], ignore_index=True)
-                                            
-    #Ensure QA directory exists
+
+
+    # Call select_totals_columns after all _select.csv files are created
+    raw_totals_df = select_totals_columns(inputs_folder, lookup_file, output_file)
+
+    # Convert counts to percentages
+    percentages_df = convert_to_percentages(raw_totals_df)
+
+    # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
-    combined_df.to_csv(config["input_data_directory"]+"pre_processed_data_ew_ni_scot.csv", index=False)
+    percentages_df.to_csv(config["input_data_directory"] + "pre_processed_data_ew_ni_scot.csv", index=False)
 
-    return combined_df
-
+    return percentages_df
 
 if __name__ == "__main__":
     # Example usage

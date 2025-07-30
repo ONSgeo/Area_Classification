@@ -93,27 +93,29 @@ def select_totals_columns(inputs_folder, lookup_file, output_file):
             processed_dfs.append(select_df)
 
     # Concatenate all processed DataFrames
-    final_df = pd.concat(processed_dfs, ignore_index=True)
+    raw_totals_df = pd.concat(processed_dfs, ignore_index=True)
 
     # Reorder the remaining columns alphabetically excluding the first column (LAD)
     # Get the first column
-    first_column = final_df.columns[0]
-    remaining_columns = sorted(final_df.columns[1:])
+    first_column = raw_totals_df.columns[0]
+    remaining_columns = sorted(raw_totals_df.columns[1:])
     reordered_columns = [first_column] + remaining_columns
-    final_df = final_df[reordered_columns]
+    raw_totals_df = raw_totals_df[reordered_columns]
 
-    totals_row = final_df.iloc[:, 1:].sum(numeric_only=True)  # Sum numeric columns (excluding the first column)
-    totals_row[final_df.columns[0]] = "Total"  # Add a label for the first column
-    final_df = pd.concat([final_df, pd.DataFrame([totals_row])], ignore_index=True)
+    totals_row = raw_totals_df.iloc[:, 1:].sum(numeric_only=True)  # Sum numeric columns (excluding the first column)
+    totals_row[raw_totals_df.columns[0]] = "UK_total"  # Add a label for the first column
+    raw_totals_df = pd.concat([raw_totals_df, pd.DataFrame([totals_row])], ignore_index=True)
 
     # Save the concatenated DataFrame to the output file
-    final_df.to_csv(output_file, index=False)
+    raw_totals_df.to_csv(output_file, index=False)
     print(f"Final concatenated file saved to: {output_file}")
+
+    return raw_totals_df
 
 # Example usage
 config = load_config('area_classification/config.yaml')
 inputs_folder = config["qa_folder_path"]
 lookup_file = config["select_variables_lookup"]
-output_file = os.path.join(config["output_directory"], "select_raw_totals.csv")
+output_file = os.path.join(config["input_data_directory"], "select_raw_totals.csv")
 
-select_totals_columns(inputs_folder, lookup_file, output_file)
+#select_totals_columns(inputs_folder, lookup_file, output_file)
