@@ -6,7 +6,6 @@ from pre_processing.standard_illness_ratio import sir_processing
 from pre_processing.aggregating_variables import batch_ag_columns
 from pre_processing.select_variables import select_variables
 from pre_processing.totals_columns_select_uk import select_totals_columns
-#from pre_processing.totals_columns_select_uk import inputs_folder, lookup_file, output_file, select_totals_columns
 from pre_processing.convert_to_percentages import convert_to_percentages
 from pre_processing.combine_tables import combine_table
 
@@ -106,9 +105,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     percentages_df = convert_to_percentages(raw_totals_df)
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
-    percentages_df.to_csv(config["input_data_directory"] + "pre_processed_data_ew_ni_scot.csv", index=False)
+    percentages_df.to_csv(config["qa_folder_path"] + "pre_processed_data_ew_ni_scot.csv", index=False)
 
     return percentages_df
 
