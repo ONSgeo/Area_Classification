@@ -56,7 +56,7 @@ def main_pipeline():
     # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
 
-    # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
+    # Step 4.5 (optional): Selecting the same varipytesables as used in 21/22 OAC
     # If not running the full 60 variables, update the 'variables_to_drop' in the config
     # and then run the following code before clustering.
     if config["drop_columns"]:
