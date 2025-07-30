@@ -1,15 +1,18 @@
 # UK standardised mean
 
 import pandas as pd
+import os
 
-def process_csv(input_file, output_file):
+from utilities.load_config import load_config
+
+def create_UK_means(config, input_file):
     """
     Processes a CSV file by removing specific columns, calculating totals, 
     percentages, and filtering rows and columns based on conditions.
 
     Args:
         input_file (str): Path to the input CSV file.
-        output_file (str): Path to save the processed CSV file.
+        config (dict): Configuration dictionary containing the filepath and name to the cluster data
     """
     # Load the CSV file into a DataFrame
     df = pd.read_csv(input_file)
@@ -72,6 +75,7 @@ def process_csv(input_file, output_file):
     columns_to_keep = df.columns[1:][df.columns[1:].str.endswith('_percentage')]   
     df = df[[df.columns[0]] + list(columns_to_keep)]
 
+    output_file = (os.path.join(config["input_data_directory"], "updated_select_raw_totals.csv"))
     # Save the updated DataFrame back to a CSV file
     df.to_csv(output_file, index=False)
 
@@ -81,5 +85,5 @@ def process_csv(input_file, output_file):
 # Run the function if the script is executed directly
 if __name__ == "__main__":
     input_file = './data/inputs/select_raw_totals.csv'
-    output_file = './data/inputs/updated_select_raw_totals.csv'
-    process_csv(input_file, output_file)
+    config = load_config('area_classification/config.yaml')
+    create_UK_means(config, input_file)

@@ -1,5 +1,7 @@
 #Table_restructure
 
+#ADD IN NAMES BASED ON LOOK UP
+
 # Post processing of the cluster assignments
 import os
 import pandas as pd
@@ -66,6 +68,28 @@ def post_process_cluster_table(config: dict,
 
     # Combine the kept column with the processed columns
     result_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
+
+    # Load the LAD lookup file into a DataFrame
+    lad_lookup_file_path = config["LAD_lookup_file_path"]
+    lad_lookup = pd.read_csv(lad_lookup_file_path)
+
+    # Add in the LAD names
+    result_df = result_df.merge(
+        lad_lookup[['LAD22CD', 'LAD22NM']],  # Select only the necessary columns
+        left_on='LAD_code',                      # Column in result_df
+        right_on='LAD22CD',                 # Column in lad_lookup
+        how='left'                          # Use a left join to keep all rows in result_df
+    )
+
+    # Drop the LAD22CD column after the join if it's no longer needed
+    result_df = result_df.drop(columns=['LAD22CD'])
+
+    # Rename the LAD22NM column to LAD_name
+    result_df = result_df.rename(columns={'LAD22NM': 'LAD_name'})
+
+    # Move the LAD_name column to the first position
+    columns = ['LAD_name'] + [col for col in result_df.columns if col != 'LAD_name']
+    result_df = result_df[columns]
 
     # Save the resulting DataFrame to a new file
     output_file = os.path.join(output_folder, f"Processed_{file_name}")
