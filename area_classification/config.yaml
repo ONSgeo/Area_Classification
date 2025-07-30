@@ -7,6 +7,7 @@ working_directory : ~/Area_Classification
 LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
 #Varaibles chosen
+drop_columns: True # Set to true to drop ... or false to keep all columns 
 variables_to_drop  : [
         "v07", # Families with no children
         "v09", # Europe: United Kingdom

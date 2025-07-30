@@ -59,8 +59,9 @@ def main_pipeline():
     # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
     # If not running the full 60 variables, update the 'variables_to_drop' in the config
     # and then run the following code before clustering.
-    drop_variables_pre_clustering(config)
-                           
+    if config["drop_columns"]:
+        drop_variables_pre_clustering(config)
+
     # Step 5: Clustering
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
