@@ -6,7 +6,7 @@ import pandas as pd
 
 from utilities.load_config import load_config
 
-def select_totals_columns(inputs_folder, lookup_file, output_file):
+def select_totals_columns(config):
     """
     Extract and generate a totals table for counts by processing _select files for UK countries.
 
@@ -15,12 +15,13 @@ def select_totals_columns(inputs_folder, lookup_file, output_file):
     select files. The processed files are then concatenated into a single DataFrame and saved to an output file.
 
     Args:
-        inputs_folder (str): Path to the folder containing input files (select files and aggregated variables files).
-        lookup_file (str): Path to the lookup CSV file containing table_ID, country, and new_code mappings.
-        output_file (str): Path to save the final concatenated output CSV file.
+        config (dict): Configuration dictionary containing paths and settings/
     """
-
+    # Inputs folder -  Path to the folder containing input files (select files and aggregated variables files)
+    inputs_folder = config["qa_folder_path"]
+    
     # Load the lookup file
+    lookup_file = config["select_variables_lookup"]
     lookup_df = pd.read_csv(lookup_file)
 
     # Filter out rows where 'new_code' is 'v12' or 'v33' (population density and SIR)
@@ -106,6 +107,7 @@ def select_totals_columns(inputs_folder, lookup_file, output_file):
     totals_row[raw_totals_df.columns[0]] = "UK_total"  # Add a label for the first column
     raw_totals_df = pd.concat([raw_totals_df, pd.DataFrame([totals_row])], ignore_index=True)
 
+    output_file = os.path.join(config["input_data_directory"], "select_raw_totals.csv")
     # Save the concatenated DataFrame to the output file
     raw_totals_df.to_csv(output_file, index=False)
     print(f"Final concatenated file saved to: {output_file}")
@@ -114,8 +116,5 @@ def select_totals_columns(inputs_folder, lookup_file, output_file):
 
 # Example usage
 config = load_config('area_classification/config.yaml')
-inputs_folder = config["qa_folder_path"]
-lookup_file = config["select_variables_lookup"]
-output_file = os.path.join(config["input_data_directory"], "select_raw_totals.csv")
 
-#select_totals_columns(inputs_folder, lookup_file, output_file)
+select_totals_columns(config)

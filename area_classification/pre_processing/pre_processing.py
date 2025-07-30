@@ -5,7 +5,8 @@ from utilities.load_config import load_config
 from pre_processing.standard_illness_ratio import sir_processing
 from pre_processing.aggregating_variables import batch_ag_columns
 from pre_processing.select_variables import select_variables
-from pre_processing.totals_columns_select_uk import inputs_folder, lookup_file, output_file, select_totals_columns
+from pre_processing.totals_columns_select_uk import select_totals_columns
+#from pre_processing.totals_columns_select_uk import inputs_folder, lookup_file, output_file, select_totals_columns
 from pre_processing.convert_to_percentages import convert_to_percentages
 from pre_processing.combine_tables import combine_table
 
@@ -99,7 +100,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
 
     # Call select_totals_columns after all _select.csv files are created
-    raw_totals_df = select_totals_columns(inputs_folder, lookup_file, output_file)
+    raw_totals_df = select_totals_columns(config)
 
     # Convert counts to percentages
     percentages_df = convert_to_percentages(raw_totals_df)
