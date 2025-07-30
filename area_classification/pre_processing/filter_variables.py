@@ -21,7 +21,7 @@ def drop_variables_pre_clustering(config):
     variables_to_drop = config.get('variables_to_drop', [])
 
     # Load the preprocessed input table
-    preprocessed_input_path = (config["input_data_directory"]+"pre_processed_data_ew_ni_scot.csv")
+    preprocessed_input_path = (config["qa_folder_path"]+"pre_processed_data_ew_ni_scot.csv")
     preprocessed_input_table = pd.read_csv(preprocessed_input_path)
     
     # Duplicate the table

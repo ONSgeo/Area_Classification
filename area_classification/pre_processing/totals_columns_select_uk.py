@@ -134,7 +134,7 @@ def select_totals_columns(config):
     
     inputs_folder = config["qa_folder_path"]
     lookup_file = config["select_variables_lookup"]
-    output_file = os.path.join(config["input_data_directory"], "select_raw_totals.csv")
+    output_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
 
     # Load the lookup file
     lookup_df = pd.read_csv(lookup_file)
