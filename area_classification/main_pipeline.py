@@ -72,7 +72,7 @@ def main_pipeline():
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
     
-    # Step 6: Post processing
+    # Step 6: Post processing and signifiance testing
     #When ran steps above, run this section, but can be removed when wrapper below sorted
     #output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
     #post_process_cluster_table(

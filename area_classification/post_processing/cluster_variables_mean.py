@@ -2,6 +2,8 @@
 
 import pandas as pd
 
+from utilities.load_config import load_config
+
 def get_cluster_means(config):
     """
     Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
@@ -63,3 +65,7 @@ def get_cluster_means(config):
 
     return cluster_means.rename(columns={"variable_value": "variable_mean", "cluster": "cluster_code"})
 
+# Run the function if the script is executed directly
+if __name__ == "__main__":
+    config = load_config('area_classification/config.yaml')
+    get_cluster_means(config)

@@ -2,10 +2,10 @@
 #INITAL PLACE HOLDER SCRIPT - NOTE DOES NOT RUN!
 import os
 
+from utilities.load_config import load_config
 from post_processing.table_restructure import post_process_cluster_table  
-from post_processing.UK_standardised_mean import extract_matching_and_partial_columns  
+from post_processing.UK_standardised_means import create_UK_means
 from post_processing.cluster_variables_mean import get_cluster_means  
-
 
 
 def post_processing(config, post_process_args, extract_columns_args, cluster_means_args):
@@ -27,11 +27,21 @@ def post_processing(config, post_process_args, extract_columns_args, cluster_mea
         file_name="subclustering_output.csv", 
     )
 
-    # Step 2: Run extract_matching_and_partial_columns
-    #extract_matching_and_partial_columns(inputs_folder, lookup_file, output_file)
+    # Step 2: Create the means for all area codes and UK, EW, NI and Scot
+    create_UK_means(config, input_file)
 
     # Step 3: Run get_cluster_means
     #cluster_means_result = get_cluster_means(config)
 
+    # Step 4: Significance testing
+
+    
     # Return the result of get_cluster_means
     return #cluster_means_result
+
+
+# Run the function if the script is executed directly
+if __name__ == "__main__":
+    input_file = './data/inputs/select_raw_totals.csv'
+    config = load_config('area_classification/config.yaml')
+    create_UK_means(config, input_file)
