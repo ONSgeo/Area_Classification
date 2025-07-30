@@ -22,13 +22,10 @@ def post_processing(config, post_process_args, extract_columns_args, cluster_mea
         The result of get_cluster_means.
     """
     # Step 1: Run post_process_cluster_table
-    post_process_cluster_table(config,
-        output_folder=(os.path.join(config["output_directory"], "subgroup")), 
-        file_name="subclustering_output.csv", 
-    )
+    post_poster_cluster_df = post_process_cluster_table(config)
 
     # Step 2: Create the means for all area codes and UK, EW, NI and Scot
-    create_UK_means(config, input_file)
+    means_df = create_UK_means(post_poster_cluster_df)
 
     # Step 3: Run get_cluster_means
     #cluster_means_result = get_cluster_means(config)
