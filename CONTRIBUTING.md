@@ -3,7 +3,7 @@
 We love contributions! We've compiled this documentation to help you understand our
 contributing guidelines. Please also read our [`CODE_OF_CONDUCT.md`][code-of-conduct].
 
-[If you still have questions, please contact us][email] and we'd be happy to help!
+[If you still have questions, please contact us at ONS Geography][ONS.Geography@ons.gov.uk] and we'd be happy to help!
 
 
 ## Getting started
@@ -20,11 +20,6 @@ or use the `make` command:
 ```shell
 make install_dev
 ```
-
-The pre-commit hooks are a security feature to ensure, for example, no secrets,
-large data files, or Jupyter notebook outputs are accidentally committed into the
-repository. For more information and common use cases, please refer to a hook's
-documentation such as [detect-secrets][detect-secrets-repo] or [nbstripout][nbstripout-repo].
 
 ## Code conventions
 

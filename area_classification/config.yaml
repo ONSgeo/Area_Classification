@@ -2,12 +2,13 @@
 
 working_directory : ~/Area_Classification
 
-#*****FILE PATHS WHICH MAY NEED AMENDING*****
+#*****FILE PATHS AND CONFIGURATIONS WHICH MAY NEED AMENDING*****
 #The LAD lookup tables should be saved in the lookups folder
 LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
 #Varaibles chosen
-drop_columns: True # Set to true to drop ... or false to keep all columns 
+drop_columns: True # Set to true to drop the variables specified below in 'variables to drop' 
+                   # or set to false to include 60 varabiles.
 variables_to_drop  : [
         "v07", # Families with no children
         "v09", # Europe: United Kingdom
@@ -25,11 +26,14 @@ variables_to_drop  : [
 pre_clustering_data: './data/inputs/pre_clustering_data.csv'
 
 #Clustering config
-number_of_clusters: 8
-number_of_times_k_means_initialised: 10 # 1000 for real run
+number_of_clusters: 6
+number_of_clusters_supergroup: 6
+number_of_clusters_group: 6
+number_of_clusters_subgroup: 6
+number_of_times_k_means_initialised: 1000 #for real run
 random_seed: 42
 
-#*****FILE PATHS WHICH SHOULD NOT NEED AMENDING*****
+#*****FILE PATHS AND CONFIGURATIONS WHICH SHOULD NOT NEED AMENDING*****
 # Variables lookup
 select_variables_lookup: './data/lookups/UK_selected_codes_lookup.csv'
 
