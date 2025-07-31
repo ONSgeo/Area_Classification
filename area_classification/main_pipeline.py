@@ -7,7 +7,7 @@ from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
 from pre_processing.filter_variables import drop_variables_pre_clustering
 from analysis.clustering import clustering_wrapper      
-#from post_processing.post_processing import post_processing      
+from post_processing.post_processing import post_processing      
 #Can be removed when wrapper sorted
 #from post_processing.post_processing import post_process_cluster_table
 
@@ -39,39 +39,39 @@ def main_pipeline():
     config = load_config('area_classification/config.yaml')
 
     # Step 1: Download england and wales data
-    ew_lad_bulk_download(config)
-    ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
-    ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
-
-
-    # Step 2: Download Northen Ireland data
-    ni_lgd_download_data(config)
-    # Loading and getting into format to be used to process and combine
-    ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
-    ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
-  
-    # Step 3: Processing of Scotland data which was manually downloaded
-    scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
-
-    # Step 4: pre-processing
-    pre_processing(ew_df , ni_df, scot_df, config)
-
-    # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
-    # If not running the full 60 variables, update the 'variables_to_drop' in the config
-    # and then run the following code before clustering.
-    drop_variables_pre_clustering(config)
-                           
-    # Step 5: Clustering
-    # This assumes the data is saved locally and then loads during clustering. 
-    # Will need to refactor to allow this to take df input.
-    clustering_output = clustering_wrapper(
-        input_dataframe_or_filepath= config["pre_clustering_data"],
-        num_clusters=config["number_of_clusters"],
-        n_init=config["number_of_times_k_means_initialised"],
-        output_directory=config["output_directory"],
-        plot_directory=config["plot_directory"],
-        random_seed=config["random_seed"])
-    
+   # ew_lad_bulk_download(config)
+   # ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
+   # ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
+#
+#
+   # # Step 2: Download Northen Ireland data
+   # ni_lgd_download_data(config)
+   # # Loading and getting into format to be used to process and combine
+   # ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+   # ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
+  #
+   # # Step 3: Processing of Scotland data which was manually downloaded
+   # scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
+#
+   # # Step 4: pre-processing
+   # pre_processing(ew_df , ni_df, scot_df, config)
+#
+   # # Step 4.5 (optional): Selecting the same vairables as used in 21/22 OAC
+   # # If not running the full 60 variables, update the 'variables_to_drop' in the config
+   # # and then run the following code before clustering.
+   # drop_variables_pre_clustering(config)
+   #                        
+   # # Step 5: Clustering
+   # # This assumes the data is saved locally and then loads during clustering. 
+   # # Will need to refactor to allow this to take df input.
+   # clustering_output = clustering_wrapper(
+   #     input_dataframe_or_filepath= config["pre_clustering_data"],
+   #     num_clusters=config["number_of_clusters"],
+   #     n_init=config["number_of_times_k_means_initialised"],
+   #     output_directory=config["output_directory"],
+   #     plot_directory=config["plot_directory"],
+   #     random_seed=config["random_seed"])
+   # 
     # Step 6: Post processing and signifiance testing
     #When ran steps above, run this section, but can be removed when wrapper below sorted
     #output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
@@ -82,6 +82,10 @@ def main_pipeline():
     #    split_column='subsubcluster'
     #)
     #post_processing = post_processing(output_folder, file_name, keep_column, split_column)
+    
+    # Step 6: Post processing
+    post_processing(config)
+
 
 
 if __name__ == "__main__":

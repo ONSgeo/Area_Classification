@@ -8,7 +8,7 @@ from post_processing.UK_standardised_means import create_UK_means
 from post_processing.cluster_variables_mean import get_cluster_means  
 
 
-def post_processing(config, post_process_args, extract_columns_args, cluster_means_args):
+def post_processing(config):
     """
     Wrapper function to run post_process_cluster_table, 
     extract_matching_and_partial_columns, and get_cluster_means in sequence.
@@ -22,23 +22,20 @@ def post_processing(config, post_process_args, extract_columns_args, cluster_mea
         The result of get_cluster_means.
     """
     # Step 1: Run post_process_cluster_table
-    post_poster_cluster_df = post_process_cluster_table(config)
+    post_process_cluster_df = post_process_cluster_table(config)
 
     # Step 2: Create the means for all area codes and UK, EW, NI and Scot
-    means_df = create_UK_means(post_poster_cluster_df)
+    create_UK_means(post_process_cluster_df)
 
     # Step 3: Run get_cluster_means
-    #cluster_means_result = get_cluster_means(config)
+    cluster_means_df = get_cluster_means(config)
 
     # Step 4: Significance testing
 
-    
     # Return the result of get_cluster_means
-    return #cluster_means_result
+    return cluster_means_df
 
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
-    input_file = './data/inputs/select_raw_totals.csv'
     config = load_config('area_classification/config.yaml')
-    create_UK_means(config, input_file)
