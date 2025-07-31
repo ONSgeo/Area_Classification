@@ -98,4 +98,3 @@ def post_process_cluster_table(config):
 
     return post_process_cluster_df
 
-post_process_cluster_table(config)

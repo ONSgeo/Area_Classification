@@ -228,3 +228,7 @@ def select_totals_columns(config):
 
     return raw_totals_df
 
+# Run the function if the script is executed directly
+if __name__ == "__main__":
+    config = load_config('area_classification/config.yaml')
+    select_totals_columns(config)
