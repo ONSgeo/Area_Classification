@@ -7,7 +7,7 @@ from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
 from pre_processing.filter_variables import drop_variables_pre_clustering
 from analysis.clustering import clustering_wrapper      
-#from post_processing.post_processing import post_processing      
+from post_processing.post_processing import post_processing      
 #Can be removed when wrapper sorted
 #from post_processing.post_processing import post_process_cluster_table
 
@@ -72,7 +72,10 @@ def main_pipeline():
         output_directory=config["output_directory"],
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
+
     print(clustering_output)
+
+
 
     # Step 6: Post processing and signifiance testing
     #When ran steps above, run this section, but can be removed when wrapper below sorted
@@ -85,6 +88,10 @@ def main_pipeline():
     #    split_column='subsubcluster'
     #)
     #post_processing = post_processing(output_folder, file_name, keep_column, split_column)
+    
+    # Step 6: Post processing
+    post_processing(config)
+
 
 
 if __name__ == "__main__":
