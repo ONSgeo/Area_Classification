@@ -38,27 +38,27 @@ def main_pipeline():
     """
     config = load_config('area_classification/config.yaml')
 
-    # Step 1: Download england and wales data
-    ew_lad_bulk_download(config)
+    # # Step 1: Download england and wales data
+    # ew_lad_bulk_download(config)
     ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
 
-    # Step 2: Download Northen Ireland data
-    ni_lgd_download_data(config)
-    # Loading and getting into format to be used to process and combine
+    # # Step 2: Download Northen Ireland data
+    # ni_lgd_download_data(config)
+    # # Loading and getting into format to be used to process and combine
     ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
-    # Step 3: Processing of Scotland data which was manually downloaded
+    # # Step 3: Processing of Scotland data which was manually downloaded
     scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
 
-    # Step 4: pre-processing
+    # # Step 4: pre-processing
     pre_processing(ew_df , ni_df, scot_df, config)
 
-    # Step 4.5 (optional): Selecting the same varipytesables as used in 21/22 OAC
-    # If not running the full 60 variables, update the 'variables_to_drop' in the config
-    # and then run the following code before clustering.
+    # # Step 4.5 (optional): Selecting the same variables as used in 21/22 OAC
+    # # If not running the full 60 variables, update the 'variables_to_drop' in the config
+    # # and then run the following code before clustering.
     if config["drop_columns"]:
         drop_variables_pre_clustering(config)
 
@@ -73,8 +73,13 @@ def main_pipeline():
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
 
+    print(clustering_output)
+
+
+
     # Step 6: Post processing and signifiance testing
     #When ran steps above, run this section, but can be removed when wrapper below sorted
+    #post_process_cluster_table(config)
     #output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
     #post_process_cluster_table(
     #    output_folder=output_folder, 
