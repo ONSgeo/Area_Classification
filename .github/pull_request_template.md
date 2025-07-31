@@ -22,9 +22,9 @@ This pull/merge request meets the following requirements:
 - [ ] [developments are ethical][data-ethics-framework] and secure
 - [ ] you have made proportionate checks that the code works correctly
 - [ ] test suite passes
-- [ ] developments adhere to AQA plan (see `docs/aqa/aqa_plan.md`)
-- [ ] data log updated (see `docs/aqa/data_log.md`), if necessary
-- [ ] assumptions, and caveats log updated (see `docs/aqa/assumptions_caveats.md`), if
+- [ ] developments adhere to analytical quality assurance plan (see `docs/analytical_quality_assurance/analytical_quality_assurance_plan.md`)
+- [ ] data log updated (see `docs/analytical_quality_assurance/data_log.md`), if necessary
+- [ ] assumptions, and caveats log updated (see `docs/analytical_quality_assurance/assumptions_caveats.md`), if
   necessary
 - [ ] [minimum usable documentation][agilemodeling] written in the `docs` folder
 

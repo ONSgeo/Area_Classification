@@ -1,5 +1,5 @@
 import pandas as pd
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 from pathlib import Path
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):

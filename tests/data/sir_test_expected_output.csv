@@ -1,4 +1,4 @@
-Area_Code,Local_Authority,SIR_expected
-S1,LA1,99.5303
-S2,LA2,90.0580
-S3,LA3,113.7726
+area_code,SIR_expected
+S1,99.5303
+S2,90.0580
+S3,113.7726
