@@ -98,3 +98,9 @@ def post_process_cluster_table(config):
 
     return post_process_cluster_df
 
+
+if __name__ == "__main__":
+    # Example usage
+    from area_classification.utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
+    post_process_cluster_table(config)

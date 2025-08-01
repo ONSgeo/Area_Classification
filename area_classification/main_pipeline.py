@@ -43,7 +43,6 @@ def main_pipeline():
     ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
-
     # # Step 2: Download Northen Ireland data
     # ni_lgd_download_data(config)
     # # Loading and getting into format to be used to process and combine
@@ -65,7 +64,7 @@ def main_pipeline():
     # Step 5: Clustering
     # This assumes the data is saved locally and then loads during clustering. 
     # Will need to refactor to allow this to take df input.
-    clustering_output = clustering_wrapper(
+    clustering_output = clustering_wrapper(config,
         input_dataframe_or_filepath= config["pre_clustering_data"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
