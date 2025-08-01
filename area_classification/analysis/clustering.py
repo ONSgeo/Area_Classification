@@ -1,7 +1,4 @@
-## Geodemographic python example
-# This notebook contains the workflow for producing a geodemographic classification in 
-# python using k-means clustering. It follows a simplified process, similar to that 
-# described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).
+## Clustering
 # Note: Supergroup = cluster, group = subcluster, subgroup = subsubcluster.
 
 # Import necessary libraries
@@ -13,7 +10,8 @@ import matplotlib.pyplot as plt
 import os
 import time
 
-def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame, 
+def clustering_wrapper(config: dict,
+                       input_dataframe_or_filepath: str | pd.DataFrame, 
                        num_clusters: int,
                        n_init: int, 
                        output_directory: str, 
@@ -24,6 +22,8 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
 
     Parameters
     ----------
+    config : dict
+        A dictionary containing user configuration settings.
     input_dataframe_or_filepath : str or pd.DataFrame
         Path to the input data CSV file or a pandas DataFrame.
     num_clusters : int
@@ -77,6 +77,9 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
 
     # Add a break
     input("Press Enter to continue with supergroups creation...")
+    
+    ###SUPERGROUP SECTION ###
+    # num_clusters = config["number_of_clusters_supergroup"]
 
     supergroup_variable_df = run_kmeans(transformed_variable_df, 
                                           num_clusters, 
@@ -92,6 +95,9 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
 
     # Add a break
     input("Press Enter to continue to move onto groups...")
+
+    ###GROUP SECTION ###
+    # num_clusters = config["number_of_clusters_group"]
 
     # Call the function with the adjusted number of clusters
     # Have to be careful with this, if we try and group 10 data points in 11 clusters it will fail
@@ -123,6 +129,9 @@ def clustering_wrapper(input_dataframe_or_filepath: str | pd.DataFrame,
     # Add a break
     input("Press Enter to continue to move onto subgroup...")
 
+    ###SUBGROUP SECTION ###
+    # num_clusters = config["number_of_clusters_subgroup"]
+    
     create_subcluster_clustergrams(output_df=grouped_variable_df,
                                    plot_dir=plot_directory, 
                                    num_clusters=num_clusters, 
@@ -225,7 +234,7 @@ def create_clustergram(df, num_clusters, n_init, save_loc, random_seed=None):
     # Create the clustergram
     #Suggested code
     # Define the range of clusters to evaluate
-    k_range = range(2, num_clusters + 1)  # Start from 2 clusters up to num_clusters
+    k_range = range(1, num_clusters + 1)  # Start from 2 clusters up to num_clusters
 
     # Create the clustergram
     cgram = Clustergram(k_range=k_range, method='kmeans', random_state=random_seed, n_init=n_init)
@@ -390,17 +399,15 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
 
 
 if __name__ == "__main__":
-    # Running the script directly will be the same as running the notebook from original 
-    # git repo
-    # set a  random seed for reproducibility
     from area_classification.utilities.load_config import load_config
     config = load_config()
 
-    function_output = clustering_wrapper(input_dataframe_or_filepath= config["preprocessed_input_table"],
-                                         num_clusters= config["number_of_clusters"],
-                                         n_init = config["number_of_times_k_means_initialised"], 
-                                         output_directory = config["output_directory"],
-                                         plot_directory= config["plot_directory"],
-                                         random_seed = config["random_seed"])
+    function_output = clustering_wrapper(config,
+        input_dataframe_or_filepath= config["pre_clustering_data"],
+        num_clusters=config["number_of_clusters"],
+        n_init=config["number_of_times_k_means_initialised"],
+        output_directory=config["output_directory"],
+        plot_directory=config["plot_directory"],
+        random_seed=config["random_seed"])
     print(function_output.head())
 

@@ -26,11 +26,11 @@ variables_to_drop  : [
 pre_clustering_data: './data/inputs/pre_clustering_data.csv'
 
 #Clustering config
-number_of_clusters: 6
+number_of_clusters: 8
 number_of_clusters_supergroup: 6
-number_of_clusters_group: 6
+number_of_clusters_group: 10
 number_of_clusters_subgroup: 6
-number_of_times_k_means_initialised: 1000 #for real run
+number_of_times_k_means_initialised: 10 # 1000 for real run
 random_seed: 42
 
 #*****FILE PATHS AND CONFIGURATIONS WHICH SHOULD NOT NEED AMENDING*****
