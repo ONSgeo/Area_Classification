@@ -1,16 +1,18 @@
 # UK standardised mean
+# THIS COULD BE BROKEN DOWN BETTER, PERHAPS ADDING THE PERCENTAGES COULD BE DONE IN THE EARLIER SCRIPT
+# WHERE THE TABLE IS CREATED, AND THEN REMOVED FROMT THIS ONE?
 
 import pandas as pd
 import os
 
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 
 def create_UK_means(config):
     """
     Processes a CSV file by removing specific columns, calculating totals, 
     percentages, and filtering rows and columns based on conditions.
 
-    Args:
+    Parameters:
         input_file (str): Path to the input CSV file.
         config (dict): Configuration dictionary containing the filepath and name to the cluster data
     """
@@ -19,35 +21,12 @@ def create_UK_means(config):
     raw_totals_df = pd.read_csv(input_file)
 
     # Remove V12 (population density) and V33 (SIR) as these are already proportions by definition
+    # DONT THINK WE NEED TO REMOVE THESE ANYMORE?
     columns_to_remove = ['V12', 'V33']
-    standardised_means_df = raw_totals_df.drop(columns=columns_to_remove, errors='ignore')
+    df = raw_totals_df.drop(columns=columns_to_remove, errors='ignore')
 
-    # Define the row names and corresponding first letter of the area codes
-    conditions = {
-        'EW_total': ['E', 'W'],  # Codes starting with 'E' or 'W'
-        'NI_total': ['N'],      # Codes starting with 'NI'
-        'Scot_total': ['S']     # Codes starting with 'UV'
-    }
-
-    # Calculate totals for each condition and append them
-    total_rows = []
-    first_column = standardised_means_df.columns[0]
-
-    for row_name, prefixes in conditions.items():
-        # Filter rows where the first column starts with any of the specified prefixes
-        filtered_rows = standardised_means_df[standardised_means_df[first_column].str.startswith(tuple(prefixes), na=False)]
-        
-        # Sum the values for each column
-        total_row = filtered_rows.sum(numeric_only=True)
-        total_row[first_column] = row_name  # Set the value for the first column
-        
-        # Collect the total row for later concatenation
-        total_rows.append(total_row)
-
-    # Append all total rows to the DataFrame
-    standardised_means_df = pd.concat([standardised_means_df, pd.DataFrame(total_rows)], ignore_index=True)
-
-    v_columns = [col for col in standardised_means_df.columns if col.startswith('v') and not col.endswith('_total')]
+    # Add columns for the percentages of each V code
+    v_columns = [col for col in df.columns if col.startswith('v') and not col.endswith('_total')]
 
     # Dictionary to store new columns
     new_columns = {}
@@ -55,36 +34,87 @@ def create_UK_means(config):
     # Calculate percentages for columns based on V code and V_totals
     for column in v_columns:
         total_column = f"{column}_total"  # Find the corresponding total column
-        if total_column in standardised_means_df.columns:  # Ensure the total column exists
+        if total_column in df.columns:  # Ensure the total column exists
             # Calculate the percentage and store it in the dictionary
             percentage_column = f"{column}_percentage"
-            new_columns[percentage_column] = (standardised_means_df[column] / standardised_means_df[total_column]) * 100
+            new_columns[percentage_column] = (df[column] / df[total_column]) * 100
 
     # Add all new columns to the DataFrame
-    standardised_means_df = pd.concat([standardised_means_df, pd.DataFrame(new_columns)], axis=1)
+    df = pd.concat([df, pd.DataFrame(new_columns)], axis=1)
 
     # Sort the columns alphabetically excluding the first column (area code)
-    first_column = standardised_means_df.columns[0]
-    sorted_columns = sorted(standardised_means_df.columns[1:])
-    standardised_means_df = standardised_means_df[[first_column] + sorted_columns]
+    first_column = df.columns[0]
+    sorted_columns = sorted(df.columns[1:])
+    df = df[[first_column] + sorted_columns]
 
-    # Keep the rows which are for totals (UK, EW, NI and Scot)
-    rows_to_keep = standardised_means_df.iloc[:, 0].astype(str).str.contains('_total')
-    standardised_means_df = standardised_means_df[rows_to_keep]
+    percentages_output_file = (os.path.join(config["output_directory"], "percentages_select_raw_totals.csv"))
+    # # Save the updated DataFrame back to a CSV file
+    df.to_csv(percentages_output_file, index=False)
 
-    # Retain the first column and the columns which are '_percentage'
-    columns_to_keep = standardised_means_df.columns[1:][standardised_means_df.columns[1:].str.endswith('_percentage')]   
-    standardised_means_df = standardised_means_df[[standardised_means_df.columns[0]] + list(columns_to_keep)]
+    # Calculate the standardised mean for each column
+    standardised_means = {}
+    for column in df.columns[1:]:
+        mean = df[column].mean()
+        std_dev = df[column].std()
+        standardised_values = (df[column] - mean) / std_dev
+        standardised_means[column] = standardised_values.mean()
 
-    output_file = (os.path.join(config["output_directory"], "percentages_select_raw_totals.csv"))
-    # Save the updated DataFrame back to a CSV file
-    standardised_means_df.to_csv(output_file, index=False)
+    # Append the standardised means as a new row
+    standardised_means_row = pd.DataFrame([standardised_means], index=["Standardised Mean"])
+    df_with_standardised_mean = pd.concat([df, standardised_means_row], axis=0)
 
-    return standardised_means_df
+    # Set the value in the first column of the new row to "Standardised_mean"
+    df_with_standardised_mean.iloc[-1, 0] = "Standardised_mean"
+
+    # Creating the devolved countries standardised means
+    # Exclude rows where the first column ends with '_total'
+    filtered_df = df_with_standardised_mean[~df_with_standardised_mean.iloc[:, 0].str.endswith('_total')]
+
+    # Calculate the standardised mean for each column (excluding the first column)
+    overall_standardised_means = {}
+    for column in filtered_df.columns[1:]:
+        mean = filtered_df[column].mean()
+        std_dev = filtered_df[column].std()
+        standardised_values = (filtered_df[column] - mean) / std_dev
+        overall_standardised_means[column] = standardised_values.mean()
+
+    # Add a label for the overall standardised mean row
+    overall_standardised_means[filtered_df.columns[0]] = "Overall_UK_standardised_mean"
+
+    # Append the overall standardised mean as a new row
+    UK_standardised_means_df = pd.DataFrame([overall_standardised_means])
+
+    # Iterate over the prefixes (E, S, N, W)
+    for prefix, label in [('E', 'E_standardised_mean'), ('S', 'S_standardised_mean'), ('N', 'N_standardised_mean'), ('W', 'W_standardised_mean')]:
+        # Filter rows where the first column starts with the prefix
+        filtered_rows = df_with_standardised_mean[df_with_standardised_mean.iloc[:, 0].str.startswith(prefix)]
+        
+        # Calculate the standardised mean for each column (excluding the first column)
+        standardised_means = {}
+        for column in df_with_standardised_mean.columns[1:]:
+            mean = filtered_rows[column].mean()
+            std_dev = filtered_rows[column].std()
+            standardised_values = (filtered_rows[column] - mean) / std_dev
+            standardised_means[column] = standardised_values.mean()
+        
+        # Add the prefix label to the first column
+        standardised_means[df_with_standardised_mean.columns[0]] = label
+        
+        # Append the standardised means as a new row
+        UK_standardised_means_df = pd.concat([UK_standardised_means_df, pd.DataFrame([standardised_means])], ignore_index=True)
+
+    # Append the standardised means DataFrame to the original DataFrame
+    UK_standardised_means_df = pd.concat([df, UK_standardised_means_df], ignore_index=True)
+
+    # Filter and save rows where the first column ends with '_mean'
+    UK_standardised_mean_summary = UK_standardised_means_df[UK_standardised_means_df.iloc[:, 0].str.endswith('_mean')]
+    UK_standardised_mean_output_file = (os.path.join(config["output_directory"], "UK_standardised_means.csv"))
+    UK_standardised_mean_summary.to_csv(UK_standardised_mean_output_file, index=False)
+
+    return UK_standardised_mean_summary
 
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
-    #input_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
     create_UK_means(config)
