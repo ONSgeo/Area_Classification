@@ -52,7 +52,7 @@ ni_file_configs:
 scot_file_configs:
   separated_divorced: [UV1040004, UV1040005]
   dependant_children: [UV1120009, UV1120010, UV1120022, UV1120023, UV1120014, UV1120015, UV1120018, UV1120019 ]
-  cannot_speak_English: [UV2100010, UV2100011]
+  cannot_speak_English: [UV2100002, UV2100006, UV2100007, UV2100008, UV2100010, UV2100011]
   cars_2_or_more: [UV4050004, UV4050005, UV4050006]
   under_occupation: [UV4150002, UV4150003]
   level_1_2_and_appr: [UV5010003, UV5010004, UV5010005]
