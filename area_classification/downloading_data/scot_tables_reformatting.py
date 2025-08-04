@@ -156,7 +156,7 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         return
 
     # Load the CSV file and skip the first 12 rows
-    df = pd.read_csv(file_path, skiprows=12, header=None, names=['A', 'B', 'C', 'D', 'E', 'F'])
+    df = pd.read_csv(file_path, skiprows=11, header=None, names=['A', 'B', 'C', 'D', 'E', 'F'])
     
     # Remove the empty column (F)
     df = df.dropna(axis=1, how='all')
@@ -235,7 +235,7 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
         return
 
     # Load the CSV file
-    df = pd.read_csv(file_path, skiprows=11, header=None)
+    df = pd.read_csv(file_path, skiprows=10, header=None)
 
     # Extract headers for columns B to CY (row 2 in the original file)
     headers = ["Council Area 2019"] + df.iloc[1, 1:].tolist()
@@ -308,7 +308,7 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
         return
 
     # Load the CSV file
-    df = pd.read_csv(file_path, skiprows=10, header=None)
+    df = pd.read_csv(file_path, skiprows=9, header=None)
 
     # Remove the last 3 rows
     df = df.iloc[:-3, :]
@@ -613,9 +613,9 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
             
         # Read the input CSV file
         if "UV606" in file_name or "UV604" in file_name: 
-            df = pd.read_csv(file_path, header=None, skiprows=11)
-        else:
             df = pd.read_csv(file_path, header=None, skiprows=10)
+        else:
+            df = pd.read_csv(file_path, header=None, skiprows=9)
         
         # Locate the row where 'Council Area 2019' appears in column 1
         if 0 in df.columns:  # Ensure column 0 exists in the input DataFrame
