@@ -5,7 +5,7 @@
 import pandas as pd
 import os
 
-from area_classification.utilities.load_config import load_config
+from utilities.load_config import load_config
 
 def create_UK_means(config):
     """
@@ -17,6 +17,7 @@ def create_UK_means(config):
         config (dict): Configuration dictionary containing the filepath and name to the cluster data
     """
     # Load the CSV file into a DataFrame
+    config = load_config('area_classification/config.yaml')
     input_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
     raw_totals_df = pd.read_csv(input_file)
 

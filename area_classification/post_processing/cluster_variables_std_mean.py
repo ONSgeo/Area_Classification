@@ -99,7 +99,7 @@ def get_cluster_means(config):
     cluster_std_means_df.rename(columns=lambda x: f"{x}_zscore" if x not in ["cluster", "hierarchy_level"] else x, inplace=True)
     
     # Save the output as a CSV file
-    output_file_path = os.path.join(config["output_directory"], "cluster_standardized_means4.csv")
+    output_file_path = os.path.join(config["output_directory"], "cluster_standardized_means_output.csv")
     cluster_std_means_df.to_csv(output_file_path, index=False)
     print(f"Cluster standardized means saved to {output_file_path}")
     
