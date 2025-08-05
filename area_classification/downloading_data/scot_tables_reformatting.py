@@ -57,9 +57,11 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     # Remove rows with metadata/no data (first 10 and bottom 3 rows)
     remove_rows(config)
 
-    # Reformat specific tables (UV101b, UV103, migrant indicator and population density table)
+    # Reformat specific tables
     reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config)
     reformat_uv103(scot_input_folder, LAD_lookup_file_path, config)
+    reformat_uv104(scot_input_folder, LAD_lookup_file_path, config)
+    reformat_uv210(scot_input_folder, LAD_lookup_file_path, config)
     reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config)
     reformat_pop_density(scot_input_folder, config)
 
@@ -281,6 +283,162 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
 
 
 
+def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
+    """
+    Reformat the UV104 CSV file.
+    Replace CA names with codes.
+
+    Parameters
+    ----------
+    scot_input_folder : str
+        Path to the directory containing the input CSV file
+    LAD_lookup_file_path : str
+        Path to the lookup file containing Counil area (CA) codes and names.
+    config : dict
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+    """
+    
+    # Look for UV104.csv in the directory
+    file_path = os.path.join(scot_input_folder, "UV104.csv")
+    if not os.path.exists(file_path):
+        print("No file named UV104.csv found in the directory.")
+        return
+
+    # Load the CSV file and use the first row as the header
+    df = pd.read_csv(file_path, skiprows=9, header=0)
+
+    # Debug: Print the shape and first few rows of the DataFrame
+    print("Initial DataFrame shape:", df.shape)
+    print(df.head())
+
+    # Remove the last 3 rows
+    df = df.iloc[:-3, :]
+
+    # Preserve the original order of 'Council Area 2019' and 'Marital Status'
+    council_area_order = df['Council Area 2019'].unique()
+    marital_status_order = df['Marital status'].unique()
+
+    # Convert columns to Categorical to preserve order
+    df['Council Area 2019'] = pd.Categorical(df['Council Area 2019'], categories=council_area_order, ordered=True)
+    df['Marital status'] = pd.Categorical(df['Marital status'], categories=marital_status_order, ordered=True)
+
+    # Sort the DataFrame to ensure the order is preserved
+    df = df.sort_values(by=['Council Area 2019', 'Marital status'])
+
+    # Pivot the DataFrame
+    pivoted_df = df.pivot(index="Council Area 2019", columns="Marital status", values="Count")
+
+    # Reset the index to make 'Council Area 2019' a column again
+    pivoted_df.reset_index(inplace=True)
+
+
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(LAD_lookup_file_path)
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
+
+    # Replace council area names with LAD codes
+    pivoted_df['Council Area 2019'] = (
+        pivoted_df['Council Area 2019']
+        .str.strip()
+        .str.lower()
+        .map(lookup_dict)
+        .fillna(pivoted_df['Council Area 2019'])
+    )
+    
+    # Replace the column name 'Council Area 2019' with 'CA19'
+    pivoted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
+
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV104.csv")
+    pivoted_df.to_csv(output_file_path, index=False)
+
+    print("Data formatting complete. Results saved to:", output_file_path)
+
+
+def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
+    """
+    Reformat the UV104 CSV file.
+    Replace CA names with codes.
+
+    Parameters
+    ----------
+    scot_input_folder : str
+        Path to the directory containing the input CSV file
+    LAD_lookup_file_path : str
+        Path to the lookup file containing Counil area (CA) codes and names.
+    config : dict
+        Configuration dictionary containing paths and file names.
+
+    Returns
+    -------
+    None
+        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+    """
+    
+    # Look for UV104.csv in the directory
+    file_path = os.path.join(scot_input_folder, "UV210.csv")
+    if not os.path.exists(file_path):
+        print("No file named UV104.csv found in the directory.")
+        return
+
+    # Load the CSV file and use the first row as the header
+    df = pd.read_csv(file_path, skiprows=9, header=0)
+
+    # Debug: Print the shape and first few rows of the DataFrame
+    print("Initial DataFrame shape:", df.shape)
+    print(df.head())
+
+    # Remove the last 3 rows
+    df = df.iloc[:-3, :]
+
+    # Preserve the original order of 'Council Area 2019' and 'Marital Status'
+    council_area_order = df['Council Area 2019'].unique()
+    english_language_order = df['English language skills - 11 groups, all'].unique()
+
+    # Convert columns to Categorical to preserve order
+    df['Council Area 2019'] = pd.Categorical(df['Council Area 2019'], categories=council_area_order, ordered=True)
+    df['English language skills - 11 groups, all'] = pd.Categorical(df['English language skills - 11 groups, all'], categories=english_language_order, ordered=True)
+
+    # Sort the DataFrame to ensure the order is preserved
+    df = df.sort_values(by=['Council Area 2019', 'English language skills - 11 groups, all'])
+
+    # Pivot the DataFrame
+    pivoted_df = df.pivot(index="Council Area 2019", columns="English language skills - 11 groups, all", values="Count")
+
+    # Reset the index to make 'Council Area 2019' a column again
+    pivoted_df.reset_index(inplace=True)
+
+
+    # Load the LAD codes and names lookup file
+    lookup_df = pd.read_csv(LAD_lookup_file_path)
+    lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
+
+    # Replace council area names with LAD codes
+    pivoted_df['Council Area 2019'] = (
+        pivoted_df['Council Area 2019']
+        .str.strip()
+        .str.lower()
+        .map(lookup_dict)
+        .fillna(pivoted_df['Council Area 2019'])
+    )
+    
+    # Replace the column name 'Council Area 2019' with 'CA19'
+    pivoted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
+
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV210.csv")
+    pivoted_df.to_csv(output_file_path, index=False)
+
+    print("Data formatting complete. Results saved to:", output_file_path)
+
+
+
+
+
+
 def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     """
     Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total percentages
@@ -407,6 +565,7 @@ def extract_pop_density_table(scot_input_folder):
         print(f"The file {population_density_xlsx} has been deleted from the folder.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
 
 def reformat_pop_density(scot_input_folder, config):
     """
@@ -607,7 +766,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     # Process each CSV file in the input directory
     # Process each CSV file in the input directory, skipping uv101b.csv
     for file_name in os.listdir(scot_input_folder):
-        if file_name.lower() in ["uv101b.csv", "uv303a.csv", "uv103.csv", "migrant_indicator_percentage.csv", "population_density.csv"]:
+        if file_name.lower() in ["uv101b.csv", "uv104.csv", "uv303a.csv", "uv103.csv", "uv210.csv", "migrant_indicator_percentage.csv", "population_density.csv"]:
             continue
         file_path = os.path.join(scot_input_folder, file_name)
             
@@ -769,6 +928,8 @@ def replace_variable_names_with_codes(config):
             if file_name not in [
                 "reformat_UV101b.csv",
                 "reformat_UV103.csv",
+                "reformat_UV104.csv",
+                "reformat_UV210.csv",
                 "reformat_migrant_indicator_percentage.csv",
                 "reformat_population_density.csv",
             ]:
