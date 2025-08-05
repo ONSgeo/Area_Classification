@@ -28,12 +28,12 @@ def post_processing(config):
     create_UK_means(post_process_cluster_df)
 
     # Step 3: Run get_cluster_means
-    cluster_means_df = get_cluster_means(config)
+    cluster_std_means_df = get_cluster_means(config)
 
     # Step 4: Significance testing
 
     # Return the result of get_cluster_means
-    return cluster_means_df
+    return cluster_std_means_df
 
 
 # Run the function if the script is executed directly
