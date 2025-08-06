@@ -117,5 +117,10 @@ def create_UK_means(config):
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
+    from utilities.load_config import load_config
+
+    # Load configuration
     config = load_config('area_classification/config.yaml')
+
+    # Call the main function
     create_UK_means(config)

@@ -5,7 +5,7 @@ import os
 from utilities.load_config import load_config
 from post_processing.table_restructure import post_process_cluster_table  
 from post_processing.UK_standardised_means import create_UK_means
-from post_processing.cluster_variables_std_mean import get_cluster_means  
+from post_processing.cluster_variables_mean import get_cluster_means  
 
 
 def post_processing(config):

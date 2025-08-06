@@ -46,7 +46,8 @@ def get_cluster_means(config):
 
     # Load the cluster results and aggregated census data
     cluster_results = pd.read_csv(os.path.join(config["output_directory"], "subgroup", "processed_subclustering_output.csv"))
-    agg_census_data = pd.read_csv(os.path.join(config["qa_folder_path"], "select_raw_totals.csv"))
+    #agg_census_data = pd.read_csv(os.path.join(config["qa_folder_path"], "select_raw_totals.csv"))
+    agg_census_data = pd.read_csv(os.path.join(config["input_data_directory"], "pre_clustering_data_std_means.csv"))
 
     # Filter out 'UK_total' rows and columns containing '_total'
     agg_census_data = agg_census_data[agg_census_data["LAD_code"] != "UK_total"]

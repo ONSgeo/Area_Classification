@@ -1,5 +1,6 @@
 # Cluster variables mean averages
 
+
 import pandas as pd
 import os
 
@@ -44,24 +45,28 @@ def get_cluster_means(config):
         1a1           | subgroup          | TS001           | 130.0
     """
 
-    # Load the cluster results (processed_sublustering_output.csv/post_process_cluster_df) 
-    # and the aggregated census data (select_raw_totals.csv/raw_totals_df)
+    # Load the cluster results (processed_sublustering_output.csv) 
+    # and the aggregated census data (pre_clustering_data_std_means.csv)
     cluster_results_file_path = os.path.join(config["output_directory"], "subgroup", "processed_subclustering_output.csv")
     cluster_results = pd.read_csv(cluster_results_file_path)
-    agg_census_data_filepath = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
+    agg_census_data_filepath = os.path.join(config["input_data_directory"], "pre_clustering_data_std_means.csv")
     agg_census_data = pd.read_csv(agg_census_data_filepath)
 
-    # Merge cluster results with census data
+    # Merge cluster results with standardized means census data
     merged_data = pd.merge(cluster_results, agg_census_data, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],
                         var_name="variable_name", value_name="variable_value")
     
+    print("long_data first reshape", long_data.head())
+    
     # Reshape to even longer by making one hierarchy_level column (rather than supergroup, group, subgroup)
     long_data = pd.melt(long_data, id_vars=["LAD_code", "LAD_name", "variable_name", "variable_value"],
                         value_vars=["supergroup", "group", "subgroup"],
                         var_name="hierarchy_level", value_name="cluster")
+    
+    print("long_data second reshape", long_data.head())
     
     # Group by cluster and variable, and calculate the mean
     cluster_means = long_data.groupby(["variable_name", "hierarchy_level", "cluster"]).mean("variable_value").reset_index()
