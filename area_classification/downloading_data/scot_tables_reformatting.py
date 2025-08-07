@@ -107,8 +107,8 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     )
     meta_data_table = meta_data_table[["Variable_Name", "Variable_ID", "Table_ID", "Table_Name", "Type", "Unit", "Full_Name"]]
 
-    # Manually set Type to 'Percentage' for all tables
-    meta_data_table['Type'] = 'Percentage'
+    # Manually set Type to 'Count' for all tables
+    meta_data_table['Type'] = 'Count'
     # Update the type for population density to ratio
     meta_data_table.loc[meta_data_table['Variable_ID'] == 'population_density', 'Type'] = 'Ratio'
 
@@ -441,7 +441,7 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
 
 def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     """
-    Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total percentages
+    Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total
     to be the second column so that it is consistent with other tables.
     Replace CA names with codes.
 
@@ -460,7 +460,7 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
         The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
     # Look for migrant_indicator.csv in the directory
-    file_path = os.path.join(scot_input_folder, "migrant_indicator_percentage.csv")
+    file_path = os.path.join(scot_input_folder, "migrant_indicator.csv")
     if not os.path.exists(file_path):
         print("No file named migrant_indicator.csv found in the directory.")
         return
@@ -469,10 +469,10 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     df = pd.read_csv(file_path, skiprows=9, header=None)
 
     # Remove the last 3 rows
-    df = df.iloc[:-3, :]
+    #df = df.iloc[:-3, :]
 
-    # Remove the row where column A contains 'Total'
-    df = df[df.iloc[:, 0] != 'Total']
+    # Remove rows where column A contains specific substrings
+    df = df[~df.iloc[:, 0].str.contains(r'Total|Dataset|INFO|\(c\)', case=False, na=False)]
 
     # Remove columns where all rows except column 1 are blank
     empty_columns_removed_df = df.dropna(axis=1, how='all')
@@ -525,7 +525,7 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
     # Save the new DataFrame to a CSV file
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_migrant_indicator_percentage.csv")
+    output_file_path = os.path.join(config["qa_folder_path"], "reformat_migrant_indicator.csv")
     reformatted_df.to_csv(output_file_path, index=False)
 
     print("Data formatting complete. Results saved to:", output_file_path)
@@ -645,7 +645,7 @@ def extract_metadata_from_files(scot_input_folder):
             continue
 
         # Check for migrant_indicator table and explicitly define its metadata
-        if file == "migrant_indicator_percentage.csv":  
+        if file == "migrant_indicator.csv":  
             metadata.append({
                 "table_id": "migrant_indicator", 
                 "table_name": "Migrant Indicator",  
@@ -766,7 +766,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     # Process each CSV file in the input directory
     # Process each CSV file in the input directory, skipping uv101b.csv
     for file_name in os.listdir(scot_input_folder):
-        if file_name.lower() in ["uv101b.csv", "uv104.csv", "uv303a.csv", "uv103.csv", "uv210.csv", "migrant_indicator_percentage.csv", "population_density.csv"]:
+        if file_name.lower() in ["uv101b.csv", "uv104.csv", "uv303a.csv", "uv103.csv", "uv210.csv", "migrant_indicator.csv", "population_density.csv"]:
             continue
         file_path = os.path.join(scot_input_folder, file_name)
             
@@ -826,7 +826,7 @@ def remove_rows(config):
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
     for file_name in os.listdir(config["qa_folder_path"]):
-        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator_percentage.csv" and "population_density.csv":
+        if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator.csv" and "population_density.csv":
             continue
         if file_name.startswith("reformat_"):
             file_path = os.path.join(config["qa_folder_path"], file_name)
@@ -906,7 +906,7 @@ def replace_variable_names_with_codes(config):
                 variable_names = ["Population density (number of usual residents per square kilometre)"]
                 variable_ids = ["population_density"]
                 df.columns = [df.columns[0]] + list(variable_ids)
-            elif file_name == "reformat_migrant_indicator_percentage.csv":
+            elif file_name == "reformat_migrant_indicator.csv":
                 # For this specific table, keep variable IDs the same as variable names
                 # Replace whitespaces and slashes with underscores in variable IDs
                 variable_ids = [name.replace(" ", "_").replace("/", "_") for name in variable_names[1:]]  # Exclude the first column
@@ -930,7 +930,7 @@ def replace_variable_names_with_codes(config):
                 "reformat_UV103.csv",
                 "reformat_UV104.csv",
                 "reformat_UV210.csv",
-                "reformat_migrant_indicator_percentage.csv",
+                "reformat_migrant_indicator.csv",
                 "reformat_population_density.csv",
             ]:
                 df = df.iloc[:, :-1]
