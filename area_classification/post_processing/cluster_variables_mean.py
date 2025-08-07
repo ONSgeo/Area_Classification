@@ -91,6 +91,10 @@ def get_cluster_means(config):
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
+    # import the config file
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
+    # Run the function
     get_cluster_means(config)
+
+ 

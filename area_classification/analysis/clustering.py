@@ -403,7 +403,7 @@ if __name__ == "__main__":
     config = load_config()
 
     function_output = clustering_wrapper(config,
-        input_dataframe_or_filepath= config["pre_clustering_data"],
+        input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
