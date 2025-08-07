@@ -29,11 +29,25 @@ def drop_variables_pre_clustering(config):
     
     # Drop the specified columns
     processed_input_table = processed_input_table.drop(columns=variables_to_drop, errors='ignore')
-    
+
     # Save the processed table as a new CSV file
     processed_input_table.to_csv(config["pre_clustering_data"], index=False)
+
+    # Calculate standardized means for each variable
+    standardized_data = processed_input_table.copy()
+    for column in processed_input_table.columns[1:]:  # Skip the first column (e.g., area codes)
+        mean = processed_input_table[column].mean()
+        std = processed_input_table[column].std()
+        if std != 0:  # Avoid division by zero
+            standardized_data[column] = (processed_input_table[column] - mean) / std
+        else:
+            standardized_data[column] = 0  # If std is 0, set standardized values to 0
+
+    # Save the standardized data to a new file
+    standardized_data.to_csv(config["pre_clustering_data_std_mean"], index=False)
+
+    return standardized_data
     
-    return
 
 # Example usage
 if __name__ == "__main__":

@@ -46,7 +46,8 @@ def get_cluster_means(config):
 
     # Load the cluster results and aggregated census data
     cluster_results = pd.read_csv(os.path.join(config["output_directory"], "subgroup", "processed_subclustering_output.csv"))
-    agg_census_data = pd.read_csv(os.path.join(config["qa_folder_path"], "select_raw_totals.csv"))
+    #agg_census_data = pd.read_csv(os.path.join(config["qa_folder_path"], "select_raw_totals.csv"))
+    agg_census_data = pd.read_csv(os.path.join(config["input_data_directory"], "pre_clustering_data_std_means.csv"))
 
     # Filter out 'UK_total' rows and columns containing '_total'
     agg_census_data = agg_census_data[agg_census_data["LAD_code"] != "UK_total"]
@@ -99,7 +100,7 @@ def get_cluster_means(config):
     cluster_std_means_df.rename(columns=lambda x: f"{x}_zscore" if x not in ["cluster", "hierarchy_level"] else x, inplace=True)
     
     # Save the output as a CSV file
-    output_file_path = os.path.join(config["output_directory"], "cluster_standardized_means4.csv")
+    output_file_path = os.path.join(config["output_directory"], "cluster_standardized_means_output.csv")
     cluster_std_means_df.to_csv(output_file_path, index=False)
     print(f"Cluster standardized means saved to {output_file_path}")
     
