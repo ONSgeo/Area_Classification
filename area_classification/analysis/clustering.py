@@ -166,14 +166,16 @@ def load_data(filepath):
     # which will be used as the DataFrame index.
     # The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
     input_df = pd.read_csv(filepath, index_col=0)
+
     
     # Check for missing values
     missing_values = input_df.isnull().sum().sum()
     if missing_values > 0:
         print(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
         input_df.fillna(0, inplace=True)
-    
+
     return input_df
+
 
 def transform_and_standardize_data(df):
     """
@@ -403,7 +405,7 @@ if __name__ == "__main__":
     config = load_config()
 
     function_output = clustering_wrapper(config,
-        input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
+        input_dataframe_or_filepath= config["pre_clustering_data_std_means"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
