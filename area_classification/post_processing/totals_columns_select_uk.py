@@ -117,3 +117,9 @@ lookup_file = config["select_variables_lookup"]
 output_file = os.path.join(config["output_directory"], "select_raw_totals.csv")
 
 select_totals_columns(inputs_folder, lookup_file, output_file)
+
+if __name__ == "__main__":
+    # Example usage
+    from area_classification.utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
+    select_totals_columns(config)

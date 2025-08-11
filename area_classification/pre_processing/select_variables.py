@@ -3,7 +3,7 @@ import pandas as pd
 import re  
 import os
 
-def select_variables(df_temp, lookup_df, user_config):
+def select_variables(df_temp, lookup_df, config):
     """
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns.
@@ -14,7 +14,7 @@ def select_variables(df_temp, lookup_df, user_config):
         The main DataFrame containing all data.
     select_variables_lookup : str
         Path to the CSV file containing the lookup information.
-    user_config : dict
+    config : dict
         A dictionary containing user configuration settings, including the path to save the output file or QA.
     
     Returns
@@ -55,10 +55,10 @@ def select_variables(df_temp, lookup_df, user_config):
     filtered_df = filtered_df[ordered_columns]
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(user_config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
     # Save to data QA folder
-    output_file_path = user_config["qa_folder_path"] + "select_variables_output.csv"
+    output_file_path = config["qa_folder_path"] + "select_variables_output.csv"
     filtered_df.to_csv(output_file_path, index=False)
 
     return filtered_df
@@ -68,3 +68,13 @@ def extract_numeric_value(col_name):
     match = re.search(r'v(\d+)', col_name)
     # Default to infinity if no match
     return int(match.group(1)) if match else float('inf')  
+
+
+if __name__ == "__main__":
+    # Example usage
+    from area_classification.utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
+    lookup_df = pd.read_csv(config['select_variables_lookup'])
+    df_temp = pd.read_csv(os.path.join(config['input_data_directory'], 'CA19_concat.csv'))
+    
+    select_variables(df_temp, lookup_df, config)
