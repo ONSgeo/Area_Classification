@@ -51,3 +51,12 @@ def batch_ag_columns(df_temp, file_configs, user_config):
     df_temp.to_csv(output_file_path, index=False)
         
     return df_temp
+
+if __name__ == "__main__":
+    #df_temp = 
+    #from XX import file_configs
+    #from XX import user_config
+    #config = load_config('area_classification/config.yaml')
+
+    df = batch_ag_columns(df_temp)
+    print(df)

@@ -39,3 +39,4 @@ def post_processing(config):
 # Run the function if the script is executed directly
 if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
+    post_processing(config)

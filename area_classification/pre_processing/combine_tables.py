@@ -41,8 +41,8 @@ def combine_table(table1, table2, table3):
  
 if __name__ == "__main__":
     # Example usage
-    table1 = [
-    table2 = [
+    table1 = []
+    table2 = []
     table3 = []
     
     combine_table(table1, table2, table3)
