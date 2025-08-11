@@ -58,21 +58,21 @@ def main_pipeline():
     # # Step 4.5 (optional): Selecting the same variables as used in 21/22 OAC
     # # If not running the full 60 variables, update the 'variables_to_drop' in the config
     # # and then run the following code before clustering.
-    if config["drop_columns"]:
-        drop_variables_pre_clustering(config)
-
-    # Step 5: Clustering
-    # This assumes the data is saved locally and then loads during clustering. 
-    # Will need to refactor to allow this to take df input.
-    clustering_output = clustering_wrapper(config,
-        input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
-        num_clusters=config["number_of_clusters"],
-        n_init=config["number_of_times_k_means_initialised"],
-        output_directory=config["output_directory"],
-        plot_directory=config["plot_directory"],
-        random_seed=config["random_seed"])
-
-    print(clustering_output)
+    #if config["drop_columns"]:
+    #    drop_variables_pre_clustering(config)
+#
+    ## Step 5: Clustering
+    ## This assumes the data is saved locally and then loads during clustering. 
+    ## Will need to refactor to allow this to take df input.
+    #clustering_output = clustering_wrapper(config,
+    #    input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
+    #    num_clusters=config["number_of_clusters"],
+    #    n_init=config["number_of_times_k_means_initialised"],
+    #    output_directory=config["output_directory"],
+    #    plot_directory=config["plot_directory"],
+    #    random_seed=config["random_seed"])
+#
+    #print(clustering_output)
 
 
 
@@ -89,7 +89,7 @@ def main_pipeline():
     #post_processing = post_processing(output_folder, file_name, keep_column, split_column)
     
     # Step 6: Post processing
-    post_processing(config)
+    #post_processing(config)
 
 
 
