@@ -70,5 +70,12 @@ def extract_numeric_value(col_name):
     return int(match.group(1)) if match else float('inf')  
 
 
-
+if __name__ == "__main__":
+    # Example usage
+    from area_classification.utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
+    lookup_df = pd.read_csv(config['select_variables_lookup'])
+    df_temp = pd.read_csv(os.path.join(config['input_data_directory'], 'CA19_concat.csv'))
+    
+    select_variables(df_temp, lookup_df, config)
 

@@ -39,3 +39,10 @@ def combine_table(table1, table2, table3):
 # for row in result:
 #     print(row)
  
+if __name__ == "__main__":
+    # Example usage
+    table1 = []
+    table2 = []
+    table3 = []
+    
+    combine_table(table1, table2, table3)

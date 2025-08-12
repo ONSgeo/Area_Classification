@@ -1005,11 +1005,16 @@ def concat_reformatted_tables(config):
 
     return result
 
+
+    
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-
+   
     scot_input_folder = config["scot_input_folder"]
     LAD_lookup_file_path = config.get("LAD_lookup_file_path", "path/to/LAD_lookup_file.csv")
  
-    scot_reformatting_wrapper(scot_input_folder, LAD_lookup_file_path, config)
+    scot_reformatting_wrapper(scot_input_folder, LAD_lookup_file_path, config)   
+            
+                        
+
