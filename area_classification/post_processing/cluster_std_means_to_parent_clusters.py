@@ -3,11 +3,6 @@
 # group means standardised to the supergroup mean
 # subgroup means standardised to the group mean
 
-import pandas as pd
-import os
-
-from utilities.load_config import load_config
-config = load_config('area_classification/config.yaml')
 
 def cluster_std_means_to_parent_clusters(config):
     """
