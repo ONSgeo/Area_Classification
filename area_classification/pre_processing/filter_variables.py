@@ -33,6 +33,8 @@ def drop_variables_pre_clustering(config):
     # Save the processed table as a new CSV file
     processed_input_table.to_csv(config["pre_clustering_data"], index=False)
 
+    
+
     # Calculate standardized means for each variable
     standardized_data = processed_input_table.copy()
     for column in processed_input_table.columns[1:]:  # Skip the first column (e.g., area codes)

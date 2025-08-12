@@ -1005,6 +1005,7 @@ def concat_reformatted_tables(config):
 
     return result
 
+
     
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
@@ -1017,4 +1018,3 @@ if __name__ == "__main__":
             
                         
 
-    

@@ -78,3 +78,4 @@ if __name__ == "__main__":
     df_temp = pd.read_csv(os.path.join(config['input_data_directory'], 'CA19_concat.csv'))
     
     select_variables(df_temp, lookup_df, config)
+
