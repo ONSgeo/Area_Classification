@@ -8,8 +8,6 @@ from pre_processing.pre_processing import pre_processing
 from pre_processing.filter_variables import drop_variables_pre_clustering
 from analysis.clustering import clustering_wrapper      
 from post_processing.post_processing import post_processing      
-#Can be removed when wrapper sorted
-#from post_processing.post_processing import post_process_cluster_table
 
 def main_pipeline():
     """
@@ -38,14 +36,14 @@ def main_pipeline():
     """
     config = load_config('area_classification/config.yaml')
 
-    # # Step 1: Download england and wales data
-    # ew_lad_bulk_download(config)
+    # Step 1: Download england and wales data
+    #ew_lad_bulk_download(config)
     ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
-    # # Step 2: Download Northen Ireland data
-    # ni_lgd_download_data(config)
-    # # Loading and getting into format to be used to process and combine
+    # Step 2: Download Northen Ireland data
+    #ni_lgd_download_data(config)
+    # Loading and getting into format to be used to process and combine
     ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
@@ -56,9 +54,9 @@ def main_pipeline():
     pre_processing(ew_df , ni_df, scot_df, config)
 
     # # Step 4.5 (optional): Selecting the same variables as used in 21/22 OAC
-    # # If not running the full 60 variables, update the 'variables_to_drop' in the config
-    # # and then run the following code before clustering.
-    # this also standardizes the whole input dataset once the variables are dropped
+    # # If not running the full 60 variables, update the 'drop_columns' to True and change the
+    # 'variables_to_drop' in the config
+    # THIS STANDARDISATION TO BE MOVED. this also standardizes the whole input dataset once the variables are dropped
     if config["drop_columns"]:
         drop_variables_pre_clustering(config)
 
@@ -73,22 +71,9 @@ def main_pipeline():
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
     print(clustering_output)
-
-
-
-    # Step 6: Post processing and signifiance testing
-    #When ran steps above, run this section, but can be removed when wrapper below sorted
-    #post_process_cluster_table(config)
-    #output_folder = "D:/Repos/Area_Classification/data/output_data/subgroup"
-    #post_process_cluster_table(
-    #    output_folder=output_folder, 
-    #    file_name="subclustering_output.csv", 
-    #    keep_column='LAD_code', 
-    #    split_column='subsubcluster'
-    #)
-    #post_processing = post_processing(output_folder, file_name, keep_column, split_column)
     
     # Step 6: Post processing
+    # Cluster tables are reformatted and mean tables created
     post_processing(config)
 
 

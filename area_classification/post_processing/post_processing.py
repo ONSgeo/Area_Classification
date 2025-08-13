@@ -1,10 +1,7 @@
 # Post clustering wrapper
-#INITAL PLACE HOLDER SCRIPT - NOTE DOES NOT RUN!
-import os
 
 from utilities.load_config import load_config
 from post_processing.table_restructure import post_process_cluster_table  
-#from post_processing.UK_standardised_means import create_UK_means
 from post_processing.cluster_variables_mean import get_cluster_means
 from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
 
@@ -23,12 +20,8 @@ def post_processing(config):
         The result of get_cluster_means.
     """
 
-
     # Step 1: Run post_process_cluster_table
     post_process_cluster_table(config)
-
-    # Step 2: Create the means for all area codes and UK, EW, NI and Scot
-    #create_UK_means(post_process_cluster_df)
 
     # Step 2: Run get_cluster_means to calculate means on the already standardized data
     get_cluster_means(config)
