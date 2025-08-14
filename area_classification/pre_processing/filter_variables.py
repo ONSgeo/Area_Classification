@@ -11,10 +11,12 @@ def drop_variables_pre_clustering(config):
     Duplicates the preprocessed input table, removes columns listed under 'variables_to_drop' in the config,
     and saves the resulting table as a new CSV file.
 
-    Parameters:
+    Parameters
+    ----------
         config_path (str): Path to the YAML configuration file.
 
-    Returns:
+    Parameters
+    ----------
         None
     """   
     # Get the list of variables to drop from the config
