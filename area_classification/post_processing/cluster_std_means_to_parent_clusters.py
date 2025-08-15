@@ -25,17 +25,23 @@ def cluster_std_means_to_parent_clusters(config):
     import pandas as pd
     from collections import defaultdict
 
-    # Load in the pre-clustering percentages data
-    pre_clustering_data = config["pre_clustering_data"]
-    pre_clustering_data_df = pd.read_csv(pre_clustering_data)
-    
     # Load the clustering output data
     processed_subclustering_output = config["processed_subclustering_output"]
     processed_subclustering_output_df = pd.read_csv(processed_subclustering_output)
+
+    # Define the paths to the pre-clustering data files (not standardized) 
+    pre_clustering_data = (config["pre_clustering_data"])
+    filtered_pre_clustering_data = (config["pre_clustering_data_filtered"])
+
+    # Check if the filtered (variables dropped) file exists
+    # if it does, use it; otherwise, use the full pre_clustering_data
+    pre_clustering_data_to_use = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
+    
+    pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
     
     # Merge the two DataFrames on the LAD CODE column
     merged_df = processed_subclustering_output_df.merge(
-        pre_clustering_data_df, on="LAD_code", how="left"
+        pre_clustering_data_to_use, on="LAD_code", how="left"
     )
     
     # Define the output directory

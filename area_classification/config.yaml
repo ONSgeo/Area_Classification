@@ -25,6 +25,8 @@ variables_to_drop  : [
 # Data to use in clustering
 pre_clustering_data: './data/inputs/pre_clustering_data.csv'
 pre_clustering_data_std_mean: './data/inputs/pre_clustering_data_std_means.csv'
+pre_clustering_data_filtered: './data/inputs/pre_clustering_data_filtered.csv'
+pre_clustering_data_filtered_std_mean: './data/inputs/pre_clustering_data_filtered_std_means.csv'
 
 # post processing files for creating standardized means
 processed_subclustering_output: './data/output_data/subgroup/Processed_subclustering_output.csv'

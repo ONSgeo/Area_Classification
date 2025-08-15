@@ -18,7 +18,7 @@ def get_cluster_means(config):
         -------------------------------------------
         E06000001 | 1          | 1c     | 1c1
 
-    agg_census_data : pd.DataFrame
+    pre_clustering_data_to_use : pd.DataFrame
         Dataframe containing the data (as counts rather than percentages) for each LAD and variable, structured as:
         LAD_code  | variable_1 | variable_2 | ... | variable_n
         --------------------------------------------------------
@@ -47,13 +47,20 @@ def get_cluster_means(config):
 
     # Load the cluster results (processed_sublustering_output.csv) 
     # and the aggregated census data (pre_clustering_data_std_means.csv)
-    cluster_results_file_path = os.path.join(config["output_directory"], "subgroup", "processed_subclustering_output.csv")
-    cluster_results = pd.read_csv(cluster_results_file_path)
-    agg_census_data_filepath = os.path.join(config["input_data_directory"], "pre_clustering_data_std_means.csv")
-    agg_census_data = pd.read_csv(agg_census_data_filepath)
+    cluster_results = pd.read_csv(config["processed_subclustering_output"])
+
+
+    pre_clustering_data = (config["pre_clustering_data_std_mean"])
+    filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
+
+    # Check if the filtered (variables dropped) file exists
+    # if it does, use it; otherwise, use the full pre_clustering_data
+    pre_clustering_data_to_use = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
+
+    pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
 
     # Merge cluster results with standardized means census data
-    merged_data = pd.merge(cluster_results, agg_census_data, on="LAD_code", how="left")
+    merged_data = pd.merge(cluster_results, pre_clustering_data_to_use, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],

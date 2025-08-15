@@ -193,9 +193,11 @@ def transform_and_standardize_data(df):
     pd.DataFrame
         Transformed and standardized dataframe.
     """
+
     df = np.arcsinh(df) # Apply inverse hyperbolic sine transformation
     df = (df - df.min()) / (df.max() - df.min()) # Apply min-max scaling
     return df
+
 
 
 ## Clustergrams

@@ -7,6 +7,7 @@ from pre_processing.aggregating_variables import batch_ag_columns
 from pre_processing.select_variables import select_variables
 from pre_processing.totals_columns_select_uk import select_totals_columns
 from pre_processing.convert_to_percentages import convert_to_percentages
+from pre_processing.standardize_pre_clustering_data import standardize_dataframe
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
@@ -106,12 +107,14 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     # Convert counts to percentages
     percentages_df = convert_to_percentages(raw_totals_df)
 
-    # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    percentages_df.to_csv(config["pre_clustering_data"], index=False)
 
-    percentages_df.to_csv(config["qa_folder_path"] + "pre_processed_data_ew_ni_scot.csv", index=False)
+    pre_clustering_std = standardize_dataframe(percentages_df)
 
-    return percentages_df
+    # Save the standardized data to a new file
+    pre_clustering_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
+
+    return pre_clustering_std
 
 if __name__ == "__main__":
     # Example usage
