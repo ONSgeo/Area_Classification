@@ -36,8 +36,6 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df):
     pre_clustering_data_df = pd.read_csv(pre_clustering_data)
     
     # Load the clustering output data
-    # restructured_subclustering_output = config["restructured_subclustering_output"]
-    # restructured_subclustering_output_df = pd.read_csv(restructured_subclustering_output)
     restructured_subclustering_output_df = restructured_cluster_table_df
 
     print("This is restructured", restructured_cluster_table_df)
