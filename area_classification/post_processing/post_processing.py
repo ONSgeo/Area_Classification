@@ -1,35 +1,33 @@
 # Post clustering wrapper
 
 from utilities.load_config import load_config
-from post_processing.table_restructure import post_process_cluster_table  
-from post_processing.cluster_variables_mean import get_cluster_means
+from post_processing.cluster_table_restructure import cluster_table_restructure  
+from post_processing.cluster_variables_mean import cluster_variable_means
 from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
 
 
 def post_processing(config):
     """
-    Wrapper function to run post_process_cluster_table, 
-    extract_matching_and_partial_columns, and get_cluster_means in sequence.
+    Wrapper function to run restrcuture the table created when clustering, 
+    
+    Parameters
+    ----------
+    config : dict
+        main pipeline config dictionary containing output directory.
 
-    Args:
-        post_process_args (tuple): Arguments for post_process_cluster_table.
-        extract_columns_args (tuple): Arguments for extract_matching_and_partial_columns.
-        cluster_means_args (tuple): Arguments for get_cluster_means.
-
-    Returns:
+    Returns
+    ----------
         The result of get_cluster_means.
     """
 
-    # Step 1: Run post_process_cluster_table
-    post_process_cluster_table(config)
+    # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
+    restructured_cluster_table_df = cluster_table_restructure(config)
 
-    # Step 2: Run get_cluster_means to calculate means on the already standardized data
-    get_cluster_means(config)
+    # Step 2: Calculate means for each cluster and each variable
+    cluster_variable_means(config, restructured_cluster_table_df)
 
     # Step 3: Run cluster_std_means_to_parent_clusters
     cluster_std_means_to_parent_clusters(config)
-
-    # Step 4: Significance testing
     
 
 
