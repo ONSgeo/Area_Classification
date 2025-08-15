@@ -20,7 +20,9 @@ def select_variables(df_temp, lookup_df, config):
     Returns
     -------
     pd.DataFrame 
-        A new DataFrame with only the specified columns.
+        A new DataFrame with only the specified columns, with area codes in the first column followed by
+        raw values for v1 to 60
+        
     """
 
     # Extract the columns to select and their new names

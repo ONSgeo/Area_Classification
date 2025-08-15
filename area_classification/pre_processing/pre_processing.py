@@ -24,7 +24,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     scot_df : pd.DataFrame
         DataFrame containing census data for Scotland.
     config : dict
-        Configuration dictionary containing paths and settings/
+        Configuration dictionary containing paths and settings.
 
     Returns
     -------

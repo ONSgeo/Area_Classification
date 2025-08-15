@@ -17,7 +17,8 @@ def batch_ag_columns(df_temp, file_configs, user_config):
     user_config : dict
         A dictionary containing user configuration settings, including the path to save the output file or QA.
 
-    Returns:
+    Returns
+    -------
     pd.DataFrame
         The updated DataFrame with new aggregated columns.
     """
@@ -58,5 +59,5 @@ if __name__ == "__main__":
     #from XX import user_config
     #config = load_config('area_classification/config.yaml')
 
-    df = batch_ag_columns(df_temp)
+    df = batch_ag_columns(df_temp, file_configs, user_config)
     print(df)

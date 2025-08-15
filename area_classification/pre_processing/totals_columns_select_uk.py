@@ -127,8 +127,10 @@ def select_totals_columns(config):
     matches variable columns with their corresponding totals using a lookup file, and appends the totals to the
     select files. The processed files are then concatenated into a single DataFrame and saved to an output file.
 
-    Args:
-            config (dict): Configuration dictionary containing paths and settings
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionary containing paths and settings
  
     """
     

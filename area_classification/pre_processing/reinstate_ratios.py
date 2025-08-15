@@ -22,7 +22,8 @@ def reinstate_v12_v33(percentages_df, config):
 
     Returns
     --------
-    pd.DataFrame: The updated percentages_df with V12 and V33 columns joined.
+    pd.DataFrame
+        The updated percentages_df with V12 and V33 columns joined.
     
     """
     # List all files in the QA folder ending with '_select'
