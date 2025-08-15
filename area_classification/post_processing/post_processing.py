@@ -27,7 +27,7 @@ def post_processing(config):
     cluster_variable_means(config, restructured_cluster_table_df)
 
     # Step 3: Run cluster_std_means_to_parent_clusters
-    cluster_std_means_to_parent_clusters(config)
+    cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df)
     
 
 

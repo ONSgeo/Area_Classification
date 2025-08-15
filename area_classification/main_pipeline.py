@@ -22,8 +22,9 @@ def main_pipeline():
     2. Download and process Northern Ireland data.
     3. Process manually downloaded Scotland data.
     4. Perform pre-processing on combined data.
-    5. Perform clustering on the pre-processed data.
-    5. Perform post-processing on cluster data.
+    5. Establish the variables which will be used for clustering (some may be dropped)
+    6. Perform clustering on the pre-processed data.
+    7. Reformate the cluster tables and calculate the means of the clustered data.
 
     Parameters
     ----------
@@ -54,14 +55,14 @@ def main_pipeline():
     # # # Step 4: pre-processing
     # pre_processing(ew_df , ni_df, scot_df, config)
 
-    # # # Step 4.5 (optional): Selecting the same variables as used in 21/22 OAC
-    # # # If not running the full 60 variables, update the 'drop_columns' to True and change the
-    # # 'variables_to_drop' in the config
-    # # THIS STANDARDISATION TO BE MOVED. this also standardizes the whole input dataset once the variables are dropped
-    # if config["drop_columns"]:
-    #     drop_variables_pre_clustering(config)
+    # # Step 4.5 (optional): Selecting the same variables as used in 21/22 OAC
+    # # If not running the full 60 variables, update the 'drop_columns' to True and change the
+    # 'variables_to_drop' in the config
+    # THIS STANDARDISATION TO BE MOVED. this also standardizes the whole input dataset once the variables are dropped
+    if config["drop_columns"]:
+        drop_variables_pre_clustering(config)
 
-    ## Step 5: Clustering
+    ## Step 6: Clustering
     ## This assumes the data is saved locally and then loads during clustering. 
     ### Will need to refactor to allow this to take df input.
     clustering_output = clustering_wrapper(config,
@@ -73,7 +74,7 @@ def main_pipeline():
         random_seed=config["random_seed"])
     print(clustering_output)
     
-    # Step 6: Post processing
+    # Step 7: Post processing
     # Cluster tables are reformatted and mean tables created
     post_processing(config)
 
