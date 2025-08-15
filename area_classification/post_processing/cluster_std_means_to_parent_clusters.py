@@ -13,7 +13,7 @@ def cluster_std_means_to_parent_clusters(config):
 
     Parameters:
         config (dict): Configuration dictionary containing paths and parameters.
-        processed_subclustering_output_df: DataFrame containing the clustering output data.
+        restructured_subclustering_output_df: DataFrame containing the clustering output data.
         pre_clustering_data_df: DataFrame containing the input data used for clustering, in percentages.
 
     Returns:
@@ -30,11 +30,11 @@ def cluster_std_means_to_parent_clusters(config):
     pre_clustering_data_df = pd.read_csv(pre_clustering_data)
     
     # Load the clustering output data
-    processed_subclustering_output = config["processed_subclustering_output"]
-    processed_subclustering_output_df = pd.read_csv(processed_subclustering_output)
+    restructured_subclustering_output = config["restructured_subclustering_output"]
+    restructured_subclustering_output_df = pd.read_csv(restructured_subclustering_output)
     
     # Merge the two DataFrames on the LAD CODE column
-    merged_df = processed_subclustering_output_df.merge(
+    merged_df = restructured_subclustering_output_df.merge(
         pre_clustering_data_df, on="LAD_code", how="left"
     )
     
