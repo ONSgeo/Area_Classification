@@ -15,7 +15,7 @@ def cluster_variable_means(config, restructured_cluster_table_df):
         Configuration dictionary containing the filepath and name to the cluster data
     
     restructured_cluster_table_df : pd.DataFrame
-        Input DataFrame of cluster assignments. Data will have the following format:
+        DataFrame of cluster assignments. Data will have the following format:
         
         LAD_name    | LAD_code  | supergroup| group | subgroup
         -------------------------------------------

@@ -4,17 +4,23 @@
 # subgroup means standardised to the group mean
 
 
-def cluster_std_means_to_parent_clusters(config):
+def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df):
     """
     This function reads the clustering output CSV file and the pre-clustering data CSV file.
     It creates standardized means of the values in a cluster to their parent cluster. It then saves the standardized means
     to a new CSV file.
     Once it has the standardized means, it creates means for each cluster. 
 
-    Parameters:
-        config (dict): Configuration dictionary containing paths and parameters.
-        restructured_subclustering_output_df: DataFrame containing the clustering output data.
-        pre_clustering_data_df: DataFrame containing the input data used for clustering, in percentages.
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionary containing the filepath and name to the cluster data.
+    restructured_cluster_table_df : pd.DataFrame
+        DataFrame of cluster assignments. Data will have the following format:
+        
+        LAD_name    | LAD_code  | supergroup| group | subgroup
+        -------------------------------------------
+        Hartlepool  | E06000001 | 1         | 1c    | 1c1
 
     Returns:
         pd.DataFrame: DataFrame containing standardized means for each cluster.
@@ -30,9 +36,10 @@ def cluster_std_means_to_parent_clusters(config):
     pre_clustering_data_df = pd.read_csv(pre_clustering_data)
     
     # Load the clustering output data
-    restructured_subclustering_output = config["restructured_subclustering_output"]
-    restructured_subclustering_output_df = pd.read_csv(restructured_subclustering_output)
-    
+    restructured_subclustering_output_df = restructured_cluster_table_df
+
+    print("This is restructured", restructured_cluster_table_df)
+
     # Merge the two DataFrames on the LAD CODE column
     merged_df = restructured_subclustering_output_df.merge(
         pre_clustering_data_df, on="LAD_code", how="left"
