@@ -6,7 +6,7 @@ import pandas as pd
 from utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
-def post_process_cluster_table(config):
+def cluster_table_restructure(config):
     """
     Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
     characters in another column (cluster codes) into separate columns for supergroup, group, and 
@@ -16,10 +16,9 @@ def post_process_cluster_table(config):
     ----------
     config : dict
         Configuration dictionary containing paths and file names.
-    output_folder : str
-        Path to the folder containing the file.
-    file_name : str
-        Name of the file to process.
+
+
+
     Returns
     -------
     pd.DataFrame
@@ -67,40 +66,40 @@ def post_process_cluster_table(config):
     subgroup = subgroup.apply(convert_final_char_to_number)
 
     # Combine the kept column with the processed columns
-    post_process_cluster_df = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
+    restructured_cluster_table = pd.concat([kept_data, supergroup.rename('supergroup'), group.rename('group'), subgroup.rename('subgroup')], axis=1)
 
     # Load the LAD lookup file into a DataFrame
     lad_lookup_file_path = config["LAD_lookup_file_path"]
     lad_lookup = pd.read_csv(lad_lookup_file_path)
 
     # Add in the LAD names
-    post_process_cluster_df = post_process_cluster_df.merge(
+    restructured_cluster_table = restructured_cluster_table.merge(
         lad_lookup[['LAD22CD', 'LAD22NM']],  # Select only the necessary columns
-        left_on='LAD_code',                      # Column in post_process_cluster_df
+        left_on='LAD_code',                      # Column in restructured_cluster_table
         right_on='LAD22CD',                 # Column in lad_lookup
-        how='left'                          # Use a left join to keep all rows in post_process_cluster_df
+        how='left'                          # Use a left join to keep all rows in restructured_cluster_table
     )
 
     # Drop the LAD22CD column after the join if it's no longer needed
-    post_process_cluster_df = post_process_cluster_df.drop(columns=['LAD22CD'])
+    restructured_cluster_table = restructured_cluster_table.drop(columns=['LAD22CD'])
 
     # Rename the LAD22NM column to LAD_name
-    post_process_cluster_df = post_process_cluster_df.rename(columns={'LAD22NM': 'LAD_name'})
+    restructured_cluster_table = restructured_cluster_table.rename(columns={'LAD22NM': 'LAD_name'})
 
     # Move the LAD_name column to the first position
-    columns = ['LAD_name'] + [col for col in post_process_cluster_df.columns if col != 'LAD_name']
-    post_process_cluster_df = post_process_cluster_df[columns]
+    columns = ['LAD_name'] + [col for col in restructured_cluster_table.columns if col != 'LAD_name']
+    restructured_cluster_table = restructured_cluster_table[columns]
 
     # Save the resulting DataFrame to a new file
-    output_file = os.path.join(output_folder, f"Processed_{file_name}")
-    post_process_cluster_df.to_csv(output_file, index=False)
+    output_file = os.path.join(output_folder, f"restructured_{file_name}")
+    restructured_cluster_table.to_csv(output_file, index=False)
     print(f"Processed file saved to: {output_file}")
 
-    return post_process_cluster_df
+    return restructured_cluster_table
 
 
 if __name__ == "__main__":
     # Example usage
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    post_process_cluster_table(config)
+    cluster_table_restructure(config)

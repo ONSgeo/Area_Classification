@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 
-def get_cluster_means(config):
+def cluster_variable_means(config, restructured_cluster_table_df):
     """
     Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
     
@@ -13,16 +13,13 @@ def get_cluster_means(config):
     ----------
     config : dict
         Configuration dictionary containing the filepath and name to the cluster data
-        Data will have the following format:
-        LAD_code  | supergroup | group | subgroup
+    
+    restructured_cluster_table_df : pd.DataFrame
+        DataFrame of cluster assignments. Data will have the following format:
+        
+        LAD_name    | LAD_code  | supergroup| group | subgroup
         -------------------------------------------
-        E06000001 | 1          | 1c     | 1c1
-
-    pre_clustering_data_to_use : pd.DataFrame
-        Dataframe containing the data (as counts rather than percentages) for each LAD and variable, structured as:
-        LAD_code  | variable_1 | variable_2 | ... | variable_n
-        --------------------------------------------------------
-        E06000001 | 100        | 200        | ... | 150
+        Hartlepool  | E06000001 | 1         | 1c    | 1c1
 
     Returns
     -------
@@ -44,11 +41,10 @@ def get_cluster_means(config):
         1a            | group             | TS001           | 120.0
         1a1           | subgroup          | TS001           | 130.0
     """
-
-    # Load the cluster results (processed_sublustering_output.csv) 
+    
+    # Load the restructured cluster table (restructured_sublustering_output.csv) 
     # and the aggregated census data (pre_clustering_data_std_means.csv)
-    cluster_results = pd.read_csv(config["processed_subclustering_output"])
-
+    cluster_results = restructured_cluster_table_df
 
     pre_clustering_data = (config["pre_clustering_data_std_mean"])
     filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
@@ -58,6 +54,7 @@ def get_cluster_means(config):
     pre_clustering_data_to_use = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
 
     pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
+
 
     # Merge cluster results with standardized means census data
     merged_data = pd.merge(cluster_results, pre_clustering_data_to_use, on="LAD_code", how="left")
@@ -93,8 +90,6 @@ def get_cluster_means(config):
     print(f"Cluster means saved to {output_file_path}") 
     
     return wide_cluster_means
-    
-    # save out as a csv
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
@@ -102,6 +97,6 @@ if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     # Run the function
-    get_cluster_means(config)
+    cluster_variable_means(config)
 
  

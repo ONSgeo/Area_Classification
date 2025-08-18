@@ -23,7 +23,9 @@ def main_pipeline():
     2. Download and process Northern Ireland data.
     3. Process manually downloaded Scotland data.
     4. Perform pre-processing on combined data.
-    5. Perform clustering on the pre-processed data.
+    5. Establish the variables which will be used for clustering (some may be dropped)
+    6. Perform clustering on the pre-processed data.
+    7. Reformate the cluster tables and calculate the means of the clustered data.
 
     Parameters
     ----------
@@ -37,19 +39,19 @@ def main_pipeline():
     """
     config = load_config('area_classification/config.yaml')
 
-    # Step 1: Download england and wales data
-    #ew_lad_bulk_download(config)
-    ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
-    ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
+    # # Step 1: Download england and wales data
+    # #ew_lad_bulk_download(config)
+    # ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
+    # ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
-    # Step 2: Download Northen Ireland data
-    #ni_lgd_download_data(config)
-    # Loading and getting into format to be used to process and combine
-    ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
-    ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
+    # # Step 2: Download Northen Ireland data
+    # #ni_lgd_download_data(config)
+    # # Loading and getting into format to be used to process and combine
+    # ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+    # ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
-    # # Step 3: Processing of Scotland data which was manually downloaded
-    scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
+    # # # Step 3: Processing of Scotland data which was manually downloaded
+    # scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
 
     # # Step 4: pre-processing
     pre_clustering_std = pre_processing(ew_df , ni_df, scot_df, config)
@@ -60,7 +62,7 @@ def main_pipeline():
     chosen_clustering_variables = check_drop_columns_true(config, pre_clustering_std)
              
 
-    ## Step 5: Clustering
+    ## Step 6: Clustering
     ## This assumes the data is saved locally and then loads during clustering. 
     ### Will need to refactor to allow this to take df input.
 
@@ -79,8 +81,7 @@ def main_pipeline():
     
     print(clustering_output)
     
-    
-    # Step 6: Post processing
+    # Step 7: Post processing
     # Cluster tables are reformatted and mean tables created
     post_processing(config)
 

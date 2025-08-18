@@ -4,17 +4,23 @@
 # subgroup means standardised to the group mean
 
 
-def cluster_std_means_to_parent_clusters(config):
+def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df):
     """
     This function reads the clustering output CSV file and the pre-clustering data CSV file.
     It creates standardized means of the values in a cluster to their parent cluster. It then saves the standardized means
     to a new CSV file.
     Once it has the standardized means, it creates means for each cluster. 
 
-    Parameters:
-        config (dict): Configuration dictionary containing paths and parameters.
-        processed_subclustering_output_df: DataFrame containing the clustering output data.
-        pre_clustering_data_df: DataFrame containing the input data used for clustering, in percentages.
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionary containing the filepath and name to the cluster data.
+    restructured_cluster_table_df : pd.DataFrame
+        DataFrame of cluster assignments. Data will have the following format:
+        
+        LAD_name    | LAD_code  | supergroup| group | subgroup
+        -------------------------------------------
+        Hartlepool  | E06000001 | 1         | 1c    | 1c1
 
     Returns:
         pd.DataFrame: DataFrame containing standardized means for each cluster.
@@ -26,8 +32,8 @@ def cluster_std_means_to_parent_clusters(config):
     from collections import defaultdict
 
     # Load the clustering output data
-    processed_subclustering_output = config["processed_subclustering_output"]
-    processed_subclustering_output_df = pd.read_csv(processed_subclustering_output)
+    restructured_subclustering_output_df = restructured_cluster_table_df
+    print("This is restructured", restructured_cluster_table_df)
 
     # Define the paths to the pre-clustering data files (not standardized) 
     pre_clustering_data = (config["pre_clustering_data"])
@@ -40,9 +46,11 @@ def cluster_std_means_to_parent_clusters(config):
     pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
     
     # Merge the two DataFrames on the LAD CODE column
-    merged_df = processed_subclustering_output_df.merge(
-        pre_clustering_data_to_use, on="LAD_code", how="left"
+    merged_df = restructured_subclustering_output_df.merge(
+        pre_clustering_data_to_use , on="LAD_code", how="left"
     )
+    
+    
     
     # Define the output directory
     output_directory = config["output_directory"]
