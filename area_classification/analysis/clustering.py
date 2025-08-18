@@ -48,11 +48,11 @@ def clustering_wrapper(config: dict,
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
     
-    #if isinstance(input_dataframe_or_filepath, str):
-    #    # If a file path is provided, load the data from the CSV file
-    #    print(f"Loading data from {input_dataframe_or_filepath}")
-    #    variable_df = load_data(input_dataframe_or_filepath)
-    if isinstance(input_dataframe_or_filepath, pd.DataFrame):
+    if isinstance(input_dataframe_or_filepath, str):
+        #If a file path is provided, load the data from the CSV file
+        print(f"Loading data from {input_dataframe_or_filepath}")
+        variable_df = load_data(input_dataframe_or_filepath)
+    elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
         # If a DataFrame is provided, use it directly
         print("Using provided DataFrame for clustering.")
         variable_df = input_dataframe_or_filepath.copy().fillna(0)

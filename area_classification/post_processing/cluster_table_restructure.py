@@ -25,9 +25,10 @@ def cluster_table_restructure(config):
         A DataFrame with the kept column and characters from the split column in custom-named columns.
     """
 
-    output_folder = os.path.join(config["output_directory"], "subgroup")
+
     file_name="subclustering_output.csv"
-    file_path = os.path.join(output_folder, file_name) 
+    subclustering_file_location = os.path.join(config["output_directory"], "subgroup", file_name) 
+    
 
 
     keep_column= config["keep_column"]
@@ -35,11 +36,11 @@ def cluster_table_restructure(config):
 
     
     # Check if the file exists
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"File '{file_name}' not found in folder '{output_folder}'.")
+    if not os.path.exists(subclustering_file_location):
+        raise FileNotFoundError(f"File '{subclustering_file_location}' not found.")
 
     # Read the file into a DataFrame
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(subclustering_file_location)
 
     # Check if the specified columns exist
     if keep_column not in df.columns:
@@ -91,7 +92,7 @@ def cluster_table_restructure(config):
     restructured_cluster_table = restructured_cluster_table[columns]
 
     # Save the resulting DataFrame to a new file
-    output_file = os.path.join(output_folder, f"restructured_{file_name}")
+    output_file = os.path.join(config["output_directory"], f"restructured_{file_name}")
     restructured_cluster_table.to_csv(output_file, index=False)
     print(f"Processed file saved to: {output_file}")
 

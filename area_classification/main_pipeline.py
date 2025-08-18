@@ -78,10 +78,10 @@ def main_pipeline():
     # )
     
     # print(clustering_output)
-    
-    # # Step 7: Post processing
-    # # Cluster tables are reformatted and mean tables created
-    # post_processing(config)
+ 
+    # Step 7: Post processing
+    # Cluster tables are reformatted and mean tables created
+    post_processing(config, chosen_clustering_variables)
 
 
 

@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 
-def cluster_variable_means(config, restructured_cluster_table_df):
+def cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables):
     """
     Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
     
@@ -42,22 +42,29 @@ def cluster_variable_means(config, restructured_cluster_table_df):
         1a1           | subgroup          | TS001           | 130.0
     """
     
-    # Load the restructured cluster table (restructured_sublustering_output.csv) 
-    # and the aggregated census data (pre_clustering_data_std_means.csv)
-    cluster_results = restructured_cluster_table_df
+    # Load the restructured cluster table (restrucutred_cluster_table / restructured_sublustering_output.csv) 
+    
+    cluster_results = restructured_cluster_table
 
-    pre_clustering_data = (config["pre_clustering_data_std_mean"])
-    filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
+    #pre_clustering_data = (config["pre_clustering_data_std_mean"])
+    #filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
+
+    # load in the pre clustering data
+    #pre_clustering_data = (config["pre_clustering_data"])
+    #filtered_pre_clustering_data = (config["pre_clustering_data_filtered"])
 
     # Check if the filtered (variables dropped) file exists
     # if it does, use it; otherwise, use the full pre_clustering_data
-    pre_clustering_data_to_use = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
+    #pre_clustering_data = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
 
-    pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
+    #pre_clustering_data = pd.read_csv(pre_clustering_data)
+
+    # load in the pre clustering data
+    pre_clustering_data = chosen_clustering_variables
 
 
     # Merge cluster results with standardized means census data
-    merged_data = pd.merge(cluster_results, pre_clustering_data_to_use, on="LAD_code", how="left")
+    merged_data = pd.merge(cluster_results, pre_clustering_data, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],
