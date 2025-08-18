@@ -70,13 +70,15 @@ def select_totals_columns(config):
 
             # Iterate through each variable column in the select file
             for variable in select_df.columns[1:]:  # Skip the first column
-                if variable in ["v12", "v33"]:  # Remove 'v12' and 'v33' columns
-                    select_df.drop(columns=[variable], inplace=True)
+                # Ignore 'v12' and 'v33' columns as these are already ratios, don't need to be percentages
+                if variable in ["v12", "v33"]: 
                     continue
-                if variable.startswith("v"):  # Only process variable columns
+                # Only process variable columns
+                if variable.startswith("v"):  
                     # Special case for v19 in Scotland
                     if country == "scot" and variable == "v19":
-                        total_column = "Total"  # Directly set the total column to 'Total'
+                        # Directly set the total column to 'Total'
+                        total_column = "Total"  
                     else:
                         # Find the corresponding total column in the lookup
                         match = country_lookup_df.loc[country_lookup_df["new_code"] == variable, "table_ID_with_suffix"]
