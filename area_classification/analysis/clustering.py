@@ -11,7 +11,8 @@ import os
 import time
 
 def clustering_wrapper(config: dict,
-                       input_dataframe_or_filepath: str | pd.DataFrame, 
+                       #input_dataframe_or_filepath: str | pd.DataFrame, 
+                       input_dataframe_or_filepath: pd.DataFrame,
                        num_clusters: int,
                        n_init: int, 
                        output_directory: str, 
@@ -47,17 +48,19 @@ def clustering_wrapper(config: dict,
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
     
-    if isinstance(input_dataframe_or_filepath, str):
-        # If a file path is provided, load the data from the CSV file
-        print(f"Loading data from {input_dataframe_or_filepath}")
-        variable_df = load_data(input_dataframe_or_filepath)
-    elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
+    #if isinstance(input_dataframe_or_filepath, str):
+    #    # If a file path is provided, load the data from the CSV file
+    #    print(f"Loading data from {input_dataframe_or_filepath}")
+    #    variable_df = load_data(input_dataframe_or_filepath)
+    if isinstance(input_dataframe_or_filepath, pd.DataFrame):
         # If a DataFrame is provided, use it directly
         print("Using provided DataFrame for clustering.")
         variable_df = input_dataframe_or_filepath.copy().fillna(0)
+        print("variable_df", variable_df)
         # need to add code to check which columns contains zeros and warns
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
+    
 
     transformed_variable_df = transform_and_standardize_data(variable_df)
     print("Transformed and standardized data completed.")

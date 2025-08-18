@@ -58,23 +58,11 @@ def main_pipeline():
     # If not running the full 60 variables, update the 'drop_columns' to True and change the
     # 'variables_to_drop' in the config
     chosen_clustering_variables = check_drop_columns_true(config, pre_clustering_std)
-
-    print("Chosen clustering variables:", chosen_clustering_variables)
-
-    # Check if it's a valid DataFrame
-    if isinstance(chosen_clustering_variables, pd.DataFrame):
-        print("Valid DataFrame returned.")
-    # Check if it's a valid file path
-    elif isinstance(chosen_clustering_variables, str) and os.path.exists(chosen_clustering_variables):
-        print("Valid file path returned.")
-    else:
-        raise ValueError("check_drop_columns_true must return a DataFrame or a valid file path.")
              
 
     ## Step 5: Clustering
     ## This assumes the data is saved locally and then loads during clustering. 
     ### Will need to refactor to allow this to take df input.
-
 
     
     # Use the selected file

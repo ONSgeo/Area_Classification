@@ -68,6 +68,9 @@ def drop_variables_pre_clustering(config, pre_clustering_std):
     # check the data type of pre_clustering_filtered_std 
     print("Data type of pre_clustering_filtered_std:", type(pre_clustering_filtered_std))
     print(pre_clustering_filtered_std)
+    csv_version = pd.read_csv(config["pre_clustering_data_filtered_std_mean"])
+    print("drop_variables_csv_version:", csv_version)
+    print("Data type of csv_version:", type(csv_version))
 
     return pre_clustering_filtered_std
 
