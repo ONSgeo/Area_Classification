@@ -55,9 +55,15 @@ def clustering_wrapper(config: dict,
     elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
         # If a DataFrame is provided, use it directly
         print("Using provided DataFrame for clustering.")
-        variable_df = input_dataframe_or_filepath.copy().fillna(0)
-        print("variable_df", variable_df)
-        # need to add code to check which columns contains zeros and warns
+        variable_df = input_dataframe_or_filepath.copy()
+        variable_df.set_index(variable_df.columns[0], inplace=True)
+        missing_values = variable_df.isnull().sum().sum()
+        if missing_values > 0:
+            print(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
+            variable_df.fillna(0, inplace=True)
+        # Convert all columns to numeric
+        #variable_df = variable_df.apply(pd.to_numeric, errors='coerce') 
+            
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
     

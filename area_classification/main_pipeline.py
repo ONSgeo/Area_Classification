@@ -64,20 +64,22 @@ def main_pipeline():
     ## Step 6: Clustering
     ## This assumes the data is saved locally and then loads during clustering. 
     ### Will need to refactor to allow this to take df input.
-
-    # Use the selected file
-    # clustering_output = clustering_wrapper(
-    #     config,
-    #     #input_dataframe_or_filepath=chosen_clustering_variables,
-    #     input_dataframe_or_filepath=config["pre_clustering_data_filtered_std_mean"],
-    #     num_clusters=config["number_of_clusters"],
-    #     n_init=config["number_of_times_k_means_initialised"],
-    #     output_directory=config["output_directory"],
-    #     plot_directory=config["plot_directory"],
-    #     random_seed=config["random_seed"]
-    # )
+    print("chosen_clustering_variables: ", chosen_clustering_variables)
+    # print data type of chosen_clustering_variables
+    print("Type of chosen_clustering_variables: ", type(chosen_clustering_variables))
+    #Use the selected file
+    clustering_output = clustering_wrapper(
+        config,
+        input_dataframe_or_filepath=chosen_clustering_variables,
+        #input_dataframe_or_filepath=config["pre_clustering_data_filtered_std_mean"],
+        num_clusters=config["number_of_clusters"],
+        n_init=config["number_of_times_k_means_initialised"],
+        output_directory=config["output_directory"],
+        plot_directory=config["plot_directory"],
+        random_seed=config["random_seed"]
+    )
     
-    # print(clustering_output)
+    print(clustering_output)
  
     # Step 7: Post processing
     # Cluster tables are reformatted and mean tables created

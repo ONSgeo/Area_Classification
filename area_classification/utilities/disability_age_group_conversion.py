@@ -60,16 +60,20 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     df = pd.read_csv(filepath, skiprows=10, header=1 ,  usecols=range(n))
 
     df.columns = ["A", "B", "C", "D", "E", "F"]
-    # Add Clackmannanshire to the first row, first column
-    df.iloc[0, 0] = "Clackmannanshire"
+
     # Initialize an empty DataFrame to store results
     result_df = pd.DataFrame()
 
     # Iterate through rows to extract relevant data
     for index, row in df.iterrows():
-        if str(row.iloc[0]).strip().lower() == 'sex':  # Look in the first column
-            # Get the council area name (two rows above the 'sex' row)
-            council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from the first column
+        if str(row.iloc[0]).strip().lower() == 'sex':  
+            # Get the council area name
+            if index == 0:
+                # If the index is 0, set council_area to "Clackmannanshire" (as this CA was removed in skip rows reformat)
+                council_area = "Clackmannanshire"  # Set to "Clackmannanshire" for index 1
+            else:
+                # If it's not the first one, instead get the area name from two rows above
+                council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from two rows above   
             
             # Ensure council_area is not None before proceeding
             if council_area is None:
