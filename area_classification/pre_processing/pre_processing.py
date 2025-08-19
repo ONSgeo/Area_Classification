@@ -63,12 +63,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         join_column_name = key + "_join_column_name"
         exclude_form_code_key = key + "_excluded_form_code"
 
-        #loop 1 = ew_df
-        #loop 2 = ni_df
-        #loop 3 = scot_df
         df_temp = dfs[key]
 
-        #Aggregate variables which need to be combined categories (for just England)
+        #Aggregate variables which need to be combined categories
         aggregation_configs = aggregation_config[key + '_file_configs']
         df_temp = aggregating_variables(df_temp, aggregation_configs, config)
 

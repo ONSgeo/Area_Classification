@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 
-#def batch_ag_columns(df_temp, file_configs, user_config):
 def aggregating_variables(df_temp, aggregation_configs, config):
     """
     This function aggregates specified columns in a temporary DataFrame, aggregates specified columns,
