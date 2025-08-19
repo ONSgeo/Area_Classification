@@ -17,7 +17,8 @@ def aggregating_variables(df_temp, aggregation_configs, config):
     config : dict
         A dictionary containing user configuration settings, including the path to save the output file or QA.
 
-    Returns:
+    Returns
+    -------
     pd.DataFrame
         The updated DataFrame with new aggregated columns.
     """

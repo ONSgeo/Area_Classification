@@ -6,12 +6,17 @@ def convert_to_percentages(raw_totals_df):
     Converts raw totals DataFrame to percentages by dividing variable columns
     by their corresponding '_total' columns and multiplying by 100.
     
-    Parameters:
-        raw_totals_df (pd.DataFrame): Input DataFrame with columns like 'v01', 'v01_total', etc.
+    Parameters
+    ----------
+    raw_totals_df : pd.DataFrame
+        Input DataFrame with columns like 'v01', 'v01_total', etc.
     
-    Returns:
-        pd.DataFrame: DataFrame with percentage values, excluding '_total' columns and the 'Total' row.
-    """   
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with percentage values, excluding '_total' columns and the 'Total' row.
+    """
+ 
     # Create a copy of the DataFrame to store percentages
     percentages_df = raw_totals_df.copy()
     
@@ -32,6 +37,6 @@ def convert_to_percentages(raw_totals_df):
 
 if __name__ == "__main__":
     # Example usage
-    raw_totals_df= pd.read_csv("./area_classification/data/inputs/raw_totals)df.csv")
+    raw_totals_df= pd.read_csv("./area_classification/data/inputs/raw_totals_df.csv")
     df = convert_to_percentages(raw_totals_df)
     print(df)
