@@ -58,11 +58,9 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     # Adding in the number of columns so it knows the shape
     n = 6
     df = pd.read_csv(filepath, skiprows=10, header=1 ,  usecols=range(n))
-    print(df)
+    
     df.columns = ["A", "B", "C", "D", "E", "F"]
     
-    #df.iloc[0, 0] = "Clackmannanshire"
-    print(df)
     # Initialize an empty DataFrame to store results
     result_df = pd.DataFrame()
 
