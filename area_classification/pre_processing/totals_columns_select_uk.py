@@ -109,10 +109,6 @@ def select_totals_columns(config):
     reordered_columns = [first_column] + remaining_columns
     raw_totals_df = raw_totals_df[reordered_columns]
 
-    totals_row = raw_totals_df.iloc[:, 1:].sum(numeric_only=True)  # Sum numeric columns (excluding the first column)
-    totals_row[raw_totals_df.columns[0]] = "UK_total"  # Add a label for the first column
-    raw_totals_df = pd.concat([raw_totals_df, pd.DataFrame([totals_row])], ignore_index=True)
-
     # Save the concatenated DataFrame to the output file
     raw_totals_df.to_csv(output_file, index=False)
     print(f"Final concatenated file saved to: {output_file}")

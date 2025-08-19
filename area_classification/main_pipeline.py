@@ -64,9 +64,8 @@ def main_pipeline():
     ## Step 6: Clustering
     ## This assumes the data is saved locally and then loads during clustering. 
     ### Will need to refactor to allow this to take df input.
-    print("chosen_clustering_variables: ", chosen_clustering_variables)
-    # print data type of chosen_clustering_variables
-    print("Type of chosen_clustering_variables: ", type(chosen_clustering_variables))
+
+
     #Use the selected file
     clustering_output = clustering_wrapper(
         config,
@@ -83,7 +82,7 @@ def main_pipeline():
  
     # Step 7: Post processing
     # Cluster tables are reformatted and mean tables created
-    post_processing(config, chosen_clustering_variables)
+    post_processing(config, chosen_clustering_variables, clustering_output)
 
 
 
