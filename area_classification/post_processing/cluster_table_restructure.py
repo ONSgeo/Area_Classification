@@ -22,14 +22,17 @@ def cluster_table_restructure(config, clustering_output):
     pd.DataFrame
         A DataFrame with the kept column and characters from the split column in custom-named columns.
     """
+    df = clustering_output
+
+    # Reset the LAD_codes column so it is no longer an index and can be used to merge a table
+    df = df.reset_index()
 
     keep_column= config["keep_column"]
     split_column= config["split_column"]
    
-    df = clustering_output
     # Check if the specified columns exist
-    if keep_column not in df.columns:
-        raise ValueError(f"Column '{keep_column}' not found in the dataframe.")
+    #if keep_column not in df.columns:
+     #   raise ValueError(f"Column '{keep_column}' not found in the dataframe.")
     if split_column not in df.columns:
         raise ValueError(f"Column '{split_column}' not found in the dataframe.")
 

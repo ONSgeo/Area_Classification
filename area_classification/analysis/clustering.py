@@ -61,8 +61,6 @@ def clustering_wrapper(config: dict,
         if missing_values > 0:
             print(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
             variable_df.fillna(0, inplace=True)
-        # Convert all columns to numeric
-        #variable_df = variable_df.apply(pd.to_numeric, errors='coerce') 
             
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
