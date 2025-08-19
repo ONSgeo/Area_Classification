@@ -60,9 +60,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     df = pd.read_csv(filepath, skiprows=10, header=1 ,  usecols=range(n))
     print(df)
     df.columns = ["A", "B", "C", "D", "E", "F"]
-    
-    #df.iloc[0, 0] = "Clackmannanshire"
-    print(df)
+
     # Initialize an empty DataFrame to store results
     result_df = pd.DataFrame()
 
@@ -76,6 +74,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
             else:
                 # If it's not the first one, instead get the area name from two rows above
                 council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from two rows above
+
             
             # Ensure council_area is not None before proceeding
             if council_area is None:
