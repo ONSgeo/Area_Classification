@@ -1,5 +1,5 @@
 import pandas as pd
-from utilities.load_config import load_config
+#from utilities.load_config import load_config
 from pathlib import Path
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
@@ -58,7 +58,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     # Adding in the number of columns so it knows the shape
     n = 6
     df = pd.read_csv(filepath, skiprows=10, header=1 ,  usecols=range(n))
-
+    print(df)
     df.columns = ["A", "B", "C", "D", "E", "F"]
 
     # Initialize an empty DataFrame to store results
@@ -73,7 +73,8 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
                 council_area = "Clackmannanshire"  # Set to "Clackmannanshire" for index 1
             else:
                 # If it's not the first one, instead get the area name from two rows above
-                council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from two rows above   
+                council_area = df.iloc[index - 2, 0] if index - 2 >= 0 else None  # Get value from two rows above
+
             
             # Ensure council_area is not None before proceeding
             if council_area is None:
@@ -255,21 +256,19 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
 
 
 if __name__ == "__main__":
+    from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
     
-    filepath_scot = 'data/inputs/ni_downloads/UV303a.csv'
-    df_scot = convert_disability_age_group_scotland(filepath_scot,config)
+    df_scot = convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
     df_scot.to_csv(config["input_data_directory"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
-    filepath_ni = "data/inputs/ni_downloads/census-2021-ms-d02.xlsx"
-    df_ni = convert_disability_age_group_northern_ireland(filepath_ni,config)
+    df_ni = convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
     df_ni.to_csv(config["input_data_directory"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
-    filepath_ew = "data/inputs/ew_downloads/disabilitycensus2021.xlsx"
-    df_ew = convert_disability_age_group_england_wales(filepath_ew)
+    df_ew = convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
     df_ew.to_csv(config["input_data_directory"]+"ew_disability_age_group.csv", index=False)
 
     print(df_ew)
@@ -284,5 +283,3 @@ if __name__ == "__main__":
     # convert_disability_age_group_england_wales(england_wales_disability_age_filepath)
     # scotland_disability_age_filepath = config["scotland_disability_age_filepath"]
     # northern_ireland_disability_age_filepath = config["northern_ireland_disability_age_filepath"]
-
-
