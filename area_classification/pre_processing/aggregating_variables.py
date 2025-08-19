@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 
-def batch_ag_columns(df_temp, file_configs, user_config):
+#def batch_ag_columns(df_temp, file_configs, user_config):
+def aggregating_variables(df_temp, aggregation_configs, config):
     """
     This function aggregates specified columns in a temporary DataFrame, aggregates specified columns,
     adds new columns, and updates the DataFrame in-memory.
@@ -10,19 +11,19 @@ def batch_ag_columns(df_temp, file_configs, user_config):
     ----------
     df_temp : pd.DataFrame 
         The temporary DataFrame to update.
-    file_config : list of dict
+    aggregation_configs : list of dict
         A list of dictionaries where each dictionary contains:
             - 'col_names' (list): List of column names to aggregate.
             - 'new_col_name' (str): Name of the new column to create.
-    user_config : dict
+    config : dict
         A dictionary containing user configuration settings, including the path to save the output file or QA.
 
     Returns:
     pd.DataFrame
         The updated DataFrame with new aggregated columns.
     """
-    for key in file_configs:
-        col_names = file_configs[key]
+    for key in aggregation_configs:
+        col_names = aggregation_configs[key]
         new_col_name = key
 
          # Check if all columns in col_names exist in df_temp
@@ -44,19 +45,19 @@ def batch_ag_columns(df_temp, file_configs, user_config):
         country_lad_code = "N/A" 
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(user_config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
 
     # Save to data QA folder with country area code type in the file name
-    output_file_path = f"{user_config['qa_folder_path']}aggregated_variables_output_{country_lad_code}.csv"
+    output_file_path = f"{config['qa_folder_path']}aggregated_variables_output_{country_lad_code}.csv"
     df_temp.to_csv(output_file_path, index=False)
         
     return df_temp
 
 if __name__ == "__main__":
-    #df_temp = 
-    #from XX import file_configs
-    #from XX import user_config
-    #config = load_config('area_classification/config.yaml')
-
-    df = batch_ag_columns(df_temp)
+    from utilities.load_config import load_config
+    config = load_config('area_classification/config.yaml')
+    aggregation_config = load_config('area_classification/aggregation_setup.yaml')
+    #aggregation_configs = aggregation_config['scot_file_configs']
+    df_temp = 
+    df = aggregating_variables(df_temp, aggregation_config, config ))
     print(df)

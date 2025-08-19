@@ -3,7 +3,7 @@ import sys
 import os
 from utilities.load_config import load_config
 from pre_processing.standard_illness_ratio import sir_processing
-from pre_processing.aggregating_variables import batch_ag_columns
+from pre_processing.aggregating_variables import aggregating_variables
 from pre_processing.select_variables import select_variables
 from pre_processing.totals_columns_select_uk import select_totals_columns
 from pre_processing.convert_to_percentages import convert_to_percentages
@@ -69,8 +69,8 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         df_temp = dfs[key]
 
         #Aggregate variables which need to be combined categories (for just England)
-        file_config = aggregation_config[key + '_file_configs']
-        df_temp = batch_ag_columns(df_temp, file_config, config)
+        aggregation_configs = aggregation_config[key + '_file_configs']
+        df_temp = aggregating_variables(df_temp, aggregation_configs, config)
 
         # Joining to add SIR column into main df
         # needed for select_variable function
