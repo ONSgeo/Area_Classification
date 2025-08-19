@@ -31,8 +31,8 @@ def cluster_table_restructure(config, clustering_output):
     split_column= config["split_column"]
    
     # Check if the specified columns exist
-    #if keep_column not in df.columns:
-     #   raise ValueError(f"Column '{keep_column}' not found in the dataframe.")
+    if keep_column not in df.columns:
+        raise ValueError(f"Column '{keep_column}' not found in the dataframe.")
     if split_column not in df.columns:
         raise ValueError(f"Column '{split_column}' not found in the dataframe.")
 
