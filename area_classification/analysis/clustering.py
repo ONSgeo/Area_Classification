@@ -11,7 +11,8 @@ import os
 import time
 
 def clustering_wrapper(config: dict,
-                       input_dataframe_or_filepath: str | pd.DataFrame, 
+                       #input_dataframe_or_filepath: str | pd.DataFrame, 
+                       input_dataframe_or_filepath: pd.DataFrame,
                        num_clusters: int,
                        n_init: int, 
                        output_directory: str, 
@@ -48,16 +49,22 @@ def clustering_wrapper(config: dict,
     os.makedirs(plot_directory, exist_ok=True)
     
     if isinstance(input_dataframe_or_filepath, str):
-        # If a file path is provided, load the data from the CSV file
+        #If a file path is provided, load the data from the CSV file
         print(f"Loading data from {input_dataframe_or_filepath}")
         variable_df = load_data(input_dataframe_or_filepath)
     elif isinstance(input_dataframe_or_filepath, pd.DataFrame):
         # If a DataFrame is provided, use it directly
         print("Using provided DataFrame for clustering.")
-        variable_df = input_dataframe_or_filepath.copy().fillna(0)
-        # need to add code to check which columns contains zeros and warns
+        variable_df = input_dataframe_or_filepath.copy()
+        variable_df.set_index(variable_df.columns[0], inplace=True)
+        missing_values = variable_df.isnull().sum().sum()
+        if missing_values > 0:
+            print(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
+            variable_df.fillna(0, inplace=True)
+            
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
+    
 
     transformed_variable_df = transform_and_standardize_data(variable_df)
     print("Transformed and standardized data completed.")
@@ -193,9 +200,11 @@ def transform_and_standardize_data(df):
     pd.DataFrame
         Transformed and standardized dataframe.
     """
+
     df = np.arcsinh(df) # Apply inverse hyperbolic sine transformation
     df = (df - df.min()) / (df.max() - df.min()) # Apply min-max scaling
     return df
+
 
 
 ## Clustergrams

@@ -16,9 +16,7 @@ def convert_to_percentages(raw_totals_df):
     pd.DataFrame
         DataFrame with percentage values, excluding '_total' columns and the 'Total' row.
     """
-    # Exclude the 'Total' row (assume it's the last row)
-    raw_totals_df = raw_totals_df.iloc[:-1]
-    
+ 
     # Create a copy of the DataFrame to store percentages
     percentages_df = raw_totals_df.copy()
     

@@ -1,12 +1,10 @@
-#Table_restructure
-
-# Post processing of the cluster assignments
+# Restructuring of cluster assignments table
 import os
 import pandas as pd
 from utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
-def cluster_table_restructure(config):
+def cluster_table_restructure(config, clustering_output):
     """
     Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
     characters in another column (cluster codes) into separate columns for supergroup, group, and 
@@ -16,36 +14,29 @@ def cluster_table_restructure(config):
     ----------
     config : dict
         Configuration dictionary containing paths and file names.
-
-
+    clustering_output
+        the output from running the clustering algroithm
 
     Returns
     -------
     pd.DataFrame
         A DataFrame with the kept column and characters from the split column in custom-named columns.
     """
+    df = clustering_output
 
-    output_folder = os.path.join(config["output_directory"], "subgroup")
-    file_name="subclustering_output.csv"
-    file_path = os.path.join(output_folder, file_name) 
+
+    # Reset the LAD_codes column so it is no longer an index and can be used to merge a table
+    df = df.reset_index()
 
 
     keep_column= config["keep_column"]
     split_column= config["split_column"]
-
-    
-    # Check if the file exists
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"File '{file_name}' not found in folder '{output_folder}'.")
-
-    # Read the file into a DataFrame
-    df = pd.read_csv(file_path)
-
+   
     # Check if the specified columns exist
     if keep_column not in df.columns:
-        raise ValueError(f"Column '{keep_column}' not found in the file '{file_name}'.")
+        raise ValueError(f"Column '{keep_column}' not found in the dataframe.")
     if split_column not in df.columns:
-        raise ValueError(f"Column '{split_column}' not found in the file '{file_name}'.")
+        raise ValueError(f"Column '{split_column}' not found in the dataframe.")
 
     # Keep the specified column
     kept_data = df[[keep_column]]
@@ -91,15 +82,16 @@ def cluster_table_restructure(config):
     restructured_cluster_table = restructured_cluster_table[columns]
 
     # Save the resulting DataFrame to a new file
-    output_file = os.path.join(output_folder, f"restructured_{file_name}")
+    output_file = os.path.join(config["output_directory"], f"restructured_subclustering_output.csv")
     restructured_cluster_table.to_csv(output_file, index=False)
-    print(f"Processed file saved to: {output_file}")
+    print(f"Restructured file saved to: {output_file}")
 
     return restructured_cluster_table
-
 
 if __name__ == "__main__":
     # Example usage
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    cluster_table_restructure(config)
+    clustering_output_filepath = os.path.join(config["output_directory"], "subgroup", "subclustering_output.csv")
+    clustering_output = pd.read_csv(clustering_output_filepath)
+    cluster_table_restructure(config, clustering_output) 
