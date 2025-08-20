@@ -1,4 +1,3 @@
-# Convert to percentages
 import pandas as pd
 
 def convert_to_percentages(raw_totals_df):
@@ -9,12 +8,14 @@ def convert_to_percentages(raw_totals_df):
     Parameters
     ----------
     raw_totals_df : pd.DataFrame
-        Input DataFrame with columns like 'v01', 'v01_total', etc.
+        Input DataFrame with area codes as the first column followed by columns like 'v01', 'v01_total'.
+        Values are raw counts.
     
     Returns
     -------
     pd.DataFrame
-        DataFrame with percentage values, excluding '_total' columns and the 'Total' row.
+        DataFrame with area codes in the first column followed by percentage calues for 
+        each vairable from v1 to v60 (excluding '_total' columns).
     """
  
     # Create a copy of the DataFrame to store percentages

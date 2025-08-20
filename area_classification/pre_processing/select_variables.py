@@ -1,5 +1,4 @@
 import pandas as pd
-# Import the re module for regular expressions
 import re  
 import os
 
@@ -8,23 +7,23 @@ def select_variables(df_temp, lookup_df, config):
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns. It also takes
     the variable_codes (which start either TS, ni or UV, based on the country) 
-    and converts these into new_codes which all start 'V'
+    and converts these all into new_codes which all start 'v'.
 
     Parameters
     ----------
     df_temp : pd.DataFrame
-        The main DataFrame containing all data.
-    select_variables_lookup : str
+        The temp DataFrame containing all data.
+    lookup_df : str
         Path to the CSV file containing the variable_codes and new_codes to 
-        select columns and convert all codes to 'v' codes.
+        select columns and convert all codes to new 'v' codes.
     config : dict
-        A dictionary containing user configuration settings, including the path to save the output file or QA.
+        A configuration dictionary containing the QA file paths.
     
     Returns
     -------
     pd.DataFrame 
         A new DataFrame with only the specified columns, with area codes in the first column followed by
-        raw values for v1 to 60
+        raw count values for each vairable from v1 to v60.
         
     """
 

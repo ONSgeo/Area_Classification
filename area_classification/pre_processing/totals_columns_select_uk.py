@@ -1,18 +1,9 @@
-# Create a totals table for counts
-# only runs when in the 'area_classification' directory - working document 
-
 import os
 import pandas as pd
 
-from utilities.load_config import load_config
-
-
-
 def select_totals_columns(config):
     """
-    Extract and generate a totals table for counts by processing _select files for UK countries.
-
-    This function processes select files for England and Wales (ew), Northern Ireland (ni), and Scotland (scot),
+    Extracts select files for England and Wales (ew), Northern Ireland (ni), and Scotland (scot),
     matches variable columns with their corresponding totals using a lookup file, and appends the totals to the
     select files. The processed files are then concatenated into a single DataFrame and saved to an output file.
 
@@ -20,7 +11,12 @@ def select_totals_columns(config):
     ----------
     config : dict
         Configuration dictionary containing paths and settings
- 
+
+    Returns
+    -------
+    pd.DataFrame 
+        A new DataFrame with the area codes in the first column followed by raw count values for each 
+        vairable from v1 to v60 and the total number for who answered the question relating to that variable.
     """
     
     inputs_folder = config["qa_folder_path"]
@@ -119,5 +115,6 @@ def select_totals_columns(config):
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
+    from utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     select_totals_columns(config)

@@ -1,8 +1,3 @@
-# The following code is based on Jakub's script: https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Scripts/Transforming_Census_data.R
-# It has been translated from R into Python, and (will be) amended to include all UK countries, not just England and Wales.
-# EW file referenced is from https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021
-# TABLE 2 FOR OUTPUT AREAS OR TABLE 6 FOR LOCAL AUTHORITIES
-
 # Expected input
 # area_code   |  age_group   |  Population  |  Disability_count
 #---------------------------------------------------------------
@@ -159,16 +154,6 @@ if __name__ == "__main__":
 
     x = sir_processing(config)
     sir_qa_checks(x)
-
-    # Create mock data to test the SIR_calculation function
-
-    # result = SIR_calculation(mock_data)
-    # print(result)
-    #     'local_authority': ['LA1', 'LA1', 'LA2', 'LA2', 'LA3', 'LA3'],
-    #     'area_code': ['A1', 'A1', 'A2', 'A2', 'A3', 'A3'],
-
-
-
 
 # QA checks - Checked disability_count is int, checked SIR is %, Checked expected spatial distribution
 # Reasonably sure this is correct, but will need to be check once we use combined UK data as input.

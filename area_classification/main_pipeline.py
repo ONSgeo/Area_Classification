@@ -19,13 +19,13 @@ def main_pipeline():
 
     Steps
     -----
-    1. Download and process England and Wales data.
-    2. Download and process Northern Ireland data.
-    3. Process manually downloaded Scotland data.
-    4. Perform pre-processing on combined data.
-    5. Establish the variables which will be used for clustering (some may be dropped)
-    6. Perform clustering on the pre-processed data.
-    7. Reformate the cluster tables and calculate the means of the clustered data.
+    1. Download and process England and Wales data tables.
+    2. Download and process Northern Ireland data tables.
+    3. Process the manually downloaded Scotland data tables.
+    4. Perform pre-processing on the combined data for all countries.
+    5. Establish the variables which will be used for clustering (some may be dropped).
+    6. Perform clustering on the pre-processed data, using variables chosen.
+    7. Reformate the cluster tables, calculate the means of the clustered data and generate radial plots.
 
     Parameters
     ----------
@@ -62,11 +62,6 @@ def main_pipeline():
     chosen_clustering_variables = check_drop_columns_true(config, pre_clustering_std)
              
     ## Step 6: Clustering
-    ## This assumes the data is saved locally and then loads during clustering. 
-    ### Will need to refactor to allow this to take df input.
-
-
-    #Use the selected file
     clustering_output = clustering_wrapper(
         config,
         input_dataframe_or_filepath=chosen_clustering_variables,

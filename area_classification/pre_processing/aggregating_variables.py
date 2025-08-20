@@ -3,19 +3,21 @@ import os
 
 def aggregating_variables(df_temp, aggregation_configs, config):
     """
-    This function aggregates specified columns in a temporary DataFrame, aggregates specified columns,
-    adds new columns, and updates the DataFrame in-memory.
+    This function aggregates specified columns in a temporary DataFrame and adds the aggregated
+    data as new columns.
 
     Parameters
     ----------
     df_temp : pd.DataFrame 
         The temporary DataFrame to update.
     aggregation_configs : list of dict
-        A list of dictionaries where each dictionary contains:
-            - 'col_names' (list): List of column names to aggregate.
+        A list of dictionaries, one each for EW, NI and Scot. Each dictionary contains:
+            - 'col_names' (list): List of column codes to aggregate.
             - 'new_col_name' (str): Name of the new column to create.
+            For example: 
+                cars_2_or_more: [ts0450004, ts0450005]
     config : dict
-        A dictionary containing user configuration settings, including the path to save the output file or QA.
+        A dictionary containing user configuration settings, including the QA path.
 
     Returns
     -------
