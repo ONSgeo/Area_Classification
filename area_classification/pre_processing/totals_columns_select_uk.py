@@ -1,16 +1,23 @@
 import os
 import pandas as pd
 
-def select_totals_columns(config):
+def select_totals_columns(config, inputs_folder):
     """
     Extracts select files for England and Wales (ew), Northern Ireland (ni), and Scotland (scot),
-    matches variable columns with their corresponding totals using a lookup file, and appends the totals to the
-    select files. The processed files are then concatenated into a single DataFrame and saved to an output file.
+    matches variable columns with their corresponding totals using a lookup file, and appends the 
+    totals to the select files. The processed files are then concatenated into a single DataFrame 
+    and saved to an output file.
 
     Parameters
     ----------
     config : dict
         Configuration dictionary containing paths and settings
+    inputs_folder : str
+        Path to the folder containing the select files and aggregated output tables for each 
+        country (ew, ni, scot).
+            - select files contain the area codes and raw counts for only the variables from v1 to v60.
+            - aggregated output tables contain the area codes and raw counts and totals for every 
+            variable using variables codes like ts, ni and uv. Codes ending '001' are the totals.
 
     Returns
     -------
@@ -18,12 +25,9 @@ def select_totals_columns(config):
         A new DataFrame with the area codes in the first column followed by raw count values for each 
         vairable from v1 to v60 and the total number for who answered the question relating to that variable.
     """
-    
-    inputs_folder = config["qa_folder_path"]
-    lookup_file = config["select_variables_lookup"]
-    output_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
 
     # Load the lookup file
+    lookup_file = config["select_variables_lookup"]  
     lookup_df = pd.read_csv(lookup_file)
 
     # Filter out rows where 'new_code' is 'v12' or 'v33' (population density and SIR)
@@ -108,6 +112,7 @@ def select_totals_columns(config):
     raw_totals_df = raw_totals_df[reordered_columns]
 
     # Save the concatenated DataFrame to the output file
+    output_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
     raw_totals_df.to_csv(output_file, index=False)
     print(f"Final concatenated file saved to: {output_file}")
 
@@ -117,4 +122,4 @@ def select_totals_columns(config):
 if __name__ == "__main__":
     from utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    select_totals_columns(config)
+    select_totals_columns(config, config["qa_folder_path"])

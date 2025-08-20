@@ -1,8 +1,5 @@
-#THIS DOES NOT CURRENTLY RUN AS THE FUNCTION ONLY USES A CONFIG!
-
 import unittest
 import pandas as pd
-#from post_processing.cluster_table_restructure.py import cluster_table_restructure
 from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
 
 class TestClusterTableRestructure(unittest.TestCase):
@@ -19,13 +16,13 @@ class TestClusterTableRestructure(unittest.TestCase):
             'LAD_code': ['E06000001', 'W06000001', 'N09000001','S12000005'],
             'supergroup': ['1', '2', '3', '6'],
             'group': ['1a', '2b', '3c', '6a'],
-            'subgroup': ['1ab', '2bc', '3cb', '6ab'] 
+            'subgroup': ['1a2', '2b3', '3c2', '6a2'] 
         })
 
     def test_restructure_table(self):
-        # Call the function to test
-        result_df = cluster_table_restructure(self.input_df)
-
+        from utilities.load_config import load_config
+        config = load_config('area_classification/config.yaml')
+        result_df = cluster_table_restructure(config, self.input_df)
         # Assert that the result matches the expected output
         pd.testing.assert_frame_equal(result_df, self.expected_df)
 
