@@ -84,7 +84,7 @@ def main_pipeline():
  
     # Step 8: Post processing
     # Cluster tables are reformatted and mean tables created
-    post_processing(config, chosen_clustering_variables, clustering_output)
+    post_processing(config, chosen_clustering_variables, clustering_output, combined_group_means, combined_subgroup_means)
 
 if __name__ == "__main__":
     main_pipeline()
