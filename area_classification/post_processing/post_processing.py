@@ -5,9 +5,9 @@ from utilities.load_config import load_config
 from post_processing.cluster_table_restructure import cluster_table_restructure  
 from post_processing.cluster_variables_mean import cluster_variable_means
 from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
-from post_processing.create_radial_plots_uk import create_radial_plots_uk
+from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
 
-def post_processing(config, chosen_clustering_variables, clustering_output):
+def post_processing(config, chosen_clustering_variables, clustering_output, combined_group_means, combined_subgroup_means):
     """
     Wrapper function to run restrcuture the table created when clustering, 
     
@@ -35,7 +35,7 @@ def post_processing(config, chosen_clustering_variables, clustering_output):
     cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df)
 
     # Step 4: Create radial plots for the clusters
-    create_radial_plots_uk(config, uk_std_cluster_means)
+    create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
     
 
 
