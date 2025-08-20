@@ -106,6 +106,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
 
     # QA check the SIR dataframe before returning
     sir_qa_checks(df_all, config)
+    print("SIR_DF_ALL", df_all.head())
     return df_all
 
 def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
