@@ -97,26 +97,16 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         # overwriting original df with processed df
         dfs[key] = df_temp
 
-
     # Call select_totals_columns after all _select.csv files are created
     raw_totals_df = select_totals_columns(config)
 
     # Convert counts to percentages
-    percentages_df = convert_to_percentages(raw_totals_df)
-    pre_processed_data_ew_ni_scot = percentages_df
-    pre_processed_data_ew_ni_scot.to_csv(config["pre_clustering_data"], index=False)
+    preprocessed_df = convert_to_percentages(raw_totals_df)
+    
+    # pre_clustering data (unstandardised -used in the cluster means)
+    preprocessed_df.to_csv(config["pre_clustering_data"], index=False)
 
-    pre_clustering_std = standardize_dataframe(percentages_df)
-
-    # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
-
-    pre_processed_data_ew_ni_scot.to_csv(config["qa_folder_path"] + "pre_processed_data_ew_ni_scot.csv", index=False)
-
-    # Save the standardized data to a new file
-    pre_clustering_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
-
-    return pre_clustering_std
+    return preprocessed_df
 
 if __name__ == "__main__":
     # Example usage

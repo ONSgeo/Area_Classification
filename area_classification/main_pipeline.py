@@ -8,7 +8,8 @@ from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
 from pre_processing.drop_variables import check_drop_columns_true
 from analysis.clustering import clustering_wrapper      
-from post_processing.post_processing import post_processing      
+from post_processing.post_processing import post_processing
+from pre_processing.standardize_pre_clustering_data import standardize_dataframe      
 
 def main_pipeline():
     """
@@ -24,8 +25,9 @@ def main_pipeline():
     3. Process the manually downloaded Scotland data tables.
     4. Perform pre-processing on the combined data for all countries.
     5. Establish the variables which will be used for clustering (some may be dropped).
-    6. Perform clustering on the pre-processed data, using variables chosen.
-    7. Reformate the cluster tables, calculate the means of the clustered data and generate radial plots.
+    6. Standardize the pre-processed data for clustering.
+    7. Perform clustering on the pre-processed data, using variables chosen.
+    8. Reformate the cluster tables, calculate the means of the clustered data and generate radial plots.
 
     Parameters
     ----------
@@ -54,31 +56,35 @@ def main_pipeline():
     scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
 
     # # Step 4: pre-processing
-    pre_clustering_std = pre_processing(ew_df , ni_df, scot_df, config)
+    preprocessed_df = pre_processing(ew_df , ni_df, scot_df, config)
 
-    # step 5 choose to drop/not drop
+    # Step 5: choose to drop/not drop
     # If not running the full 60 variables, update the 'drop_columns' to True and change the
     # 'variables_to_drop' in the config
-    chosen_clustering_variables = check_drop_columns_true(config, pre_clustering_std)
-             
-    ## Step 6: Clustering
+    chosen_clustering_variables = check_drop_columns_true(config, preprocessed_df)
+
+    # Step 6: Standardisation
+    #standardised pre_clustering data (used in the clustering)
+    chosen_clustering_variables_std = standardize_dataframe(chosen_clustering_variables)
+    # Save the standardized pre clusting data to a new file 
+    # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
+    chosen_clustering_variables_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
+         
+    ## Step 7: Clustering
     clustering_output = clustering_wrapper(
         config,
-        input_dataframe_or_filepath=chosen_clustering_variables,
+        input_dataframe_or_filepath=chosen_clustering_variables_std,
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"]
     )
-    
     print(clustering_output)
  
-    # Step 7: Post processing
+    # Step 8: Post processing
     # Cluster tables are reformatted and mean tables created
     post_processing(config, chosen_clustering_variables, clustering_output)
-
-
 
 if __name__ == "__main__":
     main_pipeline()

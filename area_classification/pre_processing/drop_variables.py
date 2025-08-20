@@ -3,7 +3,7 @@ import pandas as pd
 import yaml
 from pre_processing.standardize_pre_clustering_data import standardize_dataframe
 
-def check_drop_columns_true(config, pre_clustering_std):
+def check_drop_columns_true(config, preprocessed_df):
     """
     This function checks if the 'drop_columns' key in the config is set to True.
     If it is, it calls the drop_variables_pre_clustering function to drop specified columns
@@ -22,13 +22,13 @@ def check_drop_columns_true(config, pre_clustering_std):
     
     # Check if 'drop_columns' is set to True in the config
     if config["drop_columns"]:
-        return drop_variables_pre_clustering(config, pre_clustering_std, config.get('variables_to_drop', [])) 
+        return drop_variables_pre_clustering(config, preprocessed_df, config.get('variables_to_drop', [])) 
     else: 
-        return pre_clustering_std
+        return preprocessed_df
 
 
 
-def drop_variables_pre_clustering(config, pre_clustering_std, variables_to_drop):
+def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     """
     Duplicates the preprocessed input table, removes columns listed under 'variables_to_drop' in the config,
     and saves the resulting table as a new CSV file.
@@ -45,22 +45,15 @@ def drop_variables_pre_clustering(config, pre_clustering_std, variables_to_drop)
         None
     """   
     # Duplicate the table the preprocessed input table
-    processed_input_table = pre_clustering_std.copy()
+    processed_input_table = preprocessed_df.copy()
     
     # Drop the specified columns
-    pre_clustering_filtered_df = processed_input_table.drop(columns=variables_to_drop, errors='ignore')
+    pre_clustering_filtered = processed_input_table.drop(columns=variables_to_drop, errors='ignore')
 
-    # Save the processed table as a new CSV file
-    pre_clustering_filtered_df.to_csv(config["pre_clustering_data_filtered"], index=False)
+    # Save the processed table as a new CSV file NAME NEEDS CHNAGIN
+    pre_clustering_filtered.to_csv(config["pre_clustering_data_filtered"], index=False)
 
-    # Standardize the data
-    pre_clustering_filtered_std = standardize_dataframe(pre_clustering_filtered_df)
-
-    # Save the standardized data to a new file
-    pre_clustering_filtered_std.to_csv(config["pre_clustering_data_filtered_std_mean"], index=False)
-
-
-    return pre_clustering_filtered_std
+    return pre_clustering_filtered
 
 
 # Example usage
