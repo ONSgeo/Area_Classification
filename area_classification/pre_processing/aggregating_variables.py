@@ -58,6 +58,6 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     #aggregation_configs = aggregation_config['scot_file_configs']
-    df_temp = 
-    df = aggregating_variables(df_temp, aggregation_config, config ))
+    #df_temp = 
+    df = aggregating_variables(df_temp, aggregation_config, config )
     print(df)

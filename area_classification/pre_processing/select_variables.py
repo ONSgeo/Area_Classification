@@ -6,14 +6,17 @@ import os
 def select_variables(df_temp, lookup_df, config):
     """
     Selects specific columns from a main DataFrame based on a lookup table
-    and returns a new DataFrame with only the specified columns.
+    and returns a new DataFrame with only the specified columns. It also takes
+    the variable_codes (which start either TS, ni or UV, based on the country) 
+    and converts these into new_codes which all start 'V'
 
     Parameters
     ----------
     df_temp : pd.DataFrame
         The main DataFrame containing all data.
     select_variables_lookup : str
-        Path to the CSV file containing the lookup information.
+        Path to the CSV file containing the variable_codes and new_codes to 
+        select columns and convert all codes to 'v' codes.
     config : dict
         A dictionary containing user configuration settings, including the path to save the output file or QA.
     
@@ -79,4 +82,3 @@ if __name__ == "__main__":
     df_temp = pd.read_csv(os.path.join(config['input_data_directory'], 'CA19_concat.csv'))
     
     select_variables(df_temp, lookup_df, config)
-
