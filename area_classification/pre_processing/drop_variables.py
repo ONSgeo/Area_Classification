@@ -1,13 +1,4 @@
-# This is an optional script which does not include all 60 variables in the clustering.
-# Instead this focuses on using the same as academics used for the 2021/22 OAC.
-# STEPS
-# check if the config drop_columns is true or false
-# if config["drop_columns"]:
-        #drop_variables_pre_clustering(config)
-
-
-from utilities.load_config import load_config
-
+# This script which does not include all 60 variables in the clustering.
 import pandas as pd
 import yaml
 from pre_processing.standardize_pre_clustering_data import standardize_dataframe
@@ -74,7 +65,7 @@ def drop_variables_pre_clustering(config, pre_clustering_std, variables_to_drop)
 
 # Example usage
 if __name__ == "__main__":
-    # Example usage
+    from utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     pre_clustering_std = pd.read_csv('data/inputs/pre_clustering_data_std_means.csv')
     pre_clustering_df = drop_variables_pre_clustering(config, pre_clustering_std, config.get('variables_to_drop', [])) 

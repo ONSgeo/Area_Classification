@@ -1,4 +1,4 @@
-
+import pandas as pd
 
 def standardize_dataframe(dataframe):
     """
@@ -24,9 +24,7 @@ def standardize_dataframe(dataframe):
 
 if __name__ == "__main__":
     from utilities.load_config import load_config
-    import pandas as pd
     config = load_config('area_classification/config.yaml')
-    # Load the pre-clustering data into a DataFrame
     pre_clustering_df_path = config["input_data_directory"] + "pre_clustering_data.csv"
     pre_clustering_df = pd.read_csv(pre_clustering_df_path)
     re_clustering_df_std = standardize_dataframe(pre_clustering_df)
