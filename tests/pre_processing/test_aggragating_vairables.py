@@ -25,7 +25,6 @@ class TestAggregatingVariables(unittest.TestCase):
 
     def test_aggregating_variables(self):
         from utilities.load_config import load_config
-        # Call the function to test
         config = load_config('area_classification/config.yaml')
         aggregation_config = load_config('area_classification/aggregation_setup.yaml')
         aggregation_configs = aggregation_config['scot_file_configs']
