@@ -51,13 +51,12 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df):
     )
     
     
-    
+
     # Define the output directory
     output_directory = config["output_directory"]
     
-    # Create a subfolder named 'std_means' in the output directory
+    # Define the path for the existing folder
     output_directory = os.path.join(output_directory, "std_means")
-    os.makedirs(output_directory, exist_ok=True)
     
     # --- Generate CSVs for supergroups ---
     # Sort the data by the supergroup column
