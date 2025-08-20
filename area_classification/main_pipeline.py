@@ -70,7 +70,6 @@ def main_pipeline():
     clustering_output = clustering_wrapper(
         config,
         input_dataframe_or_filepath=chosen_clustering_variables,
-        #input_dataframe_or_filepath=config["pre_clustering_data_filtered_std_mean"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],

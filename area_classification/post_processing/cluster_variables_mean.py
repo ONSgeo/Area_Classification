@@ -46,19 +46,6 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     
     cluster_results = restructured_cluster_table
 
-    #pre_clustering_data = (config["pre_clustering_data_std_mean"])
-    #filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
-
-    # load in the pre clustering data
-    #pre_clustering_data = (config["pre_clustering_data"])
-    #filtered_pre_clustering_data = (config["pre_clustering_data_filtered"])
-
-    # Check if the filtered (variables dropped) file exists
-    # if it does, use it; otherwise, use the full pre_clustering_data
-    #pre_clustering_data = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
-
-    #pre_clustering_data = pd.read_csv(pre_clustering_data)
-
     # load in the pre clustering data
     pre_clustering_data = chosen_clustering_variables
 
@@ -80,23 +67,30 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     print("long_data second reshape", long_data.head())
     
     # Group by cluster and variable, and calculate the mean
-    cluster_means = long_data.groupby(["variable_name", "hierarchy_level", "cluster"]).mean("variable_value").reset_index()
+    uk_std_cluster_means = long_data.groupby(["variable_name", "hierarchy_level", "cluster"]).mean("variable_value").reset_index()
 
     # Pivot the data to create the wide format
-    wide_cluster_means = cluster_means.pivot(index=["cluster", "hierarchy_level"], 
+    uk_std_cluster_means = uk_std_cluster_means.pivot(index=["cluster", "hierarchy_level"], 
                                              columns="variable_name", 
                                              values="variable_value").reset_index()
 
-    # Rename columns to include "_mean" suffix for variable columns
-    wide_cluster_means.rename(columns=lambda x: f"{x}_mean" if x not in ["cluster", "hierarchy_level"] else x, inplace=True)
+
+  
+    # Create the 'std_means' folder in the output directory
+    std_means_directory = os.path.join(config["output_directory"], "std_means")
+    os.makedirs(std_means_directory, exist_ok=True)
+
+    # Create the 'uk_std_means' subfolder within 'std_means'
+    uk_std_means_directory = os.path.join(std_means_directory, "uk_std_means")
+    os.makedirs(uk_std_means_directory, exist_ok=True)
+
+    # Define the output file path within the 'uk_std_means' folder
+    output_file_path = os.path.join(uk_std_means_directory, "uk_std_cluster_means_output.csv")
 
     # Save the output as a CSV file
-    output_file_path = os.path.join(config["output_directory"], "cluster_means_output.csv")
-    wide_cluster_means.to_csv(output_file_path, index=False)
-
-    print(f"Cluster means saved to {output_file_path}") 
+    uk_std_cluster_means.to_csv(output_file_path, index=False)
     
-    return wide_cluster_means
+    return uk_std_cluster_means
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
