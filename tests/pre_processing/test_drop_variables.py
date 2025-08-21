@@ -1,6 +1,8 @@
 import unittest
 import pandas as pd
 from area_classification.pre_processing.drop_variables import drop_variables_pre_clustering 
+from area_classification.utilities.load_config import load_config
+
 
 class TestDropVariables(unittest.TestCase):
     def setUp(self):
@@ -26,7 +28,6 @@ class TestDropVariables(unittest.TestCase):
         })
 
     def test_drop_variables(self):
-        from utilities.load_config import load_config
         config = load_config('area_classification/config.yaml')
         result_df = drop_variables_pre_clustering(config, self.input_df, self.variables_to_drop)
         # Assert that the result matches the expected output

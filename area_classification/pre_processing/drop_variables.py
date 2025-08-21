@@ -1,7 +1,7 @@
 # This script which does not include all 60 variables in the clustering.
 import pandas as pd
 import yaml
-from pre_processing.standardize_pre_clustering_data import standardize_dataframe
+from area_classification.pre_processing.standardize_pre_clustering_data import standardize_dataframe
 
 def check_drop_columns_true(config, preprocessed_df):
     """

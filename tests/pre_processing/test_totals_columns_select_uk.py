@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 import os
 from area_classification.pre_processing.totals_columns_select_uk import select_totals_columns 
-
+from area_classification.utilities.load_config import load_config
 class TestTotalColumnsSelectUk(unittest.TestCase):
     def setUp(self):
         # Create folder for the data if it doesn't exist
@@ -72,8 +72,7 @@ class TestTotalColumnsSelectUk(unittest.TestCase):
          })
         
     def test_total_columns_select_uk(self):
-        import os
-        from utilities.load_config import load_config
+
         config = load_config('area_classification/config.yaml')
         result_df = select_totals_columns(config, 'tests/data/total_columns_select_uk_test_data' )
         print(result_df)

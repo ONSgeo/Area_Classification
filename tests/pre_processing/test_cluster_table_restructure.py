@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
+from area_classification.utilities.load_config import load_config
 
 class TestClusterTableRestructure(unittest.TestCase):
     def setUp(self):
@@ -20,7 +21,6 @@ class TestClusterTableRestructure(unittest.TestCase):
         })
 
     def test_restructure_table(self):
-        from utilities.load_config import load_config
         config = load_config('area_classification/config.yaml')
         result_df = cluster_table_restructure(config, self.input_df)
         # Assert that the result matches the expected output
