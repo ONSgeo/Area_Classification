@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 
-def cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables):
+def cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables_std):
     """
     Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
     
@@ -47,7 +47,7 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     cluster_results = restructured_cluster_table
 
     # load in the pre clustering data
-    pre_clustering_data = chosen_clustering_variables
+    pre_clustering_data = chosen_clustering_variables_std
 
 
     # Merge cluster results with standardized means census data
