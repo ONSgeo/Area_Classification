@@ -1,33 +1,37 @@
 # Restructuring of cluster assignments table
 import os
 import pandas as pd
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
 def cluster_table_restructure(config, clustering_output):
     """
-    Finds the cluster output, then keeps the data in one column (LAD_codes), and separates all
-    characters in another column (cluster codes) into separate columns for supergroup, group, and 
-    subgroup. Converts the final character in the subgroup column to a number (a=1, b=2, c=3, etc.).
+    Using the cluster output column one (LAD_codes) is kept, but column two containing cluster codes are 
+    seperated out into seperate columns for supergroup, group, and subgroup. The final character in the 
+    subgroup column is then converted to a number (a=1, b=2, c=3, etc.).
 
     Parameters
     ----------
     config : dict
         Configuration dictionary containing paths and file names.
-    clustering_output
-        the output from running the clustering algroithm
-
+    clustering_output : pd.DataFrame
+        DataFrame of cluster assignments which have been output from running the clustering algroithm. 
+        Data will have the following format:
+        
+        LAD_code   | subsub cluster 
+        ----------------------------
+        S12000005  |  1c1
+        
     Returns
     -------
     pd.DataFrame
-        A DataFrame with the kept column and characters from the split column in custom-named columns.
+        A DataFrame with the LAD_codes, followed by columsn for supergroup (number e.g. 1), group (number and 
+        letter e.g. 1c) and subgroup (number letter number e.g. 1c1).
     """
     df = clustering_output
 
-
     # Reset the LAD_codes column so it is no longer an index and can be used to merge a table
     df = df.reset_index()
-
 
     keep_column= config["keep_column"]
     split_column= config["split_column"]

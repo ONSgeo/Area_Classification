@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 from area_classification.pre_processing.aggregating_variables import aggregating_variables 
+from area_classification.utilities.load_config import load_config
 
 class TestAggregatingVariables(unittest.TestCase):
     def setUp(self):
@@ -24,7 +25,6 @@ class TestAggregatingVariables(unittest.TestCase):
         })
 
     def test_aggregating_variables(self):
-        from utilities.load_config import load_config
         config = load_config('area_classification/config.yaml')
         aggregation_config = load_config('area_classification/aggregation_setup.yaml')
         aggregation_configs = aggregation_config['scot_file_configs']

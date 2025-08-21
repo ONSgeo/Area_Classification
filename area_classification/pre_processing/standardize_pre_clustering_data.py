@@ -6,10 +6,11 @@ def standardize_dataframe(dataframe):
     Skips the first column (e.g., area codes) and avoids division by zero for columns with zero standard deviation.
 
     Parameters:
-        dataframe (pd.DataFrame): The input DataFrame to standardize.
+        dataframe (pd.DataFrame): The input DataFrame to standardize with area codes in the first
+        column followed by the percentage values of the chosen cluster variables.
 
     Returns:
-        pd.DataFrame: A new DataFrame with standardized values.
+        pd.DataFrame: A new DataFrame which has replaced the percentage values with standardized values.
     """
     standardized_data = dataframe.copy()
     for column in dataframe.columns[1:]:  # Skip the first column (e.g., area codes)

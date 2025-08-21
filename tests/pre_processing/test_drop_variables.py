@@ -1,7 +1,8 @@
-#TEST NOT WORKING YET - CHANGES TO FUNCTION ITSELF REQUIRED FIRST
 import unittest
 import pandas as pd
 from area_classification.pre_processing.drop_variables import drop_variables_pre_clustering 
+from area_classification.utilities.load_config import load_config
+
 
 class TestDropVariables(unittest.TestCase):
     def setUp(self):
@@ -14,7 +15,7 @@ class TestDropVariables(unittest.TestCase):
             'v04': [50, 30, 20, 200]
         })
         print(self.input_df)
-        self.variables_to_drop = pd.DataFrame({
+        self.variables_to_drop = ({
             'v02',
             'v04'
         })
@@ -27,12 +28,8 @@ class TestDropVariables(unittest.TestCase):
         })
 
     def test_drop_variables(self):
-        from utilities.load_config import load_config
-        # Call the function to test
         config = load_config('area_classification/config.yaml')
-        variables_to_drop = config.get('variables_to_drop', [])   
-        result_df = drop_variables_pre_clustering(config, self.input_df, variables_to_drop)
-        print(result_df)
+        result_df = drop_variables_pre_clustering(config, self.input_df, self.variables_to_drop)
         # Assert that the result matches the expected output
         pd.testing.assert_frame_equal(result_df, self.expected_df)
 
