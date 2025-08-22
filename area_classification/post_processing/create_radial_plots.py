@@ -71,6 +71,10 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
             # Initialize the radar chart
             fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
 
+            # # Set the starting angle to the top
+            # ax.set_theta_zero_location("N")  # "N" stands for North (top)
+            # ax.set_theta_direction(-1)  # Clockwise direction
+
             # Draw the outline of the radar chart
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row[level]}_{level}')
 
@@ -120,7 +124,7 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
     # Get the feature columns (assuming they start from 'v01' - 'v59')
     feature_columns = [col for col in uk_std_cluster_means.columns if col.startswith("v")]
 
-    # Create a radial plot for each row in the input dataframe
+    # Create a radial plot for each row (area_code) in the input dataframe
     for idx, row in uk_std_cluster_means.iterrows():
         # Extract the feature values for the current row
         values = row[feature_columns].tolist()
@@ -134,6 +138,10 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
         # Initialize the radar chart
         fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
 
+        # Set the starting angle to the top
+        # ax.set_theta_zero_location("N")  # "N" stands for North (top)
+        # ax.set_theta_direction(-1)  # Clockwise direction
+        
         # Draw the outline of the radar chart
         ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row["cluster"]}_{row["hierarchy_level"]}')
 

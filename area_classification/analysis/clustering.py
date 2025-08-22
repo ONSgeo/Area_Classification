@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 import os
 import time
 
+#REQUIRED TO MAKE RADIAL PLOTS EARLY
+from post_processing.create_radial_plots import create_radial_plots_uk 
+from post_processing.cluster_variables_mean import cluster_variable_means
+from post_processing.cluster_table_restructure import cluster_table_restructure 
+
 def clustering_wrapper(config: dict,
                        #input_dataframe_or_filepath: str | pd.DataFrame, 
                        input_dataframe_or_filepath: pd.DataFrame,
@@ -43,8 +48,7 @@ def clustering_wrapper(config: dict,
     pd.DataFrame
         DataFrame with cluster assignments after supergroup and subgroup clustering.
     """
-
-
+    #Create folders to save the outputs into
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
     
@@ -101,6 +105,16 @@ def clustering_wrapper(config: dict,
         num_clusters = len(supergroup_variable_df)
 
     # Add a break
+    input("Press Enter to create radial plots for supergroups...")
+    # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
+    # Create radial plots of supergroup against UK
+    clustering_output = pd.read_csv('data/output_data/supergroups_clusteroutput.csv')
+    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'cluster')
+    chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
+    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
+    create_radial_plots_uk(config, uk_std_cluster_means)
+
+    # Add a break
     input("Press Enter to continue to move onto groups...")
 
     ###GROUP SECTION ###
@@ -134,6 +148,16 @@ def clustering_wrapper(config: dict,
     print("groups cluster run completed.")
 
     # Add a break
+    input("Press Enter to create radial plots for groups...")
+    # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
+    # Create radial plots of supergroup against UK
+    clustering_output = pd.read_csv('data/output_data/group/subclustering_output.csv')
+    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'subcluster')
+    chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
+    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
+    create_radial_plots_uk(config, uk_std_cluster_means)
+
+    # Add a break
     input("Press Enter to continue to move onto subgroup...")
 
     ###SUBGROUP SECTION ###
@@ -161,6 +185,17 @@ def clustering_wrapper(config: dict,
                                                num_clusters=num_clusters, 
                                                n_init=n_init,
                                                random_seed=random_seed)
+    
+    # Add a break
+    input("Press Enter to create radial plots for subgroups...")
+    # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
+    # Create radial plots of supergroup against UK
+    clustering_output = pd.read_csv('data/output_data/subgroup/subclustering_output.csv')
+    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'subsubcluster')
+    chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
+    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
+    create_radial_plots_uk(config, uk_std_cluster_means)
+
     print("subgroup cluster run completed.")
     
     print("Final output for supergroup, group and subgroup saved to outputs_data folder")
