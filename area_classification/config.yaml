@@ -10,8 +10,8 @@ LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_
 drop_columns: True # Set to true to drop the variables specified below in 'variables to drop' 
                    # or set to false to include 60 varabiles.
 variables_to_drop  : [
-        "v07", # Families with no children
-        "v09", # Europe: United Kingdom
+        "v07", # Families with dependent children
+        "v09", # Europe: EU countries
         "v11", # Africa
         "v20", # Bangladeshi (variable not available for NI at this level of geography)
         "v23", # Pakistani
@@ -37,7 +37,7 @@ number_of_clusters: 8
 number_of_clusters_supergroup: 6
 number_of_clusters_group: 10
 number_of_clusters_subgroup: 6
-number_of_times_k_means_initialised: 10 # 1000 for real run
+number_of_times_k_means_initialised: 1000 # 10 for test run
 random_seed: 42
 
 #*****FILE PATHS AND CONFIGURATIONS WHICH SHOULD NOT NEED AMENDING*****

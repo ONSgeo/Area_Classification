@@ -48,6 +48,7 @@ def clustering_wrapper(config: dict,
     pd.DataFrame
         DataFrame with cluster assignments after supergroup and subgroup clustering.
     """
+    
     #Create folders to save the outputs into
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(plot_directory, exist_ok=True)
@@ -456,4 +457,3 @@ if __name__ == "__main__":
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
     print(function_output.head())
-
