@@ -81,6 +81,9 @@ def main_pipeline():
         random_seed=config["random_seed"]
     )
     print(clustering_output)
+
+    # Add a break
+    input("Press Enter to continue to post processing...")
  
     # Step 8: Post processing
     # Cluster tables are reformatted and mean tables created

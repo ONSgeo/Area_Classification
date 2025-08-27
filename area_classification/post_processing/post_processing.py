@@ -26,7 +26,7 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
     """
 
     # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
-    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output)
+    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, config["split_column"])
 
     # Step 2: Calculate means for each cluster and each variable
     uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)

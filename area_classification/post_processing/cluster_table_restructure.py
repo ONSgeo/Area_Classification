@@ -4,7 +4,7 @@ import pandas as pd
 from area_classification.utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
-def cluster_table_restructure(config, clustering_output):
+def cluster_table_restructure(config, clustering_output, split_column):
     """
     Using the cluster output column one (LAD_codes) is kept, but column two containing cluster codes are 
     seperated out into seperate columns for supergroup, group, and subgroup. The final character in the 
@@ -14,6 +14,8 @@ def cluster_table_restructure(config, clustering_output):
     ----------
     config : dict
         Configuration dictionary containing paths and file names.
+    split_column : str
+        The column header which the table will be spit on
     clustering_output : pd.DataFrame
         DataFrame of cluster assignments which have been output from running the clustering algroithm. 
         Data will have the following format:
@@ -34,7 +36,7 @@ def cluster_table_restructure(config, clustering_output):
     df = df.reset_index()
 
     keep_column= config["keep_column"]
-    split_column= config["split_column"]
+    #split_column= config["split_column"]
    
     # Check if the specified columns exist
     if keep_column not in df.columns:

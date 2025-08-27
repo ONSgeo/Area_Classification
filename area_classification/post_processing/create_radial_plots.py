@@ -20,6 +20,7 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
     combined_subgroup_means : DataFrame
         DataFrame containing subgroup-level means.
     """
+    #lookup = pd.read_csv(config['select_variables_lookup'])
     create_radial_plots_uk(config, uk_std_cluster_means)
     create_radial_plots_parent_clusters(config, combined_group_means, combined_subgroup_means)
     
@@ -43,6 +44,7 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
     radial_plots_dir = os.path.join(config["output_directory"], "radial_plots", "parent_cluster_radial_plots")
     os.makedirs(radial_plots_dir, exist_ok=True)
 
+
     def create_radial_plots(dataframe, level):
         """
         Helper function to create radial plots for a given dataframe.
@@ -56,6 +58,7 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
         """
         # Get the feature columns (assuming they start from 'v01' to 'v59')
         feature_columns = [col for col in dataframe if col.startswith("v")]
+        #feature_columns = feature_columns.map(lookup.set_index('variable')['variable_name'])
 
         # Create a radial plot for each row in the input dataframe
         for idx, row in dataframe.iterrows():
@@ -70,6 +73,10 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
 
             # Initialize the radar chart
             fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+
+            # # Set the starting angle to the top
+            # ax.set_theta_zero_location("N")  # "N" stands for North (top)
+            # ax.set_theta_direction(-1)  # Clockwise direction
 
             # Draw the outline of the radar chart
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row[level]}_{level}')
@@ -119,8 +126,9 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
 
     # Get the feature columns (assuming they start from 'v01' - 'v59')
     feature_columns = [col for col in uk_std_cluster_means.columns if col.startswith("v")]
+    #feature_columns = feature_columns.map(lookup.set_index('variable')['variable_name'])
 
-    # Create a radial plot for each row in the input dataframe
+    # Create a radial plot for each row (area_code) in the input dataframe
     for idx, row in uk_std_cluster_means.iterrows():
         # Extract the feature values for the current row
         values = row[feature_columns].tolist()
@@ -134,6 +142,10 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
         # Initialize the radar chart
         fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
 
+        # Set the starting angle to the top
+        # ax.set_theta_zero_location("N")  # "N" stands for North (top)
+        # ax.set_theta_direction(-1)  # Clockwise direction
+        
         # Draw the outline of the radar chart
         ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row["cluster"]}_{row["hierarchy_level"]}')
 
@@ -163,14 +175,3 @@ if __name__ == "__main__":
     combined_group_means = pd.read_csv(os.path.join(config["output_directory"], "std_means", "group_means.csv"))
     combined_subgroup_means = pd.read_csv(os.path.join(config["output_directory"], "std_means", "subgroup_means.csv"))
     create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_group_means)
-
-
-
-
-
-
-    
-
-
-
-
