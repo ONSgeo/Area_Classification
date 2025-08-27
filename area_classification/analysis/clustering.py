@@ -135,7 +135,7 @@ def clustering_wrapper(config: dict,
     
     # Add a break
     input("Press Enter to continue with the subcluster numbers below for groups creation...")
-    group_numbers = [3, 3, 3, 3, 3, 3, 3, 3]
+    group_numbers = [3, 3, 3, 3, 3, 3]
 
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
                                             output_dir=f"{output_directory}group", 
@@ -175,6 +175,7 @@ def clustering_wrapper(config: dict,
     # Add a break
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
 
+    # These values will depend on the higher up level, so update once groups values allocated.
     subgroup_nums = [3, 3, 3, 3, 3, 3, 3, 3]
 
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 

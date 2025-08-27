@@ -33,10 +33,7 @@ pre_clustering_data_std_mean: './data/inputs/pre_clustering_data_std_means.csv' 
 restructured_subclustering_output: './data/output_data/subgroup/restructured_subclustering_output.csv'
 
 #Clustering config
-number_of_clusters: 8
-number_of_clusters_supergroup: 6
-number_of_clusters_group: 10
-number_of_clusters_subgroup: 6
+number_of_clusters: 6
 number_of_times_k_means_initialised: 1000 # 10 for test run
 random_seed: 42
 
