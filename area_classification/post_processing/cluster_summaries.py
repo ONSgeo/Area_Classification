@@ -79,13 +79,15 @@ def analyze_cluster_means(means_table):
 
 import pandas as pd
 
+import random
+
 def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=5):
     """
     Identifies the variables that drive the allocation of each cluster and make it different
     from the other clusters by comparing the mean values of variables in a cluster to the
     mean values of the same variables across all other clusters. Converts column names
     using a lookup file, displaying variable names with new_code in brackets. Also prints
-    the name of one area within the cluster.
+    the names of three random areas within the cluster.
 
     Parameters:
         means_table (pd.DataFrame): A DataFrame where rows represent clusters
@@ -95,8 +97,20 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
         top_n (int): The number of top driving variables to identify for each cluster.
 
     Returns:
-        None: Prints the top driving variables for each cluster and an example area name.
+        None: Prints the top driving variables for each cluster and three example area names.
     """
+    # Filter the means_table to include only the top row and rows with 'supergroup' in the hierarchy_level column
+    if 'hierarchy_level' not in means_table.columns:
+        raise ValueError("Means table must contain a 'hierarchy_level' column.")
+    print(means_table)
+    means_table = pd.concat([
+        means_table[means_table['hierarchy_level'] == 'supergroup']  # Select rows with 'supergroup'
+    ])
+    
+    print(means_table)
+    # Remove the hierarchy_level column
+    means_table = means_table.drop(columns=['hierarchy_level'])
+    
     # Load the lookup file
     lookup_df = pd.read_csv(lookup_file)
     
@@ -117,13 +131,16 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
     if 'supergroup' not in restructured_table.columns or 'LAD_name' not in restructured_table.columns:
         raise ValueError("Restructured table must contain 'supergroup' and 'LAD_name' columns.")
     
-    # Identify cluster drivers
-    for cluster_name, row in means_table.iterrows():
+
+    for index, row in means_table.iterrows():
+        # Use the value in the 'cluster' column as the cluster_name
+        cluster_name = row['cluster']
+        
         # Calculate the mean of each variable across all other clusters
-        other_clusters_means = means_table.drop(index=cluster_name).mean()
+        other_clusters_means = means_table[means_table['cluster'] != cluster_name].mean()
         
         # Calculate the difference between the cluster's values and the other clusters' means
-        differences = row - other_clusters_means
+        differences = row.drop('cluster') - other_clusters_means
         
         # Sort variables by the absolute difference in descending order
         sorted_differences = differences.abs().sort_values(ascending=False)
@@ -131,20 +148,23 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
         # Select the top N driving variables
         top_drivers = sorted_differences.head(top_n)
         
-        # Find an example area from the restructured table
-        example_area = restructured_table[restructured_table['supergroup'] == cluster_name]
-        area_name = example_area['LAD_name'].iloc[0] if not example_area.empty else "No area found"
+        # Find example areas from the restructured table
+        example_areas = restructured_table[restructured_table['supergroup'] == cluster_name]
+        if not example_areas.empty:
+            area_names = example_areas['LAD_name'].sample(n=min(3, len(example_areas)), random_state=42).tolist()
+        else:
+            area_names = ["No area found"]
         
         # Print the results for the cluster
         print(f"Cluster {cluster_name}:")
-        print(f"  Example area: {area_name}")
+        print(f"  Example areas: {', '.join(area_names)}")
         for variable in top_drivers.index:
             print(f"  {variable}: {row[variable]} (difference: {differences[variable]:.2f})")
         print()
 
 if __name__ == "__main__":
     means_table = pd.read_csv('data/uk_std_cluster_means_output.csv')
-    analyze_cluster_means(means_table)
+    #analyze_cluster_means(means_table)
 
     # Example Lookup File (CSV)
     lookup_file = './data/lookups/UK_selected_codes_lookup.csv'
