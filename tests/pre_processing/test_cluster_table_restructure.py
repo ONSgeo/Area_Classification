@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from area_classification.cluster_table_restructure import cluster_table_restructure
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
 from area_classification.utilities.load_config import load_config
 
 class TestClusterTableRestructure(unittest.TestCase):
