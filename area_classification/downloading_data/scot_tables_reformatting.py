@@ -532,7 +532,7 @@ def extract_pop_density_table(scot_input_folder):
 
     # Check if the input file exists
     if not os.path.exists(population_density_xlsx):
-        logging.info(f"No file named {population_density_xlsx} found in the directory.")
+        logging.error(f"No file named {population_density_xlsx} found in the directory.")
         return
 
     try:
@@ -573,7 +573,7 @@ def reformat_pop_density(scot_input_folder, config):
     # Look for population_density.csv in the directory
     file_path = os.path.join(scot_input_folder, "population_density.csv")
     if not os.path.exists(file_path):
-        logging.info("No file named population_density.csv found in the directory.")
+        logging.error("No file named population_density.csv found in the directory.")
         return
 
     # Load the CSV file, skip the first three rows, and specify the columns to load
