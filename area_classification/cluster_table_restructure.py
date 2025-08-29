@@ -4,7 +4,7 @@ import pandas as pd
 from utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
-def cluster_table_restructure(config, clustering_output, split_column):
+def cluster_table_restructure(config, clustering_output, split_column, chosen_clustering_variables_std):
     """
     Using the cluster output column one (LAD_codes) is kept, but column two containing cluster codes are 
     seperated out into seperate columns for supergroup, group, and subgroup. The final character in the 
@@ -91,6 +91,11 @@ def cluster_table_restructure(config, clustering_output, split_column):
     output_file = os.path.join(config["output_directory"], f"restructured_subclustering_output.csv")
     restructured_cluster_table.to_csv(output_file, index=False)
 
+    # Create and save out restructured long table (for use in summaries)
+    restructured_cluster_table_long = pd.merge(restructured_cluster_table, chosen_clustering_variables_std, on='LAD_code', how='inner')
+    output_file_long = os.path.join(config["output_directory"], f"restructured_subclustering_output_long.csv")
+    restructured_cluster_table_long.to_csv(output_file_long, index=False)
+
     return restructured_cluster_table
 
 if __name__ == "__main__":
@@ -99,4 +104,5 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     clustering_output_filepath = os.path.join(config["output_directory"], "subgroup", "subclustering_output.csv")
     clustering_output = pd.read_csv(clustering_output_filepath)
-    cluster_table_restructure(config, clustering_output) 
+    chosen_clustering_variables_std = pd.read_csv(config["pre_clustering_data_std_mean"])
+    cluster_table_restructure(config, clustering_output, config["split_column"],chosen_clustering_variables_std)

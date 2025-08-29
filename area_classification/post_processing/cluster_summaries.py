@@ -4,7 +4,37 @@ import os
 
 from area_classification.utilities.load_config import load_config
 
-def analyze_cluster_means(means_table):
+def cluster_summaries(config,):
+    """
+    Wrapper function to run the cluster summary functions post clustering 
+    
+    Parameters
+    ----------
+    config : dict
+        main pipeline config dictionary containing output directory.
+    chosen_clustering_variables
+
+    clustering_output : pd.DataFrame
+        the output from running the clustering algroithm
+
+    Returns
+    ----------
+        The result of get_cluster_means.
+    """
+
+    # Step 1: 
+
+    # Step 2: 
+
+    # Step 3: 
+
+    # Step 4: C
+    
+    # Return the combined means for further use if needed
+    return 
+
+
+def analyze_cluster_means(uk_std_cluster_means_output):
     """
     Analyzes a table of means and prints the cluster name along with any means
     that are lower than -2 or higher than 2 for that cluster. If a value is an
@@ -83,7 +113,7 @@ def analyze_cluster_means(means_table):
 
 
 
-def calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column):
+def calculate_cluster_variance(restructured_table_long, cluster_column):
     """
     Calculate the variance for all columns starting with 'v' for each cluster, compute the average variance, and print it.
 
@@ -97,9 +127,6 @@ def calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean,
     """
     import numpy as np
     import pandas as pd
-
-    # Perform the join on the 'LAD_code' column
-    data = pd.merge(restructured_table, pre_clustering_data_std_mean, on='LAD_code', how='inner')
 
     # Identify columns starting with 'v'
     v_columns = [col for col in data.columns if col.startswith('v')]
@@ -229,18 +256,70 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
             print(f"  {variable}: {row[variable]} (difference: {differences[variable]:.2f})")
         print()
 
+
+
+def cluster_summary(restructured_table_long, uk_std_cluster_means_output):
+    # Get unique clusters
+    clusters = restructured_table_long['supergroup'].unique()
+    
+    # Filter rows where 'hierarchy_level' is 'supergroup' and convert 'cluster' column to integers
+    filtered_df = (
+        uk_std_cluster_means_output.loc[uk_std_cluster_means_output['hierarchy_level'] == 'supergroup']
+        .assign(cluster=lambda df: pd.to_numeric(df['cluster'], errors='coerce').astype(int))
+    )
+
+    # Iterate through each cluster
+    for cluster in clusters:
+        # Filter rows for the current cluster
+        cluster_data = restructured_table_long[restructured_table_long['supergroup'] == cluster]
+        
+        # Number of local authorities
+        num_local_authorities = cluster_data['LAD_name'].nunique()
+                        
+        # Population density using restructured_table_long (V12 values for the cluster)
+        cluster_v12_mean = cluster_data['v12'].mean()
+        
+        uk_mean_v12 = filtered_df.loc[filtered_df['cluster'] == cluster, 'v12']
+        # Extract the scalar value from the Series
+        uk_mean_v12 = uk_mean_v12.iloc[0]  # Use .iloc[0] to get the first value
+
+        # Placeholder for percentage of UK population
+        uk_population_percentage = "?"
+
+        # Find example areas from the restructured table
+        example_areas = restructured_table_long[restructured_table_long['supergroup'] == cluster]
+        if not example_areas.empty:
+            area_names = example_areas['LAD_name'].sample(n=min(3, len(example_areas)), random_state=42).tolist()
+        else:
+            area_names = ["No area found"]
+               
+        # Print the summary for the cluster
+        print(
+            f"Cluster {cluster} contains {num_local_authorities} local authorities which is % of UK population, "
+            f"population density {cluster_v12_mean:.2f}."
+        )
+        print(
+            f"The population of this supergroup typically live in XXXXXX areas - "
+            f"Example areas: {', '.join(area_names)}"
+        )
+
+        print("-" * 40)
+
 if __name__ == "__main__":
     config = load_config()
-    mean_table_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
-    means_table = pd.read_csv(mean_table_filepath)
+    uk_std_cluster_means_output_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
+    uk_std_cluster_means_output = pd.read_csv(uk_std_cluster_means_output_filepath)
 
     # Example Lookup File (CSV)
     lookup_file = config["select_variables_lookup"]
     filepath = os.path.join(config["output_directory"], "restructured_subclustering_output.csv")
     restructured_table = pd.read_csv(filepath)
+    filepath_long = os.path.join(config["output_directory"], "restructured_subclustering_output_long.csv")
+    restructured_table_long = pd.read_csv(filepath_long)
     pre_clustering_data_std_mean_path = config["pre_clustering_data_std_mean"]
     pre_clustering_data_std_mean = pd.read_csv(pre_clustering_data_std_mean_path)
 
+    cluster_summary(restructured_table_long, uk_std_cluster_means_output)
     # Identify cluster drivers with column name conversion and example area
     #identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=3)
-    calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column='supergroup')
+    #calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column='supergroup')
