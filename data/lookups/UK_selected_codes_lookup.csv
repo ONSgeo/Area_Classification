@@ -17,7 +17,7 @@ Aged 25 to 44,age_25_44,TS007A,Age structure,ew,v15,Demography and Migration
 Aged 45 to 64,age_45_64,TS007A,Age structure,ew,v16,Demography and Migration
 Aged 65 to 84,age_65_84,TS007A,Age structure,ew,v17,Demography and Migration
 Aged 85 years and over,ts007a0019,TS007A,Age structure,ew,v18,Demography and Migration
-Address one year ago is the same as the address of enumeration,ts0190002,TS019,Migrant Indicator,ew,v19,"Ethnicity, Identity, Language and Religion"
+Address one year ago is the same as the address of enumeration,ts0190002,TS019,Migrant Indicator,ew,v19,Demography and Migration
 Bangladeshi,ts0210003,TS021,Ethnic group,ew,v20,"Ethnicity, Identity, Language and Religion"
 Chinese,ts0210004,TS021,Ethnic group,ew,v21,"Ethnicity, Identity, Language and Religion"
 Indian,ts0210005,TS021,Ethnic group,ew,v22,"Ethnicity, Identity, Language and Religion"
@@ -77,7 +77,7 @@ Aged 25 to 44,age_25_44,ni012,Age - 19 Categories,ni,v15,Demography and Migratio
 Aged 45 to 64,age_45_64,ni012,Age - 19 Categories,ni,v16,Demography and Migration
 Aged 65 to 84,age_65_84,ni012,Age - 19 Categories,ni,v17,Demography and Migration
 Aged 85 years and over,ni0260087,ni026,Age - 86 Categories,ni,v18,Demography and Migration
-Address one year ago is the same as the address of enumeration,ni0040002,ni004,Address One Year Ago,ni,v19,"Ethnicity, Identity, Language and Religion"
+Address one year ago is the same as the address of enumeration,ni0040002,ni004,Address One Year Ago,ni,v19,Demography and Migration
 Chinese,ni0600006,ni060,Ethnic Group,ni,v21,"Ethnicity, Identity, Language and Religion"
 Indian,ni0600005,ni060,Ethnic Group,ni,v22,"Ethnicity, Identity, Language and Religion"
 Pakistani,ni0600008,ni060,Ethnic Group,ni,v23,"Ethnicity, Identity, Language and Religion"
@@ -136,7 +136,7 @@ Aged 25 to 44,age_25_44,UV103,Age,scot,v15,Demography and Migration
 Aged 45 to 64,age_45_64,UV103,Age,scot,v16,Demography and Migration
 Aged 65 to 84,age_65_84,UV103,Age,scot,v17,Demography and Migration
 Aged 85 years and over,age_85_and_over,UV103,Age,scot,v18,Demography and Migration
-Address one year ago is the same as the address of enumeration,Same_as_the_address_of_enumeration,migrant_indicator,Migrant Indicator,scot,v19,"Ethnicity, Identity, Language and Religion"
+Address one year ago is the same as the address of enumeration,Same_as_the_address_of_enumeration,migrant_indicator,Migrant Indicator,scot,v19,Demography and Migration
 Bangladeshi,UV2010013,UV201,Ethnic group (21) ,scot,v20,"Ethnicity, Identity, Language and Religion"
 Chinese,UV2010014,UV201,Ethnic group (21) ,scot,v21,"Ethnicity, Identity, Language and Religion"
 Indian,UV2010012,UV201,Ethnic group (21) ,scot,v22,"Ethnicity, Identity, Language and Religion"
@@ -149,7 +149,7 @@ All household members have the same ethnic group,UV2030003,UV203,Multiple ethnic
 Cannot speak English well or at all,cannot_speak_English,UV210,English language skills,scot,v29,"Ethnicity, Identity, Language and Religion"
 No religion,UV2050012,UV205,Religion,scot,v30,"Ethnicity, Identity, Language and Religion"
 Christian,christian,UV205,Religion,scot,v31,"Ethnicity, Identity, Language and Religion"
-Other religion,UV2050011,UV205,Migrant Indicator,scot,v32,"Ethnicity, Identity, Language and Religion"
+Other religion,UV2050011,UV205,Religion,scot,v32,"Ethnicity, Identity, Language and Religion"
 Standardised Illness Ratio,SIR,SIR,Disability,scot,v33,"Health, Disability and Unpaid Care"
 Provides unpaid care,UV3010003,UV301,Provision of unpaid care,scot,v34,"Health, Disability and Unpaid Care"
 Detached,UV4010003,UV401,Accommodation type - People,scot,v35,Housing

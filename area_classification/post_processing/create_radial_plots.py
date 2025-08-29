@@ -135,7 +135,7 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
     feature_columns = [col for col in uk_std_cluster_means.columns if col.startswith("v")]
     #feature_columns = feature_columns.map(lookup.set_index('variable')['variable_name'])
 
-        # Create a radial plot for each row (area_code) in the input dataframe
+    # Create a radial plot for each row (area_code) in the input dataframe
     for idx, row in uk_std_cluster_means.iterrows():
         # Extract the feature values for the current row
         values = row[feature_columns].tolist()
@@ -147,7 +147,7 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
         angles += angles[:1]  # Repeat the first angle to close the circle
 
         # Initialize the radar chart
-        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+        fig, ax = plt.subplots(figsize=(10, 18), subplot_kw=dict(polar=True))
 
         # Adjust the margins of the plot to create extra space
         fig.subplots_adjust(top=0.9, bottom=0.1, left=0.1, right=0.9)
@@ -157,7 +157,7 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
         ax.set_yticks([])  # Remove radial ticks
 
         # Set the radial limits to ensure the same scale for all plots
-        ax.set_ylim(-3, 3)
+        ax.set_ylim(-3, 3.2)
 
         # Move the radial labels inward to create extra space
         ax.set_rlabel_position(110)  # Adjust the position of radial labels
@@ -204,17 +204,13 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
             # Fill the segment with the corresponding color
             ax.fill(segment_angles, segment_radii, color=color, alpha=0.4)
             
-
         # Add labels for each feature
         for i, col in enumerate(feature_columns):
             angle = angles[i]
             label = replaced_labels[i]
 
-            # Dynamically adjust the radius to stagger labels and avoid overlap
-            if i % 2 == 0:
-                label_radius = 3.9  # Slightly farther out for even-indexed labels
-            else:
-                label_radius = 3.5  # Slightly closer for odd-indexed labels
+            # Set the radius for the labels to be outside the radial limit (e.g., 3.8)
+            label_radius = 3.5  # Adjust this value as needed to position labels outside the limit
 
             # Adjust alignment based on the angle
             if 0 <= angle < np.pi / 2 or 3 * np.pi / 2 <= angle < 2 * np.pi:
@@ -223,16 +219,16 @@ def create_radial_plots_uk(config, uk_std_cluster_means):
                 ha = 'right'
 
             ax.text(
-                angle, label_radius,  # Dynamically adjusted radius
+                angle, label_radius,  # Place labels outside the radial limit
                 label,  # Label text
-                fontsize=10,
+                fontsize=11,
                 color="black",  # Keep labels black
                 ha=ha,
                 va='center'
             )
 
-                # Add a title
-        ax.set_title(f"Radial Plot for {row['cluster']}_{row['hierarchy_level']}", size=14, pad=20)
+        # Add a title
+        ax.set_title(f"Radial Plot for {row['hierarchy_level']}_{row['cluster']}", size=14, pad=40, weight='bold')
 
         # Draw a solid red ring at the radius of 0
         ax.plot(angles[:-1], [0] * len(angles[:-1]), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
