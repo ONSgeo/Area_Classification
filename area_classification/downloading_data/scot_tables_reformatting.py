@@ -55,7 +55,7 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, config)
 
     # Remove rows with metadata/no data (first 10 and bottom 3 rows)
-    remove_rows(config)
+    remove_rows(config, folderpath= config["qa_folder_path"])
 
     # Reformat specific tables
     reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config)
@@ -808,15 +808,19 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
 
 
 
-def remove_rows(config):
+def remove_rows(config, folderpath):
     """
     Processes all CSV files in the input directory that start with 'reformat_'.
-    Modifies the files in place by performing specific preprocessing steps.
+    Modifies the files in place by performing specific preprocessing steps which includ
+    removing the last three rows as there is extra informaiton outside of the data table,
+    renaming column heading 'Council Area 2019' to 'CA19' and resetting the index.
 
     Parameters
     ----------
-    config : dict) 
+    config : dict 
         Configuration dictionary containing paths and file names.
+    folderpath: str
+        The folder containing the files to loop through, likely  as config["qa_folder_path"]
 
     Returns
     -------
@@ -825,7 +829,7 @@ def remove_rows(config):
     """
 
     # Process only files starting with "reformat_" and ending with ".csv", skipping uv101b.csv
-    for file_name in os.listdir(config["qa_folder_path"]):
+    for file_name in os.listdir(folderpath):
         if file_name.lower() == "uv101b.csv" and "uv103.csv" and "migrant_indicator.csv" and "population_density.csv":
             continue
         if file_name.startswith("reformat_"):
@@ -858,8 +862,7 @@ def remove_rows(config):
 
                 # Save the modified DataFrame back to the same file (edit in place)
                 df.to_csv(file_path, index=False, header=False)
-                print(f"Processed and reformat: {file_name}")
-            
+                            
             except pd.errors.ParserError as e:
                 print(f"Error processing {file_name}: {e}")
         else:
