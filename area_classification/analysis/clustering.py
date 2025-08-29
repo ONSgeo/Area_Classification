@@ -10,10 +10,13 @@ import matplotlib.pyplot as plt
 import os
 import time
 
+from area_classification.utilities.load_config import load_config
+
 #REQUIRED TO MAKE RADIAL PLOTS EARLY
 from post_processing.create_radial_plots import create_radial_plots_uk 
 from post_processing.cluster_variables_mean import cluster_variable_means
 from post_processing.cluster_table_restructure import cluster_table_restructure 
+
 
 def clustering_wrapper(config: dict,
                        #input_dataframe_or_filepath: str | pd.DataFrame, 
@@ -176,7 +179,7 @@ def clustering_wrapper(config: dict,
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
 
     # These values will depend on the higher up level, so update once groups values allocated.
-    subgroup_nums = [3, 3, 3, 3, 3, 3, 3, 3]
+    subgroup_nums = [3, 3, 3, 3, 3, 3]
 
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
                                                output_dir=f"{output_directory}subgroup", 
@@ -447,7 +450,6 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
 
 
 if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
     config = load_config()
 
     function_output = clustering_wrapper(config,

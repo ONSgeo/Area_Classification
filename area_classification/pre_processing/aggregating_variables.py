@@ -36,7 +36,6 @@ def aggregating_variables(df_temp, aggregation_configs, config):
 
         # Add the new column by summing the specified columns
         df_temp[new_col_name] = df_temp[col_names].sum(axis=1)
-        print(f"Added new column '{new_col_name}' to the DataFrame.")
 
     # Extract the header of column 1 (the country area code type e.g. LTLA, LGD or CA19)
     if not df_temp.empty:

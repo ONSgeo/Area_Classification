@@ -1,4 +1,8 @@
 import pandas as pd
+import numpy as np
+import os
+
+from area_classification.utilities.load_config import load_config
 
 def analyze_cluster_means(means_table):
     """
@@ -77,9 +81,73 @@ def analyze_cluster_means(means_table):
         else:
             print(f"Cluster {cluster_name}: No variables above 1.25 or below -1.25.")
 
-import pandas as pd
 
-import random
+
+def calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column):
+    """
+    Calculate the variance for all columns starting with 'v' for each cluster, compute the average variance, and print it.
+
+    Parameters:
+        restructured_table (pd.DataFrame): The first DataFrame containing the data.
+        pre_clustering_data_std_mean (pd.DataFrame): The second DataFrame to merge.
+        cluster_column (str): The name of the column containing cluster identifiers.
+
+    Returns:
+        None
+    """
+    import numpy as np
+    import pandas as pd
+
+    # Perform the join on the 'LAD_code' column
+    data = pd.merge(restructured_table, pre_clustering_data_std_mean, on='LAD_code', how='inner')
+
+    # Identify columns starting with 'v'
+    v_columns = [col for col in data.columns if col.startswith('v')]
+
+    # Initialize a dictionary to store variances
+    cluster_variances = {}
+
+    # Get unique clusters
+    unique_clusters = data[cluster_column].unique()
+
+    # Loop through each cluster and calculate variance for 'v' columns
+    for cluster_name in unique_clusters:
+        # Filter the data for the current cluster
+        cluster_data = data[data[cluster_column] == cluster_name]
+
+        # Initialize a dictionary for the current cluster
+        cluster_variances[cluster_name] = {}
+
+        # Calculate variance for each 'v' column
+        for v_col in v_columns:
+            if not cluster_data.empty:
+                variance = np.var(cluster_data[v_col], ddof=1)  # Sample variance
+                cluster_variances[cluster_name][v_col] = variance
+            else:
+                cluster_variances[cluster_name][v_col] = None  # Handle empty clusters
+
+    # Calculate the average variance for each cluster
+    average_variances = {}
+    for cluster_name, variances in cluster_variances.items():
+        # Filter out None values and calculate the mean
+        valid_variances = [v for v in variances.values() if v is not None]
+        if valid_variances:
+            average_variances[cluster_name] = np.mean(valid_variances)
+        else:
+            average_variances[cluster_name] = None
+
+    # Print the average variance for each cluster
+    print("Average Variance for Each Cluster:")
+    for cluster_name, avg_variance in average_variances.items():
+        print(f"Cluster {cluster_name}: {avg_variance}")
+
+    # Optional: Save the detailed variance table for reference
+    variance_df = pd.DataFrame.from_dict(cluster_variances, orient='index')
+    variance_df.index.name = cluster_column
+    variance_df.to_csv('detailed_cluster_variances.csv')
+    print("Detailed variances saved to 'detailed_cluster_variances.csv'")
+    
+
 
 def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=5):
     """
@@ -99,18 +167,18 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
     Returns:
         None: Prints the top driving variables for each cluster and three example area names.
     """
+    
     # Filter the means_table to include only the top row and rows with 'supergroup' in the hierarchy_level column
     if 'hierarchy_level' not in means_table.columns:
         raise ValueError("Means table must contain a 'hierarchy_level' column.")
-    print(means_table)
+    
     means_table = pd.concat([
         means_table[means_table['hierarchy_level'] == 'supergroup']  # Select rows with 'supergroup'
     ])
-    
-    print(means_table)
+
     # Remove the hierarchy_level column
     means_table = means_table.drop(columns=['hierarchy_level'])
-    
+
     # Load the lookup file
     lookup_df = pd.read_csv(lookup_file)
     
@@ -131,13 +199,12 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
     if 'supergroup' not in restructured_table.columns or 'LAD_name' not in restructured_table.columns:
         raise ValueError("Restructured table must contain 'supergroup' and 'LAD_name' columns.")
     
-
     for index, row in means_table.iterrows():
         # Use the value in the 'cluster' column as the cluster_name
-        cluster_name = row['cluster']
+        cluster_name = int(row['cluster'])
         
         # Calculate the mean of each variable across all other clusters
-        other_clusters_means = means_table[means_table['cluster'] != cluster_name].mean()
+        other_clusters_means = means_table[means_table['cluster'] != cluster_name].select_dtypes(include='number').mean()
         
         # Calculate the difference between the cluster's values and the other clusters' means
         differences = row.drop('cluster') - other_clusters_means
@@ -163,12 +230,17 @@ def identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, rest
         print()
 
 if __name__ == "__main__":
-    means_table = pd.read_csv('data/uk_std_cluster_means_output.csv')
-    #analyze_cluster_means(means_table)
+    config = load_config()
+    mean_table_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
+    means_table = pd.read_csv(mean_table_filepath)
 
     # Example Lookup File (CSV)
-    lookup_file = './data/lookups/UK_selected_codes_lookup.csv'
-    restructured_table = pd.read_csv('data/restructured_subclustering_output_6supergroup.csv')
+    lookup_file = config["select_variables_lookup"]
+    filepath = os.path.join(config["output_directory"], "restructured_subclustering_output.csv")
+    restructured_table = pd.read_csv(filepath)
+    pre_clustering_data_std_mean_path = config["pre_clustering_data_std_mean"]
+    pre_clustering_data_std_mean = pd.read_csv(pre_clustering_data_std_mean_path)
 
     # Identify cluster drivers with column name conversion and example area
-    identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=3)
+    #identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=3)
+    calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column='supergroup')
