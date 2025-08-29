@@ -90,7 +90,6 @@ def cluster_table_restructure(config, clustering_output, split_column):
     # Save the resulting DataFrame to a new file
     output_file = os.path.join(config["output_directory"], f"restructured_subclustering_output.csv")
     restructured_cluster_table.to_csv(output_file, index=False)
-    print(f"Restructured file saved to: {output_file}")
 
     return restructured_cluster_table
 

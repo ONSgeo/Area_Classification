@@ -1,5 +1,8 @@
 import pandas as pd
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def aggregating_variables(df_temp, aggregation_configs, config):
     """
@@ -31,7 +34,7 @@ def aggregating_variables(df_temp, aggregation_configs, config):
          # Check if all columns in col_names exist in df_temp
         missing_cols = [col for col in col_names if col not in df_temp.columns]
         if missing_cols:
-            print(f"Warning: Missing columns {missing_cols} in DataFrame. Skipping aggregation for {new_col_name}.")
+            logging.warning(f"Warning: Missing columns {missing_cols} in DataFrame. Skipping aggregation for {new_col_name}.")
             continue
 
         # Add the new column by summing the specified columns

@@ -1,6 +1,9 @@
 import pandas as pd
 import re  
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def select_variables(df_temp, lookup_df, config):
     """
@@ -35,7 +38,7 @@ def select_variables(df_temp, lookup_df, config):
     valid_columns = []
     for col in selected_columns:
         if col not in df_temp.columns:
-            print(f"Warning: Column '{col}' is missing in the temp DataFrame.")
+            logging.warning(f"Warning: Column '{col}' is missing in the temp DataFrame.")
         else:
             valid_columns.append(col)
     
@@ -44,7 +47,7 @@ def select_variables(df_temp, lookup_df, config):
     if first_column not in valid_columns:
         valid_columns.insert(0, first_column)
     
-    print(f"Columns to be selected: {valid_columns}")
+    logging.info(f"Columns to be selected: {valid_columns}")
     
     # Filter the main DataFrame to include only the valid columns
     # Rename the columns based on lookup table (V codes)

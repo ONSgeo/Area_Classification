@@ -10,6 +10,9 @@ from shutil import rmtree
 # import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
 from utilities.load_config import load_config
 import tempfile
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def ew_lad_bulk_download(config: dict):
     """
@@ -116,7 +119,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
             t_tab_loc = glob(os.path.join(tmp_dir, f"*{t_name}-llta.csv"))
 
         if not t_tab_loc:
-            print(f"No matching file found for {t_name}")
+            logging.info(f"No matching file found for {t_name}")
             rmtree(tmp_dir)
             continue
 
