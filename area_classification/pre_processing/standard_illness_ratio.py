@@ -12,7 +12,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-from area_classification.utilities.disability_age_group_conversion import (
+from utilities.disability_age_group_conversion import (
     convert_disability_age_group_england_wales,
     convert_disability_age_group_northern_ireland,
     convert_disability_age_group_scotland,

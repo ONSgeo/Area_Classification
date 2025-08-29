@@ -115,36 +115,6 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     combined_group_means = pd.concat(all_group_means, ignore_index=True)
     combined_subgroup_means = pd.concat(all_subgroup_means, ignore_index=True)
 
-    # CHECK WITH TYDE AFTER LEAVE BUT DON'T THINK THIS IS NEEDED ANY LONGER!
-    # # Group files by their names after the first underscore
-    # grouped_files = defaultdict(list)
-    # for file in csv_files:
-    #     prefix, suffix = file.split("_", 1)  # Split into prefix and suffix
-    #     grouped_files[(len(prefix), suffix)].append(file)  # Group by prefix length and suffix
-
-    # # Combine files into Excel files
-    # for (prefix_length, suffix), files in grouped_files.items():
-    #     # Determine the file name based on prefix length
-    #     if prefix_length == 1:
-    #         file_type = "group"
-    #     elif prefix_length == 2:
-    #         file_type = "subgroup"
-    #     else:
-    #         file_type = "other"  # Fallback for unexpected cases
-
-    #     # Create the Excel file name
-    #     excel_file = os.path.join(output_directory, f"{file_type}_{suffix.replace('.csv', '')}.xlsx")
-
-    #     # Write the grouped CSVs into the Excel file
-    #     with pd.ExcelWriter(excel_file, engine="openpyxl") as writer:
-    #         for file in files:
-    #             file_path = os.path.join(output_directory, file)
-    #             df = pd.read_csv(file_path)
-    #             sheet_name = os.path.splitext(file)[0]
-    #             df.to_excel(writer, sheet_name=sheet_name, index=False)
-    #     print(f"Saved combined Excel file: {excel_file}")
-
-    #INSTEAD SAVING THE FULL DATAFRAME AS A CSV FILE
     # Create the 'parent_std_means' subfolder within 'std_means'
     parent_std_means_directory = os.path.join(config["output_directory"], "std_means", "parent_std_means")
     os.makedirs(parent_std_means_directory, exist_ok=True)
