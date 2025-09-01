@@ -296,7 +296,7 @@ def cluster_summary(restructured_table_long, uk_std_cluster_means_output):
         # Print the summary for the cluster
         print(
             f"Cluster {cluster} contains {num_local_authorities} local authorities which is % of UK population, "
-            f"population density {cluster_v12_mean:.2f}."
+            f"and has a population density of {cluster_v12_mean:.2f}."
         )
         print(
             f"The population of this supergroup typically live in XXXXXX areas - "
@@ -311,15 +311,15 @@ if __name__ == "__main__":
     uk_std_cluster_means_output = pd.read_csv(uk_std_cluster_means_output_filepath)
 
     # Example Lookup File (CSV)
-    lookup_file = config["select_variables_lookup"]
-    filepath = os.path.join(config["output_directory"], "restructured_subclustering_output.csv")
-    restructured_table = pd.read_csv(filepath)
-    filepath_long = os.path.join(config["output_directory"], "restructured_subclustering_output_long.csv")
-    restructured_table_long = pd.read_csv(filepath_long)
-    pre_clustering_data_std_mean_path = config["pre_clustering_data_std_mean"]
-    pre_clustering_data_std_mean = pd.read_csv(pre_clustering_data_std_mean_path)
+    # lookup_file = config["select_variables_lookup"]
+    # filepath = os.path.join(config["output_directory"], "restructured_subclustering_output.csv")
+    # restructured_table = pd.read_csv(filepath)
+    # filepath_long = os.path.join(config["output_directory"], "restructured_subclustering_output_long.csv")
+    # restructured_table_long = pd.read_csv(filepath_long)
+    # pre_clustering_data_std_mean_path = config["pre_clustering_data_std_mean"]
+    # pre_clustering_data_std_mean = pd.read_csv(pre_clustering_data_std_mean_path)
 
-    cluster_summary(restructured_table_long, uk_std_cluster_means_output)
+    #cluster_summary(restructured_table_long, uk_std_cluster_means_output)
     # Identify cluster drivers with column name conversion and example area
     #identify_cluster_drivers_with_lookup_and_area(means_table, lookup_file, restructured_table, top_n=3)
     #calculate_cluster_variance(restructured_table, pre_clustering_data_std_mean, cluster_column='supergroup')
