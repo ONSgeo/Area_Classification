@@ -2,7 +2,7 @@
 import os
 import pandas as pd
 from utilities.load_config import load_config
-from post_processing.cluster_table_restructure import cluster_table_restructure  
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure  
 from post_processing.cluster_variables_mean import cluster_variable_means
 from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
 from post_processing.create_radial_plots import create_radial_plots_wrapper
@@ -26,7 +26,7 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
     """
 
     # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
-    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, config["split_column"])
+    restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, config["split_column"],chosen_clustering_variables_std)
 
     # Step 2: Calculate means for each cluster and each variable
     uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)

@@ -18,7 +18,7 @@ from utilities.load_config import load_config
 #REQUIRED TO MAKE RADIAL PLOTS EARLY
 from post_processing.create_radial_plots import create_radial_plots_uk 
 from post_processing.cluster_variables_mean import cluster_variable_means
-from post_processing.cluster_table_restructure import cluster_table_restructure 
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure 
 
 
 def clustering_wrapper(config: dict,
@@ -115,6 +115,7 @@ def clustering_wrapper(config: dict,
     input("Press Enter to create radial plots for supergroups...")
     # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
     # Create radial plots of supergroup against UK
+
     #clustering_output = pd.read_csv('data/output_data/supergroups_clusteroutput.csv')
     #restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'cluster')
     #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
@@ -158,6 +159,7 @@ def clustering_wrapper(config: dict,
     input("Press Enter to create radial plots for groups...")
     # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
     # Create radial plots of supergroup against UK
+
     #clustering_output = pd.read_csv('data/output_data/group/subclustering_output.csv')
     #restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'subcluster')
     #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
@@ -198,11 +200,13 @@ def clustering_wrapper(config: dict,
     input("Press Enter to create radial plots for subgroups...")
     # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
     # Create radial plots of supergroup against UK
+
     #clustering_output = pd.read_csv('data/output_data/subgroup/subclustering_output.csv')
     #restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'subsubcluster')
     #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
     #uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
     #create_radial_plots_uk(config, uk_std_cluster_means)
+
 
     logging.info("subgroup cluster run completed.")
     
