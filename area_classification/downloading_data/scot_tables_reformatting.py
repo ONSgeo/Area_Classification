@@ -712,12 +712,8 @@ def extract_metadata_from_files(scot_input_folder):
         for entry in metadata:
             if not all(key in entry for key in ["table_id", "table_name", "unit"]):
                 logging.warning(f"Warning: Incomplete metadata entry found: {entry}")
-            else:
-                logging.info(f"Valid metadata entry: {entry}")
 
     return metadata
-
-
 
 
 

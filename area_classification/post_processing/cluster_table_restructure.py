@@ -96,7 +96,7 @@ def cluster_table_restructure(config, clustering_output, split_column, chosen_cl
     output_file_long = os.path.join(config["output_directory"], f"restructured_subclustering_output_long.csv")
     restructured_cluster_table_long.to_csv(output_file_long, index=False)
 
-    return restructured_cluster_table
+    return restructured_cluster_table, restructured_cluster_table_long
 
 if __name__ == "__main__":
     # Example usage

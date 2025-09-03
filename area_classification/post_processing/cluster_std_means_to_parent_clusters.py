@@ -127,8 +127,8 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     subgroup_output_file_path = os.path.join(parent_std_means_directory, "parent_std_cluster_subgroup_means_output.csv")
     combined_subgroup_means.to_csv(subgroup_output_file_path, index=False)
 
-    print("combined_group_means DataFrame:", combined_group_means)
-    print("combined_subgroup_means DataFrame:", combined_subgroup_means)
+    #print("combined_group_means DataFrame:", combined_group_means)
+    #print("combined_subgroup_means DataFrame:", combined_subgroup_means)
     
     # Return the concatenated DataFrames
     return combined_group_means, combined_subgroup_means
