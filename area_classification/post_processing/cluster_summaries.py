@@ -313,7 +313,12 @@ compared with the mean of the other clusters combined. The population of cluster
                     # Retrieve the table_name value for the specific variable
                     table_name_value = lookup_df.loc[lookup_df['new_code'].str.contains(v_code, na=False), 'table_name'].head(1).iloc[0]
                     
-                    variance_value = variance_df.loc[cluster_number, v_code]
+                    # Convert cluster_number to string to match the index type
+                    cluster_number_str = str(cluster_number)
+                    #cluster_number_int = int(cluster_number_str)
+
+                    variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
+                    #variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
 
                     # Generate the specific message based on the domain logic
                     if domain in domain_logic:
@@ -325,9 +330,6 @@ compared with the mean of the other clusters combined. The population of cluster
                         message = f"Domain {domain} not recognized for variable {variable_name}."
 
         print("-" * 40)
-
-
-
 
 def reformat_population_estimates():
     # Read the CSV file
@@ -341,9 +343,7 @@ def reformat_population_estimates():
     # Return the DataFrame
     return reformat_population_estimates_df
 
-
-
-def read_subclustering_output(reformat_population_estimates_df):
+def cluster_population_percentages (reformat_population_estimates_df):
     """
     Reads the 'restructured_subclustering_output.csv' file from the specified folder.
 
