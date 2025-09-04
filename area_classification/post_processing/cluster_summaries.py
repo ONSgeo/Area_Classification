@@ -11,30 +11,45 @@ from area_classification.utilities.load_config import load_config
 
 def cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
     """
-    Wrapper function to run the cluster summary functions post clustering 
-    
+    Wrapper function to execute a series of cluster summary operations post clustering.
+
+    This function calculates the cluster variances, population percentages, 
+    cluster summaries, and the identification of key drivers for each cluster.
+
     Parameters
     ----------
-    config : dict
-        main pipeline config dictionary containing output directory.
-    chosen_clustering_variables
+    restructured_cluster_table_long : pd.DataFrame
+        A DataFrame containing detailed information about clusters, including the clustering results 
+        and associated variables.
+    uk_std_cluster_means : pd.DataFrame
+        A DataFrame containing the mean standardised values of clustering variables for each cluster.
+    lookup_file : str
+        Path to the lookup file used for identifying cluster drivers.
+    cluster_column : str
+        The name of the column in `restructured_cluster_table_long` that identifies the cluster assignments.
 
-    clustering_output : pd.DataFrame
-        the output from running the clustering algroithm
+    Steps
+    -----
+    1. Calculate the variance for each cluster.
+    2. Compute the population percentages for each cluster.
+    3. Generate detailed summaries for each cluster.
+    4. Identify the key drivers for each cluster.
 
     Returns
-    ----------
-        The result of get_cluster_means.
+    -------
+    None
+        This function does not return a value. It performs operations that generate summaries 
+        and insights about the clusters.
     """
 
     # Step 1: 
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
     
     # Step 2: 
-    
+    pop_sums = cluster_population_percentages (restructured_cluster_table_long, config)
 
     # Step 3: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums)
 
     # Step 4: 
     identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=3)
@@ -44,18 +59,28 @@ def cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_me
 
 def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     """
-    Calculate the variance for all columns starting with 'v' for each cluster, compute the average variance, and print it.
+    Calculates the variance for all columns starting with 'v' for each cluster, computes the average variance 
+    for each cluster
 
-    Parameters:
-        restructured_cluster_table_long (pd.DataFrame): The first DataFrame containing the data.
-        cluster_column (str): The name of the column containing cluster identifiers.
+    Parameters
+    ----------
+    restructured_cluster_table_long : pd.DataFrame
+        A DataFrame containing the data, including cluster identifiers and columns starting with 'v' 
+        for which variance will be calculated.
+    cluster_column : str
+        The name of the column in the DataFrame that contains cluster identifiers.
 
-    Returns:
-        None
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame containing the variance of each 'v' column for each cluster, along with an additional 
+        column 'cluster_average_variance' that represents the average variance of all 'v' columns for each cluster.
+
+    Notes
+    -----
+    - Variance is calculated using the sample variance formula (degrees of freedom = 1).
+    - The average variance for each cluster is computed by excluding None values from the variance calculations.
     """
-    import numpy as np
-    import pandas as pd
-
     data = restructured_cluster_table_long
 
     # Identify columns starting with 'v'
@@ -98,11 +123,99 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     # Add the average variance as an additional column
     variance_df['cluster_average_variance'] = variance_df.index.map(cluster_average_variance)
     
-    # Save the detailed variance table for reference
-    variance_df.to_csv('./data/output_data/cluster_variance/detailed_cluster_variances.csv')
     return variance_df
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df):
+def cluster_population_percentages (restructured_cluster_table_long, config):
+    """
+    Calculates the population percentages for each cluster supergroup based on population
+    estimates for the years 2021 and 2022. The function reads population data from a CSV file,
+    merges it with the cluster data, and calculates the total and percentage population
+    for each supergroup.
+    
+    Parameters
+    ----------
+    restructured_cluster_table_long : pd.DataFrame
+        A DataFrame containing cluster data with at least the columns 'LAD_code' and 'supergroup'.
+    config : dict
+        A configuration dictionary containing filepaths.
+
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame containing the population totals and percentages for each supergroup.
+        The columns include:
+        - 'supergroup': The unique cluster supergroup identifier.
+        - '2021_supergroup_population': Total population for the supergroup in 2021.
+        - '2022_supergroup_population': Total population for the supergroup in 2022.
+        - '2021_percentage': Percentage of the total population for the supergroup in 2021.
+        - '2022_percentage': Percentage of the total population for the supergroup in 2022.
+
+    Notes
+    -----
+    - Percentages are rounded to two decimal places for clarity.
+    """
+    # MIGHT BE BETTER TO SAVE ELSEWHERE? ALSO NEED TO BE IN READ ME TO DOWNLOAD WHEN DATASET CHOSEN?
+    df_populations = pd.read_csv(f"{config['input_data_directory']}population_estimates.csv", skiprows=7)
+    # Rename the first two columns
+    df_populations.rename(columns={df_populations.columns[0]: 'LAD_name', df_populations.columns[1]: 'LAD_code'}, inplace=True)
+    # Remove the last row
+    df_populations = df_populations.iloc[:-1, :]
+
+    # Merge the two DataFrames on LAD code
+    merged_df = pd.merge(restructured_cluster_table_long, df_populations, on='LAD_code', how='inner')
+    
+    # Sum the population for each unique subgroup
+    pop_sums = merged_df.groupby('supergroup')[['2021', '2022']].sum().reset_index()
+
+    # Sum the total population column in merged_df
+    total_population_2021 = merged_df['2021'].sum()
+    total_population_2022 = merged_df['2022'].sum()
+
+    # Add population columns for 2021 and 2022
+    pop_sums['2021_percentage'] = (pop_sums['2021'] / total_population_2021) * 100
+    pop_sums['2022_percentage'] = (pop_sums['2022'] / total_population_2022) * 100
+
+    # Round the percentages to 2 decimal places
+    pop_sums['2021_percentage'] = pop_sums['2021_percentage'].round(2)
+    pop_sums['2022_percentage'] = pop_sums['2022_percentage'].round(2)
+
+    # Rename columns for clarity
+    pop_sums.rename(columns={'2021': '2021_supergroup_population', '2022': '2022_supergroup_population'}, inplace=True)
+
+    return pop_sums
+
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums):
+    """
+    Generate a summary for each cluster based on various metrics and data sources.
+
+    Parameters
+    ----------
+    restructured_cluster_table_long : pd.DataFrame
+        A DataFrame containing detailed information about clusters,
+            including columns such as 'supergroup', 'LAD_name', and 'v12'.
+    uk_std_cluster_means : pd.DataFrame
+        A DataFrame containing mean values for various metrics at the cluster level,
+            including columns such as 'hierarchy_level', 'cluster', and 'v12'.
+    variance_df : pd.DataFrame
+        A DataFrame containing variance information for clusters, indexed by cluster IDs,
+            with a column 'cluster_average_variance'.
+    pop_sums: pd.DataFrame
+        A DataFrame containing population percentages for clusters, including columns
+            such as 'supergroup', '2021_percentage', and '2022_percentage'.
+
+    Returns
+    ----------
+        list: A list of strings, where each string contains a detailed summary for a cluster, including:
+            - The number and percentage of local authorities in the cluster.
+            - The population percentages for 2021 and 2022.
+            - The population density (mean of 'v12' values).
+            - The average variance for the cluster.
+            - Example areas (up to 3 randomly sampled local authority names).
+
+    Notes
+    ----------
+        - Random sampling of example areas is performed with a fixed random seed for reproducibility.
+    """
     # Get unique clusters
     clusters = restructured_cluster_table_long['supergroup'].unique()
     # Sort clusters in ascending order
@@ -143,11 +256,6 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         else:
             uk_mean_v12 = None  # Or set a default value, e.g., 0 or np.nan
             logging.warning(f"No data found for cluster {cluster} in filtered_df.")
-
-        # uk_mean_v12 = filtered_df.loc[filtered_df['cluster'] == cluster, 'v12']
-        # print(uk_mean_v12)
-        # # Extract the scalar value from the Series
-        # uk_mean_v12 = uk_mean_v12.iloc[0]  # Use .iloc[0] to get the first value
   
         # Find example areas from the restructured_cluster_table_long table
         example_areas = restructured_cluster_table_long[restructured_cluster_table_long['supergroup'] == cluster]
@@ -155,12 +263,17 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
             area_names = example_areas['LAD_name'].sample(n=min(3, len(example_areas)), random_state=42).tolist()
         else:
             area_names = ["No area found"]
-               
+
+        # Extract the 2021 and 2022 percentages for the current cluster
+        cluster_data = pop_sums.loc[pop_sums['supergroup'] == cluster]  # Filter for the current cluster
+        percentage_2021 = cluster_data['2021_percentage'].values[0]  # Get the 2021 percentage
+        percentage_2022 = cluster_data['2022_percentage'].values[0]  # Get the 2022 percentage
+   
         # Print the summary for the cluster
         # Combine the print statements into a single string
         output = (
             f"Cluster {cluster} contains {num_local_authorities} local authorities which is {percentage_local_authorities:.2f}% of UK local authorities, "
-            f"and has a population density of {cluster_v12_mean:.2f}.\n"
+            f"in 2021 this was {percentage_2021:.2f}% of the UK population and in 2022 it was {percentage_2022:.2f}%. It has a population density of {cluster_v12_mean:.2f}.\n"
         )
         # Check if the cluster exists in the DataFrame
         if cluster in variance_df.index:
@@ -176,22 +289,30 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
 
 def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=5):
     """
-    Identifies the variables that drive the allocation of each cluster and make it different
-    from the other clusters by comparing the mean values of variables in a cluster to the
-    mean values of the same variables across all other clusters. Converts column names
-    using a lookup file, displaying variable names with new_code in brackets. Also prints
-    the names of three random areas within the cluster.
-
-    Parameters:
+    Identifies the key variables that differentiate each cluster from others by analyzing
+    the mean values of variables within a cluster compared to the mean values across all
+    other clusters. The function also maps variable names using a lookup file and provides
+    detailed descriptions of the differences for each cluster.
+    
+    Parameters
+    ----------
         uk_std_cluster_means (pd.DataFrame): A DataFrame where rows represent clusters
-                                    and columns are the variable means.
-        lookup_file (str): Path to the CSV file containing the lookup table.
-        top_n (int): The number of top driving variables to identify for each cluster.
+            and columns represent the mean values of variables for each cluster.
+        lookup_file (str): Path to a CSV file containing a lookup table with columns
+            'new_code', 'variable_name', and 'domain' for mapping variable codes to
+            descriptive names and domains.
+        cluster_info (list): A list of strings containing information about each cluster,
+            such as example area names or additional metadata.
+        variance_df (pd.DataFrame): A DataFrame containing variance values for each variable
+            and cluster, indexed by cluster number and variable code.
+        top_n (int, optional): The number of top driving variables to identify for each
+            cluster. Defaults to 5.
 
-        cluster_info:list
+    Returns
+    ----------
+        None: The function prints the top driving variables for each cluster, along with
+        detailed descriptions and variance values.
 
-    Returns:
-        None: Prints the top driving variables for each cluster and three example area names.
     """
     # Filter the uk_std_cluster_means_output to include only the top row and rows with 'supergroup' in the hierarchy_level column
     if 'hierarchy_level' not in uk_std_cluster_means.columns:
@@ -315,10 +436,10 @@ compared with the mean of the other clusters combined. The population of cluster
                     
                     # Convert cluster_number to string to match the index type
                     cluster_number_str = str(cluster_number)
-                    #cluster_number_int = int(cluster_number_str)
+                    cluster_number_int = int(cluster_number_str)
 
-                    variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
-                    #variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
+                    #variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
+                    variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
 
                     # Generate the specific message based on the domain logic
                     if domain in domain_logic:
@@ -331,72 +452,16 @@ compared with the mean of the other clusters combined. The population of cluster
 
         print("-" * 40)
 
-def reformat_population_estimates():
-    # Read the CSV file
-    df = pd.read_csv("data/population_estimates.csv", skiprows=7)
-    # Rename the first two columns
-    df.rename(columns={df.columns[0]: 'LAD_name', df.columns[1]: 'LAD_code'}, inplace=True)
-    # Remove the last row
-    df = df.iloc[:-1, :]
-    reformat_population_estimates_df = df
-
-    # Return the DataFrame
-    return reformat_population_estimates_df
-
-def cluster_population_percentages (reformat_population_estimates_df):
-    """
-    Reads the 'restructured_subclustering_output.csv' file from the specified folder.
-
-    Parameters
-    ----------
-    folder_path : str
-        Path to the folder containing the CSV file.
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame containing the CSV data.
-    """
-    
-    file_path = os.path.join('./data/output_data/restructured_subclustering_output.csv')
-    df = pd.read_csv(file_path)
-    
-    df_populations = reformat_population_estimates_df
-
-    # Merge the two DataFrames on LAD code
-    merged_df = pd.merge(df, df_populations, on='LAD_code', how='inner')
-    
-    # Sum the population for each unique subgroup
-    pop_sums = merged_df.groupby('supergroup')[['2021', '2022']].sum().reset_index()
-
-    # Sum the total population column in merged_df
-    total_population_2021 = merged_df['2021'].sum()
-    total_population_2022 = merged_df['2022'].sum()
-
-    # Add population columns for 2021 and 2022
-    pop_sums['2021_percentage'] = (pop_sums['2021'] / total_population_2021) * 100
-    pop_sums['2022_percentage'] = (pop_sums['2022'] / total_population_2022) * 100
-
-    # Round the percentages to 2 decimal places
-    pop_sums['2021_percentage'] = pop_sums['2021_percentage'].round(2)
-    pop_sums['2022_percentage'] = pop_sums['2022_percentage'].round(2)
-
-    # Rename columns for clarity
-    pop_sums.rename(columns={'2021': '2021_supergroup_population', '2022': '2022_supergroup_population'}, inplace=True)
-
-    print(pop_sums)
-
-    return pop_sums
 
 if __name__ == "__main__":
     config = load_config()
+    filepath_long = os.path.join(config["output_directory"], "restructured_subclustering_output_long.csv")
+    restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
 
     lookup_file = config["select_variables_lookup"]
-    filepath_long = os.path.join(config["output_directory"], "restructured_subclustering_output_long.csv")
-    restructured_cluster_table_long = pd.read_csv(filepath_long)
-    
+
     cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column='supergroup')
 
 
