@@ -1,3 +1,4 @@
+# If using population counts / step 2 in final outputs, check correct input data!! 
 import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -30,13 +31,13 @@ def cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_me
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
     
     # Step 2: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df)
+    
 
     # Step 3: 
-    identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=3)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df)
 
     # Step 4: 
-    
+    identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=3)
 
     return 
 
@@ -324,6 +325,68 @@ compared with the mean of the other clusters combined. The population of cluster
                         message = f"Domain {domain} not recognized for variable {variable_name}."
 
         print("-" * 40)
+
+
+
+
+def reformat_population_estimates():
+    # Read the CSV file
+    df = pd.read_csv("data/population_estimates.csv", skiprows=7)
+    # Rename the first two columns
+    df.rename(columns={df.columns[0]: 'LAD_name', df.columns[1]: 'LAD_code'}, inplace=True)
+    # Remove the last row
+    df = df.iloc[:-1, :]
+    reformat_population_estimates_df = df
+
+    # Return the DataFrame
+    return reformat_population_estimates_df
+
+
+
+def read_subclustering_output(reformat_population_estimates_df):
+    """
+    Reads the 'restructured_subclustering_output.csv' file from the specified folder.
+
+    Parameters
+    ----------
+    folder_path : str
+        Path to the folder containing the CSV file.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing the CSV data.
+    """
+    
+    file_path = os.path.join('./data/output_data/restructured_subclustering_output.csv')
+    df = pd.read_csv(file_path)
+    
+    df_populations = reformat_population_estimates_df
+
+    # Merge the two DataFrames on LAD code
+    merged_df = pd.merge(df, df_populations, on='LAD_code', how='inner')
+    
+    # Sum the population for each unique subgroup
+    pop_sums = merged_df.groupby('supergroup')[['2021', '2022']].sum().reset_index()
+
+    # Sum the total population column in merged_df
+    total_population_2021 = merged_df['2021'].sum()
+    total_population_2022 = merged_df['2022'].sum()
+
+    # Add population columns for 2021 and 2022
+    pop_sums['2021_percentage'] = (pop_sums['2021'] / total_population_2021) * 100
+    pop_sums['2022_percentage'] = (pop_sums['2022'] / total_population_2022) * 100
+
+    # Round the percentages to 2 decimal places
+    pop_sums['2021_percentage'] = pop_sums['2021_percentage'].round(2)
+    pop_sums['2022_percentage'] = pop_sums['2022_percentage'].round(2)
+
+    # Rename columns for clarity
+    pop_sums.rename(columns={'2021': '2021_supergroup_population', '2022': '2022_supergroup_population'}, inplace=True)
+
+    print(pop_sums)
+
+    return pop_sums
 
 if __name__ == "__main__":
     config = load_config()
