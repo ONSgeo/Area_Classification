@@ -57,16 +57,12 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],
                         var_name="variable_name", value_name="variable_value")
-    
-    logging.info(f"long_data first reshape: {long_data.head()}")
-    
+        
     # Reshape to even longer by making one hierarchy_level column (rather than supergroup, group, subgroup)
     long_data = pd.melt(long_data, id_vars=["LAD_code", "LAD_name", "variable_name", "variable_value"],
                         value_vars=["supergroup", "group", "subgroup"],
                         var_name="hierarchy_level", value_name="cluster")
-    
-    logging.info(f"long_data second reshape: {long_data.head()}")
-    
+        
     # Group by cluster and variable, and calculate the mean
     uk_std_cluster_means = long_data.groupby(["variable_name", "hierarchy_level", "cluster"]).mean("variable_value").reset_index()
 

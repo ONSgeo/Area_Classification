@@ -47,10 +47,10 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
     radial_plots_dir = os.path.join(config["output_directory"], "radial_plots", "parent_cluster_radial_plots")
     os.makedirs(radial_plots_dir, exist_ok=True)
 
-    print("group columns", combined_group_means.columns)
-    print("group values", combined_group_means.head())
-    print("subgroup columns", combined_subgroup_means.columns)
-    print("subgroup values", combined_subgroup_means.head())
+    # print("group columns", combined_group_means.columns)
+    # print("group values", combined_group_means.head())
+    # print("subgroup columns", combined_subgroup_means.columns)
+    # print("subgroup values", combined_subgroup_means.head())
 
 
     def create_radial_plots(dataframe, level):

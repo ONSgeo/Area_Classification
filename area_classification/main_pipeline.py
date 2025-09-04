@@ -84,7 +84,6 @@ def main_pipeline():
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"]
     )
-    print(clustering_output)
 
     # Add a break
     input("Press Enter to continue to post processing...")
