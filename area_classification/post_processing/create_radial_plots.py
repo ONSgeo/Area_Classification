@@ -159,7 +159,7 @@ def create_radial_plots_parent_clusters(config, combined_group_means, combined_s
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row[level]}_{level}')
 
             # Add a title
-            ax.set_title(f"Radial Plot for {row[level]}_{level}", size=14, pad=20)
+            ax.set_title(f"Radial Plot for {row[level]}_{level}", size=14, pad=40, weight='bold')
 
             # Draw a solid red ring at the radius of 0
             ax.plot(angles[:-1], [0] * len(angles[:-1]), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
