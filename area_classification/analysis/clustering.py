@@ -15,10 +15,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 from utilities.load_config import load_config
 
-#REQUIRED TO MAKE RADIAL PLOTS EARLY
-from post_processing.create_radial_plots import create_radial_plots_uk 
-from post_processing.cluster_variables_mean import cluster_variable_means
-from post_processing.cluster_table_restructure import cluster_table_restructure 
+#REQUIRED TO MAKE RADIAL PLOTS EARLY - need updating as radial plot function changed
+# from post_processing.create_radial_plots import create_radial_plots_wrapper 
+# from post_processing.cluster_variables_mean import cluster_variable_means
+# from post_processing.cluster_table_restructure import cluster_table_restructure 
 
 
 def clustering_wrapper(config: dict,
