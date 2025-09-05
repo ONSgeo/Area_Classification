@@ -9,7 +9,7 @@ import re
 
 from area_classification.utilities.load_config import load_config
 
-def cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
+def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
     """
     Wrapper function to execute a series of cluster summary operations post clustering.
 
@@ -438,8 +438,8 @@ compared with the mean of the other clusters combined. The population of cluster
                     cluster_number_str = str(cluster_number)
                     cluster_number_int = int(cluster_number_str)
 
-                    #variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
-                    variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
+                    variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
+                    #variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
 
                     # Generate the specific message based on the domain logic
                     if domain in domain_logic:
