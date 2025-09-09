@@ -43,16 +43,8 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
         1a1           | subgroup          | TS001           | 130.0
     """
     
-    # Load the restructured cluster table (restrucutred_cluster_table / restructured_sublustering_output.csv) 
-    
-    cluster_results = restructured_cluster_table
-
-    # load in the pre clustering data
-    pre_clustering_data = chosen_clustering_variables_std
-
-
     # Merge cluster results with standardized means census data
-    merged_data = pd.merge(cluster_results, pre_clustering_data, on="LAD_code", how="left")
+    merged_data = pd.merge(restructured_cluster_table, chosen_clustering_variables_std, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],

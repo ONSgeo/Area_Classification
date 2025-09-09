@@ -16,9 +16,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 from utilities.load_config import load_config
 
 #REQUIRED TO MAKE RADIAL PLOTS EARLY - need updating as radial plot function changed
-# from post_processing.create_radial_plots import create_radial_plots_wrapper 
+# from post_processing.create_radial_plots import create_radial_plots
 # from post_processing.cluster_variables_mean import cluster_variable_means
-# from post_processing.cluster_table_restructure import cluster_table_restructure 
+# from post_processing.cluster_table_restructure import cluster_table_restructure
+# from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters   
 
 
 def clustering_wrapper(config: dict,
@@ -79,6 +80,8 @@ def clustering_wrapper(config: dict,
 
     transformed_variable_df = transform_and_standardize_data(variable_df)
     logging.info("Transformed and standardized data completed.")
+    #Save the transformed and standardised data as a CSV for QA a new file
+    transformed_variable_df.to_csv(os.path.join(config["qa_folder_path"], "transformed_variable_df.csv"), index=False)
 
     # Validate num_clusters compared to input data
     if len(transformed_variable_df) < num_clusters:
@@ -97,7 +100,6 @@ def clustering_wrapper(config: dict,
     input("Press Enter to continue with supergroups creation...")
     
     ###SUPERGROUP SECTION ###
-    # num_clusters = config["number_of_clusters_supergroup"]
 
     supergroup_variable_df = run_kmeans(transformed_variable_df, 
                                           num_clusters, 
@@ -113,14 +115,16 @@ def clustering_wrapper(config: dict,
 
     # Add a break
     input("Press Enter to create radial plots for supergroups...")
-    # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
-    # Create radial plots of supergroup against UK
+    
+    # # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
+    # # Create radial plots of supergroup against UK
+    # clustering_output = pd.read_csv('data/output_data/supergroups_clusteroutput.csv')
+    # chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
+    # restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'cluster', chosen_clustering_variables_std)
+    # uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
 
-    #clustering_output = pd.read_csv('data/output_data/supergroups_clusteroutput.csv')
-    #restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'cluster')
-    #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
-    #uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
-    #create_radial_plots_uk(config, uk_std_cluster_means)
+    # # Create radial plots for supergroups, groups and subgroups against UK
+    # create_radial_plots(config, uk_std_cluster_means, level="UK")
 
     # Add a break
     input("Press Enter to continue to move onto groups...")
@@ -142,7 +146,7 @@ def clustering_wrapper(config: dict,
     
     # Add a break
     input("Press Enter to continue with the subcluster numbers below for groups creation...")
-    group_numbers = [3, 3, 3, 3, 3, 3]
+    group_numbers = [4, 4, 4, 4, 4, 4]
 
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
                                             output_dir=f"{output_directory}group", 
@@ -154,17 +158,22 @@ def clustering_wrapper(config: dict,
                                             n_init=n_init,
                                             random_seed=random_seed)
     logging.info("groups cluster run completed.")
+    print(grouped_variable_df)
+    empty_cells_count = grouped_variable_df.isna().sum().sum()
+    print(f"Number of empty cells: {empty_cells_count}")
 
     # Add a break
     input("Press Enter to create radial plots for groups...")
     # WHILST TESTING WITH JEN - CREATING RADIAL PLOTS EARLY
-    # Create radial plots of supergroup against UK
-
-    #clustering_output = pd.read_csv('data/output_data/group/subclustering_output.csv')
-    #restructured_cluster_table_df = cluster_table_restructure(config, clustering_output, 'subcluster')
-    #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
-    #uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
-    #create_radial_plots_uk(config, uk_std_cluster_means)
+    # Create radial plots of group against parents (supergroup)
+    # clustering_output = pd.read_csv('data/output_data/group/subclustering_output.csv')
+    # restructured_cluster_table = cluster_table_restructure(config, clustering_output, 'subcluster')
+    # chosen_clustering_variables =pd.read_csv(config["pre_clustering_data_filtered"])
+    # combined_group_means, combined_subgroup_means = cluster_std_means_to_parent_clusters(
+    #     config, restructured_cluster_table, chosen_clustering_variables
+    # )
+    # # Create radial plots for groups against their parent (groups)
+    # create_radial_plots(config, combined_group_means, level="group")
 
     # Add a break
     input("Press Enter to continue to move onto subgroup...")
@@ -182,10 +191,14 @@ def clustering_wrapper(config: dict,
     logging.info("subgroup clustergrams completed.")
     # Add a break
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
-
+    input("Unique subclusters at this stage:")
     # These values will depend on the higher up level, so update once groups values allocated.
-    subgroup_nums = [3, 3, 3, 3, 3, 3]
-
+    
+    print(grouped_variable_df['subcluster'].unique())
+    subgroup_nums = [4, 4, 4, 4, 4, 4]
+    #subgroup_nums = ['3b' '0a' '3d' '5c' '4a' '0c' '5b' '0b' '4c' '2b' '4d' '5d' '2a' '1a'
+    #'5a' '2d' '1d' '1c' '1b' '3a' '3c' '4b' '2c' '0d']
+    
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
                                                output_dir=f"{output_directory}subgroup", 
                                                subcluster_nums=subgroup_nums, 
@@ -195,6 +208,7 @@ def clustering_wrapper(config: dict,
                                                num_clusters=num_clusters, 
                                                n_init=n_init,
                                                random_seed=random_seed)
+    print(subgrouped_variable_df)
     
     # Add a break
     input("Press Enter to create radial plots for subgroups...")
@@ -206,7 +220,6 @@ def clustering_wrapper(config: dict,
     #chosen_clustering_variables_std =pd.read_csv(config["pre_clustering_data_std_mean"])
     #uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table_df, chosen_clustering_variables_std)
     #create_radial_plots_uk(config, uk_std_cluster_means)
-
 
     logging.info("subgroup cluster run completed.")
     
@@ -382,8 +395,10 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, drop_colum
 
     for cluster in range(num_clusters):
         # Select rows corresponding to the current cluster, dropping the 'cluster' column
+        logging.warning(f"output_df shape: {output_df.shape}")
         cluster_df = output_df.query(f"cluster == {cluster}").drop(columns=drop_columns)
-
+        logging.warning(f"cluster_df shape: {cluster_df.shape}")
+        print(cluster_df)
         logging.info(f"Cluster: {cluster}, {len(cluster_df)} geographies in cluster")
  
         # Define save location
@@ -426,13 +441,25 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     df = input_df.copy()
 
     num_clusters = len(df[cluster_col_name].unique())
-    subcluster_nums = [3] * num_clusters
+    #subcluster_nums = [3] * num_clusters
+    
+    print(subcluster_nums)
+    print("subcluster_nums")
+    print(len(subcluster_nums))
+    print()
+    print("Could sord both things into to zip before running zip")
+    #if df[cluster_col_name].unique() != len(subcluster_nums):
+    #    raise ValueError("The number of unique clusters in the DataFrame does not match the length of subcluster_nums.")
 
     for cluster, num_subclusters in zip(df[cluster_col_name].unique(), subcluster_nums): # Iterate over each supergroupnum_subclusters in zip(range(num_clusters), subcluster_nums): # Iterate over each supergroup
         logging.info(f"Clustering supergroup {cluster} into {num_subclusters} subclusters.")
-
+        print("num_subclusters")
+        print(num_subclusters)
         # Select rows corresponding to the current cluster, drop the cluster column before clustering
+        logging.warning(f"input_df shape: {input_df.shape}")
         cluster_df = input_df.query(f"{cluster_col_name} == @cluster").drop(columns=drop_columns).copy()
+        logging.warning(f"cluster_df shape: {cluster_df.shape}")
+        print(cluster_df)
         # Run KMeans clustering for the selected supergroup
         subcluster_output_df = run_kmeans(
             cluster_df, 
@@ -453,6 +480,15 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     # Save the final output
     df[[column_name]].to_csv(output_dir+"/subclustering_output.csv")
 
+    logging.info(f"Input DataFrame shape: {input_df.shape}")
+    print(input_df)
+    input_df.to_csv('input_df.csv', index=False)
+    logging.info(f"Cluster DataFrame shape: {cluster_df.shape}")
+    print(cluster_df)
+    cluster_df.to_csv('cluster_df.csv', index=False)
+    logging.info(f"Subcluster Output DataFrame shape: {subcluster_output_df.shape}")
+    print(subcluster_output_df)
+    subcluster_output_df.to_csv('subcluster_output_df.csv', index=False)
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
@@ -460,10 +496,15 @@ if __name__ == "__main__":
     config = load_config()
 
     function_output = clustering_wrapper(config,
-        input_dataframe_or_filepath= config["pre_clustering_data_std_means"],
+        input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
         plot_directory=config["plot_directory"],
         random_seed=config["random_seed"])
     print(function_output.head())
+    function_output.to_csv('function_output.csv', index=False)
+    # Count the total number of empty cells (NaN values)
+    empty_cells_count = function_output.isna().sum().sum()
+    # Print the result
+    print(f"Number of empty cells: {empty_cells_count}")
