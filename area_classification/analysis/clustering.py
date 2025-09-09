@@ -77,15 +77,12 @@ def clustering_wrapper(config: dict,
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
     
 
-    transformed_variable_df = transform_and_standardize_data(variable_df)
-    logging.info("Transformed and standardized data completed.")
-
     # Validate num_clusters compared to input data
-    if len(transformed_variable_df) < num_clusters:
-        logging.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(transformed_variable_df)}.")
-        num_clusters = len(transformed_variable_df)
+    if len(variable_df) < num_clusters:
+        logging.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(variable_df)}.")
+        num_clusters = len(variable_df)
 
-    create_clustergram(transformed_variable_df,
+    create_clustergram(variable_df,
                        num_clusters, 
                        n_init, 
                        save_loc=plot_directory+"/supergroup_clustergram.png",
@@ -99,7 +96,7 @@ def clustering_wrapper(config: dict,
     ###SUPERGROUP SECTION ###
     # num_clusters = config["number_of_clusters_supergroup"]
 
-    supergroup_variable_df = run_kmeans(transformed_variable_df, 
+    supergroup_variable_df = run_kmeans(variable_df, 
                                           num_clusters, 
                                           n_init, 
                                           output_filepath, 
@@ -142,7 +139,7 @@ def clustering_wrapper(config: dict,
     
     # Add a break
     input("Press Enter to continue with the subcluster numbers below for groups creation...")
-    group_numbers = [3, 3, 3, 3, 3, 3]
+    group_numbers = [2,2,2,2,2,2]
 
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
                                             output_dir=f"{output_directory}group", 
@@ -184,7 +181,7 @@ def clustering_wrapper(config: dict,
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
 
     # These values will depend on the higher up level, so update once groups values allocated.
-    subgroup_nums = [3, 3, 3, 3, 3, 3]
+    subgroup_nums = [2,2,2,2,2,2]
 
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
                                                output_dir=f"{output_directory}subgroup", 
@@ -426,7 +423,7 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     df = input_df.copy()
 
     num_clusters = len(df[cluster_col_name].unique())
-    subcluster_nums = [3] * num_clusters
+    #subcluster_nums = [3] * num_clusters
 
     for cluster, num_subclusters in zip(df[cluster_col_name].unique(), subcluster_nums): # Iterate over each supergroupnum_subclusters in zip(range(num_clusters), subcluster_nums): # Iterate over each supergroup
         logging.info(f"Clustering supergroup {cluster} into {num_subclusters} subclusters.")
@@ -460,7 +457,7 @@ if __name__ == "__main__":
     config = load_config()
 
     function_output = clustering_wrapper(config,
-        input_dataframe_or_filepath= config["pre_clustering_data_std_means"],
+        input_dataframe_or_filepath= config["pre_clustering_data_std_mean"],
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
