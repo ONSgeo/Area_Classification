@@ -130,10 +130,8 @@ def clustering_wrapper(config: dict,
     input("Press Enter to continue to move onto groups...")
 
     ###GROUP SECTION ###
-    # num_clusters = config["number_of_clusters_group"]
 
-    # Call the function with the adjusted number of clusters
-    # Have to be careful with this, if we try and group 10 data points in 11 clusters it will fail
+    # Call the function with the adjusted number of clusters - if we try and group 10 data points in 11 clusters it will fail
     # function should take inpupt of highest amount of clusters to look at
     create_subcluster_clustergrams(output_df=supergroup_variable_df,
                                    plot_dir=plot_directory, 
@@ -146,6 +144,7 @@ def clustering_wrapper(config: dict,
     
     # Add a break
     input("Press Enter to continue with the subcluster numbers below for groups creation...")
+    # WILL NOT BE NEEDED IF DICTIONARIES WORK
     group_numbers = [4, 4, 4, 4, 4, 4]
 
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
@@ -154,13 +153,11 @@ def clustering_wrapper(config: dict,
                                             drop_columns=["cluster"], 
                                             column_name="subcluster",
                                             cluster_col_name="cluster",
+                                            cluster_to_numbers = config["subclustering_mapping"],
                                             num_clusters=num_clusters, 
                                             n_init=n_init,
                                             random_seed=random_seed)
     logging.info("groups cluster run completed.")
-    print(grouped_variable_df)
-    empty_cells_count = grouped_variable_df.isna().sum().sum()
-    print(f"Number of empty cells: {empty_cells_count}")
 
     # Add a break
     input("Press Enter to create radial plots for groups...")
@@ -178,9 +175,7 @@ def clustering_wrapper(config: dict,
     # Add a break
     input("Press Enter to continue to move onto subgroup...")
 
-    ###SUBGROUP SECTION ###
-    # num_clusters = config["number_of_clusters_subgroup"]
-    
+    ###SUBGROUP SECTION ###    
     create_subcluster_clustergrams(output_df=grouped_variable_df,
                                    plot_dir=plot_directory, 
                                    num_clusters=num_clusters, 
@@ -190,14 +185,12 @@ def clustering_wrapper(config: dict,
                                    random_seed=random_seed)
     logging.info("subgroup clustergrams completed.")
     # Add a break
-    input("Press Enter to continue with the cluster numbers below for subgroups creation...")
     input("Unique subclusters at this stage:")
-    # These values will depend on the higher up level, so update once groups values allocated.
-    
     print(grouped_variable_df['subcluster'].unique())
+    input("Press Enter to continue with the cluster numbers below for subgroups creation...")
+
+    # WILL NOT BE NEEDED IF DICTIONARIES WORK
     subgroup_nums = [4, 4, 4, 4, 4, 4]
-    #subgroup_nums = ['3b' '0a' '3d' '5c' '4a' '0c' '5b' '0b' '4c' '2b' '4d' '5d' '2a' '1a'
-    #'5a' '2d' '1d' '1c' '1b' '3a' '3c' '4b' '2c' '0d']
     
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
                                                output_dir=f"{output_directory}subgroup", 
@@ -205,10 +198,10 @@ def clustering_wrapper(config: dict,
                                                drop_columns=['cluster', 'subcluster'],
                                                column_name="subsubcluster",
                                                cluster_col_name="subcluster",
+                                               cluster_to_numbers = config["subsubclustering_mapping"],
                                                num_clusters=num_clusters, 
                                                n_init=n_init,
                                                random_seed=random_seed)
-    print(subgrouped_variable_df)
     
     # Add a break
     input("Press Enter to create radial plots for subgroups...")
@@ -228,13 +221,10 @@ def clustering_wrapper(config: dict,
 
 def load_data(filepath):
     # load the input data from a csv file 
-    # The names of the columns are not important, BUT;
-    # the first column should be the geography code (e.g., Output Area or Local Authority District),
-    # which will be used as the DataFrame index.
-    # The remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
+    # The names of the columns are not important, first column should be geography code used as DataFrame index
+    # Remaining columns should be variables for clustering, provided as fractions or percentages of the table total.
     input_df = pd.read_csv(filepath, index_col=0)
 
-    
     # Check for missing values
     missing_values = input_df.isnull().sum().sum()
     if missing_values > 0:
@@ -269,7 +259,6 @@ def transform_and_standardize_data(df):
 
 ## Clustergrams
 # We produce a clustergram plot to assess an appropriate number of clusters for the supergroups.
-# For OAC, eight supergroups were created.
 # Some guidance on interpreting clustergrams and choosing the number of clusters can be found here: [Clustergram](https://clustergram.readthedocs.io/en/stable/notebooks/introduction.html)
 
 def create_clustergram(df, num_clusters, n_init, save_loc, random_seed=None):
@@ -303,15 +292,12 @@ def create_clustergram(df, num_clusters, n_init, save_loc, random_seed=None):
         num_clusters = len(df)
     
     # Create the clustergram
-    #Suggested code
     # Define the range of clusters to evaluate
     k_range = range(1, num_clusters + 1)  # Start from 2 clusters up to num_clusters
 
     # Create the clustergram
     cgram = Clustergram(k_range=k_range, method='kmeans', random_state=random_seed, n_init=n_init)
     
-    # Original line
-    # cgram = Clustergram(range(1, 15), n_init=n_init, random_state=random_seed)  # Initialize clustergram model
     cgram.fit(df)  # Fit model to data
     cgram.plot()  # Generate plot
     plt.savefig(save_loc)  # Save figure
@@ -369,7 +355,6 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
     return df
 
 
-
 ## Subclusters = groups and subgroups
 # For LAD area classification the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 
@@ -389,16 +374,12 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, drop_colum
         Path to save the resulting clustergram plots.
     n_init : int, optional
         The number of times KMeans will be initialized. Defaults to 10. Increase for more stable results.
-                            
-
     """
 
     for cluster in range(num_clusters):
         # Select rows corresponding to the current cluster, dropping the 'cluster' column
-        logging.warning(f"output_df shape: {output_df.shape}")
         cluster_df = output_df.query(f"cluster == {cluster}").drop(columns=drop_columns)
-        logging.warning(f"cluster_df shape: {cluster_df.shape}")
-        print(cluster_df)
+
         logging.info(f"Cluster: {cluster}, {len(cluster_df)} geographies in cluster")
  
         # Define save location
@@ -409,7 +390,7 @@ def create_subcluster_clustergrams(output_df, plot_dir, num_clusters, drop_colum
         create_clustergram(cluster_df, num_clusters, n_init=n_init, save_loc=save_loc, random_seed=random_seed)
 
 
-def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_columns,column_name, cluster_col_name, n_init= 1000, random_seed = None) -> pd.DataFrame:
+def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_columns,column_name, cluster_col_name, cluster_to_numbers, n_init= 1000, random_seed = None) -> pd.DataFrame:
     """
     Runs subclustering for each supergroup using KMeans and returns a modified DataFrame with subcluster labels.
     
@@ -443,23 +424,20 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     num_clusters = len(df[cluster_col_name].unique())
     #subcluster_nums = [3] * num_clusters
     
-    print(subcluster_nums)
-    print("subcluster_nums")
-    print(len(subcluster_nums))
-    print()
-    print("Could sord both things into to zip before running zip")
+    print("ZIP CHANGE")
     #if df[cluster_col_name].unique() != len(subcluster_nums):
     #    raise ValueError("The number of unique clusters in the DataFrame does not match the length of subcluster_nums.")
 
-    for cluster, num_subclusters in zip(df[cluster_col_name].unique(), subcluster_nums): # Iterate over each supergroupnum_subclusters in zip(range(num_clusters), subcluster_nums): # Iterate over each supergroup
+    for cluster, num_subclusters in cluster_to_numbers.items():
+    #for cluster, num_subclusters in zip(df[cluster_col_name].unique(), subcluster_nums):
+
         logging.info(f"Clustering supergroup {cluster} into {num_subclusters} subclusters.")
-        print("num_subclusters")
-        print(num_subclusters)
+
         # Select rows corresponding to the current cluster, drop the cluster column before clustering
         logging.warning(f"input_df shape: {input_df.shape}")
         cluster_df = input_df.query(f"{cluster_col_name} == @cluster").drop(columns=drop_columns).copy()
         logging.warning(f"cluster_df shape: {cluster_df.shape}")
-        print(cluster_df)
+
         # Run KMeans clustering for the selected supergroup
         subcluster_output_df = run_kmeans(
             cluster_df, 
@@ -469,9 +447,9 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
             random_seed=random_seed  # Use a different random seed for each subclustering to ensure diversity
         )
 
-        # Convert subcluster numbers (0, 1, 2, ...) into a more readable format (e.g., '0a', '0b', '0c', ...),
-        # where the numeric part represents the main cluster and the letter represents the subcluster.
-        # This improves interpretability of the clustering results.
+        # Improve interpretability of the clustering results by convert subcluster numbers (0, 1, 2)
+        # into a more readable format ('0a', '0b', '0c'). Tthe numeric part represents the main cluster 
+        # The letter represents the subcluster.
         subcluster_output_df[column_name] = [str(cluster) + chr(97 + i) for i in subcluster_output_df["cluster"]]
 
         # Update the modified DataFrame with subclustering results
@@ -480,15 +458,12 @@ def run_subclustering(input_df, output_dir, subcluster_nums, num_clusters,drop_c
     # Save the final output
     df[[column_name]].to_csv(output_dir+"/subclustering_output.csv")
 
-    logging.info(f"Input DataFrame shape: {input_df.shape}")
-    print(input_df)
-    input_df.to_csv('input_df.csv', index=False)
-    logging.info(f"Cluster DataFrame shape: {cluster_df.shape}")
-    print(cluster_df)
-    cluster_df.to_csv('cluster_df.csv', index=False)
     logging.info(f"Subcluster Output DataFrame shape: {subcluster_output_df.shape}")
-    print(subcluster_output_df)
     subcluster_output_df.to_csv('subcluster_output_df.csv', index=False)
+    # Count the total number of empty cells (NaN values)
+    empty_cells_count = df.isna().sum().sum()
+    # Print the result
+    print(f"Number of empty cells: {empty_cells_count}")
     return df  # Return the modified DataFrame with clusters and subclusters
 
 
@@ -504,7 +479,3 @@ if __name__ == "__main__":
         random_seed=config["random_seed"])
     print(function_output.head())
     function_output.to_csv('function_output.csv', index=False)
-    # Count the total number of empty cells (NaN values)
-    empty_cells_count = function_output.isna().sum().sum()
-    # Print the result
-    print(f"Number of empty cells: {empty_cells_count}")
