@@ -7,7 +7,7 @@ from pre_processing.aggregating_variables import aggregating_variables
 from pre_processing.select_variables import select_variables
 from pre_processing.totals_columns_select_uk import select_totals_columns
 from pre_processing.convert_to_percentages import convert_to_percentages
-from pre_processing.standardize_pre_clustering_data import standardize_dataframe
+
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):

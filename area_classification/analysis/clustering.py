@@ -78,17 +78,14 @@ def clustering_wrapper(config: dict,
     else:
         raise ValueError("Input must be a file path (str) or a pandas DataFrame.")
 
-    transformed_variable_df = transform_and_standardize_data(variable_df)
-    logger.info("Transformed and standardized data completed.")
-    #Save the transformed and standardised data as a CSV for QA a new file
-    transformed_variable_df.to_csv(os.path.join(config["qa_folder_path"], "transformed_variable_df.csv"), index=False)
 
     # Validate num_clusters compared to input data
-    if len(transformed_variable_df) < num_clusters:
-        logger.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(transformed_variable_df)}.")
-        num_clusters = len(transformed_variable_df)
+    if len(variable_df) < num_clusters:
+        logging.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(variable_df)}.")
+        num_clusters = len(variable_df)
 
-    create_clustergram(transformed_variable_df,
+
+    create_clustergram(variable_df,
                        num_clusters, 
                        n_init, 
                        save_loc=plot_directory+"/supergroup_clustergram.png",
@@ -101,7 +98,7 @@ def clustering_wrapper(config: dict,
     
     ###SUPERGROUP SECTION ###
 
-    supergroup_variable_df = run_kmeans(transformed_variable_df, 
+    supergroup_variable_df = run_kmeans(variable_df, 
                                           num_clusters, 
                                           n_init, 
                                           output_filepath, 
@@ -149,6 +146,7 @@ def clustering_wrapper(config: dict,
     # Add a break
     input("Press Enter to continue with the subcluster numbers below for groups creation...")
 
+
     grouped_variable_df = run_subclustering(input_df=supergroup_variable_df, 
                                             output_dir=f"{output_directory}group", 
                                             drop_columns=["cluster"], 
@@ -188,7 +186,7 @@ def clustering_wrapper(config: dict,
     input(f"Unique subclusters at this stage: {grouped_variable_df['subcluster'].unique()}")
     input("Check that dictionary in config for subsubclustering mapping is correct")
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
-    
+
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 
                                                output_dir=f"{output_directory}subgroup", 
                                                drop_columns=['cluster', 'subcluster'],
@@ -407,6 +405,7 @@ def run_subclustering(input_df, output_dir,drop_columns,column_name, cluster_col
 
     # Work on a copy of the DataFrame to prevent unintended modifications
     df = input_df.copy()
+
 
     # Changed cluster from an integer to a string
     for cluster, num_subclusters in cluster_to_numbers.items():
