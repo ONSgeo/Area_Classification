@@ -10,16 +10,14 @@ import matplotlib.pyplot as plt
 import os
 import logging
 
-#logging.basicConfig(level=logger.info, format='%(asctime)s - %(levelname)s - %(message)s')
-
 logger = logging.getLogger(__name__)
 
 from utilities.load_config import load_config
 
 #REQUIRED TO MAKE RADIAL PLOTS EARLY - need updating as radial plot function changed
-from post_processing.create_radial_plots import create_radial_plots
-from post_processing.cluster_variables_mean import cluster_variable_means
-from post_processing.cluster_table_restructure import cluster_table_restructure
+from area_classification.post_processing.create_radial_plots import create_radial_plots
+from area_classification.post_processing.cluster_variables_mean import cluster_variable_means
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
 # from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters   
 
 
@@ -81,7 +79,7 @@ def clustering_wrapper(config: dict,
 
     # Validate num_clusters compared to input data
     if len(variable_df) < num_clusters:
-       logging.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(variable_df)}.")
+       logger.warning(f"Warning: Reducing num_clusters from {num_clusters} to {len(variable_df)}.")
        num_clusters = len(variable_df)
 
 
@@ -126,8 +124,8 @@ def clustering_wrapper(config: dict,
     #create_radial_plots(config, uk_std_cluster_means, level="UK")
 
     # Add a break
-    input(f"Unique clusters at this stage: {supergroup_variable_df['cluster'].unique()}")
-    input("Check that dictionary in config for subsubclustering mapping is correct")
+    logger.info(f"Unique clusters at this stage: {supergroup_variable_df['cluster'].unique()}")
+    logger.info("Check that dictionary in config for subsubclustering mapping is correct")
     input("Press Enter to continue to move onto groups...")
 
     ###GROUP SECTION ###
@@ -183,8 +181,8 @@ def clustering_wrapper(config: dict,
                                    random_seed=random_seed)
     logger.info("subgroup clustergrams completed.")
     # Add a break
-    input(f"Unique subclusters at this stage: {grouped_variable_df['subcluster'].unique()}")
-    input("Check that dictionary in config for subsubclustering mapping is correct")
+    logger.info(f"Unique subclusters at this stage: {grouped_variable_df['subcluster'].unique()}")
+    logger.info("Check that dictionary in config for subsubclustering mapping is correct")
     input("Press Enter to continue with the cluster numbers below for subgroups creation...")
 
     subgrouped_variable_df = run_subclustering(input_df=grouped_variable_df, 

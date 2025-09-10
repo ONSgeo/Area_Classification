@@ -1,19 +1,16 @@
-import logging
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 import os
 import pandas as pd
-from utilities.load_config import load_config
-from utilities.loading_data import load_format_data
-from downloading_data.ew_lad_bulk_download import ew_lad_bulk_download
-from downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
-from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
-from pre_processing.pre_processing import pre_processing
-from pre_processing.drop_variables import check_drop_columns_true
-from analysis.clustering import clustering_wrapper      
-from post_processing.post_processing import post_processing
-from pre_processing.prepare_clustering_data import prepare_clustering_data     
+
+from area_classification.utilities.load_config import load_config
+from area_classification.utilities.loading_data import load_format_data
+from area_classification.downloading_data.ew_lad_bulk_download import ew_lad_bulk_download
+from area_classification.downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
+from area_classification.downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
+from area_classification.pre_processing.pre_processing import pre_processing
+from area_classification.pre_processing.drop_variables import check_drop_columns_true
+from area_classification.analysis.clustering import clustering_wrapper      
+from area_classification.post_processing.post_processing import post_processing
+from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data     
 
 def main_pipeline():
     """
