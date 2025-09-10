@@ -12,8 +12,8 @@ from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
 from pre_processing.drop_variables import check_drop_columns_true
 from analysis.clustering import clustering_wrapper      
-from area_classification.post_processing.post_processing import post_processing
-from pre_processing.standardize_pre_clustering_data import standardize_dataframe      
+from post_processing.post_processing import post_processing
+from pre_processing.prepare_clustering_data import prepare_clustering_data 
 
 def main_pipeline():
     """
@@ -68,11 +68,12 @@ def main_pipeline():
     chosen_clustering_variables = check_drop_columns_true(config, preprocessed_df)
 
     # Step 6: Standardisation
-    #standardised pre_clustering data (used in the clustering)
-    chosen_clustering_variables_std = standardize_dataframe(chosen_clustering_variables)
+    # standardised pre_clustering data (used in the clustering)
+    chosen_clustering_variables_std = prepare_clustering_data(chosen_clustering_variables)
     # Save the standardized pre clusting data to a new file 
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
     chosen_clustering_variables_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
+
          
     ## Step 7: Clustering
     clustering_output = clustering_wrapper(
@@ -85,11 +86,15 @@ def main_pipeline():
         random_seed=config["random_seed"]
     )
 
+    clustering_output.to_csv("clustering_output_b4_postprocessing.csv", index=False)
+
     # Add a break
     input("Press Enter to continue to post processing...")
  
     # Step 8: Post processing
     # Cluster tables are reformatted and mean tables created
+    chosen_clustering_variables_std = pd.read_csv(config["pre_clustering_data_std_mean"])
+    chosen_clustering_variables = pd.read_csv(config["pre_clustering_data"])
     post_processing(config, clustering_output, chosen_clustering_variables_std, chosen_clustering_variables)
 
 if __name__ == "__main__":

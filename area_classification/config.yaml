@@ -24,7 +24,7 @@ variables_to_drop  : [
 
 # Data to use in clustering
 pre_clustering_data: './data/inputs/pre_clustering_data.csv'
-pre_clustering_data_filtered: './data/inputs/pre_clustering_data_filtered.csv' #Won't create this if not filtering
+pre_clustering_data_filtered: './data/inputs/pre_clustering_data_filtered.csv' # Won't create this if not filtering
 pre_clustering_data_std_mean: './data/inputs/pre_clustering_data_std_means.csv' #Filtered and non filtered both create this in main
 
 #pre_clustering_data_filtered_std_mean: './data/inputs/pre_clustering_data_filtered_std_means.csv'
@@ -46,6 +46,7 @@ input_data_directory: './data/inputs/'
 qa_folder_path: './data/QA/'
 output_directory: './data/output_data/'
 plot_directory: './data/plots/'
+
 
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: './data/inputs/scot_downloads/'

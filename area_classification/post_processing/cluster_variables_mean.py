@@ -50,7 +50,6 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     # load in the pre clustering data
     pre_clustering_data = chosen_clustering_variables_std
 
-
     # Merge cluster results with standardized means census data
     merged_data = pd.merge(cluster_results, pre_clustering_data, on="LAD_code", how="left")
 

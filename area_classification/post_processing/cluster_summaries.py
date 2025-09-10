@@ -7,7 +7,7 @@ import numpy as np
 import os
 import re
 
-from area_classification.utilities.load_config import load_config
+from utilities.load_config import load_config
 
 def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
     """
