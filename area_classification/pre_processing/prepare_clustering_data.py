@@ -3,15 +3,16 @@ import numpy as np
 
 def prepare_clustering_data(dataframe):
     """
-    Standardizes the columns of a DataFrame by calculating the z-scores for each column.
-    Skips the first column (e.g., area codes) and avoids division by zero for columns with zero standard deviation.
+    Transforms and standardizes the input DataFrame for clustering.
+    This function creates standardized means per varaible column
+    followed by an inverse hyperbolic sine transformation and min-max scaling.
 
     Parameters:
-        dataframe (pd.DataFrame): The input DataFrame to standardize with area codes in the first
-        column followed by the percentage values of the chosen cluster variables.
+        dataframe (pd.DataFrame): The input DataFrame for clustering
 
     Returns:
-        pd.DataFrame: A new DataFrame which has replaced the percentage values with standardized values.
+        pd.DataFrame: A new DataFrame with the transformed and standardized numeric values,
+                      and the first column set as the index.
     """
 
     standardized_data = dataframe.copy()
