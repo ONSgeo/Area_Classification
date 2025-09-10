@@ -11,9 +11,9 @@ from downloading_data.ni_lgd_downloading_data import ni_lgd_download_data
 from downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from pre_processing.pre_processing import pre_processing
 from pre_processing.drop_variables import check_drop_columns_true
-from area_classification.clustering import clustering_wrapper      
-from area_classification.post_processing.post_processing import post_processing
-from pre_processing.standardize_pre_clustering_data import standardize_dataframe      
+from analysis.clustering import clustering_wrapper      
+from post_processing.post_processing import post_processing
+from pre_processing.prepare_clustering_data import prepare_clustering_data     
 
 def main_pipeline():
     """
@@ -69,7 +69,7 @@ def main_pipeline():
 
     # Step 6: Standardisation
     #standardised pre_clustering data (used in the clustering)
-    chosen_clustering_variables_std = standardize_dataframe(chosen_clustering_variables)
+    chosen_clustering_variables_std = prepare_clustering_data(chosen_clustering_variables)
     # Save the standardized pre clusting data to a new file 
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
     chosen_clustering_variables_std.to_csv(config["pre_clustering_data_std_mean"], index=False)

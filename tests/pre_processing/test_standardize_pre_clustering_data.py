@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from area_classification.pre_processing.standardize_pre_clustering_data import standardize_dataframe 
+from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data
 
 class TestStandardizeDataframe(unittest.TestCase):
     def setUp(self):

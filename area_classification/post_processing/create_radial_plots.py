@@ -24,9 +24,6 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
         DataFrame containing subgroup-level means.
     """
 
-    # Create the 'radial_plots' directory
-    radial_plots_dir = os.path.join(config["output_directory"], "radial_plots", "parent_cluster_radial_plots")
-    os.makedirs(radial_plots_dir, exist_ok=True)
 
     # Create radial plots for supergroups, groups and subgroups against UK
     create_radial_plots(config, uk_std_cluster_means, level="UK")

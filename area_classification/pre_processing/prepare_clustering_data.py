@@ -24,11 +24,17 @@ def prepare_clustering_data(dataframe):
         else:
             standardized_data[column] = 0  # If std is 0, set standardized values to 0
 
-    # set the index as the first column
-    standardized_data.set_index(standardized_data.columns[0], inplace=True)
-    transformed_and_standardized_df = np.arcsinh(standardized_data) # Apply inverse hyperbolic sine transformation
-    transformed_and_standardized_df = (transformed_and_standardized_df - transformed_and_standardized_df.min()) / (standardized_data.max() - standardized_data.min()) # Apply min-max scaling
-   
+   # Apply inverse hyperbolic sine transformation to all columns except the first
+    standardized_data.iloc[:, 1:] = np.arcsinh(standardized_data.iloc[:, 1:])
+
+    # Apply min-max scaling to all columns except the first
+    standardized_data.iloc[:, 1:] = (standardized_data.iloc[:, 1:] - standardized_data.iloc[:, 1:].min()) / (
+        standardized_data.iloc[:, 1:].max() - standardized_data.iloc[:, 1:].min()
+    )
+
+    # The first column remains untouched, and the transformations are applied in place to the numeric columns.
+    transformed_and_standardized_df = standardized_data
+
     return transformed_and_standardized_df
 
 
