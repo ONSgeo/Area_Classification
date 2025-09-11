@@ -4,7 +4,7 @@ import glob
 from functools import reduce
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def load_data(filepath):
     """
@@ -25,7 +25,7 @@ def load_data(filepath):
     # Check for missing values
     missing_values = input_df.isnull().sum().sum()
     if missing_values > 0:
-        logging.warning(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
+        logger.warning(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
         input_df.fillna(0, inplace=True)
     
     return input_df

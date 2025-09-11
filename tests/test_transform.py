@@ -1,4 +1,4 @@
-from area_classification.clustering import transform_and_standardize_data
+from area_classification.analysis.clustering import transform_and_standardize_data
 
 # def test_____():
 

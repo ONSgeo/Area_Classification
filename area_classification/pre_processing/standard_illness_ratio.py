@@ -10,7 +10,7 @@ import pandas as pd
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 from utilities.disability_age_group_conversion import (
     convert_disability_age_group_england_wales,
@@ -48,17 +48,17 @@ def sir_processing(config):
             missing_files.append(file)
 
     if config["england_wales_disability_file"] in missing_files:
-        logging.warning(f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory.")
+        logger.warning(f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory.")
         convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
     if config["ni_disability_file"] in missing_files:
-        logging.warning(f"Warning: The file {config['ni_disability_file']} was not found in the input directory.")
+        logger.warning(f"Warning: The file {config['ni_disability_file']} was not found in the input directory.")
         convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
     if config["scotland_disability_file"] in missing_files:
         convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
-        logging.warning(f"Warning: The file {config['scotland_disability_file']} was not found in the input directory.")        
+        logger.warning(f"Warning: The file {config['scotland_disability_file']} was not found in the input directory.")        
 
 
-        logging.warning(f"Warning: The following files were not found: {missing_files}")
+        logger.warning(f"Warning: The following files were not found: {missing_files}")
 
     ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
     ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
@@ -109,7 +109,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
 
     # QA check the SIR dataframe before returning
     sir_qa_checks(df_all, config)
-    logging.info(f"SIR_DF_ALL: {df_all.head()}")
+    logger.info(f"SIR_DF_ALL: {df_all.head()}")
     return df_all
 
 def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
@@ -130,12 +130,12 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
     assert df['disability_count'].dtype == 'int64', "Disability count should be of type int64"
 
     # Check expected spatial distribution
-    logging.info("SIR values distribution:")
-    logging.info(df['SIR'].describe())
+    logger.info("SIR values distribution:")
+    logger.info(df['SIR'].describe())
 
     for country_code_starts_with in [["E", "W"], ['S'], ['N']]:
         df_subset = df[df["area_code"].str.startswith(tuple(country_code_starts_with))]
-        logging.info(df_subset['SIR'].describe())
+        logger.info(df_subset['SIR'].describe())
 
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)

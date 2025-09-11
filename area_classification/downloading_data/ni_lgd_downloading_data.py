@@ -5,14 +5,7 @@ import logging
 from io import BytesIO
 import os 
 
-# Set up logging enabled flag
-LOGGING_ENABLED = False  # Set this to False to silence logs
-
-# Set up basic logging (logs to console by default)
-if LOGGING_ENABLED:
-    logging.basicConfig(level=logging.WARNING, format="%(asctime)s - %(levelname)s - %(message)s")
-else:
-    logging.basicConfig(level=logging.CRITICAL)  # Disable logging when set to False
+logger = logging.getLogger(__name__)
 
 def ni_lgd_download_data(config): 
     """
@@ -131,7 +124,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
                 f"Status code: {r.status_code} | "
                 f"Message: {r.text}"
             )
-            logging.error(log_message)
+            logger.error(log_message)
             continue
         type = r.json()["tableSchema"]["columns"][4]["titles"]
 
@@ -293,7 +286,7 @@ def fetch_data(var_code, var_name, var_unit):
             f"Status code: {r.status_code} | "
             f"Message: {r.text}"
         )
-        logging.error(log_message)
+        logger.error(log_message)
         return None
     return r.content
  

@@ -1,6 +1,6 @@
 # If using population counts / step 2 in final outputs, check correct input data!! 
 import logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 import pandas as pd
 import numpy as np
@@ -255,7 +255,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
             uk_mean_v12 = uk_mean_v12.iloc[0]  # Use .iloc[0] to get the first value
         else:
             uk_mean_v12 = None  # Or set a default value, e.g., 0 or np.nan
-            logging.warning(f"No data found for cluster {cluster} in filtered_df.")
+            logger.warning(f"No data found for cluster {cluster} in filtered_df.")
   
         # Find example areas from the restructured_cluster_table_long table
         example_areas = restructured_cluster_table_long[restructured_cluster_table_long['supergroup'] == cluster]

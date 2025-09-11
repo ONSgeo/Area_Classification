@@ -4,8 +4,7 @@ import sys
 from pathlib import Path
 
 logging_str = (
-    "[%(asctime)s: %(name)s: %(levelname)s: %(module)s: "
-    "%(funcName)s: %(lineno)d] %(message)s"
+    "%(asctime)s - %(levelname)s - %(message)s"
 )
 
 # Get the root directory by going up two levels
@@ -16,7 +15,7 @@ os.makedirs(log_dir, exist_ok=True)
 log_filepath = os.path.join(log_dir, "running_log.log")
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format=logging_str,
     handlers=[logging.FileHandler(log_filepath), logging.StreamHandler(sys.stdout)],
 )

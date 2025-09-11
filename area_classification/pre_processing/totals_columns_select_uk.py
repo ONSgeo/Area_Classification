@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def select_totals_columns(config, inputs_folder):
     """
@@ -90,7 +90,7 @@ def select_totals_columns(config, inputs_folder):
                         if not match.empty:
                             total_column = match.values[0]  # Get the matching total column name (e.g., ts0010001)
                         else:
-                            logging.warning(f"Warning: No match found for variable '{variable}' in lookup_df for {country}.")
+                            logger.warning(f"Warning: No match found for variable '{variable}' in lookup_df for {country}.")
                             continue
                     
                     
@@ -99,7 +99,7 @@ def select_totals_columns(config, inputs_folder):
                         # Add the total column to the select DataFrame
                         select_df[f"{variable}_total"] = agg_df[total_column]
                     else:
-                        logging.warning(f"Warning: Total column '{total_column}' not found in agg file.")
+                        logger.warning(f"Warning: Total column '{total_column}' not found in agg file.")
 
             # Append the processed DataFrame to the list
             processed_dfs.append(select_df)
