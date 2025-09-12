@@ -99,7 +99,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         # Standardize means of each value in the 'v' columns
         for col in v_columns:
             mean = group_data[col].mean()
-            std = group_data[col].std()
+            std = group_data[col].std(ddof=0)  # Use population standard deviation
             group_data[col] = (group_data[col] - mean) / std
 
         # Group by 'subgroup' and calculate the mean for each group
