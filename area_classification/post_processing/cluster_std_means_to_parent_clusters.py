@@ -135,7 +135,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     
 
 if __name__ == "__main__":
-    from utilities.load_config import load_config
+    from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     restructured_cluster_table_df = pd.read_csv('data/output_data/restructured_subclustering_output.csv')
     chosen_clustering_variables = pd.read_csv('data/inputs/pre_clustering_data_filtered.csv')

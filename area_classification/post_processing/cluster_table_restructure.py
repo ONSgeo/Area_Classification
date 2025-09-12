@@ -1,7 +1,7 @@
 # Restructuring of cluster assignments table
 import os
 import pandas as pd
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 config = load_config('area_classification/config.yaml')
 
 def cluster_table_restructure(config, clustering_output, split_column, chosen_clustering_variables_std):
