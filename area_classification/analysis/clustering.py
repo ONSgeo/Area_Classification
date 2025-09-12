@@ -12,7 +12,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 
 #REQUIRED TO MAKE RADIAL PLOTS EARLY - need updating as radial plot function changed
 from area_classification.post_processing.create_radial_plots import create_radial_plots
@@ -415,7 +415,6 @@ def run_subclustering(input_df, output_dir,drop_columns,column_name, cluster_col
     df[[column_name]].to_csv(output_dir+"/subclustering_output.csv")
 
     logger.info(f"Subcluster Output DataFrame shape: {subcluster_output_df.shape}")
-    subcluster_output_df.to_csv('subcluster_output_df.csv', index=False)
 
     return df  # Return the modified DataFrame with clusters and subclusters
 

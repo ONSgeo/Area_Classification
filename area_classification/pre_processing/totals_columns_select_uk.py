@@ -122,6 +122,6 @@ def select_totals_columns(config, inputs_folder):
 
 # Run the function if the script is executed directly
 if __name__ == "__main__":
-    from utilities.load_config import load_config
+    from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     select_totals_columns(config, config["qa_folder_path"])

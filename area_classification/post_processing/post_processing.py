@@ -1,12 +1,12 @@
 # Post clustering wrapper
 import os
 import pandas as pd
-from utilities.load_config import load_config
-from post_processing.cluster_table_restructure import cluster_table_restructure  
-from post_processing.cluster_variables_mean import cluster_variable_means
-from post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
-from post_processing.create_radial_plots import create_radial_plots_wrapper
-from post_processing.cluster_summaries import cluster_summaries_wrapper
+from area_classification.utilities.load_config import load_config
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure  
+from area_classification.post_processing.cluster_variables_mean import cluster_variable_means
+from area_classification.post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
+from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
+from area_classification.post_processing.cluster_summaries import cluster_summaries_wrapper
 
 def post_processing(config, clustering_output, chosen_clustering_variables_std, chosen_clustering_variables):
     """
@@ -42,7 +42,9 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
 
     # Step 5: Draft cluster summaries
     cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'supergroup')
-
+    # cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'group')
+    # cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
+    
     # Return the combined means for further use if needed
     return combined_group_means, combined_subgroup_means
     
