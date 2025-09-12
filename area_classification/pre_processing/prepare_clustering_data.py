@@ -50,6 +50,7 @@ def standardize_data(dataframe):
 
 def apply_arcsinh_transformation(dataframe):
     """
+
     Applies the inverse hyperbolic sine (arcsinh) transformation to numeric values.
 
     Parameters:

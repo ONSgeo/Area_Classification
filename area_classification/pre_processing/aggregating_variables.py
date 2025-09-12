@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def aggregating_variables(df_temp, aggregation_configs, config):
     """
@@ -34,7 +34,7 @@ def aggregating_variables(df_temp, aggregation_configs, config):
          # Check if all columns in col_names exist in df_temp
         missing_cols = [col for col in col_names if col not in df_temp.columns]
         if missing_cols:
-            logging.warning(f"Warning: Missing columns {missing_cols} in DataFrame. Skipping aggregation for {new_col_name}.")
+            logger.warning(f"Warning: Missing columns {missing_cols} in DataFrame. Skipping aggregation for {new_col_name}.")
             continue
 
         # Add the new column by summing the specified columns
@@ -58,7 +58,7 @@ def aggregating_variables(df_temp, aggregation_configs, config):
     return df_temp
 
 if __name__ == "__main__":
-    from utilities.load_config import load_config
+    from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     aggregation_config = load_config('area_classification/aggregation_setup.yaml')
     #aggregation_configs = aggregation_config['scot_file_configs']

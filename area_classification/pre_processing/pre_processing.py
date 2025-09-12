@@ -1,12 +1,12 @@
 import pandas as pd
 import sys
 import os
-from utilities.load_config import load_config
-from pre_processing.standard_illness_ratio import sir_processing
-from pre_processing.aggregating_variables import aggregating_variables
-from pre_processing.select_variables import select_variables
-from pre_processing.totals_columns_select_uk import select_totals_columns
-from pre_processing.convert_to_percentages import convert_to_percentages
+from area_classification.utilities.load_config import load_config
+from area_classification.pre_processing.standard_illness_ratio import sir_processing
+from area_classification.pre_processing.aggregating_variables import aggregating_variables
+from area_classification.pre_processing.select_variables import select_variables
+from area_classification.pre_processing.totals_columns_select_uk import select_totals_columns
+from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
 
 
 #Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)

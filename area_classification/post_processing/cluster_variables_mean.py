@@ -1,10 +1,6 @@
 # Cluster variables mean averages
 import pandas as pd
 import os
-import logging
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 
 def cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables_std):
     """

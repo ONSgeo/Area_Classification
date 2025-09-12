@@ -1,13 +1,13 @@
 # If using population counts / step 2 in final outputs, check correct input data!! 
 import logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 import pandas as pd
 import numpy as np
 import os
 import re
 
-from utilities.load_config import load_config
+from area_classification.utilities.load_config import load_config
 
 def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
     """
@@ -44,15 +44,15 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
 
     # Step 1: 
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
-    
+
     # Step 2: 
-    pop_sums = cluster_population_percentages (restructured_cluster_table_long, config)
+    pop_sums = cluster_population_percentages (restructured_cluster_table_long, f"{config['input_data_directory']}population_estimates.csv", cluster_column)
 
     # Step 3: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, cluster_column)
 
     # Step 4: 
-    identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=3)
+    identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=3)
 
     return 
 
@@ -65,16 +65,17 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     Parameters
     ----------
     restructured_cluster_table_long : pd.DataFrame
-        A DataFrame containing the data, including cluster identifiers and columns starting with 'v' 
-        for which variance will be calculated.
+        A DataFrame containing the data, including columns for LAD code / names, the cluster allocation at different levels 
+        (supergroup, group, and subgroup) and columns starting with 'v' for which variance will be calculated.
     cluster_column : str
-        The name of the column in the DataFrame that contains cluster identifiers.
+        The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 
     Returns
     -------
     pd.DataFrame
-        A DataFrame containing the variance of each 'v' column for each cluster, along with an additional 
-        column 'cluster_average_variance' that represents the average variance of all 'v' columns for each cluster.
+        A DataFrame containing the cluster allocation column called (supergroup, group or subgroup) the variance of each 
+        'v' column for each cluster, along with an additional column 'cluster_average_variance' that represents the average 
+        variance of all 'v' columns for each cluster. The cluster column becomes the index for the dataframe.
 
     Notes
     -----
@@ -118,6 +119,7 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
             cluster_average_variance[cluster_number] = None
 
     variance_df = pd.DataFrame.from_dict(cluster_variances, orient='index')
+    # Make the cluster column the index
     variance_df.index.name = cluster_column
     variance_df = variance_df.sort_index()
     # Add the average variance as an additional column
@@ -125,19 +127,23 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     
     return variance_df
 
-def cluster_population_percentages (restructured_cluster_table_long, config):
+def cluster_population_percentages (restructured_cluster_table_long, population_estimates_filepath, cluster_column):
     """
-    Calculates the population percentages for each cluster supergroup based on population
-    estimates for the years 2021 and 2022. The function reads population data from a CSV file,
-    merges it with the cluster data, and calculates the total and percentage population
-    for each supergroup.
+    Calculates the total population of the LAD combined for each cluster at the level specificed (supergroup, 
+    group or subgroup) as well as calculating the precentage of population for that cluster based on population
+    estimates for the years 2021 and 2022. The function reads population data from a CSV file, merges it with
+    the cluster data, and calculates the total and percentage population for each supergroup, group or subgroup
+    as specified.
     
     Parameters
     ----------
     restructured_cluster_table_long : pd.DataFrame
         A DataFrame containing cluster data with at least the columns 'LAD_code' and 'supergroup'.
-    config : dict
-        A configuration dictionary containing filepaths.
+    population_estimates_filepath : str
+        The file path of where to find the csv for the LAD estimate population for 2021 and 2022.
+    cluster_column : str
+        The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
+
 
     Returns
     -------
@@ -154,18 +160,18 @@ def cluster_population_percentages (restructured_cluster_table_long, config):
     -----
     - Percentages are rounded to two decimal places for clarity.
     """
-    # MIGHT BE BETTER TO SAVE ELSEWHERE? ALSO NEED TO BE IN READ ME TO DOWNLOAD WHEN DATASET CHOSEN?
-    df_populations = pd.read_csv(f"{config['input_data_directory']}population_estimates.csv", skiprows=7)
+    # Read in the population estimates CSV file and do some initial formatting
+    df_populations = pd.read_csv(population_estimates_filepath, skiprows=7)
     # Rename the first two columns
     df_populations.rename(columns={df_populations.columns[0]: 'LAD_name', df_populations.columns[1]: 'LAD_code'}, inplace=True)
     # Remove the last row
     df_populations = df_populations.iloc[:-1, :]
 
-    # Merge the two DataFrames on LAD code
+    # Merge the two cluster dataframe and population dataframe on LAD code
     merged_df = pd.merge(restructured_cluster_table_long, df_populations, on='LAD_code', how='inner')
     
     # Sum the population for each unique subgroup
-    pop_sums = merged_df.groupby('supergroup')[['2021', '2022']].sum().reset_index()
+    pop_sums = merged_df.groupby(cluster_column)[['2021', '2022']].sum().reset_index()
 
     # Sum the total population column in merged_df
     total_population_2021 = merged_df['2021'].sum()
@@ -180,13 +186,13 @@ def cluster_population_percentages (restructured_cluster_table_long, config):
     pop_sums['2022_percentage'] = pop_sums['2022_percentage'].round(2)
 
     # Rename columns for clarity
-    pop_sums.rename(columns={'2021': '2021_supergroup_population', '2022': '2022_supergroup_population'}, inplace=True)
+    pop_sums.rename(columns={'2021': f'2021_{cluster_column}_population', '2022': f'2022_{cluster_column}_population'}, inplace=True)
 
     return pop_sums
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, cluster_column):
     """
-    Generate a summary for each cluster based on various metrics and data sources.
+    Generate a text summary for each cluster based on various metrics and data sources.
 
     Parameters
     ----------
@@ -202,6 +208,8 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     pop_sums: pd.DataFrame
         A DataFrame containing population percentages for clusters, including columns
             such as 'supergroup', '2021_percentage', and '2022_percentage'.
+    cluster_column : str
+        The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 
     Returns
     ----------
@@ -217,13 +225,13 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         - Random sampling of example areas is performed with a fixed random seed for reproducibility.
     """
     # Get unique clusters
-    clusters = restructured_cluster_table_long['supergroup'].unique()
+    clusters = restructured_cluster_table_long[cluster_column].unique()
     # Sort clusters in ascending order
     clusters = sorted(clusters)
 
-    # Filter rows where 'hierarchy_level' is 'supergroup' and convert 'cluster' column to integers
+    # Filter rows where 'hierarchy_level' is the same as the cluster_column specified and convert 'cluster' column to integers
     filtered_df = (
-        uk_std_cluster_means.loc[uk_std_cluster_means['hierarchy_level'] == 'supergroup']
+        uk_std_cluster_means.loc[uk_std_cluster_means['hierarchy_level'] == cluster_column]
         .assign(cluster=lambda df: pd.to_numeric(df['cluster'], errors='coerce').astype(int))
     )
 
@@ -233,7 +241,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     # Iterate through each cluster
     for cluster in clusters:
         # Filter rows for the current cluster
-        cluster_data = restructured_cluster_table_long[restructured_cluster_table_long['supergroup'] == cluster]
+        cluster_data = restructured_cluster_table_long[restructured_cluster_table_long[cluster_column] == cluster]
         
         # Number of local authorities in the current cluster
         num_local_authorities = cluster_data['LAD_name'].nunique()
@@ -255,17 +263,17 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
             uk_mean_v12 = uk_mean_v12.iloc[0]  # Use .iloc[0] to get the first value
         else:
             uk_mean_v12 = None  # Or set a default value, e.g., 0 or np.nan
-            logging.warning(f"No data found for cluster {cluster} in filtered_df.")
+            logger.warning(f"No data found for cluster {cluster} in filtered_df.")
   
         # Find example areas from the restructured_cluster_table_long table
-        example_areas = restructured_cluster_table_long[restructured_cluster_table_long['supergroup'] == cluster]
+        example_areas = restructured_cluster_table_long[restructured_cluster_table_long[cluster_column] == cluster]
         if not example_areas.empty:
             area_names = example_areas['LAD_name'].sample(n=min(3, len(example_areas)), random_state=42).tolist()
         else:
             area_names = ["No area found"]
 
         # Extract the 2021 and 2022 percentages for the current cluster
-        cluster_data = pop_sums.loc[pop_sums['supergroup'] == cluster]  # Filter for the current cluster
+        cluster_data = pop_sums.loc[pop_sums[cluster_column] == cluster]  # Filter for the current cluster
         percentage_2021 = cluster_data['2021_percentage'].values[0]  # Get the 2021 percentage
         percentage_2022 = cluster_data['2022_percentage'].values[0]  # Get the 2022 percentage
    
@@ -287,7 +295,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
 
     return cluster_info
 
-def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, top_n=5):
+def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=5):
     """
     Identifies the key variables that differentiate each cluster from others by analyzing
     the mean values of variables within a cluster compared to the mean values across all
@@ -314,12 +322,13 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
         detailed descriptions and variance values.
 
     """
-    # Filter the uk_std_cluster_means_output to include only the top row and rows with 'supergroup' in the hierarchy_level column
+    # Filter the uk_std_cluster_means_output to include only the top row and rows with the specified cluster_column  
+    # in the hierarchy_level column
     if 'hierarchy_level' not in uk_std_cluster_means.columns:
         raise ValueError("Means table must contain a 'hierarchy_level' column.")
     
     uk_std_cluster_means = pd.concat([
-        uk_std_cluster_means[uk_std_cluster_means['hierarchy_level'] == 'supergroup']  # Select rows with 'supergroup'
+        uk_std_cluster_means[uk_std_cluster_means['hierarchy_level'] == cluster_column]
     ])
 
     # Remove the hierarchy_level column
@@ -462,8 +471,7 @@ if __name__ == "__main__":
 
     lookup_file = config["select_variables_lookup"]
 
-    cluster_summaries_wrapper(restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column='supergroup')
-
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column='supergroup')
 
 #PROBABLY DELETE BELOW
 # def analyze_cluster_means(uk_std_cluster_means_output):

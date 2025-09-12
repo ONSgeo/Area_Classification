@@ -5,7 +5,7 @@ import csv
 from functools import reduce
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def scot_reformatting_wrapper(scot_input_folder: str, 
                               LAD_lookup_file_path: str, 
@@ -152,7 +152,7 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     # Look for UV101b.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV101b.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named UV101b.csv found in the directory.")
+        logger.error("No file named UV101b.csv found in the directory.")
         return
 
     # Load the CSV file and skip the first 12 rows
@@ -205,7 +205,7 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
     else:
-        logging.error("No relevant data found in UV101b.csv.")
+        logger.error("No relevant data found in UV101b.csv.")
 
 
 
@@ -231,7 +231,7 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     # Look for UV103.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV103.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named UV103.csv found in the directory.")
+        logger.error("No file named UV103.csv found in the directory.")
         return
 
     # Load the CSV file
@@ -303,7 +303,7 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     # Look for UV104.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV104.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named UV104.csv found in the directory.")
+        logger.error("No file named UV104.csv found in the directory.")
         return
 
     # Load the CSV file and use the first row as the header
@@ -374,7 +374,7 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
     # Look for UV104.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV210.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named UV104.csv found in the directory.")
+        logger.error("No file named UV104.csv found in the directory.")
         return
 
     # Load the CSV file and use the first row as the header
@@ -447,7 +447,7 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     # Look for migrant_indicator.csv in the directory
     file_path = os.path.join(scot_input_folder, "migrant_indicator.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named migrant_indicator.csv found in the directory.")
+        logger.error("No file named migrant_indicator.csv found in the directory.")
         return
 
     # Load the CSV file
@@ -532,7 +532,7 @@ def extract_pop_density_table(scot_input_folder):
 
     # Check if the input file exists
     if not os.path.exists(population_density_xlsx):
-        logging.error(f"No file named {population_density_xlsx} found in the directory.")
+        logger.error(f"No file named {population_density_xlsx} found in the directory.")
         return
 
     try:
@@ -541,13 +541,13 @@ def extract_pop_density_table(scot_input_folder):
         
         # Save the extracted sheet as a CSV
         df.to_csv(population_density_csv, index=False)
-        logging.info(f"Sheet 'Table 4' has been saved as {population_density_csv}.")
+        logger.info(f"Sheet 'Table 4' has been saved as {population_density_csv}.")
         
         # Remove the original Excel file
         os.remove(population_density_xlsx)
-        logging.info(f"The file {population_density_xlsx} has been deleted from the folder.")
+        logger.info(f"The file {population_density_xlsx} has been deleted from the folder.")
     except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        logger.error(f"An error occurred: {e}")
 
 
 def reformat_pop_density(scot_input_folder, config):
@@ -573,7 +573,7 @@ def reformat_pop_density(scot_input_folder, config):
     # Look for population_density.csv in the directory
     file_path = os.path.join(scot_input_folder, "population_density.csv")
     if not os.path.exists(file_path):
-        logging.error("No file named population_density.csv found in the directory.")
+        logger.error("No file named population_density.csv found in the directory.")
         return
 
     # Load the CSV file, skip the first three rows, and specify the columns to load
@@ -706,12 +706,12 @@ def extract_metadata_from_files(scot_input_folder):
     
     # Check if metadata list is populated correctly
     if not metadata:
-        logging.warning("Warning: Metadata list is empty. No files were processed or metadata extraction failed.")
+        logger.warning("Warning: Metadata list is empty. No files were processed or metadata extraction failed.")
     else:
-        logging.info(f"Metadata extraction completed successfully. Extracted {len(metadata)} entries.")
+        logger.info(f"Metadata extraction completed successfully. Extracted {len(metadata)} entries.")
         for entry in metadata:
             if not all(key in entry for key in ["table_id", "table_name", "unit"]):
-                logging.warning(f"Warning: Incomplete metadata entry found: {entry}")
+                logger.warning(f"Warning: Incomplete metadata entry found: {entry}")
 
     return metadata
 
@@ -772,9 +772,9 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
                 # Update the original DataFrame with the modified rows
                 df.iloc[start_index:] = df_below
             else:
-                logging.info(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
+                logger.info(f"'Council Area 2019' not found in {file_name}. Skipping replacement.")
         else:
-            logging.info(f"Column 0 not found in {file_name}. Skipping replacement.")
+            logger.info(f"Column 0 not found in {file_name}. Skipping replacement.")
         
         # Ensure QA directory exists
         os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
@@ -842,9 +842,9 @@ def remove_rows(config, folderpath):
                 df.to_csv(file_path, index=False, header=False)
                             
             except pd.errors.ParserError as e:
-                logging.error(f"Error processing {file_name}: {e}")
+                logger.error(f"Error processing {file_name}: {e}")
         else:
-            logging.info(f"Skipping non-reformat file: {file_name}")
+            logger.info(f"Skipping non-reformat file: {file_name}")
 
 
 
@@ -923,7 +923,7 @@ def replace_variable_names_with_codes(config):
             # Append the variable_names and variable_ids to the results list
             variable_names_ids.append((variable_names, variable_ids))
         else:
-            logging.info(f"Skipping file: {file_name}")
+            logger.info(f"Skipping file: {file_name}")
     
     # Return the list of results
     return variable_names_ids
