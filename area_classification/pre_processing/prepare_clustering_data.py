@@ -5,7 +5,7 @@ import numpy as np
 def prepare_clustering_data(dataframe):
     """
     Wrapper function that applies standardization, arcsinh transformation,
-    and min-max scaling to the input DataFrame.
+    and min-max scaling to the numerical columns in the input DataFrame.
 
     Parameters:
         dataframe (pd.DataFrame): The input DataFrame for clustering.
@@ -50,7 +50,7 @@ def standardize_data(dataframe):
 
 def apply_arcsinh_transformation(dataframe):
     """
-    Applies the inverse hyperbolic sine (arcsinh) transformation to numeric columns.
+    Applies the inverse hyperbolic sine (arcsinh) transformation to numeric values.
 
     Parameters:
         dataframe (pd.DataFrame): The input DataFrame.
