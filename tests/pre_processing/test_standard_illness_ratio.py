@@ -1,3 +1,4 @@
+import unittest
 import pandas as pd
 from area_classification.pre_processing.standard_illness_ratio import SIR_calculation
 from pathlib import Path
@@ -26,7 +27,12 @@ def test_SIR_calculation(mock_to_csv, mock_makedirs):
     }
 
     df_output = SIR_calculation(mock_data,config)
-    print(df_output)
     output = df_output[["area_code", "SIR"]]
-    expected_output = pd.read_csv(Path("tests/data/sir_test_expected_output.csv")).rename(columns = {"SIR_expected": "SIR"})
+    print(output)
+    
+    expected_output = pd.read_csv(Path("./tests/data/sir_test_expected_output.csv")).rename(columns = {"SIR_expected": "SIR"})
+    print(expected_output)
     pd.testing.assert_frame_equal(output, expected_output, check_dtype=False)
+
+if __name__ == "__main__":
+    unittest.main()

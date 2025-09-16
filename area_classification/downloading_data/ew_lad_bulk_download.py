@@ -1,4 +1,3 @@
-# Import necessary libraries
 import os
 from bs4 import BeautifulSoup  # Equivalent to rvest for web scraping
 import re  # For string manipulation (similar to stringr)
@@ -7,10 +6,10 @@ import requests  # For making HTTP requests
 from zipfile import ZipFile
 from glob import glob
 from shutil import rmtree
-# import pyarrow as pa  # Equivalent to arrow (commented out as in the R script)
-from area_classification.utilities.load_config import load_config
 import tempfile
 import logging
+
+from area_classification.utilities.load_config import load_config
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +157,8 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         # Remove all downloaded files for this table
         rmtree(tmp_dir)
-
+    print(type(meta_data_table))
+    meta_data_table.to_csv("meta_data_table.csv")
     return meta_data_table
 
 
@@ -166,7 +166,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
 def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict):
     """
-    function to format the metadata table and export it to a CSV file.
+    function to format the metadata table and saves it as a CSV to the input directory.
 
     Parameters
     ----------
@@ -181,22 +181,24 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     None
         The function saves the formatted metadata table as a CSV file in the specified output directory.
     """    
-    # TODO: Add a unit test to this function to check its processing everything correctly
+    
     # Format the lookup table
-    meta_data_table = (
+    meta_data_table_full = (
         meta_data_table
         .assign(Table_Name=meta_data_table['old_names'].str.split(':', n=1).str[0])
-        .assign(Type=meta_data_table['old_names'].str.extract(r'; measures: (\w+)')[0])
+        #.assign(Type=meta_data_table['old_names'].str.extract(r'; measures: (\w+)')[0])
         .assign(Variable_Name=meta_data_table['old_names'].str.replace(r';.*', '', regex=True))
         .assign(Variable_Name=lambda df: df['Variable_Name'].str.replace(
             df['Table_Name'] + ': ', '', regex=False))
     )
     
-    # Ensure QA directory exists
+    # Ensure input directory exists
     os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
 
     # Write the resulting DataFrame to a CSV file
-    meta_data_table.to_csv(os.path.join(config["input_data_directory"], "ew_lad_table_metadata.csv"), index=False)
+    meta_data_table_full.to_csv(os.path.join(config["input_data_directory"], "ew_lad_table_metadata.csv"), index=False)
+
+    return meta_data_table_full
 
 
 if __name__ == "__main__":

@@ -226,14 +226,24 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     """
     # Get unique clusters
     clusters = restructured_cluster_table_long[cluster_column].unique()
-    # Sort clusters in ascending order
-    clusters = sorted(clusters)
 
-    # Filter rows where 'hierarchy_level' is the same as the cluster_column specified and convert 'cluster' column to integers
-    filtered_df = (
-        uk_std_cluster_means.loc[uk_std_cluster_means['hierarchy_level'] == cluster_column]
-        .assign(cluster=lambda df: pd.to_numeric(df['cluster'], errors='coerce').astype(int))
-    )
+    # This if statment is needed as supergroup is int, where as group and subgroup are str
+    if cluster_column == "supergroup":
+        # Sort clusters in ascending order
+        clusters = sorted(clusters)
+        # Filter rows where 'hierarchy_level' is the same as the cluster_column specified and convert 'cluster' column to integers
+        filtered_df = (
+            uk_std_cluster_means.loc[uk_std_cluster_means['hierarchy_level'] == cluster_column]
+            .assign(cluster=lambda df: pd.to_numeric(df['cluster'], errors='coerce').astype(int))
+        )
+    elif cluster_column in ["group", "subgroup"]:
+        # Sort based on the numeric part
+        clusters = sorted(clusters, key=lambda x: int(''.join(filter(str.isdigit, str(x)))))
+        # Filter rows where 'hierarchy_level' is the same as the cluster_column specified and ensure 'cluster' column is treated as strings
+        filtered_df = (
+            uk_std_cluster_means.loc[uk_std_cluster_means['hierarchy_level'] == cluster_column]
+            .assign(cluster=lambda df: df['cluster'].astype(str))
+        )
 
     # Initialize a list to store outputs for all clusters
     cluster_info = []
@@ -353,8 +363,8 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
     for index, row in uk_std_cluster_means.iterrows():
         
         # Use the value in the 'cluster' column as the cluster_number
-        cluster_number = int(row['cluster'])
-        
+        #cluster_number = int(row['cluster'])
+        cluster_number = row['cluster']
         # Create a Pandas Series of the mean values of all numeric columns in uk_std_cluster_means, excluding rows where the cluster column equals cluster_number.
         other_clusters_means = uk_std_cluster_means[uk_std_cluster_means['cluster'] != cluster_number].select_dtypes(include='number').mean()
 
@@ -445,7 +455,7 @@ compared with the mean of the other clusters combined. The population of cluster
                     
                     # Convert cluster_number to string to match the index type
                     cluster_number_str = str(cluster_number)
-                    cluster_number_int = int(cluster_number_str)
+                    #cluster_number_int = int(cluster_number_str) # if running through main hash this!
 
                     variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
                     #variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
