@@ -157,7 +157,8 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         # Remove all downloaded files for this table
         rmtree(tmp_dir)
-
+    print(type(meta_data_table))
+    meta_data_table.to_csv("meta_data_table.csv")
     return meta_data_table
 
 
@@ -185,7 +186,7 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     meta_data_table_full = (
         meta_data_table
         .assign(Table_Name=meta_data_table['old_names'].str.split(':', n=1).str[0])
-        .assign(Type=meta_data_table['old_names'].str.extract(r'; measures: (\w+)')[0])
+        #.assign(Type=meta_data_table['old_names'].str.extract(r'; measures: (\w+)')[0])
         .assign(Variable_Name=meta_data_table['old_names'].str.replace(r';.*', '', regex=True))
         .assign(Variable_Name=lambda df: df['Variable_Name'].str.replace(
             df['Table_Name'] + ': ', '', regex=False))

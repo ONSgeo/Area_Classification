@@ -12,7 +12,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from utilities.disability_age_group_conversion import (
+from area_classification.utilities.disability_age_group_conversion import (
     convert_disability_age_group_england_wales,
     convert_disability_age_group_northern_ireland,
     convert_disability_age_group_scotland,
