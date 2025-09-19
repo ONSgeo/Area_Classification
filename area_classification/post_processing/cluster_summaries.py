@@ -9,7 +9,7 @@ import re
 
 from area_classification.utilities.load_config import load_config
 
-def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
+def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, lookup_file, cluster_column, ):
     """
     Wrapper function to execute a series of cluster summary operations post clustering.
 
@@ -23,6 +23,8 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
         and associated variables.
     uk_std_cluster_means : pd.DataFrame
         A DataFrame containing the mean standardised values of clustering variables for each cluster.
+    chosen_clustering_variables : pd.DataFrame
+        A DataFrame containing LAD_codes and data for each variable prior to standardisation.
     lookup_file : str
         Path to the lookup file used for identifying cluster drivers.
     cluster_column : str
@@ -49,7 +51,7 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     pop_sums = cluster_population_percentages (restructured_cluster_table_long, f"{config['input_data_directory']}population_estimates.csv", cluster_column)
 
     # Step 3: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, cluster_column)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, chosen_clustering_variables, cluster_column)
 
     # Step 4: 
     identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=3)
@@ -190,7 +192,7 @@ def cluster_population_percentages (restructured_cluster_table_long, population_
 
     return pop_sums
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, cluster_column):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, chosen_clustering_variables, cluster_column,):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
@@ -208,6 +210,8 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     pop_sums: pd.DataFrame
         A DataFrame containing population percentages for clusters, including columns
             such as 'supergroup', '2021_percentage', and '2022_percentage'.
+    chosen_clustering_variables : pd.DataFrame
+        A DataFrame containing LAD_codes and data for each variable prior to standardisation.
     cluster_column : str
         The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 
@@ -245,11 +249,22 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
             .assign(cluster=lambda df: df['cluster'].astype(str))
         )
 
+    # Rename the V12 column to pop_density in chosen_clustering_variables
+    chosen_clustering_variables = chosen_clustering_variables.rename(columns={'v12': 'raw_pop_density'})
+
+    # Merge the pop_density column from chosen_clustering_variables into restructured_cluster_table_long
+    restructured_cluster_table_long = restructured_cluster_table_long.merge(
+        chosen_clustering_variables[['LAD_code', 'raw_pop_density']],  # Select only LAD_code and pop_density columns
+        on='LAD_code',                                 # Join on the LAD_code column
+        how='left'                                     # Use a left join to preserve all rows in restructured_cluster_table_long
+    )
+    print(restructured_cluster_table_long.columns)
     # Initialize a list to store outputs for all clusters
     cluster_info = []
 
     # Iterate through each cluster
     for cluster in clusters:
+
         # Filter rows for the current cluster
         cluster_data = restructured_cluster_table_long[restructured_cluster_table_long[cluster_column] == cluster]
         
@@ -262,8 +277,8 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         # Percentage of local authorities in the current cluster
         percentage_local_authorities = (num_local_authorities / total_local_authorities) * 100
                         
-        # Population density using restructured_cluster_table_long (V12 values for the cluster)
-        cluster_v12_mean = cluster_data['v12'].mean()
+        # Calculate the mean population density using raw_pop_density column
+        cluster_v12_mean = cluster_data['raw_pop_density'].mean()
         
         # Extract the mean value for v12 for the current cluster
         uk_mean_v12 = filtered_df.loc[filtered_df['cluster'] == cluster, 'v12']
@@ -478,10 +493,11 @@ if __name__ == "__main__":
     restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
+    chosen_clustering_variables = pd.read_csv(os.path.join(config["input_data_directory"], "pre_clustering_data.csv"))
 
     lookup_file = config["select_variables_lookup"]
 
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column='supergroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, lookup_file, cluster_column='supergroup')
 
 #PROBABLY DELETE BELOW
 # def analyze_cluster_means(uk_std_cluster_means_output):

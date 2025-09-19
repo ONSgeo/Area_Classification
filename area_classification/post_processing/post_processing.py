@@ -16,10 +16,12 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
     ----------
     config : dict
         main pipeline config dictionary containing output directory.
-    chosen_clustering_variables
-
     clustering_output : pd.DataFrame
         the output from running the clustering algroithm
+    chosen_clustering_variables_std : pd.DataFrame
+        A dataframe of variables used in clustering after standardisation.
+    chosen_clustering_variables : pd.DataFrame
+        A DataFrame containing LAD_codes and data for each variable prior to standardisation.
 
     Returns
     ----------
@@ -41,9 +43,9 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
     create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
 
     # Step 5: Draft cluster summaries
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'supergroup')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'group')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'supergroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'group')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'subgroup')
     
     # Return the combined means for further use if needed
     return combined_group_means, combined_subgroup_means
