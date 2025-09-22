@@ -258,7 +258,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         on='LAD_code',                                 # Join on the LAD_code column
         how='left'                                     # Use a left join to preserve all rows in restructured_cluster_table_long
     )
-    print(restructured_cluster_table_long.columns)
+
     # Initialize a list to store outputs for all clusters
     cluster_info = []
 
@@ -267,7 +267,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
 
         # Filter rows for the current cluster
         cluster_data = restructured_cluster_table_long[restructured_cluster_table_long[cluster_column] == cluster]
-        
+
         # Number of local authorities in the current cluster
         num_local_authorities = cluster_data['LAD_name'].nunique()
         
@@ -279,17 +279,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
                         
         # Calculate the mean population density using raw_pop_density column
         cluster_v12_mean = cluster_data['raw_pop_density'].mean()
-        
-        # Extract the mean value for v12 for the current cluster
-        uk_mean_v12 = filtered_df.loc[filtered_df['cluster'] == cluster, 'v12']
-
-        # Check if uk_mean_v12 is not empty before accessing .iloc[0]
-        if not uk_mean_v12.empty:
-            uk_mean_v12 = uk_mean_v12.iloc[0]  # Use .iloc[0] to get the first value
-        else:
-            uk_mean_v12 = None  # Or set a default value, e.g., 0 or np.nan
-            logger.warning(f"No data found for cluster {cluster} in filtered_df.")
-  
+ 
         # Find example areas from the restructured_cluster_table_long table
         example_areas = restructured_cluster_table_long[restructured_cluster_table_long[cluster_column] == cluster]
         if not example_areas.empty:
@@ -306,7 +296,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         # Combine the print statements into a single string
         output = (
             f"Cluster {cluster} contains {num_local_authorities} local authorities which is {percentage_local_authorities:.2f}% of UK local authorities, "
-            f"in 2021 this was {percentage_2021:.2f}% of the UK population and in 2022 it was {percentage_2022:.2f}%. It has a population density of {cluster_v12_mean:.2f}.\n"
+            f"in 2021 this was {percentage_2021:.2f}% of the UK population and in 2022 it was {percentage_2022:.2f}%. It has a mean population density of {cluster_v12_mean:.2f}.\n"
         )
         # Check if the cluster exists in the DataFrame
         if cluster in variance_df.index:
