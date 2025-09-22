@@ -146,21 +146,26 @@ def create_radial_plots(config, dataframe, level):
                 va='center'
             )
 
+        # Append the first angle to the end to close the circle
+        #angles = angles + angles[:1]
+
         # Draw a solid red ring at the radius of 0
+        #ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
+
         ax.plot(angles[:-1], [0] * len(angles[:-1]), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
 
         # Save the plot with the filename as '<group/subgroup>_group/subgroup.png'
         if level in ["group", "subgroup"]:
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row[level]}_{level}')
             # Add a title
-            ax.set_title(f"Radial Plot for {row[level]}_{level}", size=14, pad=40, weight='bold')
+            ax.set_title(f"Radial Plot {row[level]}_{level} : Parent", size=14, pad=40, weight='bold')
             plot_filename = f"{row[level]}_{level}.png"
             plot_path = os.path.join(radial_plots_dir_parent, plot_filename)
         elif level == "UK":
             # Draw the outline of the radar chart
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row["cluster"]}_{row["hierarchy_level"]}')
             # Add a title
-            ax.set_title(f"Radial Plot for {row['hierarchy_level']}_{row['cluster']}", size=14, pad=40, weight='bold')
+            ax.set_title(f"Radial Plot {row['hierarchy_level']}_{row['cluster']} : UK", size=14, pad=40, weight='bold')
             plot_filename = f"{row['cluster']}_{row['hierarchy_level']}.png"
             plot_path = os.path.join(radial_plots_dir_UK, plot_filename)
         plt.savefig(plot_path, bbox_inches='tight')
