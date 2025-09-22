@@ -2,7 +2,7 @@
 import pandas as pd
 import os
 
-def cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables_std):
+def cluster_variable_means(config, restructured_cluster_table, standardized_data):
     """
     Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
     
@@ -40,7 +40,7 @@ def cluster_variable_means(config, restructured_cluster_table, chosen_clustering
     """
     
     # Merge cluster results with standardized means census data
-    merged_data = pd.merge(restructured_cluster_table, chosen_clustering_variables_std, on="LAD_code", how="left")
+    merged_data = pd.merge(restructured_cluster_table, standardized_data, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],

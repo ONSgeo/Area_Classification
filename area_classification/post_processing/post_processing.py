@@ -7,8 +7,9 @@ from area_classification.post_processing.cluster_variables_mean import cluster_v
 from area_classification.post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
 from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
 from area_classification.post_processing.cluster_summaries import cluster_summaries_wrapper
+from area_classification.pre_processing.prepare_clustering_data import standardize_data
 
-def post_processing(config, clustering_output, chosen_clustering_variables_std, chosen_clustering_variables):
+def post_processing(config, clustering_output, chosen_clustering_variables):
     """
     Wrapper function to run restrcuture the table created when clustering, 
     
@@ -26,11 +27,16 @@ def post_processing(config, clustering_output, chosen_clustering_variables_std, 
         The result of get_cluster_means.
     """
 
+    # Run the standardize_data function on chosen_clustering_variables
+    standardized_data = standardize_data(chosen_clustering_variables)
+    # only saving out for QA purposes 
+    standardized_data.to_csv(os.path.join(config["input_directory"], "standardized_data.csv"), index=False)
+
     # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
-    restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(config, clustering_output, config["split_column"],chosen_clustering_variables_std)
+    restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(config, clustering_output, config["split_column"],standardized_data)
 
     # Step 2: Calculate means for each cluster and each variable
-    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table, chosen_clustering_variables_std)
+    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table, standardized_data)
 
     # Step 3: Run cluster_std_means_to_parent_clusters and capture the returned means
     combined_group_means, combined_subgroup_means = cluster_std_means_to_parent_clusters(
