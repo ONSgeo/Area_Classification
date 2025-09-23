@@ -48,7 +48,7 @@ def main_pipeline():
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
     # # Step 2: Download Northen Ireland data
-    # #ni_lgd_download_data(config)
+    ni_lgd_download_data(config)
     # # Loading and getting into format to be used to process and combine
     ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)

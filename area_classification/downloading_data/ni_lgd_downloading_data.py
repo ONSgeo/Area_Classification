@@ -56,7 +56,7 @@ def reformat_pop_density_ni(config):
     df.columns.values[0] = "LGD"  # Rename the second column
 
     # Convert hectares to km²
-    df.iloc[:, 1] = df.iloc[:, 1] / 100  # Convert hectares to km²
+    df.iloc[:, 1] = df.iloc[:, 1] * 100  # Convert hectares to km²
     df.columns.values[1] = "population_density"  # Rename 
     
     # Ensure QA directory exists
