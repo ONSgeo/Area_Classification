@@ -158,14 +158,14 @@ def create_radial_plots(config, dataframe, level):
         if level in ["group", "subgroup"]:
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row[level]}_{level}')
             # Add a title
-            ax.set_title(f"Radial Plot {row[level]}_{level} : Parent", size=14, pad=40, weight='bold')
+            ax.set_title(f"Radial plot (parent): {row[level]}_{level}", size=14, pad=40, weight='bold')
             plot_filename = f"{row[level]}_{level}.png"
             plot_path = os.path.join(radial_plots_dir_parent, plot_filename)
         elif level == "UK":
             # Draw the outline of the radar chart
             ax.plot(angles, values, linewidth=1.5, linestyle='solid', label=f'{row["cluster"]}_{row["hierarchy_level"]}')
             # Add a title
-            ax.set_title(f"Radial Plot {row['hierarchy_level']}_{row['cluster']} : UK", size=14, pad=40, weight='bold')
+            ax.set_title(f"Radial plot (UK): {row['cluster']}_{row['hierarchy_level']}", size=14, pad=40, weight='bold')
             plot_filename = f"{row['cluster']}_{row['hierarchy_level']}.png"
             plot_path = os.path.join(radial_plots_dir_UK, plot_filename)
         plt.savefig(plot_path, bbox_inches='tight')
