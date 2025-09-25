@@ -17,7 +17,7 @@ def format_ew_populations(config):
     pd.DataFrame
         DataFrame containing the CSV data.
     """
-    file_path = os.path.join(config["input_data_directory"], 'england_wales_2021_populations.csv')
+    file_path = os.path.join(config["input_directory"], 'england_wales_2021_populations.csv')
     df_ew = pd.read_csv(file_path, skiprows=6)
 
     # Format the table to include column headers
@@ -45,7 +45,7 @@ def format_scot_populations(config):
     pd.DataFrame
         DataFrame containing the excel data from the 'Table 1' sheet. 
     """
-    file_path = os.path.join(config["input_data_directory"], 'scotland_census_2022_populations.xlsx')
+    file_path = os.path.join(config["input_directory"], 'scotland_census_2022_populations.xlsx')
     df_scot = pd.read_excel(file_path, sheet_name='Table 1', skiprows=5, header = None)
 
     #Remove unnecessary columns C, E & F
@@ -74,7 +74,7 @@ def format_ni_populations(config):
         DataFrame containing the excel data from the 'Usual residents' sheet. 
     """
     
-    file_path = os.path.join(config["input_data_directory"], 'ni_census_2021_data.xlsx')
+    file_path = os.path.join(config["input_directory"], 'ni_census_2021_data.xlsx')
     df_ni = pd.read_excel(file_path, sheet_name='Usual residents', skiprows=5, header = None)
 
     #Remove unnecessary columns C, D, E & F

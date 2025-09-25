@@ -36,7 +36,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     from the Scotland's Census Flexible Table Builder (UV303a) and saved into the 'data/inputs/scot_downloads folder.
     The file should be named 'UV303a.csv'.
 
-    Output is written to a csv file in the input_data_directory
+    Output is written to a csv file in the input_directory
 
     Parameters
     ----------
@@ -136,7 +136,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     result_df["CA19"] = result_df["CA19"].str.strip().str.lower().map(lookup_dict).fillna(result_df["CA19"])
 
     result_df.rename(columns={'CA19': 'area_code'}, inplace=True)
-    output_path = Path(config["input_data_directory"]) / "scot_disability_age_group.csv"
+    output_path = Path(config["input_directory"]) / "scot_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
 
     return result_df
@@ -149,7 +149,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
     It should have been manually saved into the 'data/inputs/ew_downloads folder. The file name should be 
     'disabilitycensus2021.xlsx'.
 
-    Output is written to a csv file in the input_data_directory
+    Output is written to a csv file in the input_directory
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
             result_df_list.append(new_row)
 
     result_df = pd.DataFrame(result_df_list)
-    output_path = Path(config["input_data_directory"]) / "ew_disability_age_group.csv"
+    output_path = Path(config["input_directory"]) / "ew_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
         
     return result_df
@@ -207,7 +207,7 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
     manually from the Northern Ireland Statistics and Research Agency (NISRA) website as it is not available in
     the bulk download. It should have been manually saved into the 'data/inputs/ni_downloads folder. The file 
     should be named 'census-2021-ms-d02.xlsx'.
-    Output is written to a csv file in the input_data_directory
+    Output is written to a csv file in the input_directory
 
     Parameters
     ----------
@@ -250,7 +250,7 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
             }
             result_df_list.append(new_row)
     result_df = pd.DataFrame(result_df_list)
-    output_path = Path(config["input_data_directory"]) / "ni_disability_age_group.csv"
+    output_path = Path(config["input_directory"]) / "ni_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
     return result_df
 
@@ -260,16 +260,16 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
     
-    df_scot = convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
-    df_scot.to_csv(config["input_data_directory"]+"scot_disability_age_group.csv", index=False)
+    df_scot = convert_disability_age_group_scotland(config["input_directory"] + config["scotland_disability_input"], config)
+    df_scot.to_csv(config["input_directory"]+"scot_disability_age_group.csv", index=False)
     print(df_scot)
 
-    df_ni = convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
-    df_ni.to_csv(config["input_data_directory"]+"ni_disability_age_group.csv", index=False)
+    df_ni = convert_disability_age_group_northern_ireland(config["input_directory"] + config["ni_disability_input"], config)
+    df_ni.to_csv(config["input_directory"]+"ni_disability_age_group.csv", index=False)
     print(df_ni)
 
-    df_ew = convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
-    df_ew.to_csv(config["input_data_directory"]+"ew_disability_age_group.csv", index=False)
+    df_ew = convert_disability_age_group_england_wales(config["input_directory"] + config["england_wales_disability_input"], config)
+    df_ew.to_csv(config["input_directory"]+"ew_disability_age_group.csv", index=False)
 
     print(df_ew)
     print("all saved to csv")

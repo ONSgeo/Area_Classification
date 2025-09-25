@@ -150,7 +150,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         df.rename(columns={"geography code": "LTLA"}, inplace=True)
 
         # Write the DataFrame to a CSV file
-        output_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/", f"{t_name}.csv")
+        output_csv_path = os.path.join(config["input_directory"], "./ew_downloads/", f"{t_name}.csv")
 
         os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
         df.to_csv(output_csv_path, index=False)
@@ -193,10 +193,10 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     )
     
     # Ensure input directory exists
-    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
 
     # Write the resulting DataFrame to a CSV file
-    meta_data_table_full.to_csv(os.path.join(config["input_data_directory"], "ew_lad_table_metadata.csv"), index=False)
+    meta_data_table_full.to_csv(os.path.join(config["input_directory"], "ew_lad_table_metadata.csv"), index=False)
 
     return meta_data_table_full
 

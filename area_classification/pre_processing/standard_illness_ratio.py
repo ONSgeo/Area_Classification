@@ -43,26 +43,26 @@ def sir_processing(config):
     ]
     missing_files = []
     for file in required_files:
-        file_path = os.path.join(config["input_data_directory"], file)
+        file_path = os.path.join(config["input_directory"], file)
         if not os.path.isfile(file_path):
             missing_files.append(file)
 
     if config["england_wales_disability_file"] in missing_files:
         logger.warning(f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory.")
-        convert_disability_age_group_england_wales(config["input_data_directory"] + config["england_wales_disability_input"], config)
+        convert_disability_age_group_england_wales(config["input_directory"] + config["england_wales_disability_input"], config)
     if config["ni_disability_file"] in missing_files:
         logger.warning(f"Warning: The file {config['ni_disability_file']} was not found in the input directory.")
-        convert_disability_age_group_northern_ireland(config["input_data_directory"] + config["ni_disability_input"], config)
+        convert_disability_age_group_northern_ireland(config["input_directory"] + config["ni_disability_input"], config)
     if config["scotland_disability_file"] in missing_files:
-        convert_disability_age_group_scotland(config["input_data_directory"] + config["scotland_disability_input"], config)
+        convert_disability_age_group_scotland(config["input_directory"] + config["scotland_disability_input"], config)
         logger.warning(f"Warning: The file {config['scotland_disability_file']} was not found in the input directory.")        
 
 
         logger.warning(f"Warning: The following files were not found: {missing_files}")
 
-    ew_disability_df = pd.read_csv(config["input_data_directory"]+config["england_wales_disability_file"])
-    ni_disability_df = pd.read_csv(config["input_data_directory"]+config["ni_disability_file"])
-    scotland_disability_df = pd.read_csv(config["input_data_directory"]+config["scotland_disability_file"])
+    ew_disability_df = pd.read_csv(config["input_directory"]+config["england_wales_disability_file"])
+    ni_disability_df = pd.read_csv(config["input_directory"]+config["ni_disability_file"])
+    scotland_disability_df = pd.read_csv(config["input_directory"]+config["scotland_disability_file"])
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df])
     # Scotland excluded because it doesnt have council area codes 
@@ -138,10 +138,10 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
         logger.info(df_subset['SIR'].describe())
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
 
     # Save to data QA folder
-    output_file_path = config["qa_folder_path"] + "sir_calculation_qa_output.csv"
+    output_file_path = config["qa_directory"] + "sir_calculation_qa_output.csv"
     df.to_csv(output_file_path, index=False)
 
     # check that all records contain all of uk
@@ -152,7 +152,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    EW_df = pd.read_csv("data/inputs/ew_disability_age_group.csv") 
+    EW_df = pd.read_csv(f"{config['input_directory']}ew_disability_age_group.csv") 
     EW_df.rename(columns={'Area Code': 'area_code'}, inplace=True)
     EW_df.rename(columns={'Local Authority': 'local_authority'}, inplace=True)
 

@@ -5,8 +5,8 @@
 |LAD_lookup_file_path |The path to where the Local Authority District (LAD) lookup is saved |scot_input_folder |The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 |ni_pop_density_filepath | The path to where the population density file for Northern Ireland is stored            | 	string   | Any filepath.     |
 |select_variables_lookup | The path to where the lookup for the 60 selected variables is saved            | 	string   | Any filepath.     |
-|input_data_directory | The path where inputs required for the clustering are saved             | 	string   | Any filepath.     |
-|qa_folder_path |  The path where outputs should be saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
+|input_directory | The path where inputs required for the clustering are saved             | 	string   | Any filepath.     |
+|qa_directory |  The path where outputs should be saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
 |output_directory | The path where outputs should be saved to | 	string   | Any filepath.     |
 |plot_directory | The path where outputted plost should be saved to            | 	string   | Any filepath.     |
 |preprocessed_input_table | The path to where the final outputted table from pre-processing is, which is the starting file for clustering            | 	string   | Any filepath.     |

@@ -28,7 +28,7 @@ def main_pipeline():
     5. Establish the variables which will be used for clustering (some may be dropped).
     6. Standardize the pre-processed data for clustering.
     7. Perform clustering on the pre-processed data, using variables chosen.
-    8. Reformate the cluster tables, calculate the means of the clustered data and generate radial plots.
+    8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots.
 
     Parameters
     ----------
@@ -42,30 +42,28 @@ def main_pipeline():
     """
     config = load_config('area_classification/config.yaml')
 
-    # Step 1: Download england and wales data
+    # Step 1: Download england and wales data and reformat to be processed and combined
     #ew_lad_bulk_download(config)
-    ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
+    ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
-    # # Step 2: Download Northen Ireland data
-    ni_lgd_download_data(config)
-    # # Loading and getting into format to be used to process and combine
-    ni_input_csv_path = os.path.join(config["input_data_directory"], "./ni_downloads/")
+    # Step 2: Download Northen Ireland data and reformat to be processed and combined
+    #ni_lgd_download_data(config)
+    ni_input_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
-    # # # Step 3: Processing of Scotland data which was manually downloaded
+    # Step 3: Processing of Scotland data which was manually downloaded
     scot_df = scot_reformatting_wrapper(config["scot_input_folder"], config["LAD_lookup_file_path"], config)
 
-    # # Step 4: pre-processing
+    # Step 4: Pre-processing
     preprocessed_df = pre_processing(ew_df , ni_df, scot_df, config)
 
-    # Step 5: choose to drop/not drop
-    # If not running the full 60 variables, update the 'drop_columns' to True and change the
-    # 'variables_to_drop' in the config
+    # Step 5: Choose to drop/not drop
+    # If not running the full 60 variables, update the 'drop_columns' in the config to 
+    # True and change the 'variables_to_drop' in the config
     chosen_clustering_variables = check_drop_columns_true(config, preprocessed_df)
 
-    # Step 6: Standardisation
-    #standardised pre_clustering data (used in the clustering)
+    # Step 6: Standardise pre_clustering data (used in the clustering)
     chosen_clustering_variables_std = prepare_clustering_data(chosen_clustering_variables)
     # Save the standardized pre clusting data to a new file 
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
@@ -78,7 +76,7 @@ def main_pipeline():
         num_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
-        plot_directory=config["plot_directory"],
+        clustergram_directory=config["clustergram_directory"],
         random_seed=config["random_seed"]
     )
 
@@ -86,7 +84,6 @@ def main_pipeline():
     input("Press Enter to continue to post processing...")
  
     # Step 8: Post processing
-    # Cluster tables are reformatted and mean tables created
     post_processing(config, clustering_output, chosen_clustering_variables)
 
 if __name__ == "__main__":

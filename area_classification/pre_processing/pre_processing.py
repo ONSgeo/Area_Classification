@@ -90,15 +90,15 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
         # Write the DataFrame to a CSV file
-        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
-        output_csv_path = os.path.join(config["qa_folder_path"], f"{key}_select.csv")
+        os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
+        output_csv_path = os.path.join(config["qa_directory"], f"{key}_select.csv")
         df_temp.to_csv(output_csv_path, index=False)
 
         # overwriting original df with processed df
         dfs[key] = df_temp
 
     # Call select_totals_columns after all _select.csv files are created
-    raw_totals_df = select_totals_columns(config, config["qa_folder_path"])
+    raw_totals_df = select_totals_columns(config, config["qa_directory"])
 
     # Convert counts to percentages
     preprocessed_df = convert_to_percentages(raw_totals_df)
@@ -111,9 +111,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 if __name__ == "__main__":
     # Example usage
     config = load_config('area_classification/config.yaml')
-    ew_df = pd.read_csv('./data/inputs/LTLA_concat.csv')  
-    ni_df = pd.read_csv('./data/inputs/LGD_concat.csv')
-    scot_df = pd.read_csv('./data/inputs/CA19_concat.csv')
+    ew_df = pd.read_csv(f"{config['input_directory']}LTLA_concat.csv")  
+    ni_df = pd.read_csv(f"{config['input_directory']}LGD_concat.csv")
+    scot_df = pd.read_csv(f"{config['input_directory']}CA19_concat.csv")
 
     processed_df = pre_processing(ew_df, ni_df, scot_df, config)
     print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)

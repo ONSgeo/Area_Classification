@@ -48,7 +48,7 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
 
     # Step 2: 
-    pop_sums = cluster_population_percentages (restructured_cluster_table_long, f"{config['input_data_directory']}population_estimates.csv", cluster_column)
+    pop_sums = cluster_population_percentages (restructured_cluster_table_long, f"{config['input_directory']}population_estimates.csv", cluster_column)
 
     # Step 3: 
     cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, chosen_clustering_variables, cluster_column)
@@ -483,7 +483,7 @@ if __name__ == "__main__":
     restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
-    chosen_clustering_variables = pd.read_csv(os.path.join(config["input_data_directory"], "pre_clustering_data.csv"))
+    chosen_clustering_variables = pd.read_csv(os.path.join(config["input_directory"], "pre_clustering_data.csv"))
 
     lookup_file = config["select_variables_lookup"]
 

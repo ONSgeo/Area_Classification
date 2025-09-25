@@ -115,7 +115,7 @@ def select_totals_columns(config, inputs_folder):
     raw_totals_df = raw_totals_df[reordered_columns]
 
     # Save the concatenated DataFrame to the output file
-    output_file = os.path.join(config["qa_folder_path"], "select_raw_totals.csv")
+    output_file = os.path.join(config["qa_directory"], "select_raw_totals.csv")
     raw_totals_df.to_csv(output_file, index=False)
 
     return raw_totals_df
@@ -124,4 +124,4 @@ def select_totals_columns(config, inputs_folder):
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    select_totals_columns(config, config["qa_folder_path"])
+    select_totals_columns(config, config["qa_directory"])
