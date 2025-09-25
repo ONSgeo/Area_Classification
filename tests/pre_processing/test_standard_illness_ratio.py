@@ -23,7 +23,7 @@ def test_SIR_calculation(mock_to_csv, mock_makedirs):
         'total_population': [100, 200, 150, 250, 120, 180],
         'total_disabled': [10, 20, 12, 24, 12, 22]
     })
-    config = {"qa_folder_path": ''
+    config = {"qa_directory": ''
     }
 
     df_output = SIR_calculation(mock_data,config)
