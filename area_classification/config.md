@@ -8,7 +8,7 @@
 |pre_clustering_data | The filepath for variable table after pre-processing but before filtering   | 	string   | Any filepath.    |
 |pre_clustering_data_filtered | The filepath variable table after has been filtered and variables from the v60 which are not being used are removed    | 	string   | Any filepath.     |
 |pre_clustering_data_std_mean | The filepath variable table after it has been standardised and transformed, before it goes into clustering | 	string   | Any filepath.    |
-|restructured_subclustering_output | The filepath of the table which is restrucutred so S=supergroup, group and subgroup are all in separate columns      | 	string   | Any filepath.    |
+|restructured_subclustering_output | The filepath of the table which is restrucutred so supergroup, group and subgroup are all in separate columns      | 	string   | Any filepath.    |
 |number_of_clusters | The number of clusters in the Kmeans clustering     | int   | Any int |
 |number_of_times_k_means_initialised | The number of times the Kmeans is ran    | int   | Any int |
 |random_seed| The initial value to start the clustering algorithm | int   | Any int    |
