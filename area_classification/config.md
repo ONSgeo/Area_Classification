@@ -2,7 +2,7 @@
 | Paramater   | Description            | Data Type   | Acceptance values      |
 |-------------|------------------------|-------------|------------------------|
 |working_directory | The working directory location            | 	string   | Any filepath.     |
-|LAD_lookup_file_path |The path to where the Local Authority District (LAD) lookup is saved |scot_input_folder |The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
+|LAD_lookup_file_path |The path to where the Local Authority District (LAD) lookup is saved |string |The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 |drop_columns | The          | 	string   | True or False     |
 |variables_to_drop | The          | 	list   | True or False     |
 |pre_clustering_data | The filepath for the table before filtering   | 	string   | Any filepath.    |
