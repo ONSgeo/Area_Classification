@@ -3,7 +3,7 @@
 |-------------|------------------------|-------------|------------------------|
 |working_directory | The working directory location            | 	string   | Any filepath.     |
 |LAD_lookup_file_path |The path to where the Local Authority District (LAD) lookup is saved. |string | Any filepath.  |
-|drop_columns | Identifying whether variables will be dropped from the 60 variables before clustering. Set to true to drop the variables specified in 'variables to drop' or set to false to include 60 variables. | 	string   | Either true or false     |
+|drop_columns | Identifying whether variables will be dropped from the 60 variables before clustering. Set to true to drop the variables specified in 'variables to drop' or set to false to include 60 variables. | 	string   | Either 'true' or 'false'     |
 |variables_to_drop | The names of the columns which will be dropped from the 60 before clustering takes place. | 	list   | List containing any combination of strings from 'v01' to 'v60'     |
 |pre_clustering_data | The filepath for variable table after pre-processing but before filtering   | 	string   | Any filepath.    |
 |pre_clustering_data_filtered | The filepath variable table after has been filtered and variables from the v60 which are not being used are removed    | 	string   | Any filepath.     |
