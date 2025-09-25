@@ -3,12 +3,13 @@
 working_directory : ~/Area_Classification
 
 #*****FILE PATHS AND CONFIGURATIONS WHICH MAY NEED AMENDING*****
-#The LAD lookup tables should be saved in the lookups folder
+# The LAD lookup tables should be saved in the lookups folder
 LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
-#Varaibles chosen
-drop_columns: True # Set to true to drop the variables specified below in 'variables to drop' 
-                   # or set to false to include 60 varabiles.
+# Variables chosen
+# Set to true to drop the variables specified below in 'variables to drop' or set to false to include 60 variables.
+drop_columns: True 
+
 variables_to_drop  : [
         "v07", # Families with dependent children
         "v09", # Europe: EU countries
@@ -24,48 +25,48 @@ variables_to_drop  : [
 
 # Data to use in clustering
 pre_clustering_data: './data/inputs/pre_clustering_data.csv'
-pre_clustering_data_filtered: './data/inputs/pre_clustering_data_filtered.csv' #Won't create this if not filtering
-pre_clustering_data_std_mean: './data/inputs/pre_clustering_data_std_means.csv' #Filtered and non filtered both create this in main
-
-
-# pre_clustering_data_filtered_std_mean: './data/inputs/pre_clustering_data_filtered_std_means.csv'
+#Won't create this if not filtering
+pre_clustering_data_filtered: './data/inputs/pre_clustering_data_filtered.csv' 
+#Filtered and non filtered both create this in main
+pre_clustering_data_std_mean: './data/inputs/pre_clustering_data_std_means.csv' 
 
 # post processing files for creating standardized means
 restructured_subclustering_output: './data/output_data/subgroup/restructured_subclustering_output.csv'
 
-#Clustering config
+# Clustering config
 number_of_clusters: 6
-number_of_times_k_means_initialised: 1000 #1000 for test run
+# Change to 1000 for a full run, 10 for testing the pipeline
+number_of_times_k_means_initialised: 10
 random_seed: 42
+
+# Key must be an int
+subclustering_mapping : {
+    0: 4, 1: 3, 2: 3, 3: 2, 4: 4, 5: 3 }
 
 # Key must be a string
 subsubclustering_mapping : {
-    '0a': 1, '5b': 1,  '0b': 1,  '3b': 1,  '1a': 1,  '5a': 1,  '3a': 1,  '2a': 1, 
-    '2c': 1,  '1c': 1,  '2b': 1,  '4a': 1,  '4d': 1,  '4c': 1, 
-    '4b': 1,  '0d': 1,  '0c': 1,  '1b': 1,  '5c': 1, }
-
-
-    # '0a': 1, '3b': 1, '5c': 1, '4a': 1, '0c': 1, '5b': 1, '0b': 1, '4c': 1, '2b': 1,
-    # '2a': 1, '1a': 1, '5a': 1, '1c': 1, '1b': 1, '3a': 1,
-    # '3c': 1, '4b': 1, '2c': 1, }
+    '0a': 3, '5b': 3,  '0b': 3,  '3b': 3,  '1a': 3,  '5a': 3,  '3a': 3,  '2a': 3, 
+    '2c': 3,  '1c': 3,  '2b': 3,  '4a': 3,  '4d': 3,  '4c': 3, 
+    '4b': 3,  '0d': 3,  '0c': 3,  '1b': 3,  '5c': 3 }
 
 #*****FILE PATHS AND CONFIGURATIONS WHICH SHOULD NOT NEED AMENDING*****
 # Variables lookup
 select_variables_lookup: './data/lookups/UK_selected_codes_lookup.csv'
 
-#General file paths
-input_data_directory: './data/inputs/'
-qa_folder_path: './data/QA/'
+# General file paths
+input_directory: './data/inputs/'
+qa_directory: './data/QA/' 
 output_directory: './data/output_data/'
-plot_directory: './data/plots/'
+clustergram_directory: './data/output_data/clustergrams/'
+radial_plot_directory: './data/output_data/radial_plots/'
 
-#The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
+# The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: './data/inputs/scot_downloads/'
 
 # Manually downloaded population density table file path
 ni_pop_density_filepath: './data/inputs/ni_downloads/census-2021-ms-a14-LGD.xlsx' 
 
-#Downloading data config
+# Downloading data config
 ew_file_pattern: 'ts???*.csv'
 ew_join_column_name: 'LTLA'
 ew_excluded_form_code: ["ts006"]
@@ -77,7 +78,7 @@ ni_excluded_form_code: ["population_density"]
 scot_join_column_name: 'CA19'
 scot_excluded_form_code: ["population_density"]
 
-#SIR config
+# SIR config
 england_wales_disability_file: 'ew_disability_age_group.csv'
 ni_disability_file: 'ni_disability_age_group.csv'
 scotland_disability_file: 'scot_disability_age_group.csv'
@@ -86,9 +87,9 @@ england_wales_disability_input: 'ew_downloads/disabilitycensus2021.xlsx'
 ni_disability_input: 'ni_downloads/census-2021-ms-d02.xlsx'
 scotland_disability_input: 'scot_downloads/UV303a.csv'
 
-#Post clustering table restructure
-keep_column: 'LAD_code' #Name of the column to keep as-is.
-split_column: 'subsubcluster' # Name of the column to split into separate characters.
+# Post clustering table restructure
+keep_column: 'LAD_code' 
+split_column: 'subsubcluster'
 
 # These tables dont have OA data for England and Wales
 england_and_wales_table_codes_to_remove : [
@@ -118,4 +119,3 @@ england_and_wales_table_codes_to_remove : [
         "ts038asp",
         "ts039asp"
     ]
-

@@ -62,10 +62,10 @@ def select_variables(df_temp, lookup_df, config):
     filtered_df = filtered_df[ordered_columns]
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
 
     # Save to data QA folder
-    output_file_path = config["qa_folder_path"] + "select_variables_output.csv"
+    output_file_path = config["qa_directory"] + "select_variables_output.csv"
     filtered_df.to_csv(output_file_path, index=False)
 
     return filtered_df
@@ -81,6 +81,6 @@ if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     lookup_df = pd.read_csv(config['select_variables_lookup'])
-    df_temp = pd.read_csv(os.path.join(config['input_data_directory'], 'CA19_concat.csv'))
+    df_temp = pd.read_csv(os.path.join(config['input_directory'], 'CA19_concat.csv'))
     
     select_variables(df_temp, lookup_df, config)
