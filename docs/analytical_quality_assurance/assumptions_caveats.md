@@ -82,7 +82,13 @@ For Northern Ireland, we have used [Country of Birth - 9 Categories](https://bui
 In the Northern Ireland data, The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However, if someone answered 'Ireland' (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU). Therefore, they will have beene coded to Non-EU as there is no way to determine which is the correct classification for these responses. 
 As a result, we have aggregated ni0330004 - "Europe: Ireland"	and ni0330005 - "Europe: Other EU countries" for Northern Ireland data. 
 
-## Assumption 8: 
+## Assumption 7: Education aggregation?
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+Plain text
+
+## Assumption 8:
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
