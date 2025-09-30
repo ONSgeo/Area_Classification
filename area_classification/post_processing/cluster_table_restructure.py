@@ -88,12 +88,12 @@ def cluster_table_restructure(config, clustering_output, split_column, chosen_cl
     restructured_cluster_table = restructured_cluster_table[columns]
 
     # Save the resulting DataFrame to a new file
-    output_file = os.path.join(config["output_directory"], f"restructured_subclustering_output.csv")
+    output_file = os.path.join(config["output_directory"], f"cluster_assignments/restructured_subclustering_output.csv")
     restructured_cluster_table.to_csv(output_file, index=False)
 
     # Create and save out restructured long table (for use in summaries)
     restructured_cluster_table_long = pd.merge(restructured_cluster_table, chosen_clustering_variables_std, on='LAD_code', how='inner')
-    output_file_long = os.path.join(config["output_directory"], f"restructured_subclustering_output_long.csv")
+    output_file_long = os.path.join(config["output_directory"], f"cluster_assignments/restructured_subclustering_output_long.csv")
     restructured_cluster_table_long.to_csv(output_file_long, index=False)
 
     return restructured_cluster_table, restructured_cluster_table_long

@@ -72,14 +72,14 @@ def main_pipeline():
     ## Step 7: Clustering
     clustering_output = clustering_wrapper(
         config,
-        input_dataframe_or_filepath=chosen_clustering_variables_std,
-        num_clusters=config["number_of_clusters"],
+        input_dataframe=chosen_clustering_variables_std,
+        number_of_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],
         clustergram_directory=config["clustergram_directory"],
         random_seed=config["random_seed"]
     )
-
+    
     # Add a break
     input("Press Enter to continue to post processing...")
  

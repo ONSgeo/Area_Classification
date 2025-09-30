@@ -520,10 +520,12 @@ def extract_pop_density_table(scot_input_folder):
     Extracts the 'Table 4' sheet from an Excel file, saves it as a CSV, 
     and deletes the original Excel file.
 
-    Parameters:
+    Parameters
+    ----------
         scot_input_folder (str): Path to the folder containing the Excel file.
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Define file paths
