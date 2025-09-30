@@ -51,7 +51,7 @@ This look up is used to replace the LAD names with codes, as some of the census 
 
 In the interim solution for the aggregation of 'Flat', the code aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9.
 
-| EW Code   | Description                                                                                                              | 
+| EW Code   | Description                                                                                                           | 
 |-------|---------------------------------------------------------------------------------------------------------------------------|
 | NM_1549_1_7 |       Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement | 
 | NM_1549_1_8 |       Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) | 
@@ -66,9 +66,11 @@ NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
 | ni0030007 | Household: Accommodation Type: Flat, maisonette or apartment: In a commercial building (for example in an office building, hotel, or over a shop) |
 
 Scotland includes UV4010006 which is "Flat, maisonette or apartment: Total" and includes:
-- UV4010007 Flat, maisonette or apartment: Purpose-built block of flats or tenement
-- UV4010008 Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)
-- UV4010009 Flat, maisonette or apartment: In a commercial building
+| ScotCode   | Description                                                                                                              | 
+|-------|---------------------------------------------------------------------------------------------------------------------------| 
+|UV4010007| Flat, maisonette or apartment: Purpose-built block of flats or tenement|
+|UV4010008| Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)|
+|UV4010009| Flat, maisonette or apartment: In a commercial building|
 
 ## Assumption 7: 
 * Quality: Insert RAG rating here
