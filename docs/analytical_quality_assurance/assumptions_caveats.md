@@ -17,17 +17,17 @@ impact[^1]:
 
 ## Assumption 1: Using 2021 censuses data in combination with 2022 censuses
 
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+* Quality: Green
+* Impact: Red
 
-As census was conducted a year later in Scotland than England and Wales, and Northern Ireland (NI), we are assuming this will not have a great impact on the clusters created.
+Census was conducted in a different year for Scotland (2022) than England and Wales (2021), and Northern Ireland (2021). Census is the only source which can provide information on the variables required for this analysis, as Scotland was only a year later, we are assuming that this will not have a great impact on the clusters created, especially when compared with 2011 Census data (the previously census year). 
 
 ## Assumption 2: Not including Bangladeshi ethnic group for NI
 
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+* Quality: Green
+* Impact: Red
 
-Values for the Bangladsehi ethnic group are not avaialble to download for Northern Ireland as the values are so low they could be classed as disclosive. However we have decided to continue to factor in the is group for the other two censuses (EW and Scot).
+Values for the Bangladsehi ethnic group are not available to download for Northern Ireland as the values are so low they could be classed as disclosive, because of this we have decided to remove this group for the other two censuses (EW and Scot), so that all three data sources are inline. 
 
 ## Assumption 3: Standard Illness Ratio calculated from XX age
 * Quality: Insert RAG rating here
