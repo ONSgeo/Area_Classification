@@ -49,7 +49,7 @@ This look up is used to replace the LAD names with codes, as some of the census 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
-In the interim solution for the aggregation of 'Flat', the code aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9.
+In the 2021 interim solution aggregated the following codes to generate the variable 'Flat'.
 
 | EW Code   | Description                                                                                                           | 
 |-------|---------------------------------------------------------------------------------------------------------------------------|
@@ -58,6 +58,7 @@ In the interim solution for the aggregation of 'Flat', the code aggregated flat 
 | NM_1549_1_9 |       Unshared dwelling: Flat, maisonette or apartment: In commercial building | 
 
 This did not include "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse". We have made the decision to include this in the England and Wales aggregation for "Flats" since NI and Scot includes: 
+
 NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
 | NI Code   | Description                                                                                                              | 
 |-------|---------------------------------------------------------------------------------------------------------------------------| 
