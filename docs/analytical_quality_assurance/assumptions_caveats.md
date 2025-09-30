@@ -27,7 +27,7 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 * Quality: Green
 * Impact: Red
 
-Values for the Bangladsehi ethnic group are not available to download for Northern Ireland as the values are so low they could be classed as disclosive, because of this we have decided to remove this group for the other two censuses (EW and Scot), so that all three data sources are inline. 
+Values for the Bangladsehi ethnic group are not available to download for Northern Ireland, because of this we have decided to remove this group for the other two censuses (EW and Scot), so that all three data sources are aligned. By including this variable for EW and Scot, but not NI we found it to effect clustering by grouping NI as one cluster, separate from the others.
 
 ## Assumption 3: Standard Illness Ratio calculated from XX age
 * Quality: Insert RAG rating here
