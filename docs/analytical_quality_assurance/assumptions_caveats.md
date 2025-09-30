@@ -29,38 +29,35 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 
 Values for the Bangladsehi ethnic group are not available to download for Northern Ireland, because of this we have decided to remove this group for the other two censuses (EW and Scot), so that all three data sources are aligned. By including this variable for EW and Scot, but not NI we found it to effect clustering by grouping NI as one cluster, separate from the others.
 
-## Assumption 3: Standard Illness Ratio calculated from XX age
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+## Assumption 3: Combined area codes for disability data for the calculation of Standard Illness Ratio
 
-Origionally in the 2021 area classification ages were grouped into <15 and >65. This is not possible due to the split of ages across all three census' there gore we have tried to replicate with best data we had but couldn't split at XX age because this data was not available for all three census.
-
-## Assumption 4: Combined area codes for disability data
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+* Quality: Amber
+* Impact: Green
 
 In the England and Wales disability Census data 2021 provides combined values for the areas below. We have assumed the SIR values is the same for both of the areas within the combined as these are proprotions. 
 E09000001 and E09000033 - City of London and Westminster
 E06000052 and E06000053 - Cornwall and Isles of Scilly
 
-## Assumption 5: Using the Local Authoirty District look up table for 2022
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+## Assumption 4: Using the Local Authoirty District look up table for 2022
 
-Plain text
+* Quality: Green
+* Impact: Green
+
+This look up is used to include codes, as the downloads come with the LAD names. Althought the census data for 2021 for England, Wales and Northern Ireland, as 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. We expect there to be minimal changes between 2021 and 2022 for EW and NI.
 
 ## Assumption 6 / Decision log: to include ts0440007 
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
-In the interim solution for the aggregation of 'Flat', Jakub aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9,
-Accommodation type
-Flat = 
-NM_1549_1_7       (Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement) + 
-NM_1549_1_8       (Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)) +
-NM_1549_1_9       (Unshared dwelling: Flat, maisonette or apartment: In commercial building)
+In the interim solution for the aggregation of 'Flat', the code aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9.
 
-This did not include "ts0440007 - Accommodation type: Part of another converted building, for example, former school, church or warehouse" we have made the decision to include this in the England and Wales aggregation for Flats since NI and Scot includes: 
+| Code   | Description                                                                                                              |                                                                        |
+|-------|---------------------------------------------------------------------------------------------------------------------------|
+| NM_1549_1_7 |       Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement | 
+| NM_1549_1_8 |       Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) | 
+| NM_1549_1_9 |       Unshared dwelling: Flat, maisonette or apartment: In commercial building | 
+
+This did not include "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse". We have made the decision to include this in the England and Wales aggregation for "Flats" since NI and Scot includes: 
 NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
 - ni0030005 Household: Accommodation Type: Flat, maisonette or apartment: Purpose-built block of flats
 - ni0030006 Household: Accommodation Type: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)
