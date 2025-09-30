@@ -51,7 +51,7 @@ This look up is used to include codes, as the downloads come with the LAD names.
 
 In the interim solution for the aggregation of 'Flat', the code aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9.
 
-| Code   | Description                                                                                                              |                                                                        |
+| Code   | Description                                                                                                              | 
 |-------|---------------------------------------------------------------------------------------------------------------------------|
 | NM_1549_1_7 |       Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement | 
 | NM_1549_1_8 |       Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) | 
