@@ -46,38 +46,41 @@ E06000052 and E06000053 - Cornwall and Isles of Scilly
 This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Althought the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. We have ran a comparision which shows there is no difference between the 2021 lookup and the 2022 lookup.
 
 ## Assumption 6 / Decision log: to include ts0440007 
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+* Quality: Green
+* Impact: Amber
 
-In the 2021 interim solution aggregated the following codes to generate the variable 'Flat'.
+In the 2021 interim solution the variable, "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse" was not included when aggregating to create the 'Flats' variable. 
+We have decided to include it for England and Wales so that it aligns with those avaiable for Scot and NI.
 
 | EW Code   | Description                                                                                                           | 
-|-------|---------------------------------------------------------------------------------------------------------------------------|
-| NM_1549_1_7 |       Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement | 
-| NM_1549_1_8 |       Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) | 
-| NM_1549_1_9 |       Unshared dwelling: Flat, maisonette or apartment: In commercial building | 
+|-----------|-----------------------------------------------------------------------------------------------------------------------|
+| ts0440005 |       Accommodation type: In a purpose-built block of flats or tenement | 
+| ts0440006 |       Accommodation type: Part of a converted or shared house, including bedsits | 
+| ts0440007 |       Accommodation type: Part of another converted building, for example, former school, church or warehouse | 
+|ts0440008  |       Accommodation type: In a commercial building, for example, in an office building, hotel or over a shop| 
 
-This did not include "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse". We have made the decision to include this in the England and Wales aggregation for "Flats" since NI and Scot includes: 
-
-NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
-| NI Code   | Description                                                                                                              | 
-|-------|---------------------------------------------------------------------------------------------------------------------------| 
+| NI Code   | NI Description                                                                                                        |
+|-----------|-----------------------------------------------------------------------------------------------------------------------| 
 | ni0030005 | Household: Accommodation Type: Flat, maisonette or apartment: Purpose-built block of flats |
 | ni0030006 | Household: Accommodation Type: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) |
 | ni0030007 | Household: Accommodation Type: Flat, maisonette or apartment: In a commercial building (for example in an office building, hotel, or over a shop) |
 
-Scotland includes UV4010006 which is "Flat, maisonette or apartment: Total" and includes:
-| ScotCode   | Description                                                                                                              | 
-|-------|---------------------------------------------------------------------------------------------------------------------------| 
+Note, Scotland has a total for 'flat' already in the dataest - UV4010006 - "Flat, maisonette or apartment: Total" so this was used.
+Variables included in UV4010006 are:
+| Scot Code   | Scot Description                                                                                                    | 
+|-------------|---------------------------------------------------------------------------------------------------------------------| 
 |UV4010007| Flat, maisonette or apartment: Purpose-built block of flats or tenement|
 |UV4010008| Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)|
 |UV4010009| Flat, maisonette or apartment: In a commercial building|
 
-## Assumption 7: 
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
+## Assumption 6: Country of birth in Northern Ireland.
+* Quality: Amber
+* Impact: Amber
 
-[Country of Birth - 9 Categories](https://build.nisra.gov.uk/en/custom/data?d=PEOPLE&v=LGD14&v=COB_AGG9) was used for NI. To harmonise with EW and Scot, we require the total for all EU countries. We have there for “Europe: Ireland” and “Europe: Other EU countries” together however with a caveat. The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However if someone just answered Ireland (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU) so they are coded to Non-EU as there is no way to determine which is the correct classification for these responses.
+For Northern Ireland, we have used [Country of Birth - 9 Categories](https://build.nisra.gov.uk/en/custom/data?d=PEOPLE&v=LGD14&v=COB_AGG9). In order to harmonise with England, Wales and Scotland, a total for all EU countries is required. In England and Wales ts0040004 - "Europe: EU countries" variable is used and Scotland, UV2040010 - "Europe: EU countries".
+
+In the Northern Ireland data, The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However, if someone answered 'Ireland' (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU). Therefore, they will have beene coded to Non-EU as there is no way to determine which is the correct classification for these responses. 
+As a result, we have aggregated ni0330004 - "Europe: Ireland"	and ni0330005 - "Europe: Other EU countries" for Northern Ireland data. 
 
 ## Assumption 8: 
 * Quality: Insert RAG rating here
