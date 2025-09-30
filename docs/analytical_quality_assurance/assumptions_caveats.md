@@ -38,12 +38,12 @@ In the England and Wales disability Census data 2021 provides combined values fo
 E09000001 and E09000033 - City of London and Westminster
 E06000052 and E06000053 - Cornwall and Isles of Scilly
 
-## Assumption 4: Using the Local Authoirty District look up table for 2022
+## Assumption 4: Using the Local Authoirty District (LAD) look up table for 2022
 
 * Quality: Green
 * Impact: Green
 
-This look up is used to include codes, as the downloads come with the LAD names. Althought the census data for 2021 for England, Wales and Northern Ireland, as 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. We expect there to be minimal changes between 2021 and 2022 for EW and NI.
+This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Althought the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. We have ran a comparision which shows there is no difference between the 2021 lookup and the 2022 lookup.
 
 ## Assumption 6 / Decision log: to include ts0440007 
 * Quality: Insert RAG rating here
@@ -51,7 +51,7 @@ This look up is used to include codes, as the downloads come with the LAD names.
 
 In the interim solution for the aggregation of 'Flat', the code aggregated flat = NM_1549_1_7 + NM_1549_1_8 + NM_1549_1_9.
 
-| Code   | Description                                                                                                              | 
+| EW Code   | Description                                                                                                              | 
 |-------|---------------------------------------------------------------------------------------------------------------------------|
 | NM_1549_1_7 |       Unshared dwelling: Flat, maisonette or apartment: Purpose-built block of flats or tenement | 
 | NM_1549_1_8 |       Unshared dwelling: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) | 
@@ -59,9 +59,11 @@ In the interim solution for the aggregation of 'Flat', the code aggregated flat 
 
 This did not include "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse". We have made the decision to include this in the England and Wales aggregation for "Flats" since NI and Scot includes: 
 NI - Aggregation to produce 'flat' from ni0030005 + ni0030006 + ni0030007
-- ni0030005 Household: Accommodation Type: Flat, maisonette or apartment: Purpose-built block of flats
-- ni0030006 Household: Accommodation Type: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)
-- ni0030007 Household: Accommodation Type: Flat, maisonette or apartment: In a commercial building (for example in an office building, hotel, or over a shop)
+| NI Code   | Description                                                                                                              | 
+|-------|---------------------------------------------------------------------------------------------------------------------------| 
+| ni0030005 | Household: Accommodation Type: Flat, maisonette or apartment: Purpose-built block of flats |
+| ni0030006 | Household: Accommodation Type: Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits) |
+| ni0030007 | Household: Accommodation Type: Flat, maisonette or apartment: In a commercial building (for example in an office building, hotel, or over a shop) |
 
 Scotland includes UV4010006 which is "Flat, maisonette or apartment: Total" and includes:
 - UV4010007 Flat, maisonette or apartment: Purpose-built block of flats or tenement
