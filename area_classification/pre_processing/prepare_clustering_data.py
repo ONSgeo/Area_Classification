@@ -7,10 +7,12 @@ def prepare_clustering_data(dataframe):
     Wrapper function that applies standardization, arcsinh transformation,
     and min-max scaling to the numerical columns in the input DataFrame.
 
-    Parameters:
+    Parameters
+    ----------
         dataframe (pd.DataFrame): The input DataFrame for clustering.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: A new DataFrame with the transformed and standardized numeric values,
                       and the first column set as the index.
     """
@@ -31,10 +33,11 @@ def standardize_data(dataframe):
     Standardizes the numeric columns of the DataFrame by subtracting the mean
     and dividing by the standard deviation (z-score normalization).
 
-    Parameters:
+
         dataframe (pd.DataFrame): The input DataFrame.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: A DataFrame with standardized numeric columns.
     """
     standardized_data = dataframe.copy()
@@ -53,10 +56,12 @@ def apply_arcsinh_transformation(dataframe):
 
     Applies the inverse hyperbolic sine (arcsinh) transformation to numeric values.
 
-    Parameters:
+    Parameters
+    ----------
         dataframe (pd.DataFrame): The input DataFrame.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: A DataFrame with arcsinh-transformed numeric columns.
     """
     transformed_data = dataframe.copy()
@@ -68,10 +73,12 @@ def apply_min_max_scaling(dataframe):
     """
     Applies min-max scaling to numeric columns, scaling values to the range [0, 1].
 
-    Parameters:
+    Parameters
+    ----------
         dataframe (pd.DataFrame): The input DataFrame.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: A DataFrame with min-max scaled numeric columns.
     """
     scaled_data = dataframe.copy()

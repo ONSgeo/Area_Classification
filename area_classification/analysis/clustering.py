@@ -111,7 +111,7 @@ def clustering_wrapper(config: dict,
 
     # Call the function with the adjusted number of clusters - if we try and group 10 data points in 11 clusters it will fail
     # function should take inpupt of highest amount of clusters to look at
-    create_subcluster_clustergrams(output_df=supergroup_variable_df,
+    create_subcluster_clustergrams(cluster_df=supergroup_variable_df,
                                    clustergram_directory=clustergram_directory, 
                                    num_clusters=num_clusters, 
                                    drop_columns=['cluster'],
@@ -252,7 +252,8 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
     random_seed : int, optional
         Random seed for reproducibility.
 
-    Returns:
+    Returns
+    -------
     pd.DataFrame
         The input DataFrame with an added 'cluster' column containing 
         the assigned cluster for each row.
@@ -282,7 +283,7 @@ def run_kmeans(input_df, num_clusters, n_init = 1000, output_filepath = "output.
 ## Subclusters = groups and subgroups
 # For LAD area classification the supergroup clusters created above are split further into groups and subgroups by applying the above process iteratively. 
 
-def create_subcluster_clustergrams(output_df, clustergram_directory, num_clusters, drop_columns,cluster_col_name, n_init=10, random_seed=None):
+def create_subcluster_clustergrams(cluster_df, clustergram_directory, num_clusters, drop_columns,cluster_col_name, n_init=10, random_seed=None):
     """
     Generate and save clustergrams for each supercluster.
     This function loops through the existing clusters and creates a clustergram 
@@ -290,7 +291,7 @@ def create_subcluster_clustergrams(output_df, clustergram_directory, num_cluster
     
     Parameters
     ----------
-    output_df : pd.DataFrame
+    cluster_df : pd.DataFrame
         DataFrame containing cluster assignments.
     num_clusters : int
         The total number of clusters to iterate over.
@@ -299,10 +300,9 @@ def create_subcluster_clustergrams(output_df, clustergram_directory, num_cluster
     n_init : int, optional
         The number of times KMeans will be initialized. Defaults to 10. Increase for more stable results.
     """
-
     for cluster in range(num_clusters):
         # Select rows corresponding to the current cluster, dropping the 'cluster' column
-        cluster_df = output_df.query(f"cluster == {cluster}").drop(columns=drop_columns)
+        cluster_df = cluster_df.query(f"cluster == {cluster}").drop(columns=drop_columns)
 
         logger.info(f"Cluster: {cluster}, {len(cluster_df)} geographies in cluster")
  
@@ -313,7 +313,7 @@ def create_subcluster_clustergrams(output_df, clustergram_directory, num_cluster
         # Generate clustergram
         create_clustergram(cluster_df, num_clusters, n_init=n_init, save_loc=save_loc, random_seed=random_seed)
 
-def create_subsubcluster_clustergrams(output_df, clustergram_directory, num_clusters, drop_columns, cluster_col_name, n_init=10, random_seed=None):
+def create_subsubcluster_clustergrams(cluster_df, clustergram_directory, num_clusters, drop_columns, cluster_col_name, n_init=10, random_seed=None):
     """
     Generate and save clustergrams for each group.
     This function loops through the existing groups and creates a clustergram 
@@ -321,7 +321,7 @@ def create_subsubcluster_clustergrams(output_df, clustergram_directory, num_clus
     
     Parameters
     ----------
-    output_df : pd.DataFrame
+    cluster_df : pd.DataFrame
         DataFrame containing cluster assignments.
     num_clusters : int
         The total number of clusters to iterate over.
@@ -339,7 +339,7 @@ def create_subsubcluster_clustergrams(output_df, clustergram_directory, num_clus
 
     for cluster in range(num_clusters):
         # Select rows corresponding to the current cluster, dropping the cluster column
-        cluster_df = output_df.query(f"{cluster_col_name} == {cluster}").drop(columns=drop_columns)
+        cluster_df = cluster_df.query(f"{cluster_col_name} == {cluster}").drop(columns=drop_columns)
 
         logger.info(f"Cluster: {cluster}, {len(cluster_df)} geographies in cluster")
  
@@ -356,7 +356,7 @@ def run_subclustering(input_df, output_dir,drop_columns,column_name, cluster_col
     
     Parameters
     ----------
-    output_df : pd.DataFrame
+    cluster_df : pd.DataFrame
         The original DataFrame containing data and cluster assignments.
     n_init : int, optional
         The number of times KMeans will be initialized. Defaults to 100. Increase for more stable results.
