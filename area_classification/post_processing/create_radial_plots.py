@@ -1,4 +1,3 @@
-# WORK OUT WHY COMBINED_GROUP_MEANS AND COMBINED_SUBGROUP_MEANS ARE THE SAME WHEN PASSED IN
 
 import os
 import numpy as np
@@ -23,7 +22,6 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
     combined_subgroup_means : DataFrame
         DataFrame containing subgroup-level means.
     """
-
 
     # Create radial plots for supergroups, groups and subgroups against UK
     create_radial_plots(config, uk_std_cluster_means, level="UK")

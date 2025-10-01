@@ -8,7 +8,7 @@
 |input_data_directory | The path where inputs required for the clustering are saved             | 	string   | Any filepath.     |
 |qa_folder_path |  The path where outputs should be saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
 |output_directory | The path where outputs should be saved to | 	string   | Any filepath.     |
-|plot_directory | The path where outputted plost should be saved to            | 	string   | Any filepath.     |
+|clustergram_directory | The path where outputted clustergrams should be saved to            | 	string   | Any filepath.     |
 |preprocessed_input_table | The path to where the final outputted table from pre-processing is, which is the starting file for clustering            | 	string   | Any filepath.     |
 |ew_file_pattern| The file pattern for England and Wales files to be selected           | string   | Acceptance values      |
 |ew_join_column_name | The name of column in England and Wales tables containing area codes which will be used for joining  | string   | Any valid column name.      |

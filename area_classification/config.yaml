@@ -62,7 +62,7 @@ select_variables_lookup: './data/lookups/UK_selected_codes_lookup.csv'
 input_data_directory: './data/inputs/'
 qa_folder_path: './data/QA/'
 output_directory: './data/output_data/'
-plot_directory: './data/plots/'
+clustergram_directory: './data/output_data/clustergrams/'
 
 #The manually downloaded Scot tables (and those for EW and NI) should be saved in inputs
 scot_input_folder: './data/inputs/scot_downloads/'
