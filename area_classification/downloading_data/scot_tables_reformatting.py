@@ -64,7 +64,7 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, config)
 
     # Remove rows with metadata/no data (first 10 and bottom 3 rows)
-    remove_rows(config, folderpath= config["qa_folder_path"])
+    remove_rows(config, folderpath= config["qa_directory"])
 
     # Reformat specific tables
     reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config)
@@ -120,10 +120,10 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     meta_data_table = meta_data_table[~meta_data_table["Variable_Name"].str.contains("Unnamed", na=False)]
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
 
     # Saving to QA currently, may need to move
-    output_file_path = os.path.join(config["input_data_directory"], "scot_LAD_table_metadata.csv")
+    output_file_path = os.path.join(config["input_directory"], "scot_LAD_table_metadata.csv")
 
     # Save the metadata table to the specified path
     meta_data_table.to_csv(output_file_path, index=False)
@@ -249,9 +249,9 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         output_df['CA19'] = output_df['CA19'].str.strip().str.lower().map(lookup_dict).fillna(output_df['CA19'])
         
         # Ensure QA directory exists
-        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+        os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
         # Save the final DataFrame to a new CSV file
-        output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV101b.csv")
+        output_file_path = os.path.join(config["qa_directory"], "reformat_UV101b.csv")
         output_df.to_csv(output_file_path, index=False)
     else:
         logger.error("No relevant data found in UV101b.csv.")
@@ -346,9 +346,9 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     reformatted_df = reformatted_df.loc[:, ~reformatted_df.columns.str.contains('^Unnamed')]
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
     # Save the reformatted DataFrame to a new CSV file
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV103.csv")
+    output_file_path = os.path.join(config["qa_directory"], "reformat_UV103.csv")
     reformatted_df.to_csv(output_file_path, index=False)
 
 
@@ -419,7 +419,7 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     # Replace the column name 'Council Area 2019' with 'CA19'
     pivoted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV104.csv")
+    output_file_path = os.path.join(config["qa_directory"], "reformat_UV104.csv")
     pivoted_df.to_csv(output_file_path, index=False)
 
 
@@ -490,7 +490,7 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
     # Replace the column name 'Council Area 2019' with 'CA19'
     pivoted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_UV210.csv")
+    output_file_path = os.path.join(config["qa_directory"], "reformat_UV210.csv")
     pivoted_df.to_csv(output_file_path, index=False)
 
 
@@ -579,10 +579,10 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     reformatted_df.rename(columns={'Council Area 2019': 'CA19'}, inplace=True)
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
 
     # Save the new DataFrame to a CSV file
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_migrant_indicator.csv")
+    output_file_path = os.path.join(config["qa_directory"], "reformat_migrant_indicator.csv")
     reformatted_df.to_csv(output_file_path, index=False)
 
 
@@ -663,10 +663,10 @@ def reformat_pop_density(scot_input_folder, config):
     df = df[df.iloc[:, 0] != 'S92000003']
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
     
     # Save to a CSV
-    output_file_path = os.path.join(config["qa_folder_path"], "reformat_population_density.csv")
+    output_file_path = os.path.join(config["qa_directory"], "reformat_population_density.csv")
     df.to_csv(output_file_path, index=False)
 
 
@@ -851,10 +851,10 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
             logger.info(f"Column 0 not found in {file_name}. Skipping replacement.")
         
         # Ensure QA directory exists
-        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+        os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
         
         # Save the reformat DataFrame to a new CSV file
-        reformat_file_path = os.path.join(config["qa_folder_path"], f"reformat_{file_name}")
+        reformat_file_path = os.path.join(config["qa_directory"], f"reformat_{file_name}")
         df.to_csv(reformat_file_path, index=False, header=False)
 
 
@@ -872,7 +872,7 @@ def remove_rows(config, folderpath):
     config : dict 
         Configuration dictionary containing paths and file names.
     folderpath: str
-        The folder containing the files to loop through, likely  as config["qa_folder_path"]
+        The folder containing the files to loop through, likely  as config["qa_directory"]
 
     Returns
     -------
@@ -880,11 +880,11 @@ def remove_rows(config, folderpath):
         The function modifies the 'reformat_' CSV files in place
     """
             
-    qa_folder_path = config["qa_folder_path"]  # Store the folder path in a variable
+    qa_directory = config["qa_directory"]  # Store the folder path in a variable
 
     for file_name in os.listdir(folderpath):
         # Construct the full file path
-        file_path = os.path.join(qa_folder_path, file_name)
+        file_path = os.path.join(qa_directory, file_name)
 
         # Process files starting with "reformat_"
         if file_name.startswith("reformat_"):
@@ -947,9 +947,9 @@ def replace_variable_names_with_codes(config):
     variable_names_ids = []  # Initialize a list to store variable_names and variable_ids for each file
 
     # Iterate through each file in the input directory
-    for file_name in os.listdir(config["qa_folder_path"]):
+    for file_name in os.listdir(config["qa_directory"]):
         if "reformat_" in file_name and file_name.endswith(".csv"):  
-            file_path = os.path.join(config["qa_folder_path"], file_name)
+            file_path = os.path.join(config["qa_directory"], file_name)
             
             # Read the CSV file
             df = pd.read_csv(file_path, on_bad_lines='warn', header=0)
@@ -989,7 +989,7 @@ def replace_variable_names_with_codes(config):
                 df = df.iloc[:, :-1]
 
              # Ensure QA directory exists
-            os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+            os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
             
             # Save the modified DataFrame 
             # Save the modified DataFrame back to the original file path to overwrite it
@@ -1023,7 +1023,7 @@ def concat_reformatted_tables(config):
 
 
     #Concat reformatted tables
-    folder_path = config["qa_folder_path"] 
+    folder_path = config["qa_directory"] 
     # List all files in the folder that start with "reformat"
     files = [f for f in os.listdir(folder_path) if f.startswith("reformat") and f.endswith(".csv")]
 
@@ -1048,10 +1048,10 @@ def concat_reformatted_tables(config):
             result = pd.merge(result, data, left_index=True, right_index=True, how='outer')
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["input_data_directory"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
     
     # Save the concatenated DataFrame to a new CSV file (optional)
-    concatenated_file_path = os.path.join(config["input_data_directory"], "CA19_concat.csv")
+    concatenated_file_path = os.path.join(config["input_directory"], "CA19_concat.csv")
     result.to_csv(concatenated_file_path, index=True)
 
     return result
