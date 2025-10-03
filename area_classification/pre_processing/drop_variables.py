@@ -18,6 +18,7 @@ def check_drop_columns_true(config, preprocessed_df):
 
     Returns
     -------
+
         None
     """
     
@@ -45,6 +46,7 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
 
     Returns
     -------
+
         None
     """   
     # Duplicate the table the preprocessed input table
