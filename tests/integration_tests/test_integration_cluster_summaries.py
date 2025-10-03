@@ -8,7 +8,7 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
     def setUp(self):
         # Create a mock configuration
         self.config = {
-            'input_data_directory': './tests/data/'
+            'input_directory': './tests/data/'
         }
 
         # Create mock data for restructured_cluster_table_long

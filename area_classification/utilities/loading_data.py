@@ -90,7 +90,7 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
     
     # Write the DataFrame to a CSV file
     country_lad = join_column_name
-    output_csv_path = os.path.join(config["input_data_directory"], f"{country_lad}_concat.csv")
+    output_csv_path = os.path.join(config["input_directory"], f"{country_lad}_concat.csv")
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     merged_df.to_csv(output_csv_path, index=False)
     
@@ -99,7 +99,7 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    ew_input_csv_path = os.path.join(config["input_data_directory"], "./ew_downloads/")
+    ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
     filepath = "C:/Users/dayj1/Office for National Statistics/Geospatial - LAD_data_downloaded/NI_LAD"

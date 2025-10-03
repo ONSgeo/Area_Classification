@@ -49,10 +49,10 @@ def aggregating_variables(df_temp, aggregation_configs, config):
         country_lad_code = "N/A" 
 
     # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
+    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
 
     # Save to data QA folder with country area code type in the file name
-    output_file_path = f"{config['qa_folder_path']}aggregated_variables_output_{country_lad_code}.csv"
+    output_file_path = f"{config['qa_directory']}aggregated_variables_output_{country_lad_code}.csv"
     df_temp.to_csv(output_file_path, index=False)
         
     return df_temp

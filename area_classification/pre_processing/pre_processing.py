@@ -69,6 +69,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         aggregation_configs = aggregation_config[key + '_file_configs']
         df_temp = aggregating_variables(df_temp, aggregation_configs, config)
 
+
         # Joining to add SIR column into main df
         # needed for select_variable function
         # look at output of sir, split area codes which contain and
@@ -90,15 +91,15 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
 
         # Write the DataFrame to a CSV file
-        os.makedirs(os.path.dirname(config["qa_folder_path"]), exist_ok=True)
-        output_csv_path = os.path.join(config["qa_folder_path"], f"{key}_select.csv")
+        os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
+        output_csv_path = os.path.join(config["qa_directory"], f"{key}_select.csv")
         df_temp.to_csv(output_csv_path, index=False)
 
         # overwriting original df with processed df
         dfs[key] = df_temp
 
     # Call select_totals_columns after all _select.csv files are created
-    raw_totals_df = select_totals_columns(config, config["qa_folder_path"])
+    raw_totals_df = select_totals_columns(config, config["qa_directory"])
 
     # Convert counts to percentages
     preprocessed_df = convert_to_percentages(raw_totals_df)
