@@ -40,7 +40,6 @@ def get_census_table_urls(config: dict) -> list:
     function to configure the HTML pages and extract the URLs for census tables.
     Removes tables that do not have Output Areas (OA) from the list outlined in config.
 
-
     Parameters
     ----------
     config : dict
