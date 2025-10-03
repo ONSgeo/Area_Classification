@@ -993,4 +993,3 @@ if __name__ == "__main__":
     scot_reformatting_wrapper(scot_input_folder, LAD_lookup_file_path, config)   
             
                         
-
