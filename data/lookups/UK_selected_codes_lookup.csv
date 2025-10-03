@@ -159,9 +159,9 @@ Lives in a flat,UV4010006,UV401,Accommodation type - People,scot,v38,Housing
 Two or more cars or vans,cars_2_or_more,UV405,Car or van availability,scot,v39,Housing
 Under occupation,under_occupation,UV415,Occupancy rating for bedrooms,scot,v40,Housing
 Overcrowding,UV4150005,UV415,Occupancy rating for bedrooms,scot,v41,Housing
-Social rented,UV4030007,UV403,Household tenure - People,scot,v42,Housing
-Private rented,UV4030008,UV403,Household tenure - People,scot,v43,Housing
-Ownership or shared ownership,UV4030002,UV403,Household tenure - People,scot,v44,Housing
+Social rented,UV4040007,UV404,Household tenure - People,scot,v42,Housing
+Private rented,UV4040008,UV404,Household tenure - People,scot,v43,Housing
+Ownership or shared ownership,UV4040002,UV404,Household tenure - People,scot,v44,Housing
 Part-time,hours_part,UV604,Hours worked,scot,v45,Labour Market
 Full-time,hours_full,UV604,Hours worked,scot,v46,Labour Market
 L15 Full-time students,UV6070017,UV607,National Statistics Socio-economic Classification (NS-SeC),scot,v47,Labour Market

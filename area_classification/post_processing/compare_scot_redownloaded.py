@@ -62,5 +62,11 @@ if __name__ == "__main__":
         print("Differences found:")
         for key, value in differences.items():
             print(f"{key}: {value}")
+        
+        # Print the names of common columns with value differences
+        if 'value_differences_in_common_columns' in differences:
+            print("\nCommon columns with value differences:")
+            for column in differences['value_differences_in_common_columns']:
+                print(column)
     else:
         print("The two CSV files are identical.")
