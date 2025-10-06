@@ -127,9 +127,6 @@ def scot_reformatting_wrapper(scot_input_folder: str,
     return concat_reformatted_tables(config=config).reset_index(drop=False)
    
 
-
-
-
 # Function to reformat the UV101b CSV file
 def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     """
@@ -208,8 +205,6 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         logger.error("No relevant data found in UV101b.csv.")
 
 
-
-
 def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     """
     Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
@@ -279,7 +274,6 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     reformatted_df.to_csv(output_file_path, index=False)
 
 
-
 def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     """
     Reformat the UV104 CSV file.
@@ -329,7 +323,6 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     # Reset the index to make 'Council Area 2019' a column again
     pivoted_df.reset_index(inplace=True)
 
-
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
@@ -348,7 +341,6 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
 
     output_file_path = os.path.join(config["qa_directory"], "reformat_UV104.csv")
     pivoted_df.to_csv(output_file_path, index=False)
-
 
 
 def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
@@ -400,7 +392,6 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
     # Reset the index to make 'Council Area 2019' a column again
     pivoted_df.reset_index(inplace=True)
 
-
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
@@ -419,9 +410,6 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
 
     output_file_path = os.path.join(config["qa_directory"], "reformat_UV210.csv")
     pivoted_df.to_csv(output_file_path, index=False)
-
-
-
 
 
 def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
@@ -520,10 +508,12 @@ def extract_pop_density_table(scot_input_folder):
     Extracts the 'Table 4' sheet from an Excel file, saves it as a CSV, 
     and deletes the original Excel file.
 
-    Parameters:
+    Parameters
+    ----------
         scot_input_folder (str): Path to the folder containing the Excel file.
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Define file paths

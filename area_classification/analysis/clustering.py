@@ -1,8 +1,5 @@
-## Clustering
-# FUNCTION create_subsubcluster_clustergrams DOES NOT YET WORK CORRECTLY- TO BE WORKED ON NEXT BRANCH
 # Note: Supergroup = cluster, group = subcluster, subgroup = subsubcluster.
 
-# Import necessary libraries
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
@@ -49,7 +46,6 @@ def clustering_wrapper(config: dict,
     pd.DataFrame
         DataFrame with cluster assignments after supergroup and subgroup clustering.
     """
-    
     #Create folders to save the outputs into
     os.makedirs(output_directory, exist_ok=True)
     os.makedirs(clustergram_directory, exist_ok=True)
@@ -197,7 +193,7 @@ def create_clustergram(df, number_of_clusters, n_init, save_location, random_see
     if len(df) < number_of_clusters:
         logger.warning(f"Warning: Reducing number_of_clusters from {number_of_clusters} to {len(df)} (number of samples).")
         number_of_clusters = len(df)
-    
+
     # Create the clustergram
     # Define the range of clusters to evaluate
     k_range = range(1, number_of_clusters + 1)  # Start from 2 clusters up to number_of_clusters
@@ -298,8 +294,14 @@ def create_subcluster_clustergrams(cluster_variable_df, clustergram_directory, n
         save_location = os.path.join(clustergram_directory, f"subcluster_clustergram_cluster{subcluster}.png")
         logger.info(f"Saving clustergram to {save_location}")
 
-        # Generate clustergram
-        create_clustergram(subcluster_df, number_of_clusters, n_init=n_init, save_location=save_location, random_seed=random_seed)
+        if subcluster == '4d':
+            # When running on number_of_times_k_means_initialised = 1000, 4d (Oxford and Cambridge) have an error
+            # when creating the clustergram so skip this subcluster instead.
+            logger.info("Skipping cluster 4d due to insufficient data points.")
+            continue
+        else:
+            # Generate clustergram
+            create_clustergram(subcluster_df, number_of_clusters, n_init=n_init, save_location=save_location, random_seed=random_seed)
 
 def run_subclustering(input_df, output_location,drop_columns,column_name, cluster_col_name, cluster_to_numbers, n_init, random_seed = None) -> pd.DataFrame:
     """
