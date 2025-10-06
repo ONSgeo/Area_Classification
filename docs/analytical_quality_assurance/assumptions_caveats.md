@@ -88,12 +88,16 @@ As a result, we have aggregated ni0330004 - "Europe: Ireland"	and ni0330005 - "E
 
 Plain text
 
-## Assumption 8:
+## Assumption 8: Clustergrams for 4d
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+Coded to skip over the clustergram for 4d, as this only contains Oxford and Cambridge so a clustergram is not needed and when ran on 1000 iterations this clustergram errors.
+
+## Assumption 9:
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
 Plain text
-
-
 
 
