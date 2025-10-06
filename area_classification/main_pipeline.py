@@ -43,12 +43,12 @@ def main_pipeline():
     config = load_config('area_classification/config.yaml')
 
     # Step 1: Download england and wales data and reformat to be processed and combined
-    #ew_lad_bulk_download(config)
+    ew_lad_bulk_download(config)
     ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
     # Step 2: Download Northen Ireland data and reformat to be processed and combined
-    #ni_lgd_download_data(config)
+    ni_lgd_download_data(config)
     ni_input_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
@@ -69,7 +69,7 @@ def main_pipeline():
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
     chosen_clustering_variables_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
          
-    ## Step 7: Clustering
+    # Step 7: Clustering
     clustering_output = clustering_wrapper(
         config,
         input_dataframe=chosen_clustering_variables_std,
