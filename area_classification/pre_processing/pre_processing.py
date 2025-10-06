@@ -112,9 +112,9 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 if __name__ == "__main__":
     # Example usage
     config = load_config('area_classification/config.yaml')
-    ew_df = pd.read_csv('./data/inputs/LTLA_concat.csv')  
-    ni_df = pd.read_csv('./data/inputs/LGD_concat.csv')
-    scot_df = pd.read_csv('./data/inputs/CA19_concat.csv')
+    ew_df = pd.read_csv(f"{config['input_directory']}LTLA_concat.csv")  
+    ni_df = pd.read_csv(f"{config['input_directory']}LGD_concat.csv")
+    scot_df = pd.read_csv(f"{config['input_directory']}CA19_concat.csv")
 
     processed_df = pre_processing(ew_df, ni_df, scot_df, config)
     print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)

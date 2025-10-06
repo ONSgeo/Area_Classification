@@ -48,10 +48,10 @@ def create_radial_plots(config, dataframe, level):
     lookup_dict = pd.read_csv(config['select_variables_lookup']).set_index("new_code")["variable_name"].to_dict()
 
     # Create the 'radial_plots' directory
-    radial_plots_dir_parent = os.path.join(config["output_directory"], "radial_plots", "parent_cluster_radial_plots")
+    radial_plots_dir_parent = os.path.join(config["radial_plot_directory"], "parent_cluster_radial_plots")
     os.makedirs(radial_plots_dir_parent, exist_ok=True)
     # Create the 'radial_plots' directory
-    radial_plots_dir_UK = os.path.join(config["output_directory"], "radial_plots", "uk_radial_plots")
+    radial_plots_dir_UK = os.path.join(config["radial_plot_directory"], "uk_radial_plots")
     os.makedirs(radial_plots_dir_UK, exist_ok=True)
 
     # Get the feature columns (assuming they start from 'v01' to 'v59')

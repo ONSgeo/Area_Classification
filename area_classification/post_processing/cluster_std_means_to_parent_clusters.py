@@ -29,20 +29,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     Returns:
         pd.DataFrame: DataFrame containing standardized means for each cluster.
 
-    """
-    # Load the clustering output data
-    #restructured_subclustering_output_df = restructured_cluster_table_df
-
-    ## Define the paths to the pre-clustering data files (not standardized) 
-    #pre_clustering_data = (config["pre_clustering_data"])
-    #filtered_pre_clustering_data = (config["pre_clustering_data_filtered_std_mean"])
-
-    ## Check if the filtered (variables dropped) file exists
-    ## if it does, use it; otherwise, use the full pre_clustering_data
-    #pre_clustering_data_to_use = filtered_pre_clustering_data if os.path.exists(filtered_pre_clustering_data) else pre_clustering_data
-    #
-    #pre_clustering_data_to_use = pd.read_csv(pre_clustering_data_to_use)
-    
+    """   
     # Merge the two DataFrames on the LAD CODE column
     merged_df = restructured_cluster_table_df.merge(
         chosen_clustering_variables , on="LAD_code", how="left"
@@ -137,6 +124,6 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    restructured_cluster_table_df = pd.read_csv('data/output_data/restructured_subclustering_output.csv')
-    chosen_clustering_variables = pd.read_csv('data/inputs/pre_clustering_data_filtered.csv')
+    restructured_cluster_table_df = pd.read_csv(f"{config['output_directory']}restructured_subclustering_output.csv")
+    chosen_clustering_variables = pd.read_csv(f"{config['input_directory']}pre_clustering_data_filtered.csv")
     cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, chosen_clustering_variables)

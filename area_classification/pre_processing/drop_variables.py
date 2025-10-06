@@ -16,7 +16,9 @@ def check_drop_columns_true(config, preprocessed_df):
     pre_clustering_std : pd.DataFrame
          pandas DataFrame containing the preprocessed table.
 
-    Returns:
+    Returns
+    -------
+
         None
     """
     
@@ -33,7 +35,8 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     Duplicates the preprocessed input table, removes columns listed under 'variables_to_drop' in the config,
     and saves the resulting table as a new CSV file.
 
-    Parameters:
+    Parameters
+    ----------
     config_path : str
         Path to the YAML configuration file.
     pre_clustering_std :
@@ -41,7 +44,9 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     variables_to_drop : 
         A list of variables which will be dropped (these can be stored in the config)
 
-    Returns:
+    Returns
+    -------
+
         None
     """   
     # Duplicate the table the preprocessed input table
@@ -60,6 +65,8 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    pre_clustering_std = pd.read_csv('data/inputs/pre_clustering_data_std_means.csv')
+    pre_clustering_std = pd.read_csv(f"{config['input_directory']}pre_clustering_data_std_means.csv")
     pre_clustering_df = drop_variables_pre_clustering(config, pre_clustering_std, config.get('variables_to_drop', [])) 
     print(pre_clustering_df)
+
+    

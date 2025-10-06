@@ -136,11 +136,13 @@ def scot_reformatting_wrapper(scot_input_folder: str,
 def rename_csv_files_by_table_id(scot_input_folder):
     """
     Renames CSV files in the specified folder based on the Table ID found in their content.
-
-    Args:
+    
+    Paramaters
+    ----------
         scot_input_folder) (str): Path to the folder containing the CSV files.
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Regular expression to extract the Table ID 
@@ -176,9 +178,7 @@ def rename_csv_files_by_table_id(scot_input_folder):
                 logger.warning(f"Permission error processing file '{file_name}': {e}")
             except Exception as e:
                 logger.error(f"Error processing file '{file_name}': {e}")
-
-
-
+                
 # Function to reformat the UV101b CSV file
 def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     """
@@ -255,8 +255,6 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
         output_df.to_csv(output_file_path, index=False)
     else:
         logger.error("No relevant data found in UV101b.csv.")
-
-
 
 
 def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
@@ -352,7 +350,6 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     reformatted_df.to_csv(output_file_path, index=False)
 
 
-
 def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     """
     Reformat the UV104 CSV file.
@@ -402,7 +399,6 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     # Reset the index to make 'Council Area 2019' a column again
     pivoted_df.reset_index(inplace=True)
 
-
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
@@ -421,7 +417,6 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
 
     output_file_path = os.path.join(config["qa_directory"], "reformat_UV104.csv")
     pivoted_df.to_csv(output_file_path, index=False)
-
 
 
 def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
@@ -473,7 +468,6 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
     # Reset the index to make 'Council Area 2019' a column again
     pivoted_df.reset_index(inplace=True)
 
-
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))
@@ -492,9 +486,6 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
 
     output_file_path = os.path.join(config["qa_directory"], "reformat_UV210.csv")
     pivoted_df.to_csv(output_file_path, index=False)
-
-
-
 
 def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     """
@@ -592,10 +583,12 @@ def extract_pop_density_table(scot_input_folder):
     Extracts the 'Table 4' sheet from an Excel file, saves it as a CSV, 
     and deletes the original Excel file.
 
-    Parameters:
+    Parameters
+    ----------
         scot_input_folder (str): Path to the folder containing the Excel file.
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Define file paths
@@ -888,7 +881,7 @@ def remove_rows(config, folderpath):
 
         # Process files starting with "reformat_"
         if file_name.startswith("reformat_"):
-
+          
             try:
                 # Read the CSV file
                 df = pd.read_csv(file_path, on_bad_lines='warn', header=None)
@@ -949,6 +942,7 @@ def replace_variable_names_with_codes(config):
     # Iterate through each file in the input directory
     for file_name in os.listdir(config["qa_directory"]):
         if "reformat_" in file_name and file_name.endswith(".csv"):  
+
             file_path = os.path.join(config["qa_directory"], file_name)
             
             # Read the CSV file
@@ -991,9 +985,9 @@ def replace_variable_names_with_codes(config):
              # Ensure QA directory exists
             os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
             
-            # Save the modified DataFrame 
             # Save the modified DataFrame back to the original file path to overwrite it
             df.to_csv(file_path, index=False, header=True)
+
 
             # Append the variable_names and variable_ids to the results list
             variable_names_ids.append((variable_names, variable_ids))
@@ -1068,4 +1062,3 @@ if __name__ == "__main__":
     scot_reformatting_wrapper(scot_input_folder, LAD_lookup_file_path, config)   
             
                         
-
