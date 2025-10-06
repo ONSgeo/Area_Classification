@@ -69,6 +69,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         aggregation_configs = aggregation_config[key + '_file_configs']
         df_temp = aggregating_variables(df_temp, aggregation_configs, config)
 
+
         # Joining to add SIR column into main df
         # needed for select_variable function
         # look at output of sir, split area codes which contain and
