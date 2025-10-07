@@ -85,7 +85,7 @@ Within the 'data/inputs' folder create three new folders:
 | UV210 |	English language skills |	scot|
 | UV301 |	Provision of unpaid care |	scot|
 | UV401 |	Accommodation type - People |	scot|
-| UV403 |	Household tenure - People |	scot|
+| UV404 |	Household tenure - Households | scot|
 | UV405 |	Car or van availability |	scot|
 | UV415 |	Occupancy rating for bedrooms |	scot|
 | UV501 |	Highest level of qualification |	scot|
