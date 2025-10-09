@@ -88,13 +88,26 @@ As a result, we have aggregated ni0330004 - "Europe: Ireland"	and ni0330005 - "E
 
 Plain text
 
-## Assumption 8: Clustergrams for 4d
+## Assumption 8: Clustergrams for 4d NOW 2d?
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
 Coded to skip over the clustergram for 4d, as this only contains Oxford and Cambridge so a clustergram is not needed and when ran on 1000 iterations this clustergram errors.
 
-## Assumption 9:
+## Assumption 9: Using households for some Scotland variables which are avaiable at individual and household level
+* Quality: Insert RAG rating here
+* Impact: Insert RAG rating here
+
+Household composition is used for: (V05) one-person household, (V06) families with no children, and (V07) families with dependent children. 
+This is avaiable in two versions: V112 - Household composition - People and UV113 - Household composition - Households.
+
+Accommodation type is used for: (V35) detached, (V36) semi-detached, (V37) terraced and (V38) flat
+This is avaiable in two versions: UV401 - Accommodation type - People and UV402 - Accommodation type - Households
+
+We have decided to use the 'Households' versions (UV113 and UV402) to be consistant with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
+which was used to create the [2021 interim area classification solution for Enland and Wales at Output Area Level](https://data.geods.ac.uk/dataset/output-area-classification-2021). 
+
+## Assumption 10:
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
