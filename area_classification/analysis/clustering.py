@@ -294,10 +294,11 @@ def create_subcluster_clustergrams(cluster_variable_df, clustergram_directory, n
         save_location = os.path.join(clustergram_directory, f"subcluster_clustergram_cluster{subcluster}.png")
         logger.info(f"Saving clustergram to {save_location}")
 
-        if subcluster == '2d':
-            # When running on number_of_times_k_means_initialised = 1000, 2d (Oxford and Cambridge) have an error
-            # when creating the clustergram so skip this subcluster instead.
-            logger.info("Skipping cluster 2d due to insufficient data points.")
+        if len(subcluster_df) <= 2:
+            # Skip this subcluster if it has insufficient data points (2 or fewer).
+            # For example when running on number_of_times_k_means_initialised = 1000 the Oxford and Cambridge
+            # subgroup have an errors when creating the clustergram so skip this subcluster instead.
+            logger.info(f"Skipping cluster {subcluster} due to insufficient data points ({len(subcluster_df)}).")
             continue
         else:
             # Generate clustergram
