@@ -61,13 +61,6 @@ def select_variables(df_temp, lookup_df, config):
     ordered_columns = [first_column] +  sorted(remaining_columns)
     filtered_df = filtered_df[ordered_columns]
 
-    # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
-
-    # Save to data QA folder
-    output_file_path = config["qa_directory"] + "select_variables_output.csv"
-    filtered_df.to_csv(output_file_path, index=False)
-
     return filtered_df
 
 # Order the remaining columns based on the numeric value following 'v'
