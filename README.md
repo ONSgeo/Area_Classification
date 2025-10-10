@@ -77,14 +77,14 @@ Within the 'data/inputs' folder create three new folders:
 | UV101b |	Usual resident population by sex by age (6) |	scot|
 | UV103 |	Age |	scot|
 | UV104 |	Marital and civil partnership status |	scot|
-| UV112 |	Household composition - People |	scot|
+| UV113 |	Household composition - Households |	scot|
 | UV201 |	Ethnic group (21) | 	scot|
 | UV203 |	Multiple ethnic groups |	scot|
 | UV204 |	Country of birth | 	scot|
 | UV205 |	Religion |	scot|
 | UV210 |	English language skills |	scot|
 | UV301 |	Provision of unpaid care |	scot|
-| UV401 |	Accommodation type - People |	scot|
+| UV402 |	Accommodation type - Households |	scot|
 | UV404 |	Household tenure - Households | scot|
 | UV405 |	Car or van availability |	scot|
 | UV415 |	Occupancy rating for bedrooms |	scot|
