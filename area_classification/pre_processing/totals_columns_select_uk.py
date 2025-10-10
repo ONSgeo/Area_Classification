@@ -44,21 +44,21 @@ def select_totals_columns(config, inputs_folder):
 
     # Loop through all files in the inputs folder
     for file_name in os.listdir(inputs_folder):
-        if file_name.endswith("_select.csv"):  # Process only files ending with '_select.csv'
+        if file_name.endswith("_selected_variables.csv"):  # Process only files ending with '_selected_variables.csv'
             # Determine the country and corresponding aggregated file based on the file name
-            if "ew_select" in file_name:
+            if "preprocessing_ew_selected_variables.csv" in file_name:
                 country = "ew"
-                agg_file = os.path.join(inputs_folder, "aggregated_variables_output_LTLA.csv")
+                agg_file = os.path.join(inputs_folder, "preprocessing_aggregated_all_variables_LTLA.csv")
                 # Decapitalize the table_ID_with_suffix column for England and Wales
                 lookup_df["table_ID_with_suffix"] = lookup_df["table_ID_with_suffix"].str.lower()
-            elif "ni_select" in file_name:
+            elif "preprocessing_ni_selected_variables.csv" in file_name:
                 country = "ni"
-                agg_file = os.path.join(inputs_folder, "aggregated_variables_output_LGD.csv")
+                agg_file = os.path.join(inputs_folder, "preprocessing_aggregated_all_variables_LGD.csv")
                 # Decapitalize the table_ID_with_suffix column for Northern Ireland
                 lookup_df["table_ID_with_suffix"] = lookup_df["table_ID_with_suffix"].str.lower()
-            elif "scot_select" in file_name:
+            elif "preprocessing_scot_selected_variables" in file_name:
                 country = "scot"
-                agg_file = os.path.join(inputs_folder, "aggregated_variables_output_CA19.csv")
+                agg_file = os.path.join(inputs_folder, "preprocessing_aggregated_all_variables_CA19.csv")
                 # Do not decapitalize the table_ID_with_suffix column for Scotland
                 lookup_df["table_ID_with_suffix"] = lookup_df["table_ID"].astype(str) + "0001"
             else:
@@ -115,7 +115,7 @@ def select_totals_columns(config, inputs_folder):
     raw_totals_df = raw_totals_df[reordered_columns]
 
     # Save the concatenated DataFrame to the output file
-    output_file = os.path.join(config["qa_directory"], "select_raw_totals.csv")
+    output_file = os.path.join(config["qa_directory"], "preprocessing_selected_variables_raw_totals.csv")
     raw_totals_df.to_csv(output_file, index=False)
 
     return raw_totals_df

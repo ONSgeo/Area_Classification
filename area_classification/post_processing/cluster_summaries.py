@@ -483,7 +483,7 @@ if __name__ == "__main__":
     restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
-    chosen_clustering_variables = pd.read_csv(os.path.join(config["input_directory"], "pre_clustering_data.csv"))
+    chosen_clustering_variables = pd.read_csv(config["pre_clustering_data"])
 
     lookup_file = config["select_variables_lookup"]
 
