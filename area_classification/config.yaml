@@ -8,7 +8,7 @@ LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_
 
 # Variables chosen
 # Set to true to drop the variables specified below in 'variables to drop' or set to false to include 60 variables.
-drop_columns: True 
+drop_columns: True
 
 variables_to_drop  : [
         "v07", # Families with dependent children
@@ -39,15 +39,27 @@ number_of_clusters: 6
 number_of_times_k_means_initialised: 1000
 random_seed: 42
 
-# Key must be an int
 subclustering_mapping : {
-    0: 4, 1: 3, 2: 3, 3: 2, 4: 4, 5: 3 }
+    1: 4, 
+    5: 3, 
+    0: 3, 
+    4: 2, 
+    2: 4, 
+    3: 3 }
 
 # Key must be a string
+#subsubclustering_mapping : {
+#    '0a': 1, '5b': 1,  '0b': 1,  '3b': 1,  '1a': 1,  '5a': 1,  '3a': 1,  '2a': 1, 
+#    '2c': 1,  '1c': 1,  '2b': 1,  '4a': 1,  '4d': 1,  '4c': 1, 
+#    '4b': 1,  '0d': 1,  '0c': 1,  '1b': 1,  '5c': 1 }
+
+
 subsubclustering_mapping : {
-    '0a': 1, '5b': 1,  '0b': 1,  '3b': 1,  '1a': 1,  '5a': 1,  '3a': 1,  '2a': 1, 
-    '2c': 1,  '1c': 1,  '2b': 1,  '4a': 1,  '4d': 1,  '4c': 1, 
-    '4b': 1,  '0d': 1,  '0c': 1,  '1b': 1,  '5c': 1 }
+    '1c': 1, '3b': 1, '1a': 1, '4b': 1, '5a': 1, '3a': 1, '4a': 1, '0b': 1, 
+    '0c': 1, '5c': 1, '0a': 1, '2a': 1, '2d': 1, '2c': 1, 
+    '2b': 1, '1d': 1, '1b': 1, '5b': 1, '3c': 1
+}
+
 
 #*****FILE PATHS AND CONFIGURATIONS WHICH SHOULD NOT NEED AMENDING*****
 # Variables lookup
