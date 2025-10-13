@@ -122,9 +122,9 @@ Lives in a communal establishment,UV101b0003,UV101b,Usual resident population by
 Never married and never registered a civil partnership,UV1040002,UV104,Marital and civil partnership status,scot,v02,Demography and Migration
 Married or in a registered civil partnership,UV1040003,UV104,Marital and civil partnership status,scot,v03,Demography and Migration
 Separated or divorced,separated_divorced,UV104,Marital and civil partnership status,scot,v04,Demography and Migration
-One-person household,UV1130002,UV113,Household composition - Households,scot,v05,Demography and Migration
-Families with no children,no_children,UV113,Household composition - Households,scot,v06,Demography and Migration
-Families dependent children,dependant_children,UV113,Household composition - Households,scot,v07,Demography and Migration
+One-person household,UV1130002,UV113,Household composition - Household,scot,v05,Demography and Migration
+Families with no children,no_children,UV113,Household composition - Household,scot,v06,Demography and Migration
+Families dependent children,dependant_children,UV113,Household composition - Household,scot,v07,Demography and Migration
 Europe: United Kingdom,UV2040003,UV204,Country of birth ,scot,v08,Demography and Migration
 Europe: EU countries,UV2040010,UV204,Country of birth,scot,v09,Demography and Migration
 Europe: Non-EU countries,UV2040027,UV204,Country of birth ,scot,v10,Demography and Migration
@@ -152,16 +152,16 @@ Christian,christian,UV205,Religion,scot,v31,"Ethnicity, Identity, Language and R
 Other religion,UV2050011,UV205,Religion,scot,v32,"Ethnicity, Identity, Language and Religion"
 Standardised Illness Ratio,SIR,SIR,Disability,scot,v33,"Health, Disability and Unpaid Care"
 Provides unpaid care,UV3010003,UV301,Provision of unpaid care,scot,v34,"Health, Disability and Unpaid Care"
-Detached,UV4020003,UV402,Accommodation type - Households,scot,v35,Housing
-Semi-detached,UV4020004,UV402,Accommodation type - Households,scot,v36,Housing
-Terraced (including end-terrace),UV4020005,UV402,Accommodation type - Households,scot,v37,Housing
-Lives in a flat,UV4020006,UV402,Accommodation type - Households,scot,v38,Housing
+Detached,UV4020003,UV402,Accommodation type - Household,scot,v35,Housing
+Semi-detached,UV4020004,UV402,Accommodation type - Household,scot,v36,Housing
+Terraced (including end-terrace),UV4020005,UV402,Accommodation type - Household,scot,v37,Housing
+Lives in a flat,UV4020006,UV402,Accommodation type - Household,scot,v38,Housing
 Two or more cars or vans,cars_2_or_more,UV405,Car or van availability,scot,v39,Housing
 Under occupation,under_occupation,UV415,Occupancy rating for bedrooms,scot,v40,Housing
 Overcrowding,UV4150005,UV415,Occupancy rating for bedrooms,scot,v41,Housing
-Social rented,UV4040007,UV404,Household tenure - Households,scot,v42,Housing
-Private rented,UV4040008,UV404,Household tenure - Households,scot,v43,Housing
-Ownership or shared ownership,UV4040002,UV404,Household tenure - Households,scot,v44,Housing
+Social rented,UV4040007,UV404,Household tenure - Household,scot,v42,Housing
+Private rented,UV4040008,UV404,Household tenure - Household,scot,v43,Housing
+Ownership or shared ownership,UV4040002,UV404,Household tenure - Household,scot,v44,Housing
 Part-time,hours_part,UV604,Hours worked,scot,v45,Labour Market
 Full-time,hours_full,UV604,Hours worked,scot,v46,Labour Market
 L15 Full-time students,UV6070017,UV607,National Statistics Socio-economic Classification (NS-SeC),scot,v47,Labour Market

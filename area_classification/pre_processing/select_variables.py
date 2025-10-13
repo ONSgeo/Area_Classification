@@ -61,9 +61,6 @@ def select_variables(df_temp, lookup_df, config):
     ordered_columns = [first_column] +  sorted(remaining_columns)
     filtered_df = filtered_df[ordered_columns]
 
-    # Ensure QA directory exists
-    os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
-
     return filtered_df
 
 # Order the remaining columns based on the numeric value following 'v'
