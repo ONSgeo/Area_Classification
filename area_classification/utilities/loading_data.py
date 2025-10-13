@@ -102,7 +102,6 @@ if __name__ == "__main__":
     ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
-    filepath = "C:/Users/dayj1/Office for National Statistics/Geospatial - LAD_data_downloaded/NI_LAD"
+    filepath = os.path.join(config["input_directory"], "./ni_downloads/")
     ni_df = load_format_data(filepath, config["ni_file_pattern"],config["ni_join_column_name"])
-    ni_df.to_csv("ni_concat.csv", index=False)
 

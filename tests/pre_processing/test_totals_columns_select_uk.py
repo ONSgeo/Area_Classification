@@ -21,7 +21,7 @@ class TestTotalColumnsSelectUk(unittest.TestCase):
                 'UV6040001': [60, 50, 65, 50]
         })
         # Save the aggregate output test data
-        csv_file_path = 'tests/data/total_columns_select_uk_test_data/aggregated_variables_output_CA19.csv'
+        csv_file_path = 'tests/data/total_columns_select_uk_test_data/preprocessing_aggregated_all_variables_CA19.csv'
         self.aggregate_input_s.to_csv(csv_file_path, index=False) 
 
          # Sample select variables test data
@@ -46,7 +46,7 @@ class TestTotalColumnsSelectUk(unittest.TestCase):
                 'ts0590001': [60, 50, 65, 50]
         })
         # Save the aggregate output test data
-        csv_file_path = 'tests/data/total_columns_select_uk_test_data/aggregated_variables_output_LTLA.csv'
+        csv_file_path = 'tests/data/total_columns_select_uk_test_data/preprocessing_aggregated_all_variables_LTLA.csv'
         self.aggregate_input_e.to_csv(csv_file_path, index=False) 
 
         # Sample select variables test data

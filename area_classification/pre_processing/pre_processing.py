@@ -92,13 +92,13 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
         # Write the DataFrame to a CSV file
         os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
-        output_csv_path = os.path.join(config["qa_directory"], f"{key}_select.csv")
+        output_csv_path = os.path.join(config["qa_directory"], f"preprocessing_{key}_selected_variables.csv")
         df_temp.to_csv(output_csv_path, index=False)
 
         # overwriting original df with processed df
         dfs[key] = df_temp
 
-    # Call select_totals_columns after all _select.csv files are created
+    # Call select_totals_columns after all preprocessing_KEY_selected_variables.csv files are created
     raw_totals_df = select_totals_columns(config, config["qa_directory"])
 
     # Convert counts to percentages
