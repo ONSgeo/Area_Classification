@@ -31,11 +31,11 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
 
     # Run the standardize_data function on chosen_clustering_variables
     standardized_data = standardize_data(chosen_clustering_variables)
-    # only saving out for QA purposes 
-    standardized_data.to_csv(os.path.join(config["input_directory"], "standardized_data.csv"), index=False)
 
     # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
-    restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(config, clustering_output, config["split_column"],standardized_data)
+    restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(
+    config, clustering_output, config["split_column"], config["keep_column"], standardized_data
+    )
 
     # Step 2: Calculate means for each cluster and each variable
     uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table, standardized_data)
