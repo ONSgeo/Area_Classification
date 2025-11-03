@@ -103,6 +103,8 @@ Your file structure should look like the following. Text in red are the folders 
 
 <img width="646" height="1080" alt="area classification file structure for README (1)" src="https://github.com/user-attachments/assets/7dc6dc56-4192-4d84-ad9d-56a8a9e18529" />
 
+
+
 ## Process
 The flow diagram shows the stages of the area classification proccess
 <img width="475" height="349" alt="Methods_diagram" src="https://github.com/user-attachments/assets/224dcb2f-2544-47bc-aac9-234907619bbf" />
