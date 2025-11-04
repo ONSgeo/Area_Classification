@@ -90,7 +90,7 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
     
     # Write the DataFrame to a CSV file
     country_lad = join_column_name
-    output_csv_path = os.path.join(config["input_directory"], f"{country_lad}_concat.csv")
+    output_csv_path = os.path.join(config["input_directory"], f"{country_lad}_all_variables.csv")
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     merged_df.to_csv(output_csv_path, index=False)
     
