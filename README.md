@@ -22,7 +22,7 @@ A table that describes each of the files in the repo (like we did for the automa
 ### England and Wales
 Data for E&W is collected from the bulk download available on their census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk)). Table codes generally start with "TS".
 
-**Exceptions**
+**Exceptions:**
 * Manual download needed for England and Wales disability data required to calculate Standardised Illness Ratio (SIR)
 ### Northern Ireland
 Data for Northern Ireland (NI) is collected from the bulk download available on their census data platforms ([NISRA flexible table builder](https://build.nisra.gov.uk/en/)). Table codes generally start with "ni".
@@ -35,7 +35,7 @@ Data for Northern Ireland (NI) is collected from the bulk download available on 
 ### Scotland
 At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Table codes generally start with "UV". The manual download was completed 22 April 2025 (two exceptions listed below).<br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the geography is available as an option on the Flexible Table Builder as cell key perturbation has been used to help protect the confidentiality of data within tables. This means that cells might not sum to sub totals and totals due to these Statistical Disclosure Controls (SDC). When building tables using smaller geographies this protection is applied to a lot of cells and doesn’t always cancel out. So, there are differences when you add them all up. Perturbation is consistent and repeatable so will always be applied consistently when the same records contribute to the cell total.
 
-**Exceptions:**
+**Exceptions:**<br>
 Manual downloads needed for:
 * Census 2022 table 'population density'. Population density table was downloaded 15 April 2025.
 * Census 2022 table 'migrant indicator'. Migrant indicator table was downloaded 22 April 2025.
@@ -46,13 +46,13 @@ Manual downloads needed for:
 * [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
 * A Local Authority Districts Names and Codes in the UK Lookup is required to convert between are names and area codes. Download a the look up from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This CSV should be saved into the repo in 'data/lookups' folder, if saved elsewhere update the file path in the config.yaml.
 
-## Methodology / process description
+# Methodology / process description
 
-# Set Up 
+## Set Up 
 
 Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
 
-## Folders setup
+### Folders setup
 When your repository is cloned, find the repository within your file explorer.
 Locate the 'data' folder, a folder called 'lookups' should already exist. In this 'data/lookups' folder save the [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore) file which you have downloaded from [Open Geography Portal](https://geoportal.statistics.gov.uk/).
 
@@ -66,25 +66,31 @@ Within the 'data/inputs' folder create three new folders:
 As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
 
 **'ew_downloads'**:<br>
-\- England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
+* England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
 
 **'ni_downloads'**:<br>
-\- Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.<br>
-\- Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924) and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.<br>
+* Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.<br>
+* Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924) and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.<br>
 
 **'scot_downloads'**:<br> 
-\- Scotland disability data from [Scotland's Census Flexible Table Builder](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). The file should be named 'UV303a.csv'.<br>
-\- Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.<br>
-\- Scotland's migrant indicator data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/tableView/tableView.xhtml). The file should be renamed 'migrant_indicator.csv'.
+* Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.<br>
 
-
-
+Manually download and save Scotland's 'migrant indicator' data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/dataCatalogueExplorer.xhtml):
+   - Select 'New table' in the bottom left
+   - Scroll through the 'Fields' section to find 'Migration'
+   - Click on 'Migrant indicator' in the 'Migration' folder
+   - Select all 5 options in the drop down
+   - Drag to the table area and select 'column'
+	- Then scroll the 'Fields' section to find 'Geography'
+	- Select all in 'Council Area 2019' and drag into the table area and select 'row'
+   - Now click the 'retrieve data' button to build the table
+   - Download table as a csv
+   - The file should be renamed 'migrant_indicator.csv'
 
 Manually download and save Scotland tables from the [Scotland Census table builder search](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). For each table:
    - Select data from 2022
    - Select data by location - Local authority (CA2019) - 'Select all'
    - Use the Search function to find the table IDs listed below
-   - Click the 'Table Settings' button in the top right of the table viewer, and select 'Display as percentages' -> 'Row'
    - Then use the dropdown to the left of the 'Download table' button to select 'Comma Separated Value (.csv)'
    - Click 'Download table':
   
@@ -100,6 +106,7 @@ Manually download and save Scotland tables from the [Scotland Census table build
 | UV205 |	Religion |	scot|
 | UV210 |	English language skills |	scot|
 | UV301 |	Provision of unpaid care |	scot|
+| UV303a | Long-term health problem or disability by sex by age (20 groups) | soct|
 | UV402 |	Accommodation type - Households |	scot|
 | UV404 |	Household tenure - Households | scot|
 | UV405 |	Car or van availability |	scot|
