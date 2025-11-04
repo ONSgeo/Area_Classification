@@ -1,4 +1,4 @@
-# If using population counts / step 2 in final outputs, check correct input data!! 
+# Creating print statements about the clusters
 import logging
 logger = logging.getLogger(__name__)
 
