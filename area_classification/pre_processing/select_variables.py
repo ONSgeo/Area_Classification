@@ -74,6 +74,6 @@ if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
     lookup_df = pd.read_csv(config['select_variables_lookup'])
-    df_temp = pd.read_csv(os.path.join(config['input_directory'], 'CA19_concat.csv'))
+    df_temp = pd.read_csv(os.path.join(config['input_directory'], 'CA19__all_variables.csv'))
     
     select_variables(df_temp, lookup_df, config)

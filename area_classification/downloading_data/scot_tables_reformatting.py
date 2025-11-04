@@ -1048,7 +1048,7 @@ def concat_reformatted_tables(config):
     os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
     
     # Save the concatenated DataFrame to a new CSV file (optional)
-    concatenated_file_path = os.path.join(config["input_directory"], "CA19_concat.csv")
+    concatenated_file_path = os.path.join(config["input_directory"], "CA19_all_variables.csv")
     result.to_csv(concatenated_file_path, index=True)
 
     return result
