@@ -1,5 +1,5 @@
 # WORK IN DEVELOPMENT
-This repository contains the workflow for downlaoding, pre-processing, and performing analysis using k-means clustering to createa Area Classification for Local Authority District level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
+This repository contains the workflow for downloading, pre-processing, and performing analysis using k-means clustering to create an Area Classification for Local Authority District level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 # Background
 Area Classification
