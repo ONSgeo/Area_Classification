@@ -45,7 +45,6 @@ Manual downloads needed for:
 ## Look ups
 * [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
 * A Local Authority Districts Names and Codes in the UK Lookup is required to convert between area names and area codes.
-* 
 
 # Methodology / process description
 
@@ -57,27 +56,45 @@ Firstly, clone the repo locally. If you need support cloning the repo, take a lo
 When your repository is cloned, find the repository within your file explorer. 
 Locate the 'data' folder. Within this, a folder called **'lookups'** should already exist. In this 'data/lookups' folder the [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) will already exist. 
 
-Going back to the 'data' folder, create a new folder called **'inputs'**.
+Going back to the 'data' folder, create a new folder called **'inputs'**. This is where the downloaded census tables will be stored.
 Within the 'data/inputs' folder create three new folders:
 * **'ew_downloads'**
 * **'ni_downloads'**
 * **'scot_downloads'**
 
+Also in the 'data' folder, create a new folder called **'population_density'**. This is where data used to caclulate population densities of each output cluster will be stored. 
+
 ## Data download
 As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
 
-### **'lookups'**:<br>
-* Local Authority Districts Names and Codes in the UK Lookup from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This is required to convert between are names and area codes.
-* 
+#### 'population_density' folder:<br>
+* Population estimates in 2021 (for England, Wales and Northern Ireland) and 2022 (for Scotland) from the Nomis website.
+	- Go to [Population estimates - local authority based by single year of age](https://www.nomisweb.co.uk/query/construct/summary.asp?mode=construct&version=0&dataset=2002) and use the 'Make selections' menu on the left of the page ensure:
+		- Geography = “local authorities: district / unitary (as of April 2021)"
+		- Date = "Select from a list of individual dates" and select "2021" and "2022"
+		- Age = "All Ages"
+		- Sex - "Total"
+	* Click ‘Save changes to selections’ then, within the Format / Layout heading in the 'Get your data:' section:
+		- Format = “Comma separated values (.csv) “
+		- Layout columns = “date (2cols)”
+ 		- Layout rows = “geography (361 rows)”
+		- Other option = tick “Include area codes”
 
-### **'ew_downloads'**:<br>
+	* Click Download Data, rename the downloaded file to population_estimates.csv
+ * Standard Area Measurements (SAM) for administrative areas from the Open Geography Portal. Download [SAM 2021](https://geoportal.statistics.gov.uk/datasets/ba0873184e6349bebb63b5da6dd050b5/about) and [SAM 2022](https://geoportal.statistics.gov.uk/datasets/235c70d40c494361bd6b0ddaebdf0bad/about) and save the csv files into the population_density folder. Both 2021 and 2022 version are needed because EW and NI census data is from 2021, and Scot data is from 2022. 
+
+
+#### 'lookups' folder:<br>
+* Local Authority Districts Names and Codes in the UK Lookup from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This is required to convert between are names and area codes.
+
+#### 'ew_downloads' folder:<br>
 * England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
 
-### **'ni_downloads'**:<br>
+#### 'ni_downloads' folder:<br>
 * Northern Ireland disability data [MS-D02 Long-term health problem or disability by broad age bands [UPDATED]](https://www.nisra.gov.uk/system/files/statistics/census-2021-ms-d02.xlsx) from [Census 2021 main statistics health, disability and unpaid care tables](https://www.nisra.gov.uk/publications/census-2021-main-statistics-health-disability-and-unpaid-care-tables). The file should be named 'census-2021-ms-d02.xlsx'.<br>
 * Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924) and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.<br>
 
-### **'scot_downloads'**:<br> 
+#### 'scot_downloads' folder:<br> 
 * Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.<br>
 
 * Scotland's 'migrant indicator' data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/dataCatalogueExplorer.xhtml):
@@ -126,7 +143,8 @@ As mentioned above, some data requires manual downloads, so before running any o
 #### Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 
-<img width="646" height="1080" alt="area classification file structure for README (1)" src="https://github.com/user-attachments/assets/7dc6dc56-4192-4d84-ad9d-56a8a9e18529" />
+<img width="576" height="1085" alt="area classification file structure for README (4)" src="https://github.com/user-attachments/assets/d5004892-a22d-4acc-8bc1-eefedfedbcf1" />
+
 
 
 
