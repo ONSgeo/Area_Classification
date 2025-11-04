@@ -62,7 +62,7 @@ Within the 'data/inputs' folder create three new folders:
 * **'ni_downloads'**
 * **'scot_downloads'**
 
-Also in the 'data' folder, create a new folder called **'population_density'**. This is where data used to caclulate population densities of each output cluster will be stored. 
+Also in the 'data' folder, create a new folder called **'population_density'**. This is where data used to calculate population densities of each output cluster will be stored. 
 
 ## Data download
 As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
