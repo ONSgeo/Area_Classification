@@ -52,6 +52,10 @@ Manual downloads needed for:
 
 Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
 
+### Requirements 
+
+
+
 ### Folders setup
 When your repository is cloned, find the repository within your file explorer. 
 Locate the 'data' folder. Within this, a folder called **'lookups'** should already exist. In this 'data/lookups' folder the [Selected_codes_Lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) will already exist. 
