@@ -53,8 +53,70 @@ Manual downloads needed for:
 Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
 
 ### Requirements 
+To start using this project, first make sure your system meets its
+requirements.
 
+It's suggested that you install this package and its requirements within
+a virtual environment.
 
+- Python 3.1-3.4 installed
+
+Contributors have some additional requirements - please see our [contributing guidance][contributing].
+
+#### Installing the package
+
+Whilst in the root folder, in a terminal, you can install the package and its
+Python dependencies using:
+
+```shell
+python -m pip install -U pip setuptools
+pip install -e .
+```
+
+#### Install for contributors (Python only)
+
+To install the contributing requirements, use:
+```shell
+python -m pip install -U pip setuptools
+pip install -e .[dev]
+pre-commit install
+```
+
+This installs an editable version of the package. This means that when you update the
+package code you do not have to reinstall it for the changes to take effect.
+This saves a lot of time when you test your code.
+
+Remember to update the setup and requirement files inline with any changes to your
+package.
+
+#### Running the pipeline (Python only)
+
+The entry point for the pipeline is stored within the package and called `run_pipeline.py`.
+To run the pipeline, run the following code in the terminal (either in the root directory of the
+project, or by specifying the path to `run_pipeline.py` from elsewhere).
+
+```shell
+python src/area_classification/run_pipeline.py
+```
+
+Alternatively, most Python IDEs allow you to run the code directly using a `run` button.
+
+## Project structure layout
+
+The cookiecutter template generated for each project will follow this folder structure:
+
+```shell
+.
+├── area_classification/
+│   └── area_classification/
+│       ├── example_modules/
+│       │   ├── __init__.py
+│       │   └── example_module.py
+│       ├── __init__.py
+│       ├── example_config.yml
+│       └── run_pipeline.py
+└── ...
+```
 
 ### Folders setup
 When your repository is cloned, find the repository within your file explorer. 
@@ -151,7 +213,6 @@ Your file structure should look like the following. Text in red are the folders 
 
 
 
-
 ## Process
 The flow diagram shows the stages of the area classification proccess
 <img width="475" height="349" alt="Methods_diagram" src="https://github.com/user-attachments/assets/224dcb2f-2544-47bc-aac9-234907619bbf" />
@@ -172,6 +233,7 @@ The python code:
 
 
 The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
+
 ## Output
 Lookup tables allocating each area code for the Local Authority Districts equivlents in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
 
@@ -181,10 +243,31 @@ This pipeline could be adapted in future to work for different levels of geograp
 ## Contacts / authors / 
 [ONS Geography inbox](https://github.com/ONSgeo/Access_To_Amenities/blob/main/ONS.Geography@ons.gov.uk)
 
+## Licence
+
+Unless stated otherwise, the codebase is released under the MIT License. This covers
+both the codebase and any sample code in the documentation. The documentation is ©
+Crown copyright and available under the terms of the Open Government 3.0 licence.
+
+## Contributing
+
+If you want to help us build and improve `area_classification`, please take a look at our [contributing guidance][contributing].
+
 ## Acknowledgements
 Thanks to Jakub Wyszomierski (jakubwyszomierski), Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the Geographic Dara Service for their early code which formed the starting point of this repo.
 [Geographic Data Service](https://github.com/Geographic-Data-Service)
 [Census_2021_Output_Areas](https://github.com/Geographic-Data-Service/Census_2021_Output_Areas) (England and Wales)
 [Scotland_Census_2022_OA](https://github.com/Geographic-Data-Service/Scotland_Census_2022_OA)
+
+This project structure is based on the [`govcookiecutter` template project][govcookiecutter].
 [Northern_Ireland_Census_2022_Data_Zone](https://github.com/Geographic-Data-Service/Northern_Ireland_Census_2022_Data_Zone)
 [Geodemographic Python Example](https://github.com/ogoodwin505/pygeodem)
+
+[contributing]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/contributor_guide/CONTRIBUTING.md
+[govcookiecutter]: https://github.com/best-practice-and-impact/govcookiecutter
+[docs-loading-environment-variables]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md
+[docs-loading-environment-variables-secrets]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md#storing-secrets-and-credentials
+
+
+
+
