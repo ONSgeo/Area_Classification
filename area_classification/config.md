@@ -71,4 +71,4 @@ print(config["ew_file_configs"])
 ```
 
 ## Updating
-Please update this when you can - for example, if anotherc.yaml file is added, update this as part of your pull request.
+Please update this when you can - for example, if another .yaml file is added, update this as part of your pull request.
