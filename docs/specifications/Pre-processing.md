@@ -24,6 +24,15 @@ hyperbolic sine?
 
 ## 5.0 Methods inputs and outputs
 ### 5.1 Method inputs
+
+Scotland pre-processing:
+For all Scotland downloaded csvs reformatting is required to remove excess metadata at the top.
+Additionally variable names need to be turned into variables codes which are in the metadata table so that columns align.
+UV101b needs ‘all people’ ‘lives in a communal establishment’ – Council Areas need to be moved into a separate column.
+UV103 needs additional formatting, then in the aggregation script, the ages need to be grouped to align with the other census’.
+
+
+
 Input data must contain the following fields:
 Area identifier - string - this could be the area name or area code for a LAD
 Variable value - Numeric - 
