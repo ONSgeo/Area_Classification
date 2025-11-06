@@ -51,18 +51,21 @@ Each config lists the keys which will become the new column name whent the aggre
 
 e.g. The Aggergation_setup config , ew_file_configs includes "cars_2_or_more: [ts0450004, ts0450005]" - For each LAD this will, sum the values of ts0450004 ("Number of cars or vans: 2 cars or vans in household") and ts0450005 ("Number of cars or vans: 3 or more cars or vans in household"). The calculated value would then be put into a new column named "cars_2_or_more".
 
-## Usage 
+## Guidance for use
+As an end user, if you are using different variables which you want to aggregate you may need to change the configs present [aggregation_setup.yaml](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/aggregation_setup.yaml).
+
+# Usage
 To use the config, import the load_config function, then use the load_config function to read the config file and returns its contents. Then retrieve specific settings using a disctionary style : config['key']
-###Example for the config.yaml
+### Example for the config.yaml
 from area_classification.utilities.load_config import load_config
 load_config('area_classification/config.yaml')
 config['number_of_clusters']
 
-###Example for the aggregation_setup.yaml
+### Example for the aggregation_setup.yaml
 from area_classification.utilities.load_config import load_config
 load_config('area_classification/aggregation_setup.yaml')
 config['ew_file_configs']
 
 
 ## Updating
-Please update this when you can - for example, if another .yaml file is added, update this as part of your pull request.
+Please update this when you can - for example, if anotherc.yaml file is added, update this as part of your pull request.
