@@ -6,8 +6,8 @@
 |drop_columns | Identifying whether variables will be dropped from the 60 variables before clustering. Set to true to drop the variables specified in 'variables to drop' or set to false to include 60 variables. | 	string   | Either 'true' or 'false'     |
 |variables_to_drop | The names of the columns which will be dropped from the 60 before clustering takes place. | 	list   | List containing any combination of strings from 'v01' to 'v60'     |
 |pre_clustering_data | The filepath for variable table after pre-processing but before filtering   | 	string   | Any filepath.    |
-|pre_clustering_data_filtered | The filepath variable table after has been filtered and variables from the v60 which are not being used are removed    | 	string   | Any filepath.     |
-|pre_clustering_data_std_mean | The filepath variable table after it has been standardised and transformed, before it goes into clustering | 	string   | Any filepath.    |
+|pre_clustering_data_filtered | The filepath for variable table that has been filtered and some of the 60 variables removed    | 	string   | Any filepath.     |
+|pre_clustering_data_std_mean | The filepath for variable table after it has been standardised and transformed for input into clustering | 	string   | Any filepath.    |
 |restructured_subclustering_output | The filepath of the table which is restrucutred so supergroup, group and subgroup are all in separate columns      | 	string   | Any filepath.    |
 |number_of_clusters | The number of clusters in the Kmeans clustering     | int   | Any int |
 |number_of_times_k_means_initialised | The number of times the Kmeans is ran    | int   | Any int |
@@ -16,10 +16,10 @@
 |subsubclustering_mapping|  A list of the clusters which result in the second level of clustering (groups) e.g '1a', '1b' etc, and the number of subsubclusters (subgroups) to create from these  | list of strings   | List of names of the groups and cluster numbers the same length as the clustering of groups |
 |select_variables_lookup | The path to where the lookup for the 60 selected variables is saved            | 	string   | Any filepath.     |
 |input_directory | The path where inputs required for the clustering are saved             | 	string   | Any filepath.     |
-|qa_directory |  The path where outputs should be saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
+|qa_directory |  The path where outputs is saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
 |output_directory | The path where outputs should be saved | 	string   | Any filepath.     |
-|clustergram_directory | The path where outputted clustergrams should be saved      | 	string   | Any filepath.     |
-|radial_plot_directory | The path where outputted radial plots should be saved      | 	string   | Any filepath.     |
+|clustergram_directory | The path where outputted clustergrams is saved      | 	string   | Any filepath.     |
+|radial_plot_directory | The path where outputted radial plots is saved      | 	string   | Any filepath.     |
 |scot_input_folder| The file path for where the Scotland input data is saved | string   | Any filepath. |
 |reformat_scot_input_folder| The file path for where the Scotland input data which has been reformatted into a consistent structure is saved | string   | Any filepath. |
 |ni_pop_density_filepath | The path to where the population density file for Northern Ireland is stored    | 	string   | Any filepath.  |
@@ -38,7 +38,7 @@
 |ni_disability_input|The filepath for where the raw disability data is stored for Northern Ireland is stored | string  | Any filepath. |
 |scotland_disability_input| The filepath for where the raw disability data is stored for Scotland is stored | string  | Any filepath. |
 |keep_column| The names of columns to keep in the table restructure | string  | Any valid column name. |
-|split_column| The names of columns to split into separate character in the table restructure | string  | Any valid column name. |
+|split_column| The names of columns to split into separate characters in the table restructure | string  | Any valid column name. |
 |england_and_wales_table_codes_to_remove | Tables which do not have OA data for England and Wales | list  | Any valid table codes. |
 
 ## Guidance for use
