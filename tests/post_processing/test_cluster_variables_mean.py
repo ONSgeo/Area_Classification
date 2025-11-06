@@ -24,8 +24,8 @@ class TestClusterVariableMeans(unittest.TestCase):
             "subgroup": ["1a1", "2b1", "1b1"]
         })
 
-        # Mock chosen_clustering_variables_std DataFrame
-        self.chosen_clustering_variables_std = pd.DataFrame({
+        # Mock pre_clustering_data_std_mean DataFrame
+        self.pre_clustering_data_std_mean = pd.DataFrame({
             "LAD_code": ["E06000001", "E06000002","E06000003"],
             "V01": [-1, 0.5, 0.1],
             "V02": [3, 0.7, -0.2],
@@ -39,7 +39,7 @@ class TestClusterVariableMeans(unittest.TestCase):
 
     def test_cluster_variable_means(self):
         # Run the function
-        result = cluster_variable_means(self.config, self.restructured_cluster_table, self.chosen_clustering_variables_std)
+        result = cluster_variable_means(self.config, self.restructured_cluster_table, self.pre_clustering_data_std_mean)
 
         # Check the output DataFrame structure
         self.assertIsInstance(result, pd.DataFrame)

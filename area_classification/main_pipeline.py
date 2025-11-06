@@ -8,7 +8,7 @@ from area_classification.downloading_data.ni_lgd_downloading_data import ni_lgd_
 from area_classification.downloading_data.scot_tables_reformatting import scot_reformatting_wrapper
 from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.pre_processing.drop_variables import check_drop_columns_true
-from area_classification.analysis.clustering import clustering_wrapper      
+from area_classification.clustering.clustering import clustering_wrapper      
 from area_classification.post_processing.post_processing import post_processing
 from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data     
 
@@ -43,12 +43,12 @@ def main_pipeline():
     config = load_config('area_classification/config.yaml')
 
     # Step 1: Download england and wales data and reformat to be processed and combined
-    ew_lad_bulk_download(config)
+    #ew_lad_bulk_download(config)
     ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
     # Step 2: Download Northen Ireland data and reformat to be processed and combined
-    ni_lgd_download_data(config)
+    #ni_lgd_download_data(config)
     ni_input_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
@@ -64,15 +64,15 @@ def main_pipeline():
     chosen_clustering_variables = check_drop_columns_true(config, preprocessed_df)
 
     # Step 6: Standardise pre_clustering data (used in the clustering)
-    chosen_clustering_variables_std = prepare_clustering_data(chosen_clustering_variables)
+    pre_clustering_data_std_mean = prepare_clustering_data(chosen_clustering_variables)
     # Save the standardized pre clusting data to a new file 
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
-    chosen_clustering_variables_std.to_csv(config["pre_clustering_data_std_mean"], index=False)
+    pre_clustering_data_std_mean.to_csv(config["pre_clustering_data_std_mean"], index=False)
          
     # Step 7: Clustering
     clustering_output = clustering_wrapper(
         config,
-        input_dataframe=chosen_clustering_variables_std,
+        input_dataframe=pre_clustering_data_std_mean,
         number_of_clusters=config["number_of_clusters"],
         n_init=config["number_of_times_k_means_initialised"],
         output_directory=config["output_directory"],

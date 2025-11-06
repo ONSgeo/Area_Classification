@@ -62,7 +62,6 @@ subsubclustering_mapping : {
 select_variables_lookup: './data/lookups/UK_selected_codes_lookup.csv'
 
 # General file paths
-data_directory: './data/'
 input_directory: './data/inputs/'
 qa_directory: './data/QA/' 
 output_directory: './data/output_data/'
