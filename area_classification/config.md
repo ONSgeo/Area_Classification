@@ -1,4 +1,4 @@
-# Config
+# [Config](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/config.yaml)
 | Parameter   | Description            | Data Type   | Acceptance values      |
 |-------------|------------------------|-------------|------------------------|
 |working_directory | The working directory location            | 	string   | Any filepath.     |
@@ -42,18 +42,27 @@
 |england_and_wales_table_codes_to_remove | Tables which do not have OA data for England and Wales | list  | Any valid table codes. |
 
 ## Guidance for use
-As an end user, you will only need to change some of the config (named config.yaml) - you may just need to update the filepaths in the top section of the config.
+As an end user, you will only need to change a some of the [config.yaml](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/config.yaml). It is likely you will only need to update file paths and values in the top section of the config.yaml under #*****FILE PATHS AND CONFIGURATIONS WHICH MAY NEED AMENDING*****. If making amendments ensure that the key remains the same and only the value associated (file path, variable, list etc) is changed.
 
-# Aggregation_setup
-The aggregation_setup.yaml file contains the variable codes which are merged together to produce the select vairables required.
+# [Aggregation_setup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/aggregation_setup.yaml)
+The aggregation_setup.yaml file contains the variable codes which are merged together to produce the select vairables required. They are broken down into seperate configs for England and Wales (ew_file_configs), Northern Ireland (ni_file_configs) and Scotland (scot_file_configs).
+
+Each config lists the keys which will become the new column name whent the aggregation ourrus and the balues which are lists of varuable codes. These avariable codes can be looked up in the country specific metatables which are produced in pre-processing. 
+
+e.g. The Aggergation_setup config , ew_file_configs includes "cars_2_or_more: [ts0450004, ts0450005]" - For each LAD this will, sum the values of ts0450004 ("Number of cars or vans: 2 cars or vans in household") and ts0450005 ("Number of cars or vans: 3 or more cars or vans in household"). The calculated value would then be put into a new column named "cars_2_or_more".
 
 ## Usage 
-To use the config, import the load_config function, then use the load_config function to read the config file and returns its contents. 
-e.g.
+To use the config, import the load_config function, then use the load_config function to read the config file and returns its contents. Then retrieve specific settings using a disctionary style : config['key']
+###Example for the config.yaml
 from area_classification.utilities.load_config import load_config
 load_config('area_classification/config.yaml')
+config['number_of_clusters']
 
-Then retrieve specific settings using a disctionary style
-config['key']
+###Example for the aggregation_setup.yaml
+from area_classification.utilities.load_config import load_config
+load_config('area_classification/aggregation_setup.yaml')
+config['ew_file_configs']
+
 
 ## Updating
+Please update this when you can - for example, if another .yaml file is added, update this as part of your pull request.
