@@ -1,4 +1,4 @@
-# Clustering
+# Post-processing
 
 ## 1.0 Meta
 
@@ -19,3 +19,4 @@
 
 
 ## 6.0 Method
+Tiered approach to radial plots - choices made on uk to Super, parent to sub and group.
