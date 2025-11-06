@@ -50,7 +50,9 @@ Manual downloads needed for:
 ## Process
 The flow diagram shows the stages of the area classification proccess
 
-<img width="2238" height="1901" alt="Methods_diagram" src="https://github.com/user-attachments/assets/eeb4b4b6-5bb1-4810-b336-9d4b6948261a" />
+<img width="537" height="456" alt="Methods_diagram (2)" src="https://github.com/user-attachments/assets/afa1e06c-f7c9-4108-be9b-77aa8651dc36" />
+
+
 
 ## Set Up 
 
