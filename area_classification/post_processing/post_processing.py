@@ -19,8 +19,6 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
         main pipeline config dictionary containing output directory.
     clustering_output : pd.DataFrame
         the output from running the clustering algroithm
-    chosen_clustering_variables_std : pd.DataFrame
-        A dataframe of variables used in clustering after standardisation.
     chosen_clustering_variables : pd.DataFrame
         A DataFrame containing LAD_codes and data for each variable prior to standardisation.
 

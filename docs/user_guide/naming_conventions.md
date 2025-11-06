@@ -4,19 +4,19 @@
 | Name   | Description            |
 |--------|------------------------|
 |Standard illness ratio (SIR)	| Definition|
+|Clustering	| K-means cluster methodology ran at three levels of clustering to group into Supergroups, Groups and Subgroups. [More detail can be found in the speficiations doc for Standard illness ratio](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Standard_Illness_Ratio.md)|
 
 ### Abbreviation 
 | Abbreviation    | Explaination            |
 |--------|------------------------|
-|LAD| Local Authority District, in Wales this is Unitart Authorities, in England these include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitart Authorities |
+|LAD| Local Authority District, in Wales this is Unitary Authorities, in England these include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitary Authorities |
 |LTLA| Lower Tier Local Authority |
-|LGD| Local Governent District, the Northern Irish equivlent to LAD |
-|CA| Council Areas, the Scottish equivlent to LAD|
-|ew|England and Wales, refering to the census data for 2021|
-|ni|Northern Ireland, refering to the census data for 2021|
-|scot|Scotland, refering to the census data for 2022|
+|LGD| Local Government District, the Northern Irish equivalent to LAD |
+|CA| Council Areas, the Scottish equivalent to LAD|
+|ew| England and Wales, referring to the census data for 2021|
+|ni| Northern Ireland, referring to the census data for 2021|
+|scot| Scotland, referring to the census data for 2022|
 
 
 ## Code
-| Name   | Description            |
-|--------|------------------------|
+Variable_codes, Table_IDs and table_name for tables downloaded as well as the variable number (v1 to v60) can be looked up in the [UK_selected_codes_lookup.csv](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv)
