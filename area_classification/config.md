@@ -1,5 +1,5 @@
 # Config
-| Paramater   | Description            | Data Type   | Acceptance values      |
+| Parameter   | Description            | Data Type   | Acceptance values      |
 |-------------|------------------------|-------------|------------------------|
 |working_directory | The working directory location            | 	string   | Any filepath.     |
 |LAD_lookup_file_path |The path to where the Local Authority District (LAD) lookup is saved. |string | Any filepath.  |
@@ -28,9 +28,9 @@
 |ew_excluded_form_code| The name of column which is not included in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. |
 |ni_file_pattern | The file pattern for England and Wales files to be selected| string   | Acceptance values      |
 |ni_join_column_name| The name of column in Northern Irish tables containing area codes which will be used for joining            | string   | Any valid column name. | 
-|ni_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. | 
+|ni_excluded_form_code| The name of column which is not included in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. | 
 |scot_join_column_name|The name of column in Scottish tables containing area codes which will be used for joining | string   | Any valid column name. | 
-|scot_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name.  |
+|scot_excluded_form_code| The name of column which is not included in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name.  |
 |england_wales_disability_file| The file name for the England and Wales disability data file | string   | Any valid column name. |
 |ni_disability_file| The file name for the Northern Ireland disability data file | string   | Any valid column name. |
 |scotland_disability_file| The file name for the Scotland disability data file | string   | Any valid column name. |
