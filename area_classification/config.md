@@ -57,15 +57,18 @@ As an end user, if you are using different variables which you want to aggregate
 # Usage
 To use the config, import the load_config function, then use the load_config function to read the config file and returns its contents. Then retrieve specific settings using a disctionary style : config['key']
 ### Example for the config.yaml
+```
 from area_classification.utilities.load_config import load_config
 load_config('area_classification/config.yaml')
 config['number_of_clusters']
+```
 
 ### Example for the aggregation_setup.yaml
+```
 from area_classification.utilities.load_config import load_config
 load_config('area_classification/aggregation_setup.yaml')
 config['ew_file_configs']
-
+```
 
 ## Updating
 Please update this when you can - for example, if anotherc.yaml file is added, update this as part of your pull request.
