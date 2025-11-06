@@ -20,6 +20,7 @@ The clustering algorithm requires input data to be in a consistent format, consq
 ### Limitations
 
 ## 4.0 Assumptions and requirements
+hyperbolic sine?
 
 ## 5.0 Methods inputs and outputs
 ### 5.1 Method inputs
@@ -33,3 +34,4 @@ LAD code - string - this is the area code for the LTLA (England and Wales), LGD 
 60 variable feilds - int - these are the values for each variable in that LAD.
 
 ## 6.0 Method
+Stardisation and transformation methods - hyperbolic sine
