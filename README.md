@@ -134,20 +134,7 @@ Also in the 'data' folder, create a new folder called **'population_density'**. 
 As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
 
 #### 'population_density' folder:<br>
-* Population estimates in 2021 (for England, Wales and Northern Ireland) and 2022 (for Scotland) from the Nomis website.
-	- Go to [Population estimates - local authority based by single year of age](https://www.nomisweb.co.uk/query/construct/summary.asp?mode=construct&version=0&dataset=2002) and use the 'Make selections' menu on the left of the page ensure:
-		- Geography = “local authorities: district / unitary (as of April 2021)"
-		- Date = "Select from a list of individual dates" and select "2021" and "2022"
-		- Age = "All Ages"
-		- Sex - "Total"
-	* Click ‘Save changes to selections’ then, within the Format / Layout heading in the 'Get your data:' section:
-		- Format = “Comma separated values (.csv) “
-		- Layout columns = “date (2cols)”
- 		- Layout rows = “geography (361 rows)”
-		- Other option = tick “Include area codes”
-
-	* Click Download Data, rename the downloaded file to population_estimates.csv
- * Standard Area Measurements (SAM) for administrative areas from the Open Geography Portal. Download [SAM 2021](https://geoportal.statistics.gov.uk/datasets/ba0873184e6349bebb63b5da6dd050b5/about) and [SAM 2022](https://geoportal.statistics.gov.uk/datasets/235c70d40c494361bd6b0ddaebdf0bad/about) and save the csv files into the population_density folder. Both 2021 and 2022 version are needed because EW and NI census data is from 2021, and Scot data is from 2022. 
+* Download Mid-2022 and Mid-2021 [Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland). Once downloaded and saved in this folder, rename the files to 'population_2021.xls' and 'population_2022.xlsx'
 
 
 #### 'lookups' folder:<br>
