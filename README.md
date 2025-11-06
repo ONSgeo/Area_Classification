@@ -46,7 +46,11 @@ Manual downloads needed for:
 * [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
 * A Local Authority Districts Names and Codes in the UK Lookup is required to convert between area names and area codes.
 
-# Methodology / process description
+
+## Process
+The flow diagram shows the stages of the area classification proccess
+
+<img width="2238" height="1901" alt="Methods_diagram" src="https://github.com/user-attachments/assets/eeb4b4b6-5bb1-4810-b336-9d4b6948261a" />
 
 ## Set Up 
 
@@ -100,23 +104,6 @@ python src/area_classification/run_pipeline.py
 ```
 
 Alternatively, most Python IDEs allow you to run the code directly using a `run` button.
-
-## Project structure layout
-
-The cookiecutter template generated for each project will follow this folder structure:
-
-```shell
-.
-├── area_classification/
-│   └── area_classification/
-│       ├── example_modules/
-│       │   ├── __init__.py
-│       │   └── example_module.py
-│       ├── __init__.py
-│       ├── example_config.yml
-│       └── run_pipeline.py
-└── ...
-```
 
 ### Folders setup
 When your repository is cloned, find the repository within your file explorer. 
@@ -198,28 +185,6 @@ Your file structure should look like the following. Text in red are the folders 
 
 <img width="576" height="1085" alt="area classification file structure for README (4)" src="https://github.com/user-attachments/assets/d5004892-a22d-4acc-8bc1-eefedfedbcf1" />
 
-
-
-## Process
-The flow diagram shows the stages of the area classification proccess
-<img width="475" height="349" alt="Methods_diagram" src="https://github.com/user-attachments/assets/224dcb2f-2544-47bc-aac9-234907619bbf" />
-<span style="color: red;">THIS NEEDS REVISITING AND UPDATING - LINK ON SHAREPOINT</span> .
-
-The python code:
-* Download the bulk census data from [Nomis](https://www.nomisweb.co.uk/sources/census_2021_bulk)
-* Import the LTLA Area level data into python
-* Create new variable names based on the sequential ordering of the variables and the table identification code
-* Merges all of the variables for Northern Ireland into one table
-* Create a metadata lookup table providing the link between the new names and the original names
-
-* Finds the available variables from the [NISRA Table Builder](https://build.nisra.gov.uk/)
-* Scrapes the tables for each variable using beautiful soup
-* Create new variable names based on the sequential ordering of the variables and the table identification code
-* Merges all of the variables for Northern Ireland into one table
-* Create a metadata lookup table providing the link between the new names and the original names
-
-
-The created CSV are available in the folder ["/output_data/csv"](/output_data/csv) and the parquet files in the folder ["/output_data/parquet"](/output_data/parquet)
 
 ## Output
 Lookup tables allocating each area code for the Local Authority Districts equivlents in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
