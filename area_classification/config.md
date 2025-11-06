@@ -45,9 +45,9 @@
 As an end user, you will only need to change a some of the [config.yaml](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/config.yaml). It is likely you will only need to update file paths and values in the top section of the config.yaml under #*****FILE PATHS AND CONFIGURATIONS WHICH MAY NEED AMENDING*****. If making amendments ensure that the key remains the same and only the value associated (file path, variable, list etc) is changed.
 
 # [Aggregation_setup](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/aggregation_setup.yaml)
-The aggregation_setup.yaml file contains the variable codes which are merged together to produce the select vairables required. They are broken down into seperate configs for England and Wales (ew_file_configs), Northern Ireland (ni_file_configs) and Scotland (scot_file_configs).
+The aggregation_setup.yaml file contains the variable codes which are merged together to produce the select variables required. They are broken down into separate configs for England and Wales (ew_file_configs), Northern Ireland (ni_file_configs) and Scotland (scot_file_configs).
 
-Each config lists the keys which will become the new column name whent the aggregation ourrus and the balues which are lists of varuable codes. These avariable codes can be looked up in the country specific metatables which are produced in pre-processing. 
+Each config lists the keys which will become the new column name when the aggregation occurs and the values which are lists of variable codes. These variable codes can be looked up in the country specific meta tables which are produced in pre-processing. 
 
 e.g. The Aggergation_setup config , ew_file_configs includes "cars_2_or_more: [ts0450004, ts0450005]" - For each LAD this will, sum the values of ts0450004 ("Number of cars or vans: 2 cars or vans in household") and ts0450005 ("Number of cars or vans: 3 or more cars or vans in household"). The calculated value would then be put into a new column named "cars_2_or_more".
 
