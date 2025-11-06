@@ -59,15 +59,15 @@ To use the config, import the load_config function, then use the load_config fun
 ### Example for the config.yaml
 ```
 from area_classification.utilities.load_config import load_config
-load_config('area_classification/config.yaml')
-config['number_of_clusters']
+config = load_config('area_classification/config.yaml')
+print(config["number_of_clusters"])
 ```
 
 ### Example for the aggregation_setup.yaml
 ```
 from area_classification.utilities.load_config import load_config
-load_config('area_classification/aggregation_setup.yaml')
-config['ew_file_configs']
+config = load_config('area_classification/aggregation_setup.yaml')
+print(config["ew_file_configs"])
 ```
 
 ## Updating
