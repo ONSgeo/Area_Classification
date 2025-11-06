@@ -21,15 +21,16 @@
 |clustergram_directory | The path where outputted clustergrams should be saved      | 	string   | Any filepath.     |
 |radial_plot_directory | The path where outputted radial plots should be saved      | 	string   | Any filepath.     |
 |scot_input_folder| The file path for where the Scotland input data is saved | string   | Any filepath. |
+|reformat_scot_input_folder| The file path for where the Scotland input data which has been reformatted into a consistent structure is saved | string   | Any filepath. |
 |ni_pop_density_filepath | The path to where the population density file for Northern Ireland is stored    | 	string   | Any filepath.  |
 |ew_file_pattern| The file pattern for England and Wales files to be selected | string   | Acceptance values      |
 |ew_join_column_name | The name of column in England and Wales tables containing area codes which will be used for joining  | string   | Any valid column name.      |
 |ew_excluded_form_code| The name of column which is not included in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. |
 |ni_file_pattern | The file pattern for England and Wales files to be selected| string   | Acceptance values      |
-|ni_join_column_name| The name of column in Northern Irish tables containing area codes which will be used for joining            | string   | Any valid column name. 
-|ni_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. 
-|scot_join_column_name|The name of column in Scottish tables containing area codes which will be used for joining | string   | Any valid column name. 
-|scot_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. 
+|ni_join_column_name| The name of column in Northern Irish tables containing area codes which will be used for joining            | string   | Any valid column name. | 
+|ni_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name. | 
+|scot_join_column_name|The name of column in Scottish tables containing area codes which will be used for joining | string   | Any valid column name. | 
+|scot_excluded_form_code| The name of column which is not inculded in the percentage conversion during pre-processing as population density is already a ratio  | string   | Any valid column name.  |
 |england_wales_disability_file| The file name for the England and Wales disability data file | string   | Any valid column name. |
 |ni_disability_file| The file name for the Northern Ireland disability data file | string   | Any valid column name. |
 |scotland_disability_file| The file name for the Scotland disability data file | string   | Any valid column name. |
