@@ -1,6 +1,5 @@
 # Creating print statements about the clusters
 
-#PRINT STATMENTS STILL NEED WORK TO INCLUDE NEW PERCENTAGES AND POPULATION DENSITY
 import logging
 logger = logging.getLogger(__name__)
 
@@ -52,9 +51,9 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
 
     # Step 2 - Population statistics: 
-    df_populations_sam_long = restructured_cluster_table_long, sam_2021, sam_2022 = population_sam_preprocessing(restructured_cluster_table_long, f"{config['input_directory']}population_density/population_2021.xls",  f"{config['input_directory']}population_density/population_2022.xlsx", f"{config['input_directory']}population_density/SAM_LAD_DEC_2021_UK.csv", f"{config['input_directory']}population_density/SAM_LAD_DEC_2022_UK_V2.csv")
+    df_populations_sam_long = population_sam_preprocessing(restructured_cluster_table_long, f"{config['input_directory']}population_density/population_2021.xls",  f"{config['input_directory']}population_density/population_2022.xlsx", f"{config['input_directory']}population_density/SAM_LAD_DEC_2021_UK.csv", f"{config['input_directory']}population_density/SAM_LAD_DEC_2022_UK_V2.csv")
     pop_sums = cluster_population_percentages (df_populations_sam_long, cluster_column)
-    pop_densities = output_population_densities(config, df_populations_sam_long, sam_2021, sam_2022)
+    pop_densities = output_population_densities(config, df_populations_sam_long)
 
     # Step 3 - Cluster summaries: 
     cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, chosen_clustering_variables, cluster_column)
@@ -187,7 +186,6 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
         
         # Update the original DataFrame in the list
         dataframes[index] = df
-        print(df)  # Print the processed DataFrame
 
     # Assign the processed DataFrames back to their original variables
     df_populations_2021, df_populations_2022 = dataframes
@@ -195,14 +193,8 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
     # Filter rows where the first character of 'LAD_code' is 'E', 'N', or 'W'
     df_populations_2021 = df_populations_2021[df_populations_2021['LAD_code'].str[0].isin(['E', 'N', 'W'])]
 
-    # Print the filtered DataFrame
-    print(df_populations_2021)
-
     # Filter rows where the first character of 'LAD_code' is 's'
     df_populations_2022 = df_populations_2022[df_populations_2022['LAD_code'].str[0].str.lower() == 's']
-
-    # Print the filtered DataFrame
-    print(df_populations_2022)
 
     #Pre-process the SAM tables
     # Read in the population estimates CSV file and do some initial formatting
@@ -224,8 +216,6 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
     # Concatenate merged_2021 and merged_2022
     merged_all = pd.concat([merged_2021, merged_2022], axis=0, ignore_index=True)
 
-    # Print the concatenated DataFrame
-    print(merged_all)
     # Perform the join with an indicator column to track the source of rows
     df_populations_sam_long = pd.merge(merged_all, restructured_cluster_table_long, 
         on='LAD_code', how='outer', indicator=True)
@@ -327,14 +317,18 @@ def output_population_densities(config, df_populations_sam_long ):
         dataframes.append(df)
 
     # Concatenate all three DataFrames (supergroup, group and subgroup) into one
-    combined_df = pd.concat(dataframes)
+    pop_densities = pd.concat(dataframes)
+    # Reset the index to turn the cluster allocation into a column
+    pop_densities.reset_index(inplace=True)
+    # Rename the first column to cluster_allocation
+    pop_densities.rename(columns={pop_densities.columns[0]: 'cluster_allocation'}, inplace=True)
 
     # Save the combined DataFrame to a single CSV file
-    population_densities_output = os.path.join(config['output_directory'], 'population_densities.csv')
-    combined_df.to_csv(population_densities_output, index=True)
+    pop_densities_filepath = os.path.join(config['output_directory'], 'population_densities.csv')
+    pop_densities.to_csv(pop_densities_filepath, index=False)
     
     # Return the combined dataframe
-    return combined_df
+    return pop_densities
 
 def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, chosen_clustering_variables, cluster_column,):
     """
@@ -393,16 +387,6 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
             .assign(cluster=lambda df: df['cluster'].astype(str))
         )
 
-    # Rename the V12 column to pop_density in chosen_clustering_variables
-    chosen_clustering_variables = chosen_clustering_variables.rename(columns={'v12': 'raw_pop_density'})
-
-    # Merge the pop_density column from chosen_clustering_variables into restructured_cluster_table_long
-    restructured_cluster_table_long = restructured_cluster_table_long.merge(
-        chosen_clustering_variables[['LAD_code', 'raw_pop_density']],  # Select only LAD_code and pop_density columns
-        on='LAD_code',                                 # Join on the LAD_code column
-        how='left'                                     # Use a left join to preserve all rows in restructured_cluster_table_long
-    )
-
     # Initialize a list to store outputs for all clusters
     cluster_info = []
 
@@ -414,7 +398,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
 
         # Number of local authorities in the current cluster
         num_local_authorities = cluster_data['LAD_name'].nunique()
-        
+
         # Total number of unique local authorities in the dataset
         total_local_authorities = restructured_cluster_table_long['LAD_name'].nunique()
         
@@ -428,25 +412,31 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         else:
             area_names = ["No area found"]
 
-        # Extract the 2021 and 2022 percentages for the current cluster
+        # Extract the percentage for the current cluster
         cluster_data = pop_sums.loc[pop_sums[cluster_column] == cluster]  # Filter for the current cluster
-        percentage_2021 = cluster_data['2021_percentage'].values[0]  # Get the 2021 percentage
-        percentage_2022 = cluster_data['2022_percentage'].values[0]  # Get the 2022 percentage
-        
-        # Use the index to extract the population density for this cluster (calculated in an earlier function)
-        cluster_pop_density = pop_densities.loc[cluster, 'population_density']
+        percentage_column = f'{cluster_column}_percentage'
+        percentage = cluster_data[percentage_column].values[0]  
 
-        # Ensure the index of pop_densities is treated as strings
-        #pop_densities.index = pop_densities.index.astype(str)
+        ## Population density
+        # Ensure both 'cluster_allocation' values and 'cluster' are strings
+        pop_densities['cluster_allocation'] = pop_densities['cluster_allocation'].astype(str)
+        cluster = str(cluster)
 
-        # Ensure the cluster value is treated as a string and extract the population density
-        #cluster_pop_density = pop_densities.loc[str(cluster), 'population_density']
+        # Find the row where 'cluster_allocation' matches the defined cluster
+        matching_row = pop_densities[pop_densities['cluster_allocation'] == cluster]
+
+        # Extract the 'population_density' value from the matching row
+        if not matching_row.empty:
+            cluster_pop_density = matching_row['population_density'].values[0]
+        else:
+            print(f"No matching row found for cluster_allocation: {cluster}")
 
         # Print the summary for the cluster
         # Combine the print statements into a single string
         output = (
             f"Cluster {cluster} contains {num_local_authorities} local authorities which is {percentage_local_authorities:.2f}% of UK local authorities, "
-            f"in 2021 this was {percentage_2021:.2f}% of the UK population and in 2022 it was {percentage_2022:.2f}%. It has a population density of {cluster_pop_density:.2f} people per hectare.\n"
+            f"this included {percentage:.2f}% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census)."
+            f" This cluster has a population density of {cluster_pop_density:.2f} people per hectare.\n"
         )
         # Check if the cluster exists in the DataFrame
         if cluster in variance_df.index:
@@ -625,7 +615,6 @@ compared with the mean of the other clusters combined. The population of cluster
                         message = f"Domain {domain} not recognized for variable {variable_name}."
 
         print("-" * 40)
-    print("Population table is mising 17 LAD codes currently, awaiting reponse from NOMIS before population densities can be used")
 
 
 if __name__ == "__main__":
