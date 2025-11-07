@@ -191,9 +191,13 @@ Your file structure should look like the following. Text in red are the folders 
 ## Output
 Lookup tables allocating each area code for the Local Authority Districts equivlents in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
 
+A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any dataframe. This checks for the expected values, zero values, duplicate values and descriptors like range. 
+
 ## Limitations
+
 ## Future scope
 This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
+
 ## Contacts / authors / 
 [ONS Geography inbox](https://github.com/ONSgeo/Access_To_Amenities/blob/main/ONS.Geography@ons.gov.uk)
 
