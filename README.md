@@ -53,7 +53,6 @@ The flow diagram shows the stages of the area classification proccess
 <img width="537" height="456" alt="Methods_diagram (2)" src="https://github.com/user-attachments/assets/afa1e06c-f7c9-4108-be9b-77aa8651dc36" />
 
 
-
 ## Set Up 
 
 Firstly, clone the repo locally. If you need support cloning the repo, take a look at [The GitHub Cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [Clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
@@ -124,6 +123,7 @@ As mentioned above, some data requires manual downloads, so before running any o
 
 #### 'population_density' folder:<br>
 * Download Mid-2022 and Mid-2021 [Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland). Once downloaded and saved in this folder, rename the files to 'population_2021.xls' and 'population_2022.xlsx'
+* Download csv versions of [Standard Area Measurements for Administrative Areas (December 2021) in the UK (V2)](https://geoportal.statistics.gov.uk/datasets/ba0873184e6349bebb63b5da6dd050b5/about) and [Standard Area Measurements for Administrative Areas (December 2022) in the UK (V2)](https://geoportal.statistics.gov.uk/datasets/235c70d40c494361bd6b0ddaebdf0bad/about) from the Open Geography Portal. From the zip files, save the SAM_LAD_DEC_2021_UK.csv and SAM_LAD_DEC_2022_UK_V2.csv respectively to this folder
 
 
 #### 'lookups' folder:<br>
