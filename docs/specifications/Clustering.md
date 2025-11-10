@@ -12,6 +12,7 @@ K means -
 ### Limitations
 
 ## 4.0 Assumptions and requirements
+why was k-means clustering used? 
 
 ## 5.0 Methods inputs and outputs
 ### Method inputs
