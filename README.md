@@ -196,7 +196,7 @@ A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_class
 This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
 
 ## Contacts / authors / 
-[ONS Geography inbox](ONS.Geography@ons.gov.uk)
+[ONS Geography inbox](ons.geography@ons.gov.uk)
 
 ## Licence
 
