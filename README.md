@@ -15,9 +15,6 @@ Current focus:
     * Scotland ​(Scotland Census)
         * Local authority (CA2019)​
 
-## Description of files
-A table that describes each of the files in the repo (like we did for the automated mapping repo)
-
 # Data
 ### England and Wales
 Data for E&W is collected from the bulk download available on their census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk)). Table codes generally start with "TS".
