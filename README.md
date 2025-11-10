@@ -49,6 +49,8 @@ The flow diagram shows the stages of the area classification proccess
 
 <img width="537" height="456" alt="Methods_diagram (2)" src="https://github.com/user-attachments/assets/afa1e06c-f7c9-4108-be9b-77aa8651dc36" />
 
+### Folder structure
+[The folder and script structure can be found in the user guide folder](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/repo_structure.md)
 
 ## Set Up 
 
