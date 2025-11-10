@@ -119,7 +119,8 @@ Within the 'data/inputs' folder create three new folders:
 Also in the 'data' folder, create a new folder called **'population_density'**. This is where data used to calculate population densities of each output cluster will be stored. 
 
 ## Data download
-As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
+As mentioned above, some data requires manual downloads, so before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.<br>
+For more information on the data that is automatically downloaded when running the pipeline via API's, see the [downloading data page in the specifications folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Downloading_data.md)
 
 #### 'population_density' folder:<br>
 * Download Mid-2022 and Mid-2021 [Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland). Once downloaded and saved in this folder, rename the files to 'population_2021.xls' and 'population_2022.xlsx'
