@@ -47,7 +47,8 @@ Manual downloads needed for:
 ## Process
 The flow diagram shows the stages of the area classification proccess
 
-<img width="537" height="456" alt="Methods_diagram (2)" src="https://github.com/user-attachments/assets/afa1e06c-f7c9-4108-be9b-77aa8651dc36" />
+<img width="537" height="456" alt="Methods_diagram (3)" src="https://github.com/user-attachments/assets/f290af0e-2f17-420c-b166-f5c49459017f" />
+
 
 ### Folder structure
 [The folder and script structure can be found in the user guide folder](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/repo_structure.md)
@@ -184,7 +185,7 @@ As mentioned above, some data requires manual downloads, so before running any o
 #### Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo. The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
 
-<img width="576" height="1085" alt="area classification file structure for README (4)" src="https://github.com/user-attachments/assets/d5004892-a22d-4acc-8bc1-eefedfedbcf1" />
+<img width="576" height="1085" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/4221b59e-ad10-4862-b036-ca5a7acb5fba" />
 
 
 ## Output
