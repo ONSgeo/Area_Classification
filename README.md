@@ -193,6 +193,7 @@ Lookup tables allocating each area code for the Local Authority Districts equivl
 A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any dataframe. This checks for the expected values, zero values, duplicate values and descriptors like range. 
 
 ## Limitations
+Furlugh in relation to employment datasets + utility of the classification given the special circumstances in the time of COVID 19.
 More detailed limitations can be found in the [Specificiations folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
 
 ## Future scope
