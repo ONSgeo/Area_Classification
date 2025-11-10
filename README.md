@@ -191,22 +191,16 @@ Lookup tables allocating each area code for the Local Authority Districts equivl
 A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any dataframe. This checks for the expected values, zero values, duplicate values and descriptors like range. 
 
 ## Limitations
+More detailed limitations can be found in the [Specificiations folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
 
 ## Future scope
 This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
-
-## Contacts / authors / 
-[ONS Geography inbox](mailto:ons.geography@ons.gov.uk)
 
 ## Licence
 
 Unless stated otherwise, the codebase is released under the MIT License. This covers
 both the codebase and any sample code in the documentation. The documentation is ©
 Crown copyright and available under the terms of the Open Government 3.0 licence.
-
-## Contributing
-
-If you want to help us build and improve `area_classification`, please take a look at our [contributing guidance][contributing].
 
 ## Acknowledgements
 Thanks to Jakub Wyszomierski (jakubwyszomierski), Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the Geographic Dara Service for their early code which formed the starting point of this repo.
@@ -223,6 +217,11 @@ This project structure is based on the [`govcookiecutter` template project][govc
 [docs-loading-environment-variables]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md
 [docs-loading-environment-variables-secrets]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md#storing-secrets-and-credentials
 
+## Contributing
 
+If you want to help us build and improve `area_classification`, please take a look at our [contributing guidance][contributing].
+
+## Contacts
+[ONS Geography inbox](mailto:ons.geography@ons.gov.uk)
 
 
