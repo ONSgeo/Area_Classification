@@ -12,7 +12,11 @@
 |LAD| Local Authority District, in Wales this is Unitary Authorities, in England these include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitary Authorities |
 |LTLA| Lower Tier Local Authority |
 |LGD| Local Government District, the Northern Irish equivalent to LAD |
-|CA| Council Areas, the Scottish equivalent to LAD|
+|CA| Council Areas, the Scottish equivalent to LAD (CA19 is the abbreviation for Council Areas defined in 2019)|
+|ONS| The Office for National Statistics is responsible for running the census in England and Wales - https://www.ons.gov.uk/census |
+|NOMIS| A service provided by the Office for National Statistics (ONS), which hosts statistics including data from censuses - https://www.nomisweb.co.uk/|
+|NISRA| Northern Ireland Statistics and Research Agency (NISRA) is responsible for running the census in Northern Ireland - https://www.nisra.gov.uk/ |
+|NRS| In Scotland, the National Records of Scotland is responsible for the census - https://www.scotlandscensus.gov.uk/|
 |ew| England and Wales, referring to the census data for 2021|
 |ni| Northern Ireland, referring to the census data for 2021|
 |scot| Scotland, referring to the census data for 2022|
