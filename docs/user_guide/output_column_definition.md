@@ -5,7 +5,7 @@ This pipeline produces a range of outputs which can be found in the 'output' fol
 Cluster_assignments - spreadsheets contain the supergroups, groups and subgroups which local authorities have been allocated to (more below).
 clustergrams - diagrams for each cluster used to visualise the cluster analysis and how the data is grouped.
 radial plots - circular diagram which representing the variable distribution. The red line in the supergroup radial plots is for the UK average, in group and subgroup it is the supergroup average and group average respectively.
-std_mean - standard deviation mean tables of data. 
+std_mean - tables of standardised means for each variable. 
 
 ## The most notable output is within the cluster_assignments folder -  restructured_subclustering_output
 | Output column   | Description            |
