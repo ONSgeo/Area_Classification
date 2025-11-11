@@ -1,1 +1,0 @@
-Definition of Output Variables
