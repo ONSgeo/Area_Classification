@@ -3,7 +3,7 @@
 ## Methods
 | Name   | Description            |
 |--------|------------------------|
-|Standard illness ratio (SIR)	| Definition|
+|Standard illness ratio (SIR)	| The SIR is a metric calculated by comparing the disability count of an area by the expected illness. More detail on the methodology can be find in the [Standard Illness Ratio Specification](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Standard_Illness_Ratio.md).|
 |Clustering	| K-means cluster methodology ran at three levels of clustering to group into Supergroups, Groups and Subgroups. [More detail can be found in the speficiations doc for Standard illness ratio](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Standard_Illness_Ratio.md)|
 
 ### Abbreviation 
