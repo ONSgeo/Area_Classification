@@ -16,7 +16,7 @@
 |ew| England and Wales, referring to the census data for 2021|
 |ni| Northern Ireland, referring to the census data for 2021|
 |scot| Scotland, referring to the census data for 2022|
-|v| 'v' when used alongside a number e.g. v1 or v2 represents a vairable within the dataset. These 'v' codes can be interpreted using the [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) to look up the 'new_code' column|
+|v| 'v' when used alongside a number e.g. v1 or v2 represents a vairable within the dataset, variables can be interpreted using the [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv)|
 
 
 ## Code
