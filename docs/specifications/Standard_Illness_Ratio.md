@@ -1,6 +1,6 @@
 # Standard Illness Ratio
 
-## 1.0 Meta
+## 1.0 Summary
 
 ## 2.0 Terminology
 
@@ -22,14 +22,13 @@ The SIR is used as a measure of diability within each area, it provides a compar
 ### Method inputs
 Three tables are inputted into this dataframe, one from each census (EW , NI and Scot). 
 Each table must contain at least the following columns, although the column names may vary or require some pre processing:
-- area code
-- age
-- count of those with a diability
-- count of those without a disability OR total population for that area.
+| area code |	age |	count of those with a disability |	 count of those without a disability **OR** total population for that area  |
+| -------- |   ---------- |     ---------- | ---------- |
+|string  |int| int     | int |
+
   
 ### Method outputs
 The SIR calculation produces a dataframe with the following structure:
-
 | area_code | exp_ill_all | disability_count | SIR |
 | -------- |   ---------- |   ---------- |   ---------- | 
 | string | int | int | int |
