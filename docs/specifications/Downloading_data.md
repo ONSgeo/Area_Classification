@@ -1,9 +1,6 @@
 
 # Downloading data
-## 1.0 Summary
-
-
-## 2.0 Terminology
+## 1.0 Terminology
 
 | Term |	Definition |	
 | -------- |   ---------- |  
@@ -14,16 +11,14 @@
 | LGD | Local Government District. A level of Geography used for census statistics. The NI equivalent of Local Authority Distrcits (EW) and Council Areas (Scot) | 
 | LAD | Local Authority District. A level of Geography used for census statistics. The EW equivalent of Local Government DistrictS (NI) and Council Areas (Scot) |
 | CA19 | Council Areas 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and ocal Government Districts (NI) |
-| Standardisation |    |     
-| Hyperbolic sine |    |    
 
+## 2.0 Introduction
+This specificaiton covers data download for the area classification pipeline. Census data is required from England, Wales, Scotland and Northern Ireland, the objective of this component is to import and make consistent data from different sources (NOMIS, NIRSA and Scot Census). For England and Wales, a bulk download is used to collect the required CSVs, for Northern Ireland an API is used to retrive the data and for Scotland the data is manually downloaded. As well as downloading data from the three sources, there is some data formatting which takes place, this merges all the tables into one table for each individual country. Meta data extraction is involved in this component. Steps 1 to 3 in the main pipeline covers this process.
 
-## 3.0 Introduction
+## 3.0 Strengths
 
+## 4.0 Limitations
 
-### Strengths
-
-### Limitations
 
 ## 4.0 Assumptions and requirements
 
@@ -37,15 +32,12 @@ Input data must contain the following fields:
 | XXX |    |      |
 
 ### 5.2 Method outputs
-
-expected outputs: a table for each census question/table. 
+The downloading data component produces three dataframes. One for each Census (EW, NI and Scot) The tables for each have the following structure:
 
 | LEVEL OF GEOGRAPHY | CENSUS VARIABLE 1 | CENSUS VARIABLE 2 | CENSUS VARIABLE 3 |
 | -------- |   ---------- |   ---------- |   ---------- | 
 | GEOGRAPHY CODE 1 | COUNT 1 | COUNT 2 | COUNT 3 |
 | GEOGRAPHY CODE 2 | COUNT 1 | COUNT 2 | COUNT 3 |
 
-
-
 ## 6.0 Method
-Stardisation and transformation methods - hyperbolic sine
+
