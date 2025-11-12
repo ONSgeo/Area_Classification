@@ -1,6 +1,6 @@
 
 # Downloading data
-## 1.0 Meta
+## 1.0 Summary
 
 
 ## 2.0 Terminology
