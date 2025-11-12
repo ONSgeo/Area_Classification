@@ -14,7 +14,8 @@
 | LTLA | 	Lower Tier Local Authority. A level of geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot) | 
 | LGD | Local Government District Lower Tier Local Authority. A level of geography used for census statistics. The NI equivalent of Lower Tier Local Authority (EW) and Council Areas (Scot) |
 | CA | Council Areas (CA19 = 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and Local Districts (NI) |
-
+| Standardisation |    |     
+| Hyperbolic sine |    |  
 
 ## 3.0 Introduction
 The clustering algorithm requires input data to be in a consistent format, consquently since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
