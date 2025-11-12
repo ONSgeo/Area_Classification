@@ -15,23 +15,18 @@
 ## 2.0 Introduction
 This specificaiton covers data download for the area classification pipeline. Census data is required from England, Wales, Scotland and Northern Ireland, the objective of this component is to import and make consistent data from different sources (NOMIS, NIRSA and Scot Census). For England and Wales, a bulk download is used to collect the required CSVs, for Northern Ireland an API is used to retrive the data and for Scotland the data is manually downloaded. As well as downloading data from the three sources, there is some data formatting which takes place, this merges all the tables into one table for each individual country. Meta data extraction is involved in this component. Steps 1 to 3 in the main pipeline covers this process.
 
-## 3.0 Strengths
-
-## 4.0 Limitations
+## 3.0 Assumptions and requirements
 
 
-## 4.0 Assumptions and requirements
-
-
-## 5.0 Methods inputs and outputs
-### 5.1 Method inputs
+## 4.0 Methods inputs and outputs
+### 4.1 Method inputs
 Input data must contain the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
 | XXX |    |      |
 | XXX |    |      |
 
-### 5.2 Method outputs
+### 4.2 Method outputs
 The downloading data component produces three dataframes. One for each Census (EW, NI and Scot) The tables for each have the following structure:
 
 | LEVEL OF GEOGRAPHY | CENSUS VARIABLE 1 | CENSUS VARIABLE 2 | CENSUS VARIABLE 3 |
@@ -39,5 +34,9 @@ The downloading data component produces three dataframes. One for each Census (E
 | GEOGRAPHY CODE 1 | COUNT 1 | COUNT 2 | COUNT 3 |
 | GEOGRAPHY CODE 2 | COUNT 1 | COUNT 2 | COUNT 3 |
 
-## 6.0 Method
+## 5.0 Method
+### 5.1 Strengths
+
+### 5.2 Limitations
+
 
