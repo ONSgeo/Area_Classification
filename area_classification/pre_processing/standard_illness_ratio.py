@@ -77,8 +77,8 @@ def sir_processing(config):
 def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """
     Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
-    This is calculated as a ratio of the 'disability_count' (observed diability) and 'exp_ill_all' (expected
-    diability count) based on national proportions. The SIR is calculated for each area code.
+    This is calculated as a ratio of the 'disability_count' (observed disability) and 'exp_ill_all' (expected
+    disability count) based on national proportions. The SIR is calculated for each area code.
 
     At the end it runs the QA function which saves the file into the QA directory.
 
@@ -98,7 +98,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
         sum_population=('total_population', 'sum'),
         sum_disability_count=('total_disabled', 'sum')).reset_index()
  
-    # Create national proportions for each age group by dividing the diability count by population
+    # Create national proportions for each age group by dividing the disability count by population
     df_nat_summary['nat_prop'] = df_nat_summary['sum_disability_count'] / df_nat_summary['sum_population']
 
     # Join the national proportions back to the original DataFrame
