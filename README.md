@@ -195,8 +195,11 @@ Lookup tables allocating each area code for the Local Authority Districts equivl
 A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any dataframe. This checks for the expected values, zero values, duplicate values and descriptors like range. 
 
 ## Limitations
-Furlugh in relation to employment datasets + utility of the classification given the special circumstances in the time of COVID 19.
-More detailed limitations can be found in the [Specificiations folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
+These are high level limitations of the overall pipeline. For more specific limitations see [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications):
+1. Combining data from two separate years - Census for EW, NI and Scot are usually conducted in line with each other. However due to the [impact of COVID-19, Scotland moved their census to 2022](https://www.scotlandscensus.gov.uk/news-and-events/news-release-scotland-s-census-to-be-moved-to-march-2022/). This difference in time may have affected responses to variables across the devolved administrations, particularly, it may have affected responses to questions around employment and effect the variables included in this research. Additionally, it is possible if individuals moved house between 2021 and 2022, they may have been included or excluded from both census'. This may raise considerations of the utility of this classification produced given the special circumstances at the time of COVID 19.
+2. Choice of variables - The variables used in this pipeline have been chosen in line with the earlier work on the [2021 Output Area Classification](https://data.geods.ac.uk/dataset/output-area-classification-2021) which used Census data. If other variables were used (including those not from Census), the clustering may differ.
+3. Level of geography - This pipeline looks at Local Authority District (LAD) levels of geography (LTLA, LGD and CA19), and so will not reflect the heterogeneity within LADs. 
+More detailed limitations can be found in the [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
 
 ## Future scope
 This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
