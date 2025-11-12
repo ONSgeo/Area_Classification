@@ -14,6 +14,8 @@
 | LGD | Local Government District. A level of Geography used for census statistics. The NI equivalent of Local Authority Distrcits (EW) and Council Areas (Scot) | 
 | LAD | Local Authority District. A level of Geography used for census statistics. The EW equivalent of Local Government DistrictS (NI) and Council Areas (Scot) |
 | CA19 | Council Areas 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and ocal Government Districts (NI) |
+| Standardisation |    |     
+| Hyperbolic sine |    |    
 
 
 ## 3.0 Introduction
@@ -28,7 +30,11 @@
 
 ## 5.0 Methods inputs and outputs
 ### 5.1 Method inputs
-
+Input data must contain the following fields:
+| Column name |	Data type |	Definition |	
+| -------- |   ---------- |     ---------- |
+| XXX |    |      |
+| XXX |    |      |
 
 ### 5.2 Method outputs
 
