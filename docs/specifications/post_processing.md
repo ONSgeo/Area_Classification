@@ -1,9 +1,16 @@
 # Post-processing
 
-## 1.0 Meta
+## 1.0 Summary
 
 ## 2.0 Terminology
 
+Input data must contain the following fields:
+| Term |	Definition |	
+| -------- |   ---------- |   
+| Radial plot |    |     
+| Supergroup |    | 
+| Group |    | 
+| Subgroup |    | 
 ## 3.0 Introduction
 
 ### Strengths
@@ -15,7 +22,14 @@
 ## 5.0 Methods inputs and outputs
 ### Method inputs
 
+Input data must contain the following fields:
+| Column name |	Data type |	Definition |	
+| -------- |   ---------- |     ---------- |
+| XXX |    |      |
+| XXX |    |      |
+
 ### Method outputs
+
 
 
 ## 6.0 Method
