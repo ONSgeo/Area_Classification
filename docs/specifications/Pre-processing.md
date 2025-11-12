@@ -1,6 +1,7 @@
 # Pre-processing
 
-## 1.0 Summary
+## 1.0 Introduction
+The clustering algorithm requires input data to be in a consistent format, consquently since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
 
 
 ## 2.0 Terminology
@@ -17,18 +18,11 @@
 | Standardisation |    |     
 | Hyperbolic sine |    |  
 
-## 3.0 Introduction
-The clustering algorithm requires input data to be in a consistent format, consquently since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
-
-### Strengths
-
-### Limitations
-
-## 4.0 Assumptions and requirements
+## 3.0 Assumptions and requirements
 hyperbolic sine?
 
-## 5.0 Methods inputs and outputs
-### 5.1 Method inputs
+## 4.0 Methods inputs and outputs
+### 4.1 Method inputs
 
 Scotland pre-processing:
 For all Scotland downloaded csvs reformatting is required to remove excess metadata at the top.
@@ -44,7 +38,7 @@ Input data must contain the following fields:
 | Area identifier |   string |     this could be the area name or area code for a LAD |
 | Variable value |   Numeric |      |
 
-### 5.2 Method outputs
+### 4.2 Method outputs
 The output includes the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
@@ -53,5 +47,8 @@ The output includes the following fields:
 
 
 
-## 6.0 Method
+## 5.0 Method
 Stardisation and transformation methods - hyperbolic sine
+### 5.1 Strengths
+
+### 5.2 Limitations
