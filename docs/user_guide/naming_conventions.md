@@ -21,7 +21,7 @@
 |ni| Northern Ireland, referring to the census data for 2021|
 |scot| Scotland, referring to the census data for 2022|
 |v| 'v' when used alongside a number e.g. v1 or v2 represents a vairable within the dataset, variables can be interpreted using the [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv)|
-|SAM| Standard Area Measurements are a  product produced by ONS which provides a definitive list of measurements for administrative, health, Census, electoral and other geographic areas in the UK|
+|SAM| Standard Area Measurements are produced by ONS, they provide a definitive list of measurements for administrative, health, Census, electoral and other geographic areas in the UK|
 |AREALHECT| Area to Mean High Water Excluding Area of Inland Water, this is the land area of a geography|
 
 
