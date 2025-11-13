@@ -34,7 +34,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
     Notes
     -----
-    - The function calculates the Standard Illness Ratio (SIR) for each census.
+    - The function calculates the Standardised Illness Ratio (SIR) for each census.
     - Converts counts to percentages for England, Wales and Northern Ireland.
     - Aggregates variables based on the configuration for each country individually.
     - Joins SIR data to the main DataFrame and handles cases where area codes do not match exactly.
@@ -55,7 +55,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     select_variables_lookup = pd.read_csv(config["select_variables_lookup"])
     dfs = {"ew": ew_df, "ni": ni_df, "scot": scot_df}
 
-    #Calculate the standard illness ratio (SIR) for each census
+    #Calculate the standardised illness ratio(SIR) for each census
     sir_output_df = sir_processing(config)
 
     for key in dfs:

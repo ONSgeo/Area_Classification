@@ -29,7 +29,7 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 
 Values for the Bangladeshi ethnic group are not available to download for Northern Ireland, because of this we have decided to remove this group for the other two censuses (EW and Scot), so that all three data sources are aligned. By including this variable for EW and Scot, but not NI we found it to effect clustering by grouping NI as one cluster, separate from the others.
 
-## Assumption 3: Combined area codes for disability data for the calculation of Standard Illness Ratio
+## Assumption 3: Combined area codes for disability data for the calculation of Standardised Illness Ratio
 
 * Quality: Amber
 * Impact: Green
