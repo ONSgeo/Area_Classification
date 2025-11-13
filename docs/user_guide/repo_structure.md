@@ -1,7 +1,5 @@
 ## Project structure layout
 
-The cookiecutter template generated for each project will follow this folder structure:
-
 ```shell
 .
 ├── area_classification/
