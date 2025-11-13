@@ -7,10 +7,11 @@
 Input data must contain the following fields:
 | Term |	Definition |	
 | -------- |   ---------- |   
-| Radial plot | circular chart that displays multivariate data. The axes radiating from the centre point represent different variables. |     
-| Supergroup |  The highest level of clustering. There are 6 supergroups  | 
-| Group | The level of clustering    | 
-| Subgroup |    | 
+| Radial plot | circular chart that displays multivariate data. The axes radiating from the centre point represent different variables |     
+| Supergroup |	The supergroup (highest level of the hierarchy) this local authority has been clustered into. |
+| Group	| The group (middle level of the hierarchy) this local authority has been clustered into. |
+| Subgroup |The subgroup (lowest level of the hierarchy) this local authority has been clustered into. |
+| Standardised means | values for each variable with 
 
 ## 3.0 Introduction
 
