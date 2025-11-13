@@ -17,8 +17,14 @@ This specificaiton covers data download for the area classification pipeline. Ce
 
 ## 3.0 Assumptions and requirements
 ### 3.1 Assumptions <br>
+Data Format Consistency:<br>
+The structure of the data and metadata (e.g., column names, table layout) on the NOMIS and NISRA website remains consistent and matches the parsing logic in the script.
+
 File Naming Conventions:<br>
 The script relies on specific naming conventions for downloaded files (e.g., *-ltla.csv for EW census downloads).
+
+Manual downloads:<br>
+The files requiring manual download listed in the main Readme have been downloaded before running the main pipeline.
 
 ### 3.2 Requirements <br>
 Output Directory Structure:<br>
@@ -27,7 +33,6 @@ inputs/ew_downloads/ for downloaded CSV files.<br>
 
 Disk Space:<br>
 Sufficient disk space is required for downloading, extracting, and saving the data.
-
 
 ## 4.0 Methods inputs and outputs
 ### 4.1 Method inputs
@@ -39,7 +44,6 @@ Listed are the conditions for the data that is downloaded in the first instance,
 * Units are 'household' or 'people'
 * Structured by area name/code as rows, with census responses as columns
 * 'Total: All usual residents' column should be included
-
 
 ### 4.2 Method outputs
 The downloading data component produces three dataframes - one for each Census (EW, NI and Scot). Each table follows a similar strucutre, where 'census response' refer to the response to a census question. For example, for the Census table 'TS001 - Number of usual residents in households and communal establishments':<br>
@@ -56,7 +60,11 @@ The number of CENSUS RESPONSE columns varies by question, but CENSUS RESPONSE 1 
 
 ## 5.0 Method
 ### 5.1 Strengths
+The code fetches metadata and formats it into a structured table, which is useful for verification.<br>
+The download data function for EW data dynamically fetches URLs from the Nomis website, ensuring the latest data is used.<br>
 
 ### 5.2 Limitations
+Some URL's for fetching data and metadata and structure of the file names are hardcoded, making the code less flexible if the source changes.
+
 
 
