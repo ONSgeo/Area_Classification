@@ -101,9 +101,9 @@ package.
 
 #### Running the pipeline (Python only)
 
-The entry point for the pipeline is stored within the package and called `run_pipeline.py`.
+The entry point for the pipeline is stored within the package and called `main_pipeline.py`.
 To run the pipeline, run the following code in the terminal (either in the root directory of the
-project, or by specifying the path to `run_pipeline.py` from elsewhere).
+project, or by specifying the path to `main_pipeline.py` from elsewhere).
 
 ```shell
 python src/area_classification/main_pipeline.py
