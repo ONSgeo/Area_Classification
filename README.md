@@ -7,11 +7,11 @@ Area Classification - “a hierarchical geodemographic classification across the
 Current focus:
 * 2021 ​
 * Supergroups​, Groups and Subgroups
-* Local Authority District​
+* Local Authority District​ (LAD)
     * England and Wales (NOMIS) ​
         * 2022 local authorities: district / unitary​ (LTLA)
     * Northern Ireland (NISRA) ​
-        * Local Government District 2014​
+        * Local Government District 2014​ (LGD)
     * Scotland ​(Scotland Census)
         * Local authority (CA2019)​
 
