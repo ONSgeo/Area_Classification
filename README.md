@@ -70,6 +70,7 @@ a virtual environment.
 - Python 3.10 or higher installed
  
 This may also work on earlier versions of python, but it has not been developed with versions 3.9 or lower in mind.
+
 Contributors have some additional requirements - please see our [contributing guidance][contributing].
 
 #### Installing the package
