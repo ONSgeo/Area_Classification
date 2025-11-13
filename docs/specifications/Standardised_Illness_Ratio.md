@@ -1,4 +1,4 @@
-# Standard Illness Ratio
+# Standardised Illness Ratio
 
 ## 1.0 Summary
 
@@ -8,7 +8,7 @@
 | -------- |   ---------- | 
 
 ## 3.0 Introduction
-The use of the standard illness ratio is a continuation of the work produced in the creation of [2021 output area classifications](https://data.geods.ac.uk/dataset/output-area-classification-2021).
+The use of the Standardised Illness Ratio is a continuation of the work produced in the creation of [2021 output area classifications](https://data.geods.ac.uk/dataset/output-area-classification-2021).
 
 The SIR is used as a measure of diability within each area, it provides a comparision between the disability count of an area and the expected illness.
 
@@ -40,4 +40,4 @@ The SIR calculation produces a dataframe with the following structure:
 3. The national proportion (nat_prop) is calculated by dividing the disability count for each LAD by the population for each LAD.
 4. The expected ill (exp_ill) is calculated by dividing the national proportion for each age range in each LAD and the total population for each age range in each LAD. At this stage there will still be two rows for every LAD. One for ‘<15 and >=65’ and ‘15-64’.
 5. Next sum the expected ill and the total disabled for each LAD so there is only one total number for each exp_ill_sum and disability_count.
-6. Then calculate the standard illness ratio by dividing the disability count by the expected illness and times by 100.
+6. Then calculate the standardised illness ratio by dividing the disability count by the expected illness and times by 100.

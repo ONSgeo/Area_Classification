@@ -20,7 +20,7 @@ from area_classification.utilities.disability_age_group_conversion import (
 
 def sir_processing(config):
     """
-    Process disability data to calculate the Standard Illness Ratio (SIR) for each area code.
+    Process disability data to calculate the Standardised Illness Ratio (SIR) for each area code.
 
     This function first checks if the required disability data files are present, if missing it runs a function
     to generate them. When all required files are present, it combines them into one dataframe to then calculate
@@ -76,7 +76,7 @@ def sir_processing(config):
 
 def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """
-    Calculate the Standard Illness Ratio (SIR) for a given DataFrame containing disability data.
+    Calculate the Standardised Illness Ratio (SIR) for a given DataFrame containing disability data.
     This is calculated as a ratio of the 'disability_count' (observed disability) and 'exp_ill_all' (expected
     disability count) based on national proportions. The SIR is calculated for each area code.
 
