@@ -20,8 +20,7 @@ This specificaiton covers data download for the area classification pipeline. Ce
 ### 3.2 Requirements <br>
 Output Directory Structure:<br>
 The script requires the output directory to follow a specific structure, for example:<br>
-input_directory/ew_downloads/ for downloaded CSV files.<br>
-input_directory/ for the metadata table.
+inputs/ew_downloads/ for downloaded CSV files.<br>
 
 Disk Space:<br>
 Sufficient disk space is required for downloading, extracting, and saving the data.
