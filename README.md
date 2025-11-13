@@ -1,5 +1,5 @@
 # Area Classification
-This repository contains the workflow for downloading, pre-processing, performing clustering using k-means and post processing to create an Area Classification for Local Authority District level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
+This repository contains the workflow for downloading, pre-processing, performing clustering using k-means and post processing to create an Area Classification for Local Authority District (LAD) level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 # Background
 Area Classification - 
