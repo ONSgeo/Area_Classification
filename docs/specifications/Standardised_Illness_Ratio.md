@@ -44,6 +44,7 @@ The calculation of SIR has been conducted in line with the formula used by [Wysz
 - <img width="26" height="26" alt="SIR_equation_rna" src="https://github.com/user-attachments/assets/d0ef38a9-519b-4d9d-bee8-952bf21b9725" /> is a proportion of ill or disabled people in group 𝑎 at the national level 
 - <img width="15" height="24" alt="SIR_equation_pia" src="https://github.com/user-attachments/assets/8e165d49-b35d-4d53-a8f4-2efc3b7f4708" />is the population size of an age group 𝑎 in area 𝑖.
 
+### Steps to achieve this: 
 1. Each local authority is split into data for <15 and >=65 and 15-64. 
 2. For each new group calculate the total disabled (WHAT DOES THIS MEAN IN EACH CENSUS EW, NI, SCOT) and the total population (for each LAD).
 3. The national proportion (`nat_prop`) is calculated by dividing the disability count for each LAD by the population for each LAD.
