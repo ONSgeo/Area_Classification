@@ -12,8 +12,9 @@ The national average is 100, so values for each area will be relative to this. F
 | Term |	Definition |	
 | -------- |   ---------- | 
 | expected ill | This is an estimation of the number of people in an area who are expected to have a long term illness or disability, assuming the illness ratio in the area is proportional to the UK national average. The expected ill (`exp_ill`) is calculated by dividing the national proportion for each age range (‘<15 and >=65’ and ‘15-64’) in each LAD by the total population for each age range in each LAD. This represents. | 
-| total disabled | This is the total count of the people in an area who have a long-term illness or disability. For some data tables the total disabled (`total_disabled`), or it can be calculated by category.  | 
 | national proportion |   This is the proportion of individuals with a disability in a specific area relative to the total population of that area. In this work, the national proportion (`nat_prop`) is calculated by dividing the disability count for each LAD by the population for each LAD.| 
+| total disabled | This is the total count of the people in an area who have a long-term illness or disability. For some data tables the total disabled (`total_disabled`), or it can be calculated by category.  | 
+
 
 ## 3.0 Assumptions and requirements
 As the SIR is a relative indicator, a national average value for the UK is needed which requires data for all countries - England, Northern Ireland, Scotland and Wales. In this sense, we are assuming it is appropriate to combine the 2022 for Scotland (UV303a.csv), with 2021 data from England and Wales ('disabilitycensus2021.xlsx') and Northern Ireland ('ni_downloads/census-2021-ms-d02.xlsx').
