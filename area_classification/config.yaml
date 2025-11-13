@@ -100,7 +100,7 @@ scotland_disability_input: 'scot_downloads/UV303a.csv'
 keep_column: 'LAD_code' 
 split_column: 'subsubcluster'
 
-# These tables dont have OA data for England and Wales
+# Excluded tables to be in-line with previous years area classification methods
 england_and_wales_table_codes_to_remove : [
         "ts007",
         "ts009",
