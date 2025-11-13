@@ -7,7 +7,8 @@ clustergrams - diagrams for each cluster used to visualise the cluster analysis 
 radial plots - circular diagram which representing the variable distribution. The red line in the supergroup radial plots is for the UK average, in group and subgroup it is the supergroup average and group average respectively.
 std_mean - tables of standardised means for each variable. 
 
-## The most notable output is within the cluster_assignments folder -  restructured_subclustering_output
+The most notable output is within the cluster_assignments folder -  restructured_subclustering_output:
+
 | Output column   | Description            |
 |--------|------------------------|
 |LAD_name | Local authority district name, for England and Wales these are local authorities: district / unitary (LTLA), Local Government Districts for Northern Ireland and Council Areas for Scotland |
