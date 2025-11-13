@@ -40,9 +40,12 @@ The calculation of SIR has been conducted in line with the formula used by [Wysz
 
 <img width="206" height="65" alt="SIR_equation" src="https://github.com/user-attachments/assets/0de6f6b6-aa87-4335-a396-68a2c61a3178" />
 
-- 𝐼^i equals the observed count of people with long-term health problems ordisabilities in areal unit 𝑖
-- r_n^a ( is a proportion of ill or disabled people in group 𝑎 at the national level 
-- 𝑃_a^i is the population size of an age group 𝑎 in area 𝑖.
+- <img width="29" height="22" alt="SIR_equation_i" src="https://github.com/user-attachments/assets/1fa73eb8-81de-4c9e-bedd-d6833394bee9" />
+(𝐼^i) equals the observed count of people with long-term health problems ordisabilities in areal unit 𝑖
+- <img width="26" height="26" alt="SIR_equation_rna" src="https://github.com/user-attachments/assets/d0ef38a9-519b-4d9d-bee8-952bf21b9725" /> (r_n^a) is a proportion of ill or disabled people in group 𝑎 at the national level 
+- <img width="16" height="24" alt="SIR_equation_pia" src="https://github.com/user-attachments/assets/792d7766-65a8-45f1-8251-507b8d51f76e" /> (𝑃_a^i) is the population size of an age group 𝑎 in area 𝑖.
+
+
 
 1. Each local authority is split into data for <15 and >=65 and 15-64. 
 2. For each new group calculate the total disabled (WHAT DOES THIS MEAN IN EACH CENSUS EW, NI, SCOT) and the total population (for each LAD).
