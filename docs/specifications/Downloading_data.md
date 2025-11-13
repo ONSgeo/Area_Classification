@@ -17,6 +17,9 @@ This specificaiton covers data download for the area classification pipeline. Ce
 
 ## 3.0 Assumptions and requirements
 ### 3.1 Assumptions <br>
+File Naming Conventions:<br>
+The script relies on specific naming conventions for downloaded files (e.g., *-ltla.csv for EW census downloads).
+
 ### 3.2 Requirements <br>
 Output Directory Structure:<br>
 The script requires the output directory to follow a specific structure, for example:<br>
@@ -24,10 +27,6 @@ inputs/ew_downloads/ for downloaded CSV files.<br>
 
 Disk Space:<br>
 Sufficient disk space is required for downloading, extracting, and saving the data.
-
-File Naming Conventions:<br>
-The script relies on specific naming conventions for downloaded files (e.g., *-ltla.csv for EW census downloads).
-
 
 
 ## 4.0 Methods inputs and outputs
