@@ -1,6 +1,8 @@
 # Standard Illness Ratio
 
 ## 1.0 Introduction
+This specificaiton covers the calculation of the Standardised Illness Ratio in the area classification pipeline.
+
 Standardised Illness Ratio was previously employed in the 2001 Output Area Classification as age was recognised as a key factor in determining prevalence and health issues and disability. The SIR is used as a measure of disability within each area, it provides a comparison between the disability count of an area and the expected illness. We have continued the use of this calculation as a continuation of the work which created the interim [2021 output area classifications for England and Wales](https://data.geods.ac.uk/dataset/output-area-classification-2021).
 
 The national average is 100, so values for each area will be relative to this. For example an area with value of 90 means it has a 10% lower illness rate than the national average, whilst an area with a value of 110 has a 10% higher illness rate. 
