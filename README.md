@@ -45,7 +45,7 @@ Manual downloads needed for:
 
 
 ## Process
-The flow diagram shows the stages of the area classification proccess
+The flow diagram shows the stages of the area classification process
 
 <img width="542" height="456" alt="Methods_diagram (4)" src="https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83" />
 
@@ -139,7 +139,7 @@ For more information on the data (England/Wales and Northern Ireland census tabl
 * Northern Ireland Census 2021 [MS-A14: Population density at Local Government District level for Northern Ireland](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density/resource/9a859cde-7da2-487a-86bd-dc5bfbaa4924) and ensure it is named 'census-2021-ms-a14-LGD.xlsx'.<br>
 
 #### 'scot_downloads' folder:<br> 
-* Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotlands Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.<br>
+* Scotland's Census 2022: Usual resident population density, Council Areas in [Table 4 in Scotland's Rounded population estimates](https://www.scotlandscensus.gov.uk/media/h5qokkij/scotland-s-census-2022-first-results-rounded-population-estimates-data.xlsx). The file should be renamed 'population_density.xlsx'.<br>
 
 * Scotland's 'migrant indicator' data [from the Flexible Table Builder](https://www.scotlandscensus.gov.uk/webapi/jsf/dataCatalogueExplorer.xhtml):
    - Select 'New table' in the bottom left
@@ -191,9 +191,9 @@ Your file structure should look like the following. Text in red are the folders 
 
 
 ## Output
-Lookup tables allocating each area code for the Local Authority Districts equivlents in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
+Lookup tables allocating each area code for the Local Authority Districts equivalent in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
 
-A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any dataframe. This checks for the expected values, zero values, duplicate values and descriptors like range. 
+A [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py) can be ran on any data frame. This checks for the expected values, zero values, duplicate values and descriptors like range. 
 
 ## Limitations
 These are high level limitations of the overall pipeline. For more specific limitations see [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications):
@@ -203,7 +203,7 @@ These are high level limitations of the overall pipeline. For more specific limi
 More detailed limitations can be found in the [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
 
 ## Future scope
-This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistancies of raw data tables deivlered from different conutries' census', there has been a rewuirement to hard code some of the pre-processing stages to ensure consistancy between datasets when feeding into the clustering algorithm.
+This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistencies of the raw data tables from different countries' census', there has been a requirement to hard code some of the pre-processing stages to ensure consistency between datasets when feeding into the clustering algorithm.
 
 ## Licence
 
