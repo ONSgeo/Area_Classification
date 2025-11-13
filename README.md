@@ -51,6 +51,7 @@ Manual downloads needed for:
 The flow diagram shows the stages of the area classification process:
 
 <img width="542" height="456" alt="Methods_diagram (4)" src="https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83" />
+
 [Clicking this link will open the image in a separate  window to allow you to zoom in if needed](https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83)
 
 ### Folder structure
