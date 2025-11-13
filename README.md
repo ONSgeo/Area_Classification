@@ -16,6 +16,8 @@ Current focus:
         * Local authority (CA2019)​
 
 # Data
+This section explains the data used in this pipeline. Later in this ReadMe you will find the [Data Downlaod section](https://github.com/ONSgeo/Area_Classification/blob/main/README.md#data-download) within [Set-up](https://github.com/ONSgeo/Area_Classification/blob/main/README.md#set-up ) which provides links and instructions for downloading the data mentioned in this section. 
+
 ### England and Wales
 Data for England and Wales is collected from the bulk download available on their census data platforms ([NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk)). Table codes generally start with "TS".
 
@@ -30,9 +32,7 @@ Data for Northern Ireland is collected from the bulk download available on their
 * Manual download needed for Northern Ireland disability data required to calculate SIR.
   
 ### Scotland
-At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Table codes generally start with "UV". The manual download was completed 22 April 2025 (three exceptions listed below).
-
-<br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the geography is available as an option on the Flexible Table Builder as cell key perturbation has been used to help protect the confidentiality of data within tables. This means that cells might not sum to sub totals and totals due to these Statistical Disclosure Controls (SDC). When building tables using smaller geographies this protection is applied to a lot of cells and doesn’t always cancel out. So, there are differences when you add them all up. Perturbation is consistent and repeatable so will always be applied consistently when the same records contribute to the cell total.
+At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Table codes generally start with "UV". The manual download was completed 22 April 2025.
 
 **Exceptions:**<br>
 Manual downloads needed for:
@@ -40,6 +40,7 @@ Manual downloads needed for:
 * Census 2022 table 'migrant indicator'. Migrant indicator table was downloaded 22 April 2025.
 * Census 2022 disability data required to calculate SIR.
 
+<br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the geography is available as an option on the Flexible Table Builder as cell key perturbation has been used to help protect the confidentiality of data within tables. This means that cells might not sum to sub totals and totals due to these Statistical Disclosure Controls (SDC). When building tables using smaller geographies this protection is applied to a lot of cells and doesn’t always cancel out. So, there are differences when you add them all up. Perturbation is consistent and repeatable so will always be applied consistently when the same records contribute to the cell total.
 
 ## Look ups
 * [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the England and Wales (EW), Northern Ireland (NI) and Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
