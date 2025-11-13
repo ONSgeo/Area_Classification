@@ -104,7 +104,7 @@ To run the pipeline, run the following code in the terminal (either in the root 
 project, or by specifying the path to `run_pipeline.py` from elsewhere).
 
 ```shell
-python src/area_classification/run_pipeline.py
+python src/area_classification/main_pipeline.py
 ```
 
 Alternatively, most Python IDEs allow you to run the code directly using a `run` button.
