@@ -13,28 +13,43 @@
 | CA19 | Council Areas 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and ocal Government Districts (NI) |
 
 ## 2.0 Introduction
-This specificaiton covers data download for the area classification pipeline. Census data is required from England, Wales, Scotland and Northern Ireland, the objective of this component is to import and make consistent data from different sources (NOMIS, NIRSA and Scot Census). For England and Wales, a bulk download is used to collect the required CSVs, for Northern Ireland an API is used to retrive the data and for Scotland the data is manually downloaded. As well as downloading data from the three sources, there is some data formatting which takes place, this merges all the tables into one table for each individual country. Meta data extraction is involved in this component. Steps 1 to 3 in the main pipeline covers this process.
+This specificaiton covers data download for the area classification pipeline. Census data is required from England, Wales, Scotland and Northern Ireland. The objective of this component is to import and make consistent data from different sources (NOMIS, NIRSA and Scot Census). For England and Wales, a bulk download is used to collect the required CSVs, for Northern Ireland an API is used to retrive the data and for Scotland the data is manually downloaded. As well as downloading data from the three sources, data formatting steps merge all the tables into one table for each individual country. Meta data extraction is involved in this component. Steps 1 to 3 in the main pipeline covers this process.
 
 ## 3.0 Assumptions and requirements
 
 
 ## 4.0 Methods inputs and outputs
 ### 4.1 Method inputs
-Input data must contain the following fields:
-| Column name |	Data type |	Definition |	
-| -------- |   ---------- |     ---------- |
-| XXX |    |      |
-| XXX |    |      |
+
+Data that is retrieved from via NISRA API follows the following format:
+
+
+Data that is retrieved from via the bulk download for EW is in the following format:
+
+
+The format for most Scot tables that are manually downloaded:
+
+
+
 
 ### 4.2 Method outputs
-The downloading data component produces three dataframes. One for each Census (EW, NI and Scot) The tables for each have the following structure:
+The downloading data component produces three dataframes - one for each Census (EW, NI and Scot). Each table follows a similar strucutre, where 'census response' refer to the response to a census question. For example, for the Census table 'TS001 - Number of usual residents in households and communal establishments':<br>
+- CENSUS RESPONSE 1 = total number of residents who answered the question.
+- CENSUS RESPONSE 2 = number of people living in a household.
+- CENSUS RESPONSE 3 = number of people living in a communal establishment.<br />
 
-| LEVEL OF GEOGRAPHY | CENSUS VARIABLE 1 | CENSUS VARIABLE 2 | CENSUS VARIABLE 3 |
-| -------- |   ---------- |   ---------- |   ---------- | 
-| GEOGRAPHY CODE 1 | COUNT 1 | COUNT 2 | COUNT 3 |
-| GEOGRAPHY CODE 2 | COUNT 1 | COUNT 2 | COUNT 3 |
+The number of CENSUS RESPONSE columns varies by question, but CENSUS RESPONSE 1 is always the total respondents.
+
+| LEVEL OF GEOGRAPHY | CENSUS RESPONSE 1 | CENSUS RESPONSE 2 | CENSUS RESPONSE 1 | CENSUS RESPONSE 2 | CENSUS RESPONSE 3 |
+| -------- | ---------- | ---------- | ---------- | ---------- | ---------- | 
+| GEOGRAPHY CODE 1 | COUNT 1 | COUNT 2 | COUNT 1 | COUNT 2 | COUNT 3 |
+| GEOGRAPHY CODE 2 | COUNT 1 | COUNT 2 | COUNT 1 | COUNT 2 | COUNT 3 |
 
 ## 5.0 Method
+API: are extracted based on the variable name, variable code and variable unit 'household' or 'people'.
+bulk download:
+manual download: census table builders
+
 ### 5.1 Strengths
 
 ### 5.2 Limitations
