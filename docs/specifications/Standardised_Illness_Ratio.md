@@ -39,6 +39,7 @@ The SIR calculation produces a data frame with the following structure:
 The calculation of SIR has been conducted in line with the formula used by [Wyszomierski, 2023](https://discovery.ucl.ac.uk/id/eprint/10189266/2/THESIS_Jakub_Jan_Wyszomierski.pdf): 
 
 <img width="206" height="65" alt="SIR_equation" src="https://github.com/user-attachments/assets/0de6f6b6-aa87-4335-a396-68a2c61a3178" />
+
 - 𝐼^i equals the observed count of people with long-term health problems ordisabilities in areal unit 𝑖
 - r_n^a ( is a proportion of ill or disabled people in group 𝑎 at the national level 
 - 𝑃_a^i is the population size of an age group 𝑎 in area 𝑖.
