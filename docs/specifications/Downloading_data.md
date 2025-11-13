@@ -9,7 +9,7 @@
 | NISRA | Northern Ireland Statistics and Research Agency. Where census data is downloaded from |
 | metadata | Information about something, for example further descriptive text for a code, often shown either using annotations or in a dedicated Metadata XML file, or csv file in this case |
 | LGD | Local Government District. A level of Geography used for census statistics. The NI equivalent of Local Authority Distrcits (EW) and Council Areas (Scot) | 
-| LAD | Local Authority District. A level of Geography used for census statistics. The EW equivalent of Local Government DistrictS (NI) and Council Areas (Scot) |
+| LAD | Local Authority District. A level of Geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot) |
 | CA / CA19 | Council Areas 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and ocal Government Districts (NI) |
 
 ## 2.0 Introduction
