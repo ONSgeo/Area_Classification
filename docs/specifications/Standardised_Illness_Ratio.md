@@ -5,7 +5,7 @@ Standardised Illness Ratio was previously employed in the 2001 Output Area Class
 
 The national average is 100, so values for each area will be relative to this. For example an area with value of 90 means it has a 10% lower illness rate than the national average, whilst an area with a value of 110 has a 10% higher illness rate. 
 
-[England and Wales was created by ONS until 2011 ](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/datasets/standardisedillnessratiosbynationalstatisticssocioeconomicclassificationenglandandwales)
+[SIR for England and Wales was created by ONS until 2011 ](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/datasets/standardisedillnessratiosbynationalstatisticssocioeconomicclassificationenglandandwales)
 
 ## 2.0 Terminology
 
