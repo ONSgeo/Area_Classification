@@ -44,7 +44,7 @@ Manual downloads needed for:
 
 ## Look ups
 * [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the 2021 England and Wales (EW), 2021 Northern Ireland (NI) and 2022 Scotland (Scot) area classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of census'.
-* A Local Authority Districts Names and Codes in the UK Lookup is required to convert between area names and area codes.
+* A Local Authority Districts Names and Codes in the UK Lookup is required from the [ONS Geography Portal](https://geoportal.statistics.gov.uk/) to convert between area names and area codes.
 
 
 ## Process
