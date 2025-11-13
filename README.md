@@ -47,7 +47,7 @@ Manual downloads needed for:
 * A Local Authority Districts Names and Codes in the UK Lookup is required from the [ONS Geography Portal](https://geoportal.statistics.gov.uk/) to convert between area names and area codes.
 
 
-## Process
+# Process
 The flow diagram shows the stages of the area classification process:
 
 <img width="542" height="456" alt="Methods_diagram (4)" src="https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83" />
@@ -57,7 +57,7 @@ The flow diagram shows the stages of the area classification process:
 ### Folder structure
 [The folder and script structure can be found in the user guide folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/repo_structure.md)
 
-## Set Up 
+# Set Up 
 Firstly, clone the repo locally. If you need support cloning the repo, take a look at [the GitHub cloning a repository instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or if you are working with Visual Studio code take a look at [clone and use a GitHub repository in Visual Studio Code instructions](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=activity-bar).
 
 ### Requirements 
@@ -191,28 +191,28 @@ Your file structure should look like the following. Text in red are the folders 
 <img width="576" height="1085" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/4221b59e-ad10-4862-b036-ca5a7acb5fba" />
 [Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/4221b59e-ad10-4862-b036-ca5a7acb5fba)
 
-## Output
+# Output
 Lookup tables allocating each area code for the Local Authority Districts equivalent in England, Wales, Northern Ireland and Scotland to clusters for supergroup, group and subgroup.
 
 This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py). This is currently not embedded in the pipeline but, can be ran on any data frame from any stage of the pipeline. The QA script checks for the expected values, zero values, duplicate values and descriptors like range. 
 
-## Limitations
+# Limitations
 These are high level limitations of the overall pipeline. For more specific limitations for each pipeline component see [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications):
 1. **Combining data from two separate years** - Census for EW, NI and Scot are usually conducted in line with each other. However due to the [impact of COVID-19, Scotland moved their census to 2022](https://www.scotlandscensus.gov.uk/news-and-events/news-release-scotland-s-census-to-be-moved-to-march-2022/). This difference in time may have affected responses to variables across the devolved administrations, particularly, it may have affected responses to questions around employment and effect the variables included in this research. Additionally, it is possible if individuals moved house between 2021 and 2022, they may have been included or excluded from both census'. This may raise considerations of the utility of this classification produced given the special circumstances at the time of COVID 19.
 2. **Choice of variables** - The variables used in this pipeline have been chosen in line with the earlier work on the [2021 Output Area Classification](https://data.geods.ac.uk/dataset/output-area-classification-2021) which used Census data. If other variables were used (including those not from Census), the clustering may differ.
 3. **Level of geography** - This pipeline looks at Local Authority District (LAD) levels of geography (LTLA, LGD and CA19), and so will not reflect the heterogeneity within LADs. 
 More detailed limitations can be found in the [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
 
-## Future scope
+# Future scope
 This pipeline could be adapted in future to work for different levels of geography. This would not be possible running this current code as due to the inconsistencies of the raw data tables from different countries' census', there has been a requirement to hard code some of the pre-processing stages to ensure consistency between datasets when feeding into the clustering algorithm.
 
-## Licence
+# Licence
 
 Unless stated otherwise, the codebase is released under the MIT License. This covers
 both the codebase and any sample code in the documentation. The documentation is ©
 Crown copyright and available under the terms of the Open Government 3.0 licence.
 
-## Acknowledgements
+# Acknowledgements
 Thanks to Jakub Wyszomierski (jakubwyszomierski), Owen Goodwin (ogoodwin505) and Alex Singleton (alexsingleton) at the Geographic Dara Service for their early code which formed the starting point of this repo.
 - [Geographic Data Service](https://github.com/GeographicDataService)
 - [OAC2021-2](https://github.com/GeographicDataService/OAC2021-2)
@@ -228,11 +228,11 @@ This project structure is based on the [`govcookiecutter` template project][govc
 [docs-loading-environment-variables]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md
 [docs-loading-environment-variables-secrets]: https://github.com/best-practice-and-impact/govcookiecutter/blob/main/%7B%7B%20cookiecutter.repo_name%20%7D%7D/docs/user_guide/loading_environment_variables.md#storing-secrets-and-credentials
 
-## Contributing
+# Contributing
 
 If you want to help us build and improve `area_classification`, please take a look at our [contributing guidance][contributing].
 
-## Contacts
+# Contacts
 [ONS Geography inbox](mailto:ons.geography@ons.gov.uk)
 
 
