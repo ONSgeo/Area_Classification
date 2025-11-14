@@ -8,8 +8,8 @@ This component applies the K-means clustering technique to group together local 
 ## 2.0 Terminology
 | Term |	Definition |	
 | ---- |  ---------- |
-| K-means | An algorithm which clusters data by trying to separate samples (local authorities) in n groups of equal variances, minimising a criterion known as the inertia or within-cluster sum-of-squares. This algorithm requires the number of clusters (that is, supergroups, groups and subgroups) to be specified and is an iterative process. |
 | Clustering | Clustering is a technique for finding similarity groups in data, called clusters. For this classification, the clustering technique attempts to group Local Authority Districts together by similarity alone.    |
+| K-means | An algorithm which clusters data by trying to separate samples (local authorities) in n groups of equal variances, minimising a criterion known as the inertia or within-cluster sum-of-squares. This algorithm requires the number of clusters (that is, supergroups, groups and subgroups) to be specified. It is an iterative process whereby it repeatedly updates cluster assignments until the clusters stabilize. |
 | Supergroup | The supergroup (highest level of the hierarchy) this local authority has been clustered into.     |
 | Group | The group (middle level of the hierarchy) this local authority has been clustered into.  |
 | Subgroup | The subgroup (lowest level of the hierarchy) this local authority has been clustered into.  |
