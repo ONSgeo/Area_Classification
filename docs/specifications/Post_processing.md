@@ -1,8 +1,6 @@
 # Post-processing
 
-## 1.0 Summary
-
-## 2.0 Terminology
+## 1.0 Terminology
 
 Input data must contain the following fields:
 | Term |	Definition |	
@@ -13,7 +11,7 @@ Input data must contain the following fields:
 | Subgroup |The subgroup (lowest level of the hierarchy) this local authority has been clustered into. |
 | Standardised means | values for each variable with 
 
-## 3.0 Introduction
+## 2.0 Introduction
 
 ### Strengths
 
