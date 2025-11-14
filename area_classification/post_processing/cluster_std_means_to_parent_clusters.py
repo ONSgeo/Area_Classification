@@ -1,4 +1,4 @@
-# This script creates means standardized to the parent cluster
+# This script creates means standardised to the parent cluster
 # group means standardised to the supergroup mean
 # subgroup means standardised to the group mean
 
@@ -9,9 +9,9 @@ from collections import defaultdict
 def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, chosen_clustering_variables):
     """
     This function reads the clustering output CSV file and the pre-clustering data CSV file.
-    It creates standardized means of the values in a cluster to their parent cluster. It then 
-    saves the standardized means to a new CSV file.
-    Once it has the standardized means, it creates means for each cluster. 
+    It creates standardised means of the values in a cluster to their parent cluster. It then 
+    saves the standardised means to a new CSV file.
+    Once it has the standardised means, it creates means for each cluster. 
 
     Parameters
     ----------
@@ -27,7 +27,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         Hartlepool  | E06000001 | 1         | 1c    | 1c1
 
     Returns:
-        pd.DataFrame: DataFrame containing standardized means for each cluster.
+        pd.DataFrame: DataFrame containing standardised means for each cluster.
 
     """   
     # Merge the two DataFrames on the LAD CODE column
@@ -59,7 +59,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         # Identify columns starting with 'v'
         v_columns = [col for col in supergroup_data.columns if col.startswith("v")]
 
-        # Standardize mean of each value in the 'v' columns
+        # standardise mean of each value in the 'v' columns
         for col in v_columns:
             mean = supergroup_data[col].mean()
             std = supergroup_data[col].std()
@@ -83,7 +83,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         # Identify columns starting with 'v'
         v_columns = [col for col in group_data.columns if col.startswith("v")]
 
-        # Standardize means of each value in the 'v' columns
+        # standardise means of each value in the 'v' columns
         for col in v_columns:
             mean = group_data[col].mean()
             std = group_data[col].std(ddof=0)  # Use population standard deviation

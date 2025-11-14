@@ -26,7 +26,7 @@ def main_pipeline():
     3. Process the manually downloaded Scotland data tables.
     4. Perform pre-processing on the combined data for all countries.
     5. Establish the variables which will be used for clustering (some may be dropped).
-    6. Standardize the pre-processed data for clustering.
+    6. standardise the pre-processed data for clustering.
     7. Perform clustering on the pre-processed data, using variables chosen.
     8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots.
 
@@ -65,7 +65,7 @@ def main_pipeline():
 
     # Step 6: Standardise pre_clustering data (used in the clustering)
     pre_clustering_data_std_mean = prepare_clustering_data(chosen_clustering_variables)
-    # Save the standardized pre clusting data to a new file 
+    # Save the standardised pre clusting data to a new file 
     # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
     pre_clustering_data_std_mean.to_csv(config["pre_clustering_data_std_mean"], index=False)
          

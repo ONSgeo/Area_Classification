@@ -30,7 +30,7 @@ pre_clustering_data_filtered: './data/QA/pre_clustering_data_filtered.csv'
 #Filtered and non filtered both create this in main
 pre_clustering_data_std_mean: './data/QA/pre_clustering_data_std_means.csv' 
 
-# post processing files for creating standardized means
+# post processing files for creating standardised means
 restructured_subclustering_output: './data/output_data/cluster_assignments/restructured_subclustering_output.csv'
 
 # Clustering config

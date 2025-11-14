@@ -1,11 +1,11 @@
 import unittest
 import pandas as pd
-from area_classification.pre_processing.prepare_clustering_data import standardize_data
+from area_classification.pre_processing.prepare_clustering_data import standardise_data
 from area_classification.pre_processing.prepare_clustering_data import apply_arcsinh_transformation
 from area_classification.pre_processing.prepare_clustering_data import apply_min_max_scaling
 
 class TestPrepareClusteringData(unittest.TestCase):
-    def test_standardize_dataframe(self):
+    def test_standardise_dataframe(self):
         # Define input DataFrame
         input_df = pd.DataFrame({
             'LAD_code': ['E06000001', 'W06000001', 'N09000001', 'S12000005'],
@@ -21,7 +21,7 @@ class TestPrepareClusteringData(unittest.TestCase):
         })
 
         # Run the function and assert the result
-        std_result_df = standardize_data(input_df)
+        std_result_df = standardise_data(input_df)
         pd.testing.assert_frame_equal(std_result_df, expected_df)
 
     def test_apply_arcsinh_transformation(self):

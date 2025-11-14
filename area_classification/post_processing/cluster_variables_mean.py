@@ -2,9 +2,10 @@
 import pandas as pd
 import os
 
-def cluster_variable_means(config, restructured_cluster_table, standardized_data):
+def cluster_variable_means(config, restructured_cluster_table, standardised_data):
     """
-    Function calculates the mean of each variable and cluster (supergroup, group, subgroup)
+    Calculates the mean of each variable for different hierarchical clusters (supergroup, group, subgroup),
+    and outputs the results in a structured format. 
     
     Parameters
     ----------
@@ -20,17 +21,8 @@ def cluster_variable_means(config, restructured_cluster_table, standardized_data
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe containing the mean of each variable for each cluster, structured as:
-        cluster_code  | Hierarchy_level   |  TS001_mean      | TS002_mean      | ... | xxx_mean
-        -----------------------------------------------------------------------------------------------
-        1             | supergroup        | 100.0            | 200.0           | ... | 150.0
-        1a            | group             | 120.0            | 180.0           | ... | 160.0
-        1a1           | subgroup          | 130.0            | 170.0           | ... | 155.0
 
-    OR LONG FORMAT? ... (SP - which is easier for comparison with national averages)
-
-    pd.DataFrame  <---- currently outputs this option
+    pd.DataFrame 
         Dataframe containing the mean of each variable for each cluster, structured as:
         Cluster_code  | Hierarchy_level   |  variable_name  |  variable_mean
         -----------------------------------------------------------------
@@ -39,8 +31,8 @@ def cluster_variable_means(config, restructured_cluster_table, standardized_data
         1a1           | subgroup          | TS001           | 130.0
     """
     
-    # Merge cluster results with standardized means census data
-    merged_data = pd.merge(restructured_cluster_table, standardized_data, on="LAD_code", how="left")
+    # Merge cluster results with standardised means census data
+    merged_data = pd.merge(restructured_cluster_table, standardised_data, on="LAD_code", how="left")
 
     # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
     long_data = pd.melt(merged_data, id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],
