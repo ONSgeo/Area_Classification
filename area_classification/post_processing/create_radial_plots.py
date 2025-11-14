@@ -8,15 +8,15 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
     """
     Wrapper function to create radial plots for UK clusters and parent clusters.
 
-    Radial plots for parent clusters represent difference from parent cluster standardized means.
-    Radial plots for the area classification clusters to represent difference from UK standardized means.
+    Radial plots for parent clusters represent difference from parent cluster standardised means.
+    Radial plots for the area classification clusters to represent difference from UK standardised means.
 
     Parameters
     ----------
     config : dict
         Configuration dictionary containing settings for the plotting.
     uk_std_cluster_means : DataFrame
-        DataFrame containing standardized cluster means for the UK.
+        DataFrame containing standardised cluster means for the UK.
     combined_group_means : DataFrame
         DataFrame containing group-level means.
     combined_subgroup_means : DataFrame

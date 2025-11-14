@@ -13,24 +13,24 @@ def prepare_clustering_data(dataframe):
 
     Returns
     -------
-        pd.DataFrame: A new DataFrame with the transformed and standardized numeric values,
+        pd.DataFrame: A new DataFrame with the transformed and standardised numeric values,
                       and the first column set as the index.
     """
-    # Step 1: Standardize the data
-    standardized_data = standardize_data(dataframe)
+    # Step 1: standardise the data
+    standardised_data = standardise_data(dataframe)
 
     # Step 2: Apply arcsinh transformation
-    transformed_data = apply_arcsinh_transformation(standardized_data)
+    transformed_data = apply_arcsinh_transformation(standardised_data)
 
     # Step 3: Apply min-max scaling
-    transformed_standardized_data = apply_min_max_scaling(transformed_data)
+    transformed_standardised_data = apply_min_max_scaling(transformed_data)
 
-    return transformed_standardized_data
+    return transformed_standardised_data
 
 
-def standardize_data(dataframe):
+def standardise_data(dataframe):
     """
-    Standardizes the numeric columns of the DataFrame by subtracting the mean
+    standardises the numeric columns of the DataFrame by subtracting the mean
     and dividing by the standard deviation (z-score normalization).
 
 
@@ -38,17 +38,17 @@ def standardize_data(dataframe):
 
     Returns
     -------
-        pd.DataFrame: A DataFrame with standardized numeric columns.
+        pd.DataFrame: A DataFrame with standardised numeric columns.
     """
-    standardized_data = dataframe.copy()
+    standardised_data = dataframe.copy()
     for column in dataframe.columns[1:]:  # Skip the first column (e.g., area codes)
         mean = dataframe[column].mean()
         std = dataframe[column].std(ddof=0)  # Use population standard deviation
         if std != 0:  # Avoid division by zero
-            standardized_data[column] = (dataframe[column] - mean) / std
+            standardised_data[column] = (dataframe[column] - mean) / std
         else:
-            standardized_data[column] = 0  # If std is 0, set standardized values to 0
-    return standardized_data
+            standardised_data[column] = 0  # If std is 0, set standardised values to 0
+    return standardised_data
 
 
 def apply_arcsinh_transformation(dataframe):
