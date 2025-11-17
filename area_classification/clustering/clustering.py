@@ -85,7 +85,7 @@ def clustering_wrapper(config: dict,
     input("Press Enter to continue with supergroups creation...")
     
     #Assign the file path to save the supergroup cluster output
-    supergroup_output_filepath = output_directory+"/cluster_assignments/supergroups_clusteroutput.csv"
+    supergroup_output_filepath = output_directory+"/cluster_assignments/supergroups_clustering_output.csv"
     
     #Run the K means clustering to create supergroups
     supergroup_variable_df = run_kmeans(variable_df, 
@@ -363,9 +363,9 @@ def run_subclustering(input_df, output_location,drop_columns,column_name, cluste
 
     # Save the cluster outputs one directory up from the output_location - the cluster assignment folder
     if column_name == "subcluster":
-        file_name = "group_output.csv"
+        file_name = "group_clustering_output.csv"
     elif column_name == "subsubcluster":
-        file_name = "subgroup_output.csv"
+        file_name = "subgroup_clustering_output.csv"
     else:
         file_name = f"{column_name}_output_.csv"
 
