@@ -15,7 +15,7 @@ This component applies the K-means clustering technique to group together local 
 | Subgroup | The subgroup (lowest level of the hierarchy) this local authority has been clustered into.  |
 	
 ## 3.0 Assumptions and requirements
-This analysis assumes that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
+This analysis assumes that the 59 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
 
 The k-means algorithm requires the number of supergroup clusters and the number of groups within these supergroups to be specified. The assumption is that the decision about the cluster numbers have been carefully determined based on qualitative and quantitative assessments, supported by informed judgement.
 
