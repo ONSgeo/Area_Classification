@@ -61,7 +61,8 @@ class TestRemoveRows(unittest.TestCase):
         mock_listdir.assert_called_once_with(folderpath)
 
         # Verify pandas.read_csv was called with the correct file path
-        mock_read_csv.assert_called_once_with("/tests/data/scot_tables_refomatting/removerows.csv", on_bad_lines='warn', header=None)
+        #mock_read_csv.assert_called_once_with("/tests/data/scot_tables_refomatting/removerows.csv", on_bad_lines='warn', header=None)
+        mock_read_csv.assert_called_once_with("./data/inputs/scot_downloads_reformatted/reformat_test.csv", on_bad_lines='warn', header=None)
 
         # Verify the transformations on the DataFrame
         expected_df = pd.DataFrame({
