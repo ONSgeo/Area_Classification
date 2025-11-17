@@ -1,7 +1,9 @@
 # Pre-processing
 
 ## 1.0 Introduction
-The clustering algorithm requires input data to be in a consistent format, consquently since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
+This specification covers the pre-processing component in the area classification pipeline, this is step 4, step 5 and step 6 in the main_pipeline.py.
+
+The clustering algorithm requires input data to be in a consistent format and since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
 
 
 ## 2.0 Terminology
@@ -15,28 +17,23 @@ The clustering algorithm requires input data to be in a consistent format, consq
 | LTLA | 	Lower Tier Local Authority. A level of geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot) | 
 | LGD | Local Government District Lower Tier Local Authority. A level of geography used for census statistics. The NI equivalent of Lower Tier Local Authority (EW) and Council Areas (Scot) |
 | CA | Council Areas (CA19 = 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and Local Districts (NI) |
-| Standardisation |    |     
-| Hyperbolic sine |    |  
+| Standardisation | A process that transforms each variable to have a mean of 0 and a standard deviation of 1, making them dimensionless and directly comparable. Without this, variables with larger magnitudes or ranges would dominate clustering. |     
+| Inverse hyperbolic sine (arcsinh) transformation | A mathematical function used to transform data to make data more "normal" or less skewed, a useful step for clustering. |  
+| Min-max scaling | A technique that transforms data so that all values are mapped to a fixed range, useful for distance-based algorithms like k-means. |
 
 ## 3.0 Assumptions and requirements
-hyperbolic sine?
+The [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) is required to only select certain variables. 
 
-## 4.0 Methods inputs and outputs
+
+## 4.0 Methods 
 ### 4.1 Method inputs
 
-Scotland pre-processing:
-For all Scotland downloaded csvs reformatting is required to remove excess metadata at the top.
-Additionally variable names need to be turned into variables codes which are in the metadata table so that columns align.
-UV101b needs ‘all people’ ‘lives in a communal establishment’ – Council Areas need to be moved into a separate column.
-UV103 needs additional formatting, then in the aggregation script, the ages need to be grouped to align with the other census’.
-
-
-
-Input data must contain the following fields:
+From the downloading data component, the pre-processing component requires three dataframes; EW, NI and Scot tables containing all of the downloaded census variables. 
+These dataframes must contain the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
 | Area identifier |   string |     this could be the area name or area code for a LAD |
-| Variable value |   Numeric |      |
+| Variable value |   Numeric | counts  |
 
 ### 4.2 Method outputs
 The output includes the following fields:
@@ -47,8 +44,15 @@ The output includes the following fields:
 
 
 
-## 5.0 Method
-Stardisation and transformation methods - hyperbolic sine
-### 5.1 Strengths
 
-### 5.2 Limitations
+## 4.3 Process
+
+
+
+
+Stardisation and transformation methods - hyperbolic sine
+
+### 4.4 Strengths
+arcsinh can handle zero and negative values, unlike the logarithm. 
+
+### 4.5 Limitations
