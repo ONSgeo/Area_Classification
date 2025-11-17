@@ -1,10 +1,7 @@
 # Pre-processing
 
 ## 1.0 Introduction
-This specification covers the pre-processing component in the area classification pipeline, this is step 4, step 5 and step 6 in the main_pipeline.py.
-
-The clustering algorithm requires input data to be in a consistent format and since the data comes form multiple different data sources (NOMIS, NISRA and Scotland's Census websites) some pre-processing is required to achieve this consistency. 
-
+This specification covers the pre-processing component in the area classification pipeline, this is steps 4, 5 and 6 in the main_pipeline.py. This component calculates the Standardised Illness Ratio (SIR) for for EW, NI and Scot census data. Based on the [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), specified variables are selected, aggregated and exported. Once the 3 individual tables are merged into one, the counts are converted to percentages. There are then some standardisation and transformation steps to prepare the data for clustering. 
 
 ## 2.0 Terminology
 | Term |	Definition |	
@@ -22,13 +19,13 @@ The clustering algorithm requires input data to be in a consistent format and si
 | Min-max scaling | A technique that transforms data so that all values are mapped to a fixed range, useful for distance-based algorithms like k-means. |
 
 ## 3.0 Assumptions and requirements
+This analysis assumes that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
 The [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) is required to only select certain variables. 
 
 
 ## 4.0 Methods 
 ### 4.1 Method inputs
-
-From the downloading data component, the pre-processing component requires three dataframes; EW, NI and Scot tables containing all of the downloaded census variables. 
+The pre-processing component requires three dataframes that are outputted from the downloading data component; EW, NI and Scot dataframes containing all of the downloaded census variables. 
 These dataframes must contain the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
@@ -39,20 +36,31 @@ These dataframes must contain the following fields:
 The output includes the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
-| LAD code |   string |     this is the area code for the LTLA (England and Wales), LGD (Northern Ireland) and CA (Scotland). |
-| 60 variable fields |   int |     these are the values for each variable in that LAD. |
-
-
+| LAD code |   string |  This is the area code for the LTLA (England and Wales), LGD (Northern Ireland) and CA (Scotland). |
+| 59 variable fields |   int |  These are the values for each variable in that LAD.  |
 
 
 ## 4.3 Process
+pre-processing function (step 4):
+1. The function calculates the Standard Illness Ratio (SIR) for each census (EW, NI, Scot).
+2. Joins SIR data to the main DataFrame and handles cases where area codes do not match exactly.
+3. Aggregates variables based on the [aggregation setup config file](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/aggregation_setup.yaml) for each country individually.
+4. Combines the three tables into one dataframe.
+5. Selects the specific 60 variables based on the [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv).
+6. Converts counts to percentages for England, Wales and Northern Ireland.
+7. Saves intermediate and final outputs to CSV files.
 
+Dropping specific columns (step 5):
+Checks if the 'drop_columns:' key in the config file is set to 'True'. If it is, it calls the drop_variables_pre_clustering function to drop specified columns from the preprocessed input table. These are specified in the config file in the 'variables to drop' list. 
 
-
-
-Stardisation and transformation methods - hyperbolic sine
+Preparing data for clustering (step 6):
+1. Calculates standardised means for each value for each variable. This makes the variables comparable and prevents dominance by varaibles with larger scales.
+2. Applies arcsinh transformation for each value for each variable. This handles skewed data and outliers. 
+3. Applies min-max scaling to scales all values to the range 0-1. K-means clustering is a distance-based algorithm and applying this scaling ensures equal weighting for the variables. 
 
 ### 4.4 Strengths
-arcsinh can handle zero and negative values, unlike the logarithm. 
+The arcsinh transformation can handle zero and negative values, unlike the logarithm. 
 
 ### 4.5 Limitations
+Min-max scaling can be affected by extreme values, potentially compressing most data into a small range. The data used in this pipeline did not contain extreme outliers, therefore min-max scaling was appropriate. 
+
