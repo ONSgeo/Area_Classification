@@ -1,4 +1,4 @@
-# Creating print statements about the clustersclustering
+# Creating print statements about the clusters
 
 import logging
 logger = logging.getLogger(__name__)
