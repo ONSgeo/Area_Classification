@@ -4,7 +4,7 @@
 
 | Term |	Definition |	
 | -------- |   ---------- |   
-| Radial plot | circular chart that displays multivariate data. The axes radiating from the centre point represent different variables |     
+| Radial plot | circular chart that displays multivariate data. The axes radiating from the centre point represent different variables. |     
 | Supergroup |	The supergroup (highest level of the hierarchy) this local authority has been clustered into. |
 | Group	| The group (middle level of the hierarchy) this local authority has been clustered into. |
 | Subgroup |The subgroup (lowest level of the hierarchy) this local authority has been clustered into. |
