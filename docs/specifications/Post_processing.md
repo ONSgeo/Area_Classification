@@ -24,16 +24,15 @@ To create the radial plots and label the variables correctly, the [selected code
 ### 4.1 Method inputs
 
 #### 4.1.1 Table containing all chosen variables 
-The table that is outputted in the pre-processing stage, with the selected variables and the percentage values for EW/NI/Scot in one combined dataframe. This could be the full 60 variables as listed in the [lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), or less if it has been specified in the config file to drop specific variables. In 'main_pipeline.py' this is defined as the 'chosen_clustering_variables' dataframe.
+The table that is outputted in the pre-processing stage, with the selected variables and the percentage values for EW/NI/Scot in one combined data frame. This could be the full 60 variables as listed in the [lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), or less if it has been specified in the config file to drop specific variables. In 'main_pipeline.py' this is defined as the 'chosen_clustering_variables' data frame.
 
-Example:
-
+Example using dummy data:
 |  LAD_code |	v01 |	v02 |	v03 |	
 | -------- |   ---------- |     ---------- |  ---------- |
 | XXX |  0.9  |  45.8   |  8.3 |
 | XXX |  5.5  |   36.7   | 7.7 |
 
-#### 4.1.2 Clustering output:
+#### 4.1.2 Clustering output
 The outputs from the clustering component are three data frames; one for each level of clustering (supergroup, group and subgroup).
 - supergroup = "clustering"
 - group = "subclustering"
@@ -48,18 +47,18 @@ Example table for a subgroup output:
 
 ### 4.2 Method outputs
 
-#### 4.2.1 Clustering output dataframe that has been restrucutred: 
-
+#### 4.2.1 Clustering output data frame that has been restructured  
+The subsubclustering has been split into three columns so the supergroup, group and subgroup sit separately and the LAD name has been added in using a lookup.
+Example using dummy data:
 | LAD_name |	LAD_code |	supergroup |	group |	subgroup |	
 | -------- |   ---------- |     ---------- |   ---------- |   ---------- |
 | XXX |  XXX  |  1   | 1a | 1a1 |
 | XXX |  XXX  |  2  | 2a | 2a1 |
 
 
-#### 4.2.2 Standardised means tables: 
+#### 4.2.2 Standardised means tables 
 UK table containing means of each variable within each cluster, standardised to the UK mean. 
 Example using dummy data:
-
 | cluster | hierarchy_level | v01 | v02 | v03 |
 | ------ | ------ | ------ | ------ | ------ | 
 | 0 | supergroup | -0.01 | -0.6 | 0.08 |
@@ -75,13 +74,13 @@ Example group output using dummy data. The subgroup output has the same structur
 
 
 #### 4.2.3 Two groups of radial plots:
-One are based on the comparison of a cluster to the UK mean. The other group compare variables within a cluster to the mean of parent cluster. For example, a radial plot for cluster 5a (group level) represents a comparison to the mean of all clusters that make up supergroup 5. 
+One is based on the comparison of a cluster to the UK mean. The other group compare variables within a cluster to the mean of parent cluster. For example, a radial plot for cluster 5a (group level) represents a comparison to the mean of all clusters that make up supergroup 5. 
 
 
 ### 4.3 Process
 
 1. Take the table containing all chosen variables that is outputted at the pre-processing stage. For each value and each variable, the standardised mean is calculated. This ensures that all variables contribute equally to further calculations of the mean.
-2. The output table from the clustering component is restructured for easier interpretation. The column containing cluster codes are seperated out into seperate columns for supergroup, group, and subgroup. The final character in the subgroup column is then converted to a number (a=1, b=2, c=3, etc.).
+2. The output table from the clustering component is restructured for easier interpretation. The column containing cluster codes are separated out into separate columns for supergroup, group, and subgroup. The final character in the subgroup column is then converted to a number (a=1, b=2, c=3, etc.).
 3. Using the tables from steps 1 and 2, means are calculated for each variable at each cluster/hierarchy level, standardised to the UK mean.
 4. Using the tables from steps 1 and 2, it sorts by supergroup/group/subgroup and calculates means of each variable in each cluster, standardised to the parent mean. 
 5. Radial plots are created from the outputs of steps 3 and 4.
