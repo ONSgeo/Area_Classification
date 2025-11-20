@@ -10,7 +10,8 @@ This specification covers the pre-processing component in the area classificatio
 | NOMIS | 	A service provided by the Office for National Statistics (ONS), which hosts statistics including data from censuses - https://www.nomisweb.co.uk/ |	
 | NISRA | Northern Ireland Statistics and Research Agency (NISRA) is responsible for running the census in Northern Ireland - https://www.nisra.gov.uk/ |
 | NRS | National Records of Scotland (NRS) is responsible for the census in Scotland - https://www.scotlandscensus.gov.uk/|
-| LAD code | Local authority district (LAD) codes are GSS (Government Statistical Service) 9 character codes which identify a LAD. LADs are a level of geography used for census statistics. They include Unitary Authorities (W), Council Areas (S), Local Government Districts (NI) and in England include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitary Authorities. |
+| LADs | Local authority districts (LADs) are a level of geography used for census statistics. They include Unitary Authorities (W), Council Areas (S), Local Government Districts (NI) and in England include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitary Authorities. |
+| LAD code | Local authority district (LAD) codes are GSS (Government Statistical Service) 9 character codes which identify a LAD. |
 | LTLA | 	Lower Tier Local Authority. A level of geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot) | 
 | LGD | Local Government District Lower Tier Local Authority. A level of geography used for census statistics. The NI equivalent of Lower Tier Local Authority (EW) and Council Areas (Scot) |
 | CA | Council Areas (CA19 = 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and Local Districts (NI) |
