@@ -27,7 +27,7 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 * Quality: Green
 * Impact: Red
 
-A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales. This was to ensure continuity and comparability with the earlier publication. The impact is rated as red because the results would be impacted if the variables were to change. It is assumed that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
+A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales to ensure continuity and comparability with the earlier publication. It is assumed that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK. The impact is rated as red because the clustering results would be impacted if the variables were to change.
 
 
 ## Assumption 3: Not including Bangladeshi ethnic group for Northern Ireland
