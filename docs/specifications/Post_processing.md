@@ -24,7 +24,8 @@ To create the radial plots and label the variables correctly, the [selected code
 ### 4.1 Method inputs
 
 #### 4.1.1 Table containing all chosen variables 
-The table that is outputted in the pre-processing stage, with the selected variables and the percentage values for EW/NI/Scot in one combined dataframe. This could be the full 60 variables as listed in the [lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), or less if it has been specified in the config file to drop specific variables. In 'main_pipeline.py' this is defined as the 'chosen_clustering_variables' dataframe:
+The table that is outputted in the pre-processing stage, with the selected variables and the percentage values for EW/NI/Scot in one combined dataframe. This could be the full 60 variables as listed in the [lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), or less if it has been specified in the config file to drop specific variables. In 'main_pipeline.py' this is defined as the 'chosen_clustering_variables' dataframe.
+
 Example:
 
 |  LAD_code |	v01 |	v02 |	v03 |	
