@@ -7,14 +7,10 @@ SIR was previously employed in the 2001 and 2011 Area Classifications as age was
 
 The national average SIR is 100, so values for each area will be relative to this. For example an area with value of 90 means it has a 10% lower illness rate than the national average, whilst an area with a value of 110 has a 10% higher illness rate. 
 
-## 2.0 Terminology
-
-
-
-## 3.0 Assumptions and requirements
+## 2.0 Assumptions and requirements
 As the SIR is a relative indicator, a national average value for the UK is needed which requires data for all countries - England, Northern Ireland, Scotland and Wales. In this sense, we are assuming it is appropriate to combine the 2022 from Scotland (UV303a.csv), with 2021 data from England and Wales ('disabilitycensus2021.xlsx') and Northern Ireland ('ni_downloads/census-2021-ms-d02.xlsx').
 
-## 4.0 Methods inputs and outputs
+## 3.0 Methods inputs and outputs
 ### Method inputs
 SIR is calculated within [standardised_illness_ratio.py](area_classification/pre_processing/standardised_illness_ratio.py). This script requires three data frames are required to calculate the SIR for LAD area classification, one from each census (England and Wales , Northern Ireland and Scotland). 
 Each table must contain at least the following columns, although the column names may vary or require some pre processing:
@@ -29,7 +25,7 @@ The SIR calculation ran in the `sir_processing` function within the [standardise
 | string | int | int | int |
 | string | int | int | int |
 
-## 5.0 Method
+## 4.0 Method
 The calculation of SIR has been conducted in line with the formula used by [Wyszomierski, 2023](https://discovery.ucl.ac.uk/id/eprint/10189266/2/THESIS_Jakub_Jan_Wyszomierski.pdf): 
 
 <img width="206" height="65" alt="SIR_equation" src="https://github.com/user-attachments/assets/0de6f6b6-aa87-4335-a396-68a2c61a3178" />
@@ -38,7 +34,7 @@ The calculation of SIR has been conducted in line with the formula used by [Wysz
 - <img width="26" height="26" alt="SIR_equation_rna" src="https://github.com/user-attachments/assets/d0ef38a9-519b-4d9d-bee8-952bf21b9725" />  is a proportion of ill or disabled people for a given age group 𝑎 at the national level. In this work, the national proportion (`nat_prop`) is calculated by summing the LAD level disability count and overall population data. 
 - <img width="15" height="24" alt="SIR_equation_pia" src="https://github.com/user-attachments/assets/8e165d49-b35d-4d53-a8f4-2efc3b7f4708" />  is the population size of an age group 𝑎 in area 𝑖.
 
-- <img width="221" height="82" alt="SIR_equation_Earnapia" src="https://github.com/user-attachments/assets/7891168d-c673-4e46-bf41-6387dd1d7cb6" /> is the expected ill for a gien age of a given geography. This is an estimation of the number of people in an area who are expected to have a long-term illness or disability, assuming the illness proportions in the area are equal to the UK national average. The expected ill value (`exp_ill`) is calculated by multiplying the proportion of the UK’s population that have an disability or long-term illness for each age range (‘<15 and >=65’ years and ‘15-64’ years in the code) by the total population of each age range in each LAD.  
+- <img width="65" height="22" alt="SIR_equation_Earnapia" src="https://github.com/user-attachments/assets/735b424e-2a90-473d-9005-eb29c08e6adc" /> is the expected ill for a gien age of a given geography. This is an estimation of the number of people in an area who are expected to have a long-term illness or disability, assuming the illness proportions in the area are equal to the UK national average. The expected ill value (`exp_ill`) is calculated by multiplying the proportion of the UK’s population that have an disability or long-term illness for each age range (‘<15 and >=65’ years and ‘15-64’ years in the code) by the total population of each age range in each LAD.  
 
 ### Steps to achieve this: 
 1. Each local authority is split into data for <15 and >=65 and 15-64. 
