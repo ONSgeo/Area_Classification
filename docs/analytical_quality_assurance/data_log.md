@@ -15,16 +15,33 @@ suitability[^1]:
 | Amber | Data is well understood. There are quality issues (for example missing values, step changes, large number of outliers) that can be explained, documented or shown to have negligible impact. | Not the ideal data set for the analysis, but the best available at the time. Results will reflect the fact that it is not the ideal data set and it will subject to sensitivity analysis where appropriate. |
 | Red   | Data is not well understood. There are major quality issues that cannot be fully explained and/or have a significant impact on analysis outputs.                                             | There are concerns about the suitability of the data set for this application, which could negatively affect the quality and accuracy of the analysis. Its derivation / sample size is not known.           |
 
-## Source 1: Insert plain English title here
+## Source 1: NOMIS
+* Quality: Green
+* Suitability: Green <br>
 
-* Quality: Insert RAG rating here
-* Suitability: Insert RAG rating here
+NOMIS is the official data service provided by the ONS. This was the most suitable source of census data for England and Wales. 
 
-Add plain English description here.
+## Source 2: NISRA (Northern Ireland Statistics and Research Agency)
+* Quality: Green
+* Suitability: Green <br>
 
-### Source 2: Insert plain English title here
+NISRA is the principal source of official statistics for Northern Ireland.
 
-* Quality: Insert RAG rating here
-* Suitability: Insert RAG rating here
+## Source 3: Scotland's Census
+* Quality: Green
+* Suitability: Green <br>
 
-Add plain English description here.
+Scotland's Census website is the official provider of census statistics for Scotland. 
+
+## Source 4: ONS Open Geography Portal 
+* Quality: Green
+* Suitability: Green <br>
+
+The source of the Standard Area Measurement product used for population density calculations. Also the source for the Local Authority Districts Names and Codes in the UK Lookup. The portal is the official source of geographic products, web applications, story maps, services and APIs from the ONS.
+
+## ONS website
+* Quality: Green
+* Suitability: Green <br>
+
+The source of the England and Wales Census 2021 disability data used for calculating the Standardised Illness Ratio. Also the source of National and subnational mid-year population estimates for the UK and its constituent countries used for population density calculations. 
+
