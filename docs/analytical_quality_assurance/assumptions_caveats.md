@@ -30,14 +30,14 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales. This was to ensure continuity and comparability with the earlier publication. The impact is rated as red because the results would be impacted if the variables were to change. It is assumed that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
 
 
-## Assumption 4: Not including Bangladeshi ethnic group for Northern Ireland
+## Assumption 3: Not including Bangladeshi ethnic group for Northern Ireland
 
 * Quality: Green
 * Impact: Red
 
 Values for the Bangladeshi ethnic group are not available to download for Northern Ireland, because of this a decisions was made to remove this variable for the other two censuses (EW and Scot), so that all three data sources are aligned. By including this variable for EW and Scot, but not NI affects clustering by grouping NI as one cluster, separate from the others.
 
-## Assumption 5: Combined area codes for disability data for the calculation of Standardised Illness Ratio (SIR)
+## Assumption 4: Combined area codes for disability data for the calculation of Standardised Illness Ratio (SIR)
 
 * Quality: Amber
 * Impact: Green
@@ -46,14 +46,14 @@ The England and Wales disability census data 2021 combines values for the areas 
 * E09000001 and E09000033 - City of London and Westminster
 * E06000052 and E06000053 - Cornwall and Isles of Scilly
 
-## Assumption 6: Using the Local Authority District (LAD) look up table for 2022
+## Assumption 5: Using the Local Authority District (LAD) look up table for 2022
 
 * Quality: Green
 * Impact: Green
 
 This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Although the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. A comparision showed no difference between the 2021 lookup and the 2022 lookup.
 
-## Assumption 7: Inclusion of ts0440007 
+## Assumption 6: Inclusion of ts0440007 
 * Quality: Green
 * Impact: Amber
 
@@ -80,7 +80,7 @@ Variables included in UV4010006 are:
 |UV4010008| Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)|
 |UV4010009| Flat, maisonette or apartment: In a commercial building|
 
-## Assumption 8: Country of birth in Northern Ireland.
+## Assumption 7: Country of birth in Northern Ireland.
 * Quality: Amber
 * Impact: Amber
 
@@ -88,7 +88,7 @@ For Northern Ireland, [Country of Birth - 9 Categories](https://build.nisra.gov.
 
 In the Northern Ireland data, The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However, if someone answered 'Ireland' (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU). Therefore, they will have been coded to Non-EU as there is no way to determine which is the correct classification for these responses. As a result, ni0330004 - "Europe: Ireland"	and ni0330005 - "Europe: Other EU countries" have been aggregated for Northern Ireland data. 
 
-## Assumption 7: Using households for some Scotland variables which are also available at individual and household level
+## Assumption 8: Using households for some Scotland variables which are also available at individual and household level
 * Quality: Green
 * Impact: Green
 
@@ -109,7 +109,7 @@ This is available in two versions: *UV401 - Accommodation type - People* and *UV
 A deicsion was made to use the 'Households' versions (UV113 and UV402) to be consistent with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
 which was used to create the [2021 interim area classification solution for England and Wales at Output Area Level](https://data.geods.ac.uk/dataset/output-area-classification-2021). 
 
-## Assumption 8: Education aggregation?
+## Assumption 9: Education aggregation?
 * Quality: Insert RAG rating here
 * Impact: Insert RAG rating here
 
