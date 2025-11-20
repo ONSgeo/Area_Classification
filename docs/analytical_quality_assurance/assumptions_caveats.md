@@ -109,9 +109,4 @@ This is available in two versions: *UV401 - Accommodation type - People* and *UV
 A deicsion was made to use the 'Households' versions (UV113 and UV402) to be consistent with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
 which was used to create the [2021 interim area classification solution for England and Wales at Output Area Level](https://data.geods.ac.uk/dataset/output-area-classification-2021). 
 
-## Decision 9: Education aggregation?
-* Quality: Insert RAG rating here
-* Impact: Insert RAG rating here
-
-Plain text - different equcation systems in Scot and EW
 
