@@ -1,7 +1,7 @@
 # Pre-processing
 
 ## 1.0 Introduction
-This specification covers the pre-processing component in the area classification pipeline, this is steps 4, 5 and 6 in the main_pipeline.py. This component calculates the Standardised Illness Ratio (SIR) for for EW, NI and Scot census data. Based on the [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), specified variables are selected, aggregated and exported. Once the 3 individual tables are merged into one, the counts are converted to percentages. There are then some standardisation and transformation steps to prepare the data for clustering. 
+This specification covers the pre-processing component in the area classification pipeline, this is steps 4, 5 and 6 in the main_pipeline.py. This component calculates the Standardised Illness Ratio (SIR) for EW, NI and Scot census data. Based on the [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv), specified variables are selected, aggregated and exported. Once the 3 individual tables are merged into one, the counts are converted to percentages. There are then some standardisation and transformation steps to prepare the data for clustering. 
 
 ## 2.0 Terminology
 | Term |	Definition |	
@@ -12,9 +12,9 @@ This specification covers the pre-processing component in the area classificatio
 | NRS | National Records of Scotland (NRS) is responsible for the census in Scotland - https://www.scotlandscensus.gov.uk/|
 | LADs | Local authority districts (LADs) are a level of geography used for census statistics. They include Unitary Authorities (W), Council Areas (S), Local Government Districts (NI) and in England include London Borough, Metropolitan Districts, Non-metropolitan Districts, Unitary Authorities. |
 | LAD code | Local authority district (LAD) codes are GSS (Government Statistical Service) 9 character codes which identify a LAD. |
-| LTLA | 	Lower Tier Local Authority. A level of geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot) | 
-| LGD | Local Government District Lower Tier Local Authority. A level of geography used for census statistics. The NI equivalent of Lower Tier Local Authority (EW) and Council Areas (Scot) |
-| CA | Council Areas (CA19 = 2019. A level of Geography used for census statistics. The Scot equivalent of Local Authority Distrcits (EW) and Local Districts (NI) |
+| LTLA | 	Lower Tier Local Authority. A level of geography used for census statistics. The EW equivalent of Local Government Districts (NI) and Council Areas (Scot). | 
+| LGD | Local Government District Lower Tier Local Authority. A level of geography used for census statistics. The NI equivalent of Lower Tier Local Authority (EW) and Council Areas (Scot). |
+| CA | Council Areas (CA19 = 2019). A level of Geography used for census statistics. The Scot equivalent of Local Authority Districts (EW) and Local Districts (NI). |
 | Standardisation | A process that transforms each variable to have a mean of 0 and a standard deviation of 1, making them dimensionless and directly comparable. Without this, variables with larger magnitudes or ranges would dominate clustering. |     
 | Inverse hyperbolic sine (arcsinh) transformation | A mathematical function used to transform data to make data more "normal" or less skewed, a useful step for clustering. |  
 | Min-max scaling | A technique that transforms data so that all values are mapped to a fixed range, useful for distance-based algorithms like k-means. |
@@ -26,8 +26,8 @@ The [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/m
 
 ## 4.0 Methods 
 ### 4.1 Method inputs
-The pre-processing component requires three dataframes that are outputted from the downloading data component; EW, NI and Scot dataframes containing all of the downloaded census variables. 
-These dataframes must contain the following fields:
+The pre-processing component requires three data frames that are outputted from the downloading data component; EW, NI and Scot data frames containing all of the downloaded census variables. 
+These data frames must contain the following fields:
 | Column name |	Data type |	Definition |	
 | -------- |   ---------- |     ---------- |
 | Area identifier |   string |     this could be the area name or area code for a LAD |
@@ -42,11 +42,11 @@ The output includes the following fields:
 
 
 ## 4.3 Process
-pre-processing function (step 4):
+Pre-processing function (step 4):
 1. The function calculates the Standard Illness Ratio (SIR) for each census (EW, NI, Scot).
 2. Joins SIR data to the main DataFrame and handles cases where area codes do not match exactly.
 3. Aggregates variables based on the [aggregation setup config file](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/aggregation_setup.yaml) for each country individually.
-4. Combines the three tables into one dataframe.
+4. Combines the three tables into one data frame.
 5. Selects the specific 60 variables based on the [selected codes lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv).
 6. Converts counts to percentages for England, Wales and Northern Ireland.
 7. Saves intermediate and final outputs to CSV files.
@@ -55,7 +55,7 @@ Dropping specific columns (step 5):
 Checks if the 'drop_columns:' key in the config file is set to 'True'. If it is, it calls the drop_variables_pre_clustering function to drop specified columns from the preprocessed input table. These are specified in the config file in the 'variables to drop' list. 
 
 Preparing data for clustering (step 6):
-1. Calculates standardised means for each value for each variable. This makes the variables comparable and prevents dominance by varaibles with larger scales.
+1. Calculates standardised means for each value for each variable. This makes the variables comparable and prevents dominance by variables with larger scales.
 2. Applies arcsinh transformation for each value for each variable. This handles skewed data and outliers. 
 3. Applies min-max scaling to scales all values to the range 0-1. K-means clustering is a distance-based algorithm and applying this scaling ensures equal weighting for the variables. 
 
@@ -63,5 +63,5 @@ Preparing data for clustering (step 6):
 The arcsinh transformation can handle zero and negative values, unlike the logarithm. 
 
 ### 4.5 Limitations
-Min-max scaling can be affected by extreme values, potentially compressing most data into a small range. The data used in this pipeline did not contain extreme outliers, therefore min-max scaling was appropriate. 
+Min-max scaling can be affected by extreme values, potentially compressing most data into a small range. The data used in this pipeline did not contain extreme outliers; therefore min-max scaling was appropriate. 
 
