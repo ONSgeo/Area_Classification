@@ -1,6 +1,6 @@
 # Assumptions, caveats and decisions log
 
-This log contains a list of assumptions, caveats and decisions used in this analysis.
+This log contains a list of assumptions, caveats and decisions used in this analysis. 
 
 ## Definitions
 
@@ -15,14 +15,15 @@ impact[^1]:
 | Amber | Some evidence to support the assumption; may vary from a source with poor methodology to a good source that is a few years old. | Assumptions with a relevant, even if not critical, impact on the outputs.                   |
 | Red   | Little evidence to support the assumption; may vary from an opinion to a limited data source with poor methodology.             | Core assumptions of the analysis; the output would be drastically affected by their change. |
 
-## Decision 1: Using 2021 censuses data in combination with 2022 censuses
+
+## 1. Using 2021 censuses data in combination with 2022 censuses data
 
 * Quality: Green
 * Impact: Red
 
 Census was conducted in a different year for Scotland (2022) than England and Wales (2021), and Northern Ireland (2021). Census is the only source which can provide information on the variables required for this analysis, as Scotland was only a year later, the assumption is that this will not have a great impact on the clusters created, especially when compared with 2011 Census data (the previously census year). 
 
-## Decision 2: Variables are consistent with 2021 Interim Output Area Classification
+## 2. Variables are consistent with 2021 Interim Output Area Classification
 
 * Quality: Green
 * Impact: Red
@@ -30,14 +31,14 @@ Census was conducted in a different year for Scotland (2022) than England and Wa
 A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales to ensure continuity and comparability with the earlier publication. It is assumed that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK. The impact is rated as red because the clustering results would be impacted if the variables were to change.
 
 
-## Decision 3: Not including Bangladeshi ethnic group for Northern Ireland
+## 3. Not including Bangladeshi ethnic group for Northern Ireland
 
 * Quality: Green
 * Impact: Red
 
 Values for the Bangladeshi ethnic group are not available to download for Northern Ireland, because of this a decision was made to remove this variable for the other two censuses (EW and Scot), so that all three data sources are aligned. By including this variable for EW and Scot, but not NI affects clustering by grouping NI as one cluster, separate from the others.
 
-## Decision 4: Combined area codes for disability data for the calculation of Standardised Illness Ratio (SIR)
+## 4. Combined area codes for disability data for the calculation of Standardised Illness Ratio (SIR)
 
 * Quality: Amber
 * Impact: Green
@@ -46,18 +47,18 @@ The England and Wales disability census data 2021 combines values for the areas 
 * E09000001 and E09000033 - City of London and Westminster
 * E06000052 and E06000053 - Cornwall and Isles of Scilly
 
-## Decision 5: Use of the Local Authority District (LAD) look up table for 2022
+## 5. Use of the Local Authority District (LAD) look up table for 2022
 
 * Quality: Green
 * Impact: Green
 
 This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Although the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. A comparision showed no difference between the 2021 lookup and the 2022 lookup.
 
-## Decision 6: Inclusion of ts0440007 
-* Quality: Green
-* Impact: Amber
+## 6. Inclusion of ts0440007 
+* Quality. Green
+* Impact. Amber
 
-In the 2021 interim solution the variable, "ts0440007 - "Accommodation type: Part of another converted building, for example, former school, church or warehouse" was not included when aggregating to create the 'Flats' variable. It was decided to include it for England and Wales so that it aligns with those available for Scot and NI.
+In the 2021 interim solution the variable, "ts0440007 - "Accommodation type. Part of another converted building, for example, former school, church or warehouse" was not included when aggregating to create the 'Flats' variable. It was decided to include it for England and Wales so that it aligns with those available for Scot and NI.
 
 | EW Code   | Description                                                                                                           | 
 |-----------|-----------------------------------------------------------------------------------------------------------------------|
@@ -80,7 +81,7 @@ Variables included in UV4010006 are:
 |UV4010008| Flat, maisonette or apartment: Part of a converted or shared house (including bed-sits)|
 |UV4010009| Flat, maisonette or apartment: In a commercial building|
 
-## Decision 7: Country of birth in Northern Ireland.
+## 7. Country of birth in Northern Ireland.
 * Quality: Amber
 * Impact: Amber
 
@@ -88,7 +89,7 @@ For Northern Ireland, [Country of Birth - 9 Categories](https://build.nisra.gov.
 
 In the Northern Ireland data, The Republic of Ireland is included in EU countries and Northern Ireland is included in the United Kingdom or non-EU. However, if someone answered 'Ireland' (and didn’t state Republic of Ireland) to the country of birth question this could mean they live in either the Republic of Ireland (EU) or Northern Ireland (UK so non-EU). Therefore, they will have been coded to Non-EU as there is no way to determine which is the correct classification for these responses. As a result, ni0330004 - "Europe: Ireland"	and ni0330005 - "Europe: Other EU countries" have been aggregated for Northern Ireland data. 
 
-## Decision 8: Using households for some Scotland variables which are also available at individual and household level
+## 8. Using households for some Scotland variables which are also available at individual and household level
 * Quality: Green
 * Impact: Green
 
@@ -108,5 +109,36 @@ This is available in two versions: *UV401 - Accommodation type - People* and *UV
 
 A deicsion was made to use the 'Households' versions (UV113 and UV402) to be consistent with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
 which was used to create the [2021 interim area classification solution for England and Wales at Output Area Level](https://data.geods.ac.uk/dataset/output-area-classification-2021). 
+
+
+## 9. Aggregation of 'English Language Skills' variables
+* Quality: Amber
+* Impact: Green
+
+The decision was made to aggregate some variables to represent residents who 'cannot speak English.' 
+For EW, the following variables from table *'TS09 - Proficiency in English'* were aggergated:
+
+- Cannot speak English well
+- Cannot speak English
+
+For NI, the following variables from table *'ni057 - English Language Proficiency - 4 Categories'* were aggregated:
+
+- Cannot speak English well
+- Cannot speak English
+
+For Scotland, the following variables from table *'UV210 - English language skills'* were aggregated:
+
+- Understands spoken English only
+- Reads but does not speak or write English
+- Writes but does not speak or read English
+- Reads and writes but does not speak English
+- Limited English skills
+- No skills in English
+
+It is assumed that the aggregated variables effectively capture the respondants who cannot speak English. 
+
+
+
+
 
 
