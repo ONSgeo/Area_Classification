@@ -1,4 +1,4 @@
-# Standard Illness Ratio
+# Standardised Illness Ratio
 
 ## 1.0 Introduction
 This specificaiton covers the calculation of the Standardised Illness Ratio (SIR) in the area classification pipeline.
