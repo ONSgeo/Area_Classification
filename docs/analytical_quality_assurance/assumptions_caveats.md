@@ -22,19 +22,13 @@ impact[^1]:
 
 Census was conducted in a different year for Scotland (2022) than England and Wales (2021), and Northern Ireland (2021). Census is the only source which can provide information on the variables required for this analysis, as Scotland was only a year later, the assumption is that this will not have a great impact on the clusters created, especially when compared with 2011 Census data (the previously census year). 
 
-## Assumption 2: Variables used inline with interim 2021 Output Area Classification 
+## Assumption 2: Selected variables are appropriate 
 
 * Quality: Green
 * Impact: Red
 
-A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales. This was to ensure continuity and comparability with the earlier publication. 
+A decision was made to use the same variables as used in the interim 2021 Output Area Classification for England and Wales. This was to ensure continuity and comparability with the earlier publication. The impact is rated as red because the results would be impacted if the variables were to change. It is assumed that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
 
-## Assumption 3: Selected 50 census variables
-
-* Quality: Green
-* Impact: Red
-
-This analysis assumes that the 50 selected census variables provide a sufficiently comprehensive representation of demographic characteristics across local authority districts, allowing meaningful comparison and grouping of similar areas within the UK.
 
 ## Assumption 4: Not including Bangladeshi ethnic group for Northern Ireland
 
