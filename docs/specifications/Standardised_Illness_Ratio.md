@@ -12,7 +12,7 @@ As the SIR is a relative indicator, a national average value for the UK is neede
 
 ## 3.0 Methods inputs and outputs
 ### Method inputs
-SIR is calculated within [standardised_illness_ratio.py](area_classification/pre_processing/standardised_illness_ratio.py). This script requires three data frames are required to calculate the SIR for LAD area classification, one from each census (England and Wales , Northern Ireland and Scotland). 
+SIR is calculated within [standardised_illness_ratio.py](area_classification/pre_processing/standardised_illness_ratio.py). This script requires three data frames to calculate the SIR for LAD area classification, one from each census (England and Wales , Northern Ireland and Scotland). 
 Each table must contain at least the following columns, although the column names may vary or require some pre processing:
 | area code |	age |	count of those with a disability |	 count of those without a disability **OR** total population for that area  |
 | -------- |   ---------- |     ---------- | ---------- |
