@@ -9,11 +9,6 @@ The national average SIR is 100, so values for each area will be relative to thi
 
 ## 2.0 Terminology
 
-| Term |	Definition |	
-| -------- |   ---------- | 
-| national proportion |   This is the proportion of individuals with a disability in a specific area relative to the total population of that area. In this work, the national proportion (`nat_prop`) is calculated by dividing the disability count for each LAD by the population for each LAD.| 
-| expected ill | This is an estimation of the number of people in an area who are expected to have a long-term illness or disability, assuming the illness proportions in the area are equal to the UK national average. The expected ill value (`exp_ill` in the code) is calculated by multiplying the proportion of the UK’s population that have an illness or long-term illness for each age range (‘<15 and >=65’ years and ‘15-64’ years in the code) by the total population of each age range in each LAD. | 
-| total disabled | This is the total count of the people in an area who have a long-term illness or disability. For some data tables the total disabled (`total_disabled`) is provided as a column, if it is not, it can be calculated by summing categories. | 
 
 
 ## 3.0 Assumptions and requirements
@@ -39,9 +34,11 @@ The calculation of SIR has been conducted in line with the formula used by [Wysz
 
 <img width="206" height="65" alt="SIR_equation" src="https://github.com/user-attachments/assets/0de6f6b6-aa87-4335-a396-68a2c61a3178" />
 
-- <img width="29" height="22" alt="SIR_equation_i" src="https://github.com/user-attachments/assets/1fa73eb8-81de-4c9e-bedd-d6833394bee9" />  is the observed count of people with long-term health problems ordisabilities in areal unit 𝑖
-- <img width="26" height="26" alt="SIR_equation_rna" src="https://github.com/user-attachments/assets/d0ef38a9-519b-4d9d-bee8-952bf21b9725" />  is a proportion of ill or disabled people in group 𝑎 at the national level 
+- <img width="29" height="22" alt="SIR_equation_i" src="https://github.com/user-attachments/assets/1fa73eb8-81de-4c9e-bedd-d6833394bee9" />  is the observed count of people with long-term health problems ordisabilities in areal unit 𝑖. For some data tables the total disabled (`total_disabled`) is provided as a column, if it is not, it can be calculated by summing categories.
+- <img width="26" height="26" alt="SIR_equation_rna" src="https://github.com/user-attachments/assets/d0ef38a9-519b-4d9d-bee8-952bf21b9725" />  is a proportion of ill or disabled people for a given age group 𝑎 at the national level. In this work, the national proportion (`nat_prop`) is calculated by summing the LAD level disability counts and overall population counts.
 - <img width="15" height="24" alt="SIR_equation_pia" src="https://github.com/user-attachments/assets/8e165d49-b35d-4d53-a8f4-2efc3b7f4708" />  is the population size of an age group 𝑎 in area 𝑖.
+
+<img width="221" height="82" alt="SIR_equation_Earnapia" src="https://github.com/user-attachments/assets/7891168d-c673-4e46-bf41-6387dd1d7cb6" /> is the expected ill for a gien age of a given geography. This is an estimation of the number of people in an area who are expected to have a long-term illness or disability, assuming the illness proportions in the area are equal to the UK national average. The expected ill value (`exp_ill` in the code) is calculated by multiplying the proportion of the UK’s population that have an illness or long-term illness for each age range (‘<15 and >=65’ years and ‘15-64’ years in the code) by the total population of each age range in each LAD.  
 
 ### Steps to achieve this: 
 1. Each local authority is split into data for <15 and >=65 and 15-64. 
