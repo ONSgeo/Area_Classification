@@ -889,7 +889,6 @@ def remove_rows(config, folderpath):
                 # Read the CSV file
                 df = pd.read_csv(file_path, on_bad_lines='warn', header=None)
                 
-                
                 # Remove the last 3 rows
                 df = df.iloc[:-3, :]
                 
