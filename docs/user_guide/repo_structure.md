@@ -27,7 +27,7 @@
 │   │   ├── pre_processing.py
 │   │   ├── prepare_clustering_data.py
 │   │   ├── select_variables.py
-│   │   ├── standard_illness_ratio.py
+│   │   ├── standardised_illness_ratio.py
 │   │   └── totals_columns_select_uk.py
 │   ├── utilities/
 │   │   ├── __init__.py

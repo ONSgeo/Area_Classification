@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from area_classification.pre_processing.standard_illness_ratio import SIR_calculation
+from area_classification.pre_processing.standardised_illness_ratio import SIR_calculation
 from pathlib import Path
 import pytest
 from unittest.mock import patch

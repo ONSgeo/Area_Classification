@@ -56,7 +56,7 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     pop_densities = output_population_densities(config, df_populations_sam_long)
 
     # Step 3 - Cluster summaries: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, chosen_clustering_variables, cluster_column)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column)
 
     # Step 4 - Cluster drivers: 
     identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=3)
@@ -330,7 +330,7 @@ def output_population_densities(config, df_populations_sam_long ):
     # Return the combined dataframe
     return pop_densities
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, chosen_clustering_variables, cluster_column,):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column,):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
@@ -348,8 +348,6 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     pop_sums: pd.DataFrame
         A DataFrame containing population percentages for clusters, including columns
             such as 'supergroup', '2021_percentage', and '2022_percentage'.
-    chosen_clustering_variables : pd.DataFrame
-        A DataFrame containing LAD_codes and data for each variable prior to standardisation.
     cluster_column : str
         The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 

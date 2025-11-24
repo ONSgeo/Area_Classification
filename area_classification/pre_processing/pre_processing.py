@@ -2,7 +2,7 @@ import pandas as pd
 import sys
 import os
 from area_classification.utilities.load_config import load_config
-from area_classification.pre_processing.standard_illness_ratio import sir_processing
+from area_classification.pre_processing.standardised_illness_ratio import sir_processing
 from area_classification.pre_processing.aggregating_variables import aggregating_variables
 from area_classification.pre_processing.select_variables import select_variables
 from area_classification.pre_processing.totals_columns_select_uk import select_totals_columns
@@ -68,7 +68,6 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         #Aggregate variables which need to be combined categories
         aggregation_configs = aggregation_config[key + '_file_configs']
         df_temp = aggregating_variables(df_temp, aggregation_configs, config)
-
 
         # Joining to add SIR column into main df
         # needed for select_variable function
