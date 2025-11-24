@@ -809,8 +809,7 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     lookup_dict = dict(zip(lookup_df['LAD22NM'].str.lower().str.strip(), lookup_df['LAD22CD']))  # Create a dictionary for lookup (place names -> place codes)
 
 
-    # Process each CSV file in the input directory
-    # Process each CSV file in the input directory, skipping uv101b.csv
+    # Process each CSV file in the input directory, skipping certain files
     for file_name in os.listdir(scot_input_folder):
         if file_name.lower() in ["uv101b.csv", "uv303a.csv", "uv103.csv", "migrant_indicator.csv", "population_density.csv"]:
             continue
@@ -822,7 +821,6 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
         else:
             df = pd.read_csv(file_path, header=None, skiprows=9)
 
-        
         
         # Locate the row where 'Council Area 2019' appears in column 1
         if 0 in df.columns:  # Ensure column 0 exists in the input DataFrame
@@ -907,7 +905,7 @@ def remove_rows(config, folderpath):
                 # Drop the first (empty) row and reset the index
                 df = df.drop(index=0).reset_index(drop=True)
                 
-                #Check the save location exists
+                # Check the save location exists
                 os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
                 # Save the modified DataFrame back to the same file (edit in place)
