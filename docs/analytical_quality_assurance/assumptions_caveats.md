@@ -52,7 +52,7 @@ The England and Wales disability census data 2021 combines values for the areas 
 * Quality: Green
 * Impact: Green
 
-This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Although the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. A comparision showed no difference between the 2021 lookup and the 2022 lookup.
+This look up is used to replace the LAD names with codes, as some of the census data downloaded comes with the LAD names. Although the census data for England, Wales and Northern Ireland is for 2021, a 2022 look up was chosen so that it is also suitable for use on the Scotland data which is from 2022. A comparison showed no difference between the 2021 lookup and the 2022 lookup.
 
 ## 6. Inclusion of ts0440007 
 * Quality. Green
@@ -107,7 +107,7 @@ Accommodation type data is used for:
 
 This is available in two versions: *UV401 - Accommodation type - People* and *UV402 - Accommodation type - Households*.
 
-A deicsion was made to use the 'Households' versions (UV113 and UV402) to be consistent with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
+A decision was made to use the 'Households' versions (UV113 and UV402) to be consistent with the [lookup used in the code](https://github.com/jakubwyszomierski/OAC2021-2/blob/main/Data/Lookups/Final_codes_11_21.csv) 
 which was used to create the [2021 interim area classification solution for England and Wales at Output Area Level](https://data.geods.ac.uk/dataset/output-area-classification-2021). 
 
 
@@ -116,7 +116,7 @@ which was used to create the [2021 interim area classification solution for Engl
 * Impact: Green
 
 The decision was made to aggregate some variables to represent residents who 'cannot speak English.' 
-For EW, the following variables from table *'TS09 - Proficiency in English'* were aggergated:
+For EW, the following variables from table *'TS09 - Proficiency in English'* were aggregated:
 
 - Cannot speak English well
 - Cannot speak English
@@ -135,7 +135,7 @@ For Scotland, the following variables from table *'UV210 - English language skil
 - Limited English skills
 - No skills in English
 
-It is assumed that the aggregated variables effectively capture the respondants who cannot speak English. 
+It is assumed that the aggregated variables effectively capture the respondents  who cannot speak English. 
 
 
 
