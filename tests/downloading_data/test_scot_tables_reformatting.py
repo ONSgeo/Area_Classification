@@ -5,14 +5,13 @@ import pandas as pd
 import pandas.testing as pdt
 import numpy as np
 
-# DO WE NEED UNIT TESTS FOR THE INDIVIDUAL TABLES REFORMAT FUNCTIONS?
 from area_classification.downloading_data.scot_tables_reformatting import (
     rename_csv_files_by_table_id, extract_pop_density_table,
     extract_metadata_from_files, replace_ca19_names_with_codes,
-    remove_rows, reformat_uv101b, reformat_uv103, 
-    reformat_migrant_indicator, reformat_pop_density,
+    remove_rows, reformat_migrant_indicator, reformat_pop_density,
     replace_variable_names_with_codes
 )
+
 
 class TestRenameCsvFilesByTableId(unittest.TestCase):
     @patch("os.listdir")
@@ -69,7 +68,6 @@ class ExtractPopDensityTable(unittest.TestCase):
         mock_remove.assert_called_once()
         mock_logger.info.assert_called()
   
-
 
 class TestExtractMetadataFromFiles(unittest.TestCase):
     @patch("area_classification.downloading_data.scot_tables_reformatting.logger")
@@ -140,47 +138,65 @@ class TestExtractMetadataFromFiles(unittest.TestCase):
         # Check UV607 special parsing
         self.assertTrue(any(entry["table_id"] == "UV607" and "TableName" in entry["table_name"] for entry in metadata))
 
-# CANNOT GET THIS TO WORK - RETURN TO WORK ON THIS
 
 class TestReplaceCA19NamesWithCodes(unittest.TestCase):
-    @patch.object(pd.DataFrame, "to_csv")
-    @patch("pandas.read_csv")
-    @patch("os.listdir", return_value=["test.csv"])
-    @patch("os.path.exists", return_value=True)
-    @patch("os.makedirs")
-    def test_code_swapping(self, mock_makedirs, mock_exists, mock_listdir, mock_read_csv, mock_to_csv):
+    def test_replace_names_with_codes(self):
+        config = {"reformat_scot_input_folder": "./tests/data/test_scot_tables_reformatting/ReplaceCA19NamesWithCodes"}
+        scot_input_folder = "./tests/data/test_scot_tables_reformatting/ReplaceCA19NamesWithCodes"
+        LAD_lookup_file_path = "./tests/data/test_scot_tables_reformatting/lookup.csv"
+
+        # Make sure the folder for testing exists, and creat it if not
+        if not os.path.exists(scot_input_folder):
+            os.makedirs(scot_input_folder)
+
+        # Create the lookup df needed
         lookup_df = pd.DataFrame({
-            "LAD22NM": ["Edinburgh", "Glasgow"],
+            "LAD22NM": ["City of Edinburgh", "Glasgow City"],
             "LAD22CD": ["S12000036", "S12000049"]
         })
-        input_df = pd.DataFrame({
-            0: ["Council Area 2019", "Edinburgh", "Glasgow"],
-            1: ["variable1", 1, 2]
+        lookup_df.to_csv(LAD_lookup_file_path, index=False, header=True)
+        
+        # Create the uv100 test input file with mock data
+        uv100 = pd.DataFrame({
+                "Title row1": ["empty","empty","empty","empty","empty","empty","empty","empty","Council Area 2019","City of EDINburgh", "GlasGow City"],
+                "Title row2": ["empty","empty","empty","empty","empty","empty","empty","empty","LAD22CD","S12000036", "S12000049"],
+                "Title row3": ["empty","empty","empty","empty","empty","empty","empty","empty","variable1","empty", "empty"],
         })
 
-        def read_csv_side_effect(path, *args, **kwargs):
-            if "lookup" in path:
-                return lookup_df
-            else:
-                return input_df
-        mock_read_csv.side_effect = read_csv_side_effect
+        # Save the uv100 test input file
+        output_path = os.path.join(scot_input_folder, "uv100.csv")
+        uv100.to_csv(output_path, index=False, header=True)
 
-        captured = {}
-        def to_csv_side_effect(self, *args, **kwargs):
-            captured['df'] = self.copy()
-        mock_to_csv.side_effect = to_csv_side_effect
+        # Call the function to test
+        replace_ca19_names_with_codes(
+            scot_input_folder,
+            LAD_lookup_file_path,
+            config
+        )
 
-        config = {"reformat_scot_input_folder": "dummy_output_folder"}
-        replace_ca19_names_with_codes("dummy_input_folder", "lookup.csv", config)
+        # Look in the folder to check the result of the output file
+        for filename in os.listdir(scot_input_folder):
+            if filename.startswith("reformat"):
+                file_path = os.path.join(scot_input_folder, filename)
+                if os.path.isfile(file_path):
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        result_df = pd.read_csv(file_path)
 
-        result_df = captured['df']
+        # Create the expected dataframe
+        expected_df = pd.DataFrame([
+            ["S12000036", "S12000036", "empty"],
+            ["S12000049", "S12000049", "empty"]
+        ], columns=["Council Area 2019", "LAD22CD", "variable1"])
 
-        expected_df = pd.DataFrame({
-            0: ["Council Area 2019", "S12000036", "S12000049"],
-            1: ["variable1", 1, 2]
-        })
+        # Compare the result with the expected dataframe        
+        pdt.assert_frame_equal(result_df, expected_df)
 
-        pdt.assert_frame_equal(result_df.reset_index(drop=True), expected_df.reset_index(drop=True))
+        # Clean up - remove created files
+        for filename in os.listdir(scot_input_folder):
+            file_path = os.path.join(scot_input_folder, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+                print(f"Test ran then deleted: {file_path}")
 
 
 class TestRemoveRows(unittest.TestCase):
@@ -211,7 +227,6 @@ class TestRemoveRows(unittest.TestCase):
 
         # Compare output DataFrame to expected DataFrame
         pd.testing.assert_frame_equal(captured['df'].reset_index(drop=True), expected_df)
-
 
 
 class TestReformatMigrantIndicator(unittest.TestCase):
@@ -256,7 +271,6 @@ class TestReformatMigrantIndicator(unittest.TestCase):
         self.assertEqual(captured['file_path'], "output_folder/reformat_migrant_indicator.csv")
 
 
-
 class TestReformatMigrantIndicator(unittest.TestCase):
     @patch("os.makedirs")
     @patch("os.path.exists", return_value=True)
@@ -297,7 +311,6 @@ class TestReformatMigrantIndicator(unittest.TestCase):
         self.assertIn("S12000046", df["CA19"].values)
         self.assertIn("S12000036", df["CA19"].values)
         self.assertEqual(captured['file_path'], "output_folder/reformat_migrant_indicator.csv")
-
 
 
 
@@ -344,8 +357,6 @@ class TestReformatPopDensity(unittest.TestCase):
         )
 
 
-
-
 class TestReplaceVariableNamesWithCodes(unittest.TestCase):
     @patch("os.makedirs")
     @patch("os.path.dirname", return_value="dummy_dir")
@@ -385,5 +396,3 @@ class TestReplaceVariableNamesWithCodes(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-
