@@ -71,7 +71,7 @@ class TestTotalColumnsSelectUk(unittest.TestCase):
             "country": ["ew", "ew", "ew", "scot", "scot", "scot"]
         })
         
-        # In test_total_columns_select_uk_concat, update config:
+        # set up a mock config:
         config = {
             "qa_directory": "./data/QA/",
             "select_variables_lookup": "tests/data/total_columns_select_uk_test_data/lookup.csv"
