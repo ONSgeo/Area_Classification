@@ -137,8 +137,8 @@ For Scotland, the following variables from table *'UV210 - English language skil
 
 It is assumed that the aggregated variables effectively capture the respondents  who cannot speak English. 
 
+## 10. Unit tests not created for `reformat_uv103` and `reformat_uv101b`
+* Quality: Amber
+* Impact: Amber
 
-
-
-
-
+For Scotland data, tables for different variables varied in structure. Unit tests have been created for the reformatting of the downloaded tables which were consistent with one another (for example tables required 9 rows removing, LAD codes adding etc.). However, the tables for uv103 and uv101b had a unique structure so required bespoke hard coded functions (`reformat_uv103` and `reformat_uv101b`) to handle this structure. Therefore as it did not seem beneficial to create unit tests for functions as it is unlikely they will be needed in future iterations of this pipeline when the data structure will likely change for these two census questions. 
