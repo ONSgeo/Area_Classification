@@ -198,8 +198,13 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     # Format the lookup table
     meta_data_table_full = (
         meta_data_table
-        # Extract the text after the first colon, up to the next colon or semicolon, as Variable_Name
-        .assign(Variable_Name=meta_data_table['Full_Name'].str.extract(r':\s*([^:;]+)'))
+        # Extract text after the first colon.
+        # If there is a semicolon after the first colon, take text between colon and semicolon.
+        # Otherwise, take all text after the first colon.
+        .assign(
+            Variable_Name=meta_data_table['Full_Name'].str.extract(r':\s*([^;:]+?)(?:;|$)')
+        )
+
         # Extract the table name: take the part before the first colon in 'Full_Name', as Table_Name
         .assign(Table_Name=meta_data_table['Full_Name'].str.split(':', n=1).str[0])
         .assign(Type="Count")

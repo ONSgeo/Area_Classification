@@ -49,9 +49,9 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
 
     # Step 5: Draft cluster summaries
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'supergroup')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'group')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, chosen_clustering_variables, config["select_variables_lookup"], cluster_column = 'subgroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'supergroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'group')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
     
     # Return the combined means for further use if needed
     return combined_group_means, combined_subgroup_means
