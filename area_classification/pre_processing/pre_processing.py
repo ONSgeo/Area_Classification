@@ -5,7 +5,7 @@ from area_classification.utilities.load_config import load_config
 from area_classification.pre_processing.standardised_illness_ratio import sir_processing
 from area_classification.pre_processing.aggregating_variables import aggregating_variables
 from area_classification.pre_processing.select_variables import select_variables
-from area_classification.pre_processing.totals_columns_select_uk import select_totals_columns
+from area_classification.pre_processing.select_totals_columns import select_totals_columns
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
 
 

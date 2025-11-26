@@ -9,7 +9,7 @@ def select_totals_columns(config, inputs_folder):
     Extracts select files for England and Wales (ew), Northern Ireland (ni), and Scotland (scot),
     matches variable columns with their corresponding totals using a lookup file, and appends the 
     totals to the select files. The processed files are then concatenated into a single DataFrame 
-    and saved to an output file.
+    and saved to an output file. This is used to calculate percentages later in the pipeline.
 
     Parameters
     ----------
