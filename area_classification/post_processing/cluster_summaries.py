@@ -10,7 +10,7 @@ import re
 
 from area_classification.utilities.load_config import load_config
 
-def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column, ):
+def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means,  lookup_file, cluster_column ):
     """
     Wrapper function to execute a series of cluster summary operations post clustering.
 
@@ -54,7 +54,7 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     pop_densities = output_population_densities(config, df_populations_sam_long)
 
     # Step 3 - Cluster summaries: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column)
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities,  cluster_column)
 
     # Step 4 - Cluster drivers: 
     identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=3)
@@ -328,7 +328,7 @@ def output_population_densities(config, df_populations_sam_long ):
     # Return the combined dataframe
     return pop_densities
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column,):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities,  cluster_column,):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
@@ -526,7 +526,7 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
                 if f"Cluster {cluster_number}" in output:
                     print(output)
         print(f"""Values in the brackets below are the difference between the mean of the variable for this cluster
-compared with the mean of the other clusters combined. The population of cluster {cluster_number} has a:""")      
+        compared with the mean of the other clusters combined. The population of cluster {cluster_number} has a:""")      
         
         for variable in variables_with_greatest_differnce.index:
             # Remove anything in brackets from the variable name
@@ -619,8 +619,8 @@ if __name__ == "__main__":
     restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
-
+    chosen_clustering_variables = pd.read_csv(config["pre_clustering_data"])
 
     lookup_file = config["select_variables_lookup"]
 
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column='subgroup')
+    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file,  cluster_column='subgroup')

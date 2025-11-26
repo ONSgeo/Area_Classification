@@ -123,28 +123,44 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         t_tab_loc = t_tab_loc[0]  # Get the first match
 
+        # if table name is ts007a (Age by five-year age bands), set unit to "People"
+        unit = None
+        if t_name == "ts007a":
+            unit = "Person"
+        else:
+             # --- Find and read the .txt file in metadata folder for unit ---
+            metadata_txt_files = glob(os.path.join(tmp_dir, "metadata", "*.txt"))
+            if metadata_txt_files:
+                with open(metadata_txt_files[0], "r", encoding="utf-8") as meta_file:
+                    for line in meta_file:
+                        match = re.search(r"Unit of measure:\s*(Person|Household)", line)
+                        if match:
+                            unit = match.group(1)
+                            break
+
         # Read the CSV file into a DataFrame
         df = pd.read_csv(t_tab_loc)
         df = df.drop(columns=["date", "geography"], errors="ignore")  # Drop unnecessary columns
         df.set_index("geography code", inplace=True)  # Move OA code to row names
 
         # Get the old column names
-        old_names = df.columns.tolist()
+        Full_Name = df.columns.tolist()
         # Create new column names with zero padding
-        new_names = [f"{t_name}{i:04d}" for i in range(1, len(old_names) + 1)]
+        Variable_ID = [f"{t_name}{i:04d}" for i in range(1, len(Full_Name) + 1)]
 
         # Create a metadata table
         n_list = pd.DataFrame({
-            "old_names": old_names,
-            "new_names": new_names,
-            "Table_ID": t_name
+            "Variable_ID": Variable_ID,
+            "Table_ID": t_name,
+            "Full_Name": Full_Name,
+            "Unit": unit
         })
 
         # Append to the metadata table
         meta_data_table = pd.concat([meta_data_table, n_list], ignore_index=True)
 
         # Rename the columns in the DataFrame
-        df.columns = new_names
+        df.columns = Variable_ID
         df.reset_index(inplace=True)  # Move row names back to a column
         df.rename(columns={"geography code": "LTLA"}, inplace=True)
 
@@ -156,10 +172,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         # Remove all downloaded files for this table
         rmtree(tmp_dir)
-    print(type(meta_data_table))
-    meta_data_table.to_csv("meta_data_table.csv")
     return meta_data_table
-
 
 
 
@@ -180,17 +193,29 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     None
         The function saves the formatted metadata table as a CSV file in the specified output directory.
     """    
+
     
     # Format the lookup table
     meta_data_table_full = (
         meta_data_table
-        .assign(Table_Name=meta_data_table['old_names'].str.split(':', n=1).str[0])
-        #.assign(Type=meta_data_table['old_names'].str.extract(r'; measures: (\w+)')[0])
-        .assign(Variable_Name=meta_data_table['old_names'].str.replace(r';.*', '', regex=True))
-        .assign(Variable_Name=lambda df: df['Variable_Name'].str.replace(
-            df['Table_Name'] + ': ', '', regex=False))
-    )
-    
+        # Extract text after the first colon.
+        # If there is a semicolon after the first colon, take text between colon and semicolon.
+        # Otherwise, take all text after the first colon.
+        .assign(
+            Variable_Name=meta_data_table['Full_Name'].str.extract(r':\s*([^;:]+?)(?:;|$)')
+        )
+
+        # Extract the table name: take the part before the first colon in 'Full_Name', as Table_Name
+        .assign(Table_Name=meta_data_table['Full_Name'].str.split(':', n=1).str[0])
+        .assign(Type="Count")
+
+        )
+         
+    # Specify desired column order
+    column_order = ["Variable_Name", "Variable_ID", "Table_ID", "Table_Name", "Type", "Unit", "Full_Name"]
+
+    # Reorder columns (only keep columns that exist in the DataFrame)
+    meta_data_table_full = meta_data_table_full[[col for col in column_order if col in meta_data_table_full.columns]]    
     # Ensure input directory exists
     os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
 
