@@ -26,8 +26,10 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         -------------------------------------------
         Hartlepool  | E06000001 | 1         | 1c    | 1c1
 
-    Returns:
-        pd.DataFrame: DataFrame containing standardised means for each cluster.
+    Returns
+    -------
+    tuple of pd.DataFrame
+        (combined_group_means, combined_subgroup_means): DataFrames containing standardised means for each group and subgroup.
 
     """   
     # Merge the two DataFrames on the LAD CODE column
@@ -38,7 +40,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     # Define the output directory
     output_directory = config["output_directory"]
     
-    # Define the path for the existing folder
+    # Define the path for the std_means output folder
     output_directory = os.path.join(output_directory, "std_means")
     
     # --- Generate CSVs for supergroups ---
@@ -59,7 +61,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         # Identify columns starting with 'v'
         v_columns = [col for col in supergroup_data.columns if col.startswith("v")]
 
-        # standardise mean of each value in the 'v' columns
+        # Standardise each 'v' column within the supergroup
         for col in v_columns:
             mean = supergroup_data[col].mean()
             std = supergroup_data[col].std()
@@ -83,13 +85,13 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         # Identify columns starting with 'v'
         v_columns = [col for col in group_data.columns if col.startswith("v")]
 
-        # standardise means of each value in the 'v' columns
+        # Standardise each 'v' column within the group
         for col in v_columns:
             mean = group_data[col].mean()
             std = group_data[col].std(ddof=0)  # Use population standard deviation
             group_data[col] = (group_data[col] - mean) / std
 
-        # Group by 'subgroup' and calculate the mean for each group
+        # Group by 'subgroup' and calculate the mean for each subgroup
         subgroup_means = group_data.groupby("subgroup").mean(numeric_only=True).reset_index()
 
         # Filter the subgroup_means DataFrame to include only the 'subgroup' column and 'v' columns
@@ -110,13 +112,10 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     group_output_file_path = os.path.join(parent_std_means_directory, "parent_std_cluster_group_means_output.csv")
     combined_group_means.to_csv(group_output_file_path, index=False)
 
-    # Save the group output file path within the 'parent_std_means' folder
+    # Save the subgroup output file path within the 'parent_std_means' folder
     subgroup_output_file_path = os.path.join(parent_std_means_directory, "parent_std_cluster_subgroup_means_output.csv")
     combined_subgroup_means.to_csv(subgroup_output_file_path, index=False)
 
-    #print("combined_group_means DataFrame:", combined_group_means)
-    #print("combined_subgroup_means DataFrame:", combined_subgroup_means)
-    
     # Return the concatenated DataFrames
     return combined_group_means, combined_subgroup_means
     

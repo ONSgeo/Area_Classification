@@ -41,13 +41,17 @@ def standardise_data(dataframe):
         pd.DataFrame: A DataFrame with standardised numeric columns.
     """
     standardised_data = dataframe.copy()
-    for column in dataframe.columns[1:]:  # Skip the first column (e.g., area codes)
+     # Skip the first column (e.g., area codes)
+    for column in dataframe.columns[1:]: 
         mean = dataframe[column].mean()
-        std = dataframe[column].std(ddof=0)  # Use population standard deviation
-        if std != 0:  # Avoid division by zero
+        # Use population standard deviation
+        std = dataframe[column].std(ddof=0)  
+        # Avoid division by zero
+        if std != 0: 
             standardised_data[column] = (dataframe[column] - mean) / std
         else:
-            standardised_data[column] = 0  # If std is 0, set standardised values to 0
+            # If std is 0, set standardised values to 0
+            standardised_data[column] = 0  
     return standardised_data
 
 

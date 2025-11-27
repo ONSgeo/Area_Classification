@@ -11,7 +11,7 @@ from area_classification.pre_processing.prepare_clustering_data import standardi
 
 def post_processing(config, clustering_output, chosen_clustering_variables):
     """
-    Wrapper function to standardise the data and restrcuture the table created when clustering. 
+    Wrapper function to standardise the data and restructure the table created when clustering. 
     Calculates means of each cluster, based on the restructured table and standardised data.
     Creates radial plots and drafts cluster summaries.
     
@@ -20,13 +20,14 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     config : dict
         main pipeline config dictionary containing output directory.
     clustering_output : pd.DataFrame
-        the output from running the clustering algroithm
+        the output from running the clustering algorithm
     chosen_clustering_variables : pd.DataFrame
         A DataFrame containing LAD_codes and data for each variable prior to standardisation.
 
     Returns
-    ----------
-        The result of get_cluster_means.
+    -------
+    tuple of pd.DataFrame
+        (combined_group_means, combined_subgroup_means): DataFrames containing means for group and subgroup clusters.
     """
 
     # Run the standardise_data function on chosen_clustering_variables

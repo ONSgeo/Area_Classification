@@ -56,18 +56,17 @@ def create_radial_plots(config, dataframe, level):
 
     # Get the feature columns (assuming they start from 'v01' to 'v59')
     feature_columns = [col for col in dataframe if col.startswith("v")]
-    #feature_columns = feature_columns.map(lookup.set_index('variable')['variable_name'])
 
     # Create a radial plot for each row in the input dataframe
     for idx, row in dataframe.iterrows():
         # Extract the feature values for the current row
         values = row[feature_columns].tolist()
-        values += values[:1]  # Repeat the first value to close the circle
+        values += values[:1] 
 
         # Angles for the radar chart
         num_vars = len(feature_columns)
         angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
-        angles += angles[:1]  # Repeat the first angle to close the circle
+        angles += angles[:1]  
 
         # Initialize the radar chart
         fig, ax = plt.subplots(figsize=(10, 18), subplot_kw=dict(polar=True))
@@ -76,8 +75,8 @@ def create_radial_plots(config, dataframe, level):
         fig.subplots_adjust(top=0.9, bottom=0.1, left=0.1, right=0.9)
 
         # Remove default polar axis labels (e.g., 90°, 270°)
-        ax.set_xticks([])  # Remove angular ticks
-        ax.set_yticks([])  # Remove radial ticks
+        ax.set_xticks([])  
+        ax.set_yticks([]) 
 
         # Set the radial limits to ensure the same scale for all plots
         ax.set_ylim(-3, 3.2)
@@ -101,8 +100,8 @@ def create_radial_plots(config, dataframe, level):
             ax.plot([angle, angle], [-3, 3], color='grey', linewidth=0.8, linestyle='dotted')
 
         # Add tick marks going through the outer line
-        ax.set_yticks([-3, -2, -1, 0, 1, 2, 3])  # Define tick positions
-        ax.yaxis.set_tick_params(width=0.8, color='grey', size=5)  # Customize tick marks
+        ax.set_yticks([-3, -2, -1, 0, 1, 2, 3]) 
+        ax.yaxis.set_tick_params(width=0.8, color='grey', size=5)  
 
         # Adjust the transparency of the rings (gridlines)
         ax.grid(color='grey', linestyle='solid', linewidth=0.8, alpha=0.4)
@@ -116,7 +115,7 @@ def create_radial_plots(config, dataframe, level):
 
             # Define the polygon for the segment
             segment_angles = [angle_start, angle_end, angle_end, angle_start]
-            segment_radii = [3, 3, 2.8, 2.8]  # Outer and inner radii of the segment
+            segment_radii = [3, 3, 2.8, 2.8]  
 
             # Fill the segment with the corresponding color
             ax.fill(segment_angles, segment_radii, color=color, alpha=0.4)
@@ -126,8 +125,8 @@ def create_radial_plots(config, dataframe, level):
             angle = angles[i]
             label = replaced_labels[i]
 
-            # Set the radius for the labels to be outside the radial limit (e.g., 3.8)
-            label_radius = 3.5  # Adjust this value as needed to position labels outside the limit
+            # Set the radius for the labels to be outside the radial limit 
+            label_radius = 3.5  
 
             # Adjust alignment based on the angle
             if 0 <= angle < np.pi / 2 or 3 * np.pi / 2 <= angle < 2 * np.pi:
@@ -136,20 +135,15 @@ def create_radial_plots(config, dataframe, level):
                 ha = 'right'
 
             ax.text(
-                angle, label_radius,  # Place labels outside the radial limit
-                label,  # Label text
+                angle, label_radius, 
+                label, 
                 fontsize=11,
-                color="black",  # Keep labels black
+                color="black", 
                 ha=ha,
                 va='center'
             )
 
-        # Append the first angle to the end to close the circle
-        #angles = angles + angles[:1]
-
         # Draw a solid red ring at the radius of 0
-        #ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
-
         ax.plot(angles[:-1], [0] * len(angles[:-1]), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
 
         # Save the plot with the filename as '<group/subgroup>_group/subgroup.png'

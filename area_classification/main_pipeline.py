@@ -66,7 +66,6 @@ def main_pipeline():
     # Step 6: Standardise pre_clustering data (used in the clustering)
     pre_clustering_data_std_mean = prepare_clustering_data(chosen_clustering_variables)
     # Save the standardised pre clusting data to a new file 
-    # THIS FILE PATH NEEDS UPDATING IN CONFIG AT SOME POINT!!
     pre_clustering_data_std_mean.to_csv(config["pre_clustering_data_std_mean"], index=False)
          
     # Step 7: Clustering

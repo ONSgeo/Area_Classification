@@ -32,7 +32,7 @@ def load_data(filepath):
 
 def load_format_data(filepath:str, file_pattern:str, join_column_name:str, config: str) -> pd.DataFrame:
     """
-    function to load and format data downloaded from API calls
+    Function to load and format data downloaded from API calls
 
     Parameters
     ----------
@@ -48,7 +48,7 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
     Returns
     -------
     pd.DataFrame
-        A combined dataframe contaiing all data question codes and values for each geo code
+        A combined dataframe containing all data question codes and values for each geo code
 
     Raises
     ------
@@ -60,8 +60,8 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
         (i.e. len(file_list) - 1)
     """    
 
-    # load all of the data from the different tables, combine them into the format like example data 
-    # first column will be geo code, others be questions and rows indicate responses 
+    # Load all of the data tables into a single DataFrame 
+    # First column will be geo code, others be questions and rows indicate responses 
     # Find all files matching the pattern "ts" followed by any three digits and ".csv" in the given filepath
     pattern = os.path.join(filepath, file_pattern)
     file_list = glob.glob(pattern)
@@ -80,7 +80,7 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
         num_columns += df.shape[1]
         dfs.append(df)
 
-    # removing the join column from count, only added in first df
+    # Remove the join column from count, only added in first df
     num_columns -= (len(file_list) - 1) 
     
     # Merge all dataframes on join_column_name column

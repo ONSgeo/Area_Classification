@@ -36,6 +36,7 @@ def sir_processing(config):
     pd.DataFrame
         DataFrame with SIR values calculated for each area code.
     """
+
     # Check if required files exist in the input directory
     required_files = [
         config["england_wales_disability_file"],
@@ -70,7 +71,7 @@ def sir_processing(config):
     combined_disability_df = pd.concat(
         [ew_disability_df, ni_disability_df, scotland_disability_df])
 
-    # Perfrom the SIR on the cominbed dataframe
+    # Perfrom the SIR on the cominbed df
     sir_output_df = SIR_calculation(combined_disability_df, config)
     return sir_output_df
 
@@ -85,15 +86,20 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     Parameters
     ----------
     df : DataFrame
-        DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population',
-        UK coverage
+        DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population'
                         
     Returns
     -------
-    DataFrame
-        DataFrame with SIR values calculated. Output is not grouped by age
+    pd.DataFrame
+    DataFrame grouped by 'area_code' with columns:
+    - 'area_code'
+    - 'exp_ill_all'
+    - 'disability_count'
+    - 'SIR
+
     """
-    # Get Ran (proportion of ill or disabled people for each age group at the national UK level)
+
+    # Calculate proportion of ill or disabled people for each age group at the national level
     df_nat_summary = df.groupby('age_group').agg(
         sum_population=('total_population', 'sum'),
         sum_disability_count=('total_disabled', 'sum')).reset_index()
@@ -104,7 +110,7 @@ def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     # Join the national proportions back to the original DataFrame
     df = df.merge(df_nat_summary[['age_group', 'nat_prop']], on='age_group', how='left', suffixes=('', '_nat'))
 
-    # Calculate exp_ill for each age group (ill_prop * pop) 
+    # Calculate exp_ill for each age group 
     df['exp_ill'] = df['nat_prop'] * df['total_population']    
 
     # Sum exp ill and disability count (across age groups, to get one value per area code)

@@ -13,13 +13,13 @@ def check_drop_columns_true(config, preprocessed_df):
     ----------
     config : dict
         Configuration dictionary containing paths and parameters.
-    pre_clustering_std : pd.DataFrame
+    preprocessed_df : pd.DataFrame
          pandas DataFrame containing the preprocessed table.
 
     Returns
     -------
-
-        None
+    pd.DataFrame
+        DataFrame with specified columns dropped if 'drop_columns' is True; otherwise, the original DataFrame.
     """
     
     # Check if 'drop_columns' is set to True in the config
@@ -32,30 +32,30 @@ def check_drop_columns_true(config, preprocessed_df):
 
 def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     """
-    Duplicates the preprocessed input table, removes columns listed under 'variables_to_drop' in the config,
+    Duplicates the preprocessed input table, removes columns listed in 'variables_to_drop',
     and saves the resulting table as a new CSV file.
 
     Parameters
     ----------
-    config_path : str
-        Path to the YAML configuration file.
-    pre_clustering_std :
-        A pandas DataFrame containing the preprocessed table.
-    variables_to_drop : 
-        A list of variables which will be dropped (these can be stored in the config)
+    config : dict
+        Configuration dictionary containing the output file path under 'pre_clustering_data_filtered'.
+    preprocessed_df : pd.DataFrame
+        DataFrame containing the preprocessed table.
+    variables_to_drop : list
+        List of variable names (columns) to drop.
 
     Returns
     -------
-
-        None
-    """   
-    # Duplicate the table the preprocessed input table
+    pd.DataFrame
+        The filtered DataFrame with specified columns removed.
+    """  
+    # Duplicate the preprocessed input table
     processed_input_table = preprocessed_df.copy()
     
     # Drop the specified columns
     pre_clustering_filtered = processed_input_table.drop(columns=variables_to_drop, errors='ignore')
 
-    # Save the processed table as a new CSV file NAME NEEDS CHNAGIN
+    # Save the filtered table as a new CSV file 
     pre_clustering_filtered.to_csv(config["pre_clustering_data_filtered"], index=False)
 
     return pre_clustering_filtered

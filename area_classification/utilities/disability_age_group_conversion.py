@@ -1,5 +1,4 @@
 import pandas as pd
-#from area_classification.utilities.load_config import load_config
 from pathlib import Path
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
@@ -28,7 +27,6 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
 
       
 def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.DataFrame:
-
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
@@ -42,7 +40,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     ----------
     filepath : str
         filepath to the csv file containing the disability age group data.
-    config : str
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
@@ -50,12 +48,11 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     pd.DataFrame
         disability data combined into two age groups: "<15 and >=65" and "15-64".
         Columns: council_area, age_group, total_population, total_disabled.
-    -----------
-    Notes
+    
     """    
 
     # Read the CSV file
-    # Adding in the number of columns so it knows the shape
+    # Specify number of columns to read from the CSV
     n = 6
     df = pd.read_csv(filepath, skiprows=10, header=1 ,  usecols=range(n))
     
@@ -81,7 +78,6 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
                 raise ValueError(f"Council area could not be determined at row {index}.")
             
             # Process the current council area
-            # Find the index of the row where the value in the 'Sex' column is 'Sex'
             sex_row_index = index
             
             # Keep only the 21 rows after the 'Sex' row (all people rows)
@@ -100,7 +96,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
             mapping_dictionary = dict(zip(age_band_list, first_element_list))
             council_df["lower_age_band"] = council_df["age_band"].map(mapping_dictionary)
             
-            # select columns to convert to numeric
+            # Select columns to convert to numeric
             columns_to_convert = council_df.columns[2:]  # Select all columns starting from the 3rd column onward
 
             # Convert the selected columns to numeric
@@ -110,8 +106,7 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
             # Call the function to define age bands and conditions
             age_band_names_and_bools = define_age_bands_and_bools(council_df, lower_age_band_col="lower_age_band")
 
-            # Find columns that contain 'limited a' in their name
-            # Define limited_a_cols as a list of column names
+            # Define columns that contain 'limited a' in their name
             limited_a_cols = ["D", "E"]
     
             for age_band_name, condition in age_band_names_and_bools.items():
@@ -121,7 +116,6 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
                     "total_population": council_df.loc[condition, "C"].sum(),
                     "total_disabled": council_df.loc[condition, limited_a_cols].sum(axis=1).sum()
                 }
-                #result_df = pd.concat([result_df, pd.DataFrame([new_row])], ignore_index=True)
                 if 'result_df' not in locals():
                     result_df = pd.DataFrame([new_row])
                 else:
@@ -155,17 +149,18 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
     ----------
     filepath : str
         path to downloaded excel file
-    config : str
+    config : dict
         Configuration dictionary containing paths and file names.
 
     Returns
     -------
     pd.DataFrame
         disability data combined into two age groups: "<15 and >=65" and "15-64".
-        Columns: Local Authority, Area Code, age_group, total_population, total_disabled.
+        Columns: local_authority, area_code, age_group, total_population, total_disabled.
     """    
     df_ew = pd.read_excel(filepath, sheet_name="Table 6", skiprows=4)
-    df_ew = df_ew.loc[(df_ew["Sex"]=="Persons")&(df_ew["Category"] == "Two category")] # Only want persons and age bands, dont need gender
+    # Filter for persons and age bands; exclude gender breakdown
+    df_ew = df_ew.loc[(df_ew["Sex"]=="Persons")&(df_ew["Category"] == "Two category")] 
     df_ew = df_ew[["Year", "Local Authority", "Area Code", "Category", "Disability status", "Age","Count","Population"]]
     df_ew = df_ew.rename(columns={"Local Authority": "local_authority", "Area Code": "area_code"})
     df_ew["Count"] = df_ew["Count"].replace({'[c]': 0, '[x]': 0})
@@ -222,22 +217,32 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
         disability data combined into two age groups: "<15 and >=65" and "15-64".
         Columns: lgd_code, lgd, age_group, total_population, total_disabled.
     """    
+
+    # Read and preprocess the Excel file
     ni_df = pd.read_excel(filepath, sheet_name="LGD", skiprows=8).iloc[0:-14]
     ni_df.columns = ni_df.columns.str.replace('\n', '').str.lower()
     ni_df.columns = ni_df.columns.str.replace("usual residents aged ", "", regex=False)
     ni_df.columns = ni_df.columns.str.replace(r":\s*day-to-day activities\s*", " ", regex=True)
+
+    # Reshape the DataFrame to long format
     ni_long_df = ni_df.melt(
         id_vars=["geography code", "geography"],
         var_name="age_disability_group",
         value_name="count"
     )
+
+    # Extract lower age band from the group name
     ni_long_df["lower_age_band"] = ni_long_df["age_disability_group"].str.extract(r'(\d*)').replace('',None).astype(float)
+    # Define age band conditions
     age_band_names_and_bools = {
             "<15 and >=65": (ni_long_df["lower_age_band"]<15)|(ni_long_df["lower_age_band"]>=65),
             "15-64": (ni_long_df["lower_age_band"]>=15) & (ni_long_df["lower_age_band"]<65),
         }
+    
     disability_condition = ni_long_df["age_disability_group"].str.contains(r"limited a l.*", case=False, regex=True)
     non_disability_condition = ni_long_df["age_disability_group"].str.contains(r"not limited", case=False, regex=True)
+    
+    # Aggregate results for each area and age band
     result_df_list = []
     for (geo_code, geo_name), group_df in ni_long_df.groupby(["geography code", "geography"]):
         for age_band_name, condition in age_band_names_and_bools.items():
@@ -249,6 +254,8 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
                 "total_population": group_df.loc[condition & (disability_condition | non_disability_condition), "count"].sum()
             }
             result_df_list.append(new_row)
+
+    # Create the result DataFrame and write to CSV        
     result_df = pd.DataFrame(result_df_list)
     output_path = Path(config["input_directory"]) / "ni_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
@@ -275,11 +282,3 @@ if __name__ == "__main__":
     print("all saved to csv")
 
 
-#### CURRENT ISSUE WITH SUMS AND TOTALS. THE TOTAL OF ALL AGE COLUMNS DOES NOT EQUAL TOTAL GIVEN IN DF
-
-
-    # config = load_config()
-    # england_wales_disability_age_filepath = config["england_wales_disability_age_filepath"]
-    # convert_disability_age_group_england_wales(england_wales_disability_age_filepath)
-    # scotland_disability_age_filepath = config["scotland_disability_age_filepath"]
-    # northern_ireland_disability_age_filepath = config["northern_ireland_disability_age_filepath"]

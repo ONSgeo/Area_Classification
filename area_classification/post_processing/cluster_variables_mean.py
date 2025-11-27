@@ -18,6 +18,9 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
         LAD_name    | LAD_code  | supergroup| group | subgroup
         -------------------------------------------
         Hartlepool  | E06000001 | 1         | 1c    | 1c1
+    
+    standardised_data : pd.DataFrame
+        DataFrame containing standardised variable values for each LAD_code.
 
     Returns
     -------
@@ -69,12 +72,10 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
     
     return uk_std_cluster_means
 
-# Run the function if the script is executed directly
+
 if __name__ == "__main__":
-    # import the config file
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')
-    # Run the function
     cluster_variable_means(config)
 
  

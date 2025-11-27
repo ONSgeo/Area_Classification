@@ -7,7 +7,7 @@ working_directory : ~/Area_Classification
 LAD_lookup_file_path: './data/lookups/Local_Authority_Districts_(December_2022)_Names_and_Codes_in_the_United_Kingdom.csv'
 
 # Variables chosen
-# Set to true to drop the variables specified below in 'variables to drop' or set to false to include 60 variables.
+# Set to 'True' to drop the variables specified below in 'variables to drop' or set to 'False' to include 60 variables.
 drop_columns: True
 
 variables_to_drop  : [
@@ -25,12 +25,12 @@ variables_to_drop  : [
 
 # Data to use in clustering
 pre_clustering_data: './data/QA/pre_clustering_data.csv'
-#Won't create this if not filtering
+# Won't create this if not filtering
 pre_clustering_data_filtered: './data/QA/pre_clustering_data_filtered.csv' 
-#Filtered and non filtered both create this in main
+# Filtered and non filtered both create this in main
 pre_clustering_data_std_mean: './data/QA/pre_clustering_data_std_means.csv' 
 
-# post processing files for creating standardised means
+# Post processing files for creating standardised means
 restructured_subclustering_output: './data/output_data/cluster_assignments/restructured_subclustering_output.csv'
 
 # Clustering config

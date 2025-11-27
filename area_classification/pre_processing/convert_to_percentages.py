@@ -14,8 +14,8 @@ def convert_to_percentages(raw_totals_df):
     Returns
     -------
     pd.DataFrame
-        DataFrame with area codes in the first column followed by percentage calues for 
-        each vairable from v1 to v60 (excluding '_total' columns).
+        DataFrame with area codes in the first column followed by percentage values for 
+        each variable from v1 to v60 (excluding '_total' columns).
     """
  
     # Create a copy of the DataFrame to store percentages
