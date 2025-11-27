@@ -53,10 +53,10 @@ def scot_reformatting_wrapper(scot_input_folder: str,
         ]
     )
 
-    #Change the only xlsx (pop_density) in the folder to csv
+    # Change the only xlsx (pop_density) in the folder to csv
     extract_pop_density_table(scot_input_folder)
 
-    # function to extract metadata from files into table. 
+    # Function to extract metadata from files into table. 
     # 'metadata' is a list of table_name, table_id and unit variabless
     metadata = extract_metadata_from_files(scot_input_folder)
 
@@ -178,6 +178,7 @@ def rename_csv_files_by_table_id(scot_input_folder):
                 logger.warning(f"Permission error processing file '{file_name}': {e}")
             except Exception as e:
                 logger.error(f"Error processing file '{file_name}': {e}")
+
                 
 # Function to reformat the UV101b CSV file
 def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
@@ -340,7 +341,7 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
         .fillna(reformatted_df['CA19'])
     )
 
-    # drop the last column 'Unnamed:103'
+    # Drop the last column 'Unnamed:103'
     reformatted_df = reformatted_df.loc[:, ~reformatted_df.columns.str.contains('^Unnamed')]
 
     # Ensure reformat_scot_input_folder exists
@@ -516,9 +517,6 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     # Load the CSV file
     df = pd.read_csv(file_path, skiprows=9, header=None)
 
-    # Remove the last 3 rows
-    #df = df.iloc[:-3, :]
-
     # Remove rows where column A contains specific substrings
     df = df[~df.iloc[:, 0].str.contains(r'Total|Dataset|INFO|\(c\)', case=False, na=False)]
 
@@ -617,8 +615,8 @@ def extract_pop_density_table(scot_input_folder):
 
 def reformat_pop_density(scot_input_folder, config):
     """
-    Function to reformat the population density file so it has rows removed and column headers amended.
-    Output has CA codes
+    Reformats the population density file by removing unnecessary rows and amending column headers.
+    The output includes CA codes.
     
     Parameters
     ----------
@@ -632,8 +630,6 @@ def reformat_pop_density(scot_input_folder, config):
     None
         The function saves the reformatted DataFrame to a new CSV file in the specified output path.
     """
-    import os
-    import pandas as pd
 
     # Look for population_density.csv in the directory
     file_path = os.path.join(scot_input_folder, "population_density.csv")
@@ -724,7 +720,8 @@ def extract_metadata_from_files(scot_input_folder):
             table_name = None  # Initialize table_name
             # Ensure there are at least 4 rows in the file
             if len(rows) >= 4:
-                row_4 = rows[3][0]  # Extract the first column of row 4
+                # Extract the first column of row 4
+                row_4 = rows[3][0]  
                 
                 # Special case for UV607.csv
                 if t_tab_loc.lower() == "uv607.csv":
@@ -937,7 +934,8 @@ def replace_variable_names_with_codes(config):
     variable_names_ids: list
         A list of tuples, each containing a list of variable names and a list of variable ids for each processed file.
     """
-    variable_names_ids = []  # Initialize a list to store variable_names and variable_ids for each file
+    # Initialize a list to store variable_names and variable_ids for each file
+    variable_names_ids = [] 
 
     # Iterate through each file in the input directory
     for file_name in os.listdir(config["reformat_scot_input_folder"]):
@@ -982,7 +980,7 @@ def replace_variable_names_with_codes(config):
             ]:
                 df = df.iloc[:, :-1]
 
-             # Ensure QA directory exists
+            # Ensure QA directory exists
             os.makedirs(os.path.dirname(config["reformat_scot_input_folder"]), exist_ok=True)
             
             # Save the modified DataFrame back to the original file path to overwrite it
@@ -1015,8 +1013,7 @@ def concat_reformatted_tables(config):
         The concatenated DataFrame.
     """
 
-
-    #Concat reformatted tables
+    # Concat reformatted tables
     folder_path = config["reformat_scot_input_folder"] 
     # List all files in the folder that start with "reformat"
     files = [f for f in os.listdir(folder_path) if f.startswith("reformat") and f.endswith(".csv")]

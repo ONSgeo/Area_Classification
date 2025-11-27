@@ -7,7 +7,7 @@ config = load_config('area_classification/config.yaml')
 def cluster_table_restructure(config, clustering_output, split_column, keep_column, standardised_data):
     """
     Using the cluster output column one (LAD_codes) is kept, but column two containing cluster codes are 
-    seperated out into seperate columns for supergroup, group, and subgroup. The final character in the 
+    separated out into seperate columns for supergroup, group, and subgroup. The final character in the 
     subgroup column is then converted to a number (a=1, b=2, c=3, etc.).
 
     Parameters
@@ -19,7 +19,7 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
     keep_column : str
         The column header which will be kept in the final output
     clustering_output : pd.DataFrame
-        DataFrame of cluster assignments which have been output from running the clustering algroithm. 
+        DataFrame of cluster assignments which have been output from running the clustering algorithm. 
         Data will have the following format:
         
         LAD_code   | subsub cluster 
@@ -28,9 +28,10 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
         
     Returns
     -------
-    pd.DataFrame
-        A DataFrame with the LAD_codes, followed by columns for supergroup (number e.g. 1), group (number and 
-        letter e.g. 1c) and subgroup (number letter number e.g. 1c1).
+    tuple of pd.DataFrame
+        (restructured_cluster_table, restructured_cluster_table_long)
+        - restructured_cluster_table: DataFrame with LAD_code, supergroup, group, subgroup, and LAD_name.
+        - restructured_cluster_table_long: Merged DataFrame with standardised data for summaries.
     """
 
     # Reset the LAD_codes column so it is no longer an index and can be used to merge a table
@@ -45,7 +46,7 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
     # Keep the specified column
     kept_data = df[[keep_column]]
 
-    # Process the split_column to create the required columns
+    # Extract supergroup, group, and subgroup from the split_column
     supergroup = df[split_column].apply(lambda x: str(x)[0] if pd.notna(x) else "")
     group = df[split_column].apply(lambda x: str(x)[:2] if pd.notna(x) else "")
     subgroup = df[split_column].apply(lambda x: str(x) if pd.notna(x) else "")
@@ -67,12 +68,12 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
     lad_lookup_file_path = config["LAD_lookup_file_path"]
     lad_lookup = pd.read_csv(lad_lookup_file_path)
 
-    # Add in the LAD names
+    # Merge with LAD names from the lookup file
     restructured_cluster_table = restructured_cluster_table.merge(
-        lad_lookup[['LAD22CD', 'LAD22NM']],  # Select only the necessary columns
-        left_on='LAD_code',                      # Column in restructured_cluster_table
-        right_on='LAD22CD',                 # Column in lad_lookup
-        how='left'                          # Use a left join to keep all rows in restructured_cluster_table
+        lad_lookup[['LAD22CD', 'LAD22NM']],  
+        left_on='LAD_code',                     
+        right_on='LAD22CD',                
+        how='left'                       
     )
 
     # Drop the LAD22CD column after the join if it's no longer needed

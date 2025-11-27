@@ -2,7 +2,6 @@
 
 import logging
 logger = logging.getLogger(__name__)
-
 import pandas as pd
 import numpy as np
 import os
@@ -49,8 +48,14 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
 
     # Step 2 - Population statistics: 
-    df_populations_sam_long = population_sam_preprocessing(restructured_cluster_table_long, f"{config['input_directory']}population_density/population_2021.xls",  f"{config['input_directory']}population_density/population_2022.xlsx", f"{config['input_directory']}population_density/SAM_LAD_DEC_2021_UK.csv", f"{config['input_directory']}population_density/SAM_LAD_DEC_2022_UK_V2.csv")
-    pop_sums = cluster_population_percentages (df_populations_sam_long, cluster_column)
+    df_populations_sam_long = population_sam_preprocessing(
+        restructured_cluster_table_long,
+        f"{config['input_directory']}population_density/population_2021.xls",
+        f"{config['input_directory']}population_density/population_2022.xlsx",
+        f"{config['input_directory']}population_density/SAM_LAD_DEC_2021_UK.csv",
+        f"{config['input_directory']}population_density/SAM_LAD_DEC_2022_UK_V2.csv"
+    )
+    pop_sums = cluster_population_percentages(df_populations_sam_long, cluster_column)
     pop_densities = output_population_densities(config, df_populations_sam_long)
 
     # Step 3 - Cluster summaries: 
@@ -194,7 +199,7 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
     # Filter rows where the first character of 'LAD_code' is 's'
     df_populations_2022 = df_populations_2022[df_populations_2022['LAD_code'].str[0].str.lower() == 's']
 
-    #Pre-process the SAM tables
+    # Pre-process the SAM tables
     # Read in the population estimates CSV file and do some initial formatting
     sam_2021 = pd.read_csv(sam_2021_filepath)
     sam_2022 = pd.read_csv(sam_2022_filepath)
@@ -328,7 +333,7 @@ def output_population_densities(config, df_populations_sam_long ):
     # Return the combined dataframe
     return pop_densities
 
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities,  cluster_column,):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
@@ -504,7 +509,7 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
     for index, row in uk_std_cluster_means.iterrows():
         
         # Use the value in the 'cluster' column as the cluster_number
-        #cluster_number = int(row['cluster'])
+        # cluster_number = int(row['cluster'])
         cluster_number = row['cluster']
         # Create a Pandas Series of the mean values of all numeric columns in uk_std_cluster_means, excluding rows where the cluster column equals cluster_number.
         other_clusters_means = uk_std_cluster_means[uk_std_cluster_means['cluster'] != cluster_number].select_dtypes(include='number').mean()
@@ -598,8 +603,8 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
                     cluster_number_str = str(cluster_number)
                     #cluster_number_int = int(cluster_number_str) # if running through main hash this!
 
-                    variance_value = variance_df.loc[cluster_number_str, v_code] #if running through main un hash
-                    #variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
+                    variance_value = variance_df.loc[cluster_number_str, v_code] # if running through main un hash
+                    # variance_value = variance_df.loc[cluster_number_int, v_code] # if running through main hash this!
 
                     # Generate the specific message based on the domain logic
                     if domain in domain_logic:

@@ -26,7 +26,7 @@ def select_totals_columns(config, inputs_folder):
     -------
     pd.DataFrame 
         A new DataFrame with the area codes in the first column followed by raw count values for each 
-        vairable from v1 to v60 and the total number for who answered the question relating to that variable.
+        variable from v1 to v60 and the total respondents to the question relating to that variable.
     """
 
     # Load the lookup file
@@ -34,6 +34,7 @@ def select_totals_columns(config, inputs_folder):
     lookup_df = pd.read_csv(lookup_file)
 
     # Filter out rows where 'new_code' is 'v12' or 'v33' (population density and SIR)
+    # These are already ratios, not counts
     lookup_df = lookup_df[~lookup_df["new_code"].isin(["v12", "v33"])]
 
     # Append '0001' to the end of the table_ID values in the lookup DataFrame
@@ -94,7 +95,7 @@ def select_totals_columns(config, inputs_folder):
                             continue
                     
                     
-                    # Debug: Check if the total column exists in the aggregated variables file
+                    # Check if the total column exists in the aggregated variables file
                     if total_column in agg_df.columns:
                         # Add the total column to the select DataFrame
                         select_df[f"{variable}_total"] = agg_df[total_column]
@@ -120,7 +121,6 @@ def select_totals_columns(config, inputs_folder):
 
     return raw_totals_df
 
-# Run the function if the script is executed directly
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config
     config = load_config('area_classification/config.yaml')

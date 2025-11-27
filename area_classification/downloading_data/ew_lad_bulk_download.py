@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def ew_lad_bulk_download(config: dict):
     """
     Downloads the latest census 2021 data for England and Wales Local Authority Districts (LADs) from Nomis.
-    census data is exported in CSV format to output directory specified in the config.
+    Census data is exported in CSV format to output directory specified in the config.
 
     Parameters
     ----------
@@ -37,8 +37,8 @@ def ew_lad_bulk_download(config: dict):
 
 def get_census_table_urls(config: dict) -> list:
     """
-    function to configure the HTML pages and extract the URLs for census tables.
-    Removes tables that do not have Output Areas (OA) from the list outlined in config.
+    Function to configure the HTML pages and extract the URLs for census tables.
+    Excludes tables that do not have Output Areas (OA) from the list outlined in config.
 
     Parameters
     ----------
@@ -50,29 +50,29 @@ def get_census_table_urls(config: dict) -> list:
     list
         list of URLs for census tables that contain Output Areas (OA).
     """     
-    # Read the HTML page
+    # Read the HTML page from the Nomis Census 2021 bulk download site
     html_page = BeautifulSoup(requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk").content, "html.parser")
 
-    # Get census table zip file names
+    # Extract links to census table ZIP files (excluding 'extra.zip')
     zip_urls = [
         link['href'] for link in html_page.find_all('a', href=True) 
         if link['href'].endswith('.zip') and 'extra.zip' not in link['href']
     ]
 
-    # Make zip file names into a full URL
+    # Make zip file names into a full URLs
     zip_urls = ["https://www.nomisweb.co.uk" + url for url in zip_urls]
 
     nomis_address = "https://www.nomisweb.co.uk/output/census/2021/census2021-{table_id}.zip"
     no_oa_tables = [nomis_address.format(table_id=code) for code in config["england_and_wales_table_codes_to_remove"]]
 
-    # Remove the tables without OA
+    # Remove the tables without Output Areas (OA)
     zip_urls = list(set(zip_urls) - set(no_oa_tables))
     
     return zip_urls
 
 def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
     """
-    fucntion to download and unzip the census data files, extract the relevant tables,
+    Fucntion to download and unzip the census data files, extract the relevant tables,
     and create a metadata table with the old and new column names.
 
     Parameters
@@ -113,7 +113,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         # Extract the LTLA CSV location
         t_tab_loc = glob(os.path.join(tmp_dir, f"*{t_name}-ltla.csv"))
         if not t_tab_loc:
-            # Handle typo case
+            # Handle possible typo ('llta' instead of 'ltla')
             t_tab_loc = glob(os.path.join(tmp_dir, f"*{t_name}-llta.csv"))
 
         if not t_tab_loc:
@@ -123,7 +123,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         t_tab_loc = t_tab_loc[0]  # Get the first match
 
-        # if table name is ts007a (Age by five-year age bands), set unit to "People"
+        # If table name is ts007a (Age by five-year age bands), set unit to "Person"
         unit = None
         if t_name == "ts007a":
             unit = "Person"
@@ -161,7 +161,8 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
         # Rename the columns in the DataFrame
         df.columns = Variable_ID
-        df.reset_index(inplace=True)  # Move row names back to a column
+        # Move row names back to a column
+        df.reset_index(inplace=True)  
         df.rename(columns={"geography code": "LTLA"}, inplace=True)
 
         # Write the DataFrame to a CSV file
@@ -178,7 +179,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
 
 def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict):
     """
-    function to format the metadata table and saves it as a CSV to the input directory.
+    Function to format the metadata table and saves it as a CSV to the input directory.
 
     Parameters
     ----------
@@ -190,22 +191,20 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
 
     Returns
     --------
-    None
-        The function saves the formatted metadata table as a CSV file in the specified output directory.
+    pd.DataFrame
+        The formatted metadata table. Also saved as a CSV file in the specified output directory.
     """    
 
     
     # Format the lookup table
     meta_data_table_full = (
         meta_data_table
-        # Extract text after the first colon.
-        # If there is a semicolon after the first colon, take text between colon and semicolon.
-        # Otherwise, take all text after the first colon.
+        # Extract variable name from 'Full_Name' (text after first colon, up to semicolon if present)
         .assign(
             Variable_Name=meta_data_table['Full_Name'].str.extract(r':\s*([^;:]+?)(?:;|$)')
         )
 
-        # Extract the table name: take the part before the first colon in 'Full_Name', as Table_Name
+        # Extract table name from 'Full_Name' (text before first colon)
         .assign(Table_Name=meta_data_table['Full_Name'].str.split(':', n=1).str[0])
         .assign(Type="Count")
 
@@ -216,6 +215,7 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
 
     # Reorder columns (only keep columns that exist in the DataFrame)
     meta_data_table_full = meta_data_table_full[[col for col in column_order if col in meta_data_table_full.columns]]    
+    
     # Ensure input directory exists
     os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
 

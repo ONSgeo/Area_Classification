@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def select_variables(df_temp, lookup_df, config):
+def select_variables(df_temp, lookup_df):
     """
     Selects specific columns from a main DataFrame based on a lookup table
     and returns a new DataFrame with only the specified columns. It also takes
@@ -16,17 +16,15 @@ def select_variables(df_temp, lookup_df, config):
     ----------
     df_temp : pd.DataFrame
         The temp DataFrame containing all data.
-    lookup_df : str
-        Path to the CSV file containing the variable_codes and new_codes to 
-        select columns and convert all codes to new 'v' codes.
+    lookup_df : pd.DataFrame
+        DataFrame containing 'variable_code' and 'new_code' columns to select and rename columns.
     config : dict
-        A configuration dictionary containing the QA file paths.
     
     Returns
     -------
     pd.DataFrame 
         A new DataFrame with only the specified columns, with area codes in the first column followed by
-        raw count values for each vairable from v1 to v60.
+        raw count values for each variable from v1 to v60.
         
     """
 
@@ -75,5 +73,4 @@ if __name__ == "__main__":
     config = load_config('area_classification/config.yaml')
     lookup_df = pd.read_csv(config['select_variables_lookup'])
     df_temp = pd.read_csv(os.path.join(config['input_directory'], 'CA19__all_variables.csv'))
-    
     select_variables(df_temp, lookup_df, config)
