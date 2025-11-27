@@ -18,7 +18,6 @@ def select_variables(df_temp, lookup_df):
         The temp DataFrame containing all data.
     lookup_df : pd.DataFrame
         DataFrame containing 'variable_code' and 'new_code' columns to select and rename columns.
-    config : dict
     
     Returns
     -------
