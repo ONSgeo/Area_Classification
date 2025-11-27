@@ -46,7 +46,6 @@ ni_file_configs:
 # no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
 # united_kingdom - DONE. This has to be derived for NI only
 # eu_countries - DONE. This has to be derived for NI only
-# economically_active - DONE 
 
 # Scotland variables to aggregate using the variable codes
 scot_file_configs:
@@ -85,7 +84,6 @@ scot_file_configs:
 # age_65_84 - DONE
 # age_85_and_over - DONE 
 # no_children - DONE
-# economically_active - DONE this is a single variable for EW
 # christian - DONE
 # hours_part - DONE
 # hours_full - DONE
