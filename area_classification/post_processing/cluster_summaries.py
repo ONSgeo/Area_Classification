@@ -10,7 +10,7 @@ import re
 
 from area_classification.utilities.load_config import load_config
 
-def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means,  lookup_file, cluster_column ):
+def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column ):
     """
     Wrapper function to execute a series of cluster summary operations post clustering.
 
@@ -128,7 +128,6 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     variance_df = variance_df.sort_index()
     # Add the average variance as an additional column
     variance_df['cluster_average_variance'] = variance_df.index.map(cluster_average_variance)
-    
     return variance_df
 
 def population_sam_preprocessing(restructured_cluster_table_long, population_estimates_filepath_2021, population_estimates_filepath_2022, sam_2021_filepath, sam_2022_filepath):
@@ -145,9 +144,9 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
     restructured_cluster_table_long : pd.DataFrame
         A DataFrame containing the data, including columns for LAD code / names, the cluster allocation at different levels 
     population_estimates_filepath_2021 : str
-        The file path of where to find the csv for the LAD estimate population for 2021.
+        The file path of where to find the .xls for the LAD estimate population for 2021.
     population_estimates_filepath_2022 : str
-        The file path of where to find the csv for the LAD estimate population for 2022.
+        The file path of where to find the .xlsx for the LAD estimate population for 2022.
     sam_2021_filepath : str
         The file path of where to find the csv for the Standard Area Measurements (SAM) in hectares by LAD code for 2021.
     sam_2022_filepath : str
@@ -175,7 +174,6 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
     for index, df in enumerate(dataframes):
         # Remove the first 7 rows and keep only the first 4 columns
         df = df.iloc[7:, :4]
-        
         # Rename the columns
         df.columns = ['LAD_code', 'LAD_name', 'Geography', 'population']
         
@@ -187,7 +185,6 @@ def population_sam_preprocessing(restructured_cluster_table_long, population_est
 
     # Assign the processed DataFrames back to their original variables
     df_populations_2021, df_populations_2022 = dataframes
- 
     # Filter rows where the first character of 'LAD_code' is 'E', 'N', or 'W'
     df_populations_2021 = df_populations_2021[df_populations_2021['LAD_code'].str[0].isin(['E', 'N', 'W'])]
 
@@ -250,8 +247,8 @@ def cluster_population_percentages (df_populations_sam_long, cluster_column):
     - Percentages are rounded to two decimal places for clarity.
     """
     # Sum the population for each unique subgroup
+    df_populations_sam_long['population'] = pd.to_numeric(df_populations_sam_long['population'], errors='coerce').astype('Int64')
     pop_sums = df_populations_sam_long.groupby(cluster_column)[['population']].sum().reset_index()
-
     # Sum the total population column in merged_df
     total_population = df_populations_sam_long['population'].sum()
 
@@ -619,7 +616,6 @@ if __name__ == "__main__":
     restructured_cluster_table_long = pd.read_csv(filepath_long)
     uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
     uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
-    chosen_clustering_variables = pd.read_csv(config["pre_clustering_data"])
 
     lookup_file = config["select_variables_lookup"]
 
