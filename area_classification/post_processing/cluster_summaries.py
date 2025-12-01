@@ -9,7 +9,7 @@ import re
 
 from area_classification.utilities.load_config import load_config
 
-def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column ):
+def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file, cluster_column):
     """
     Wrapper function to execute a series of cluster summary operations post clustering.
 
@@ -133,6 +133,8 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     variance_df = variance_df.sort_index()
     # Add the average variance as an additional column
     variance_df['cluster_average_variance'] = variance_df.index.map(cluster_average_variance)
+
+    print("VARIANCE DF:", variance_df)
     return variance_df
 
 def population_sam_preprocessing(restructured_cluster_table_long, population_estimates_filepath_2021, population_estimates_filepath_2022, sam_2021_filepath, sam_2022_filepath):

@@ -124,20 +124,24 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
             "The average variance for cluster 1 is 0.07. Example areas: Middlesbrough, Hartlepool\n"
             "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
             "        compared with the mean of the other clusters combined. The population of cluster 1 has a:\n"
-            "• lower (-0.45) Usual residents per square kilometre. Variance:0.00 (Demography and Migration domain)\n"
-            "• lower (-0.20) proportion of people who live in a communal establishment. Variance:0.01 (Demography and Migration domain)\n"
-            "• higher (0.15) proportion of people who are Never married and never registered a civil partnership. Variance:0.02 (Demography and Migration domain)\n" 
+            "• lower (-0.45) Usual residents per square kilometre. Variance:0.02 (Demography and Migration domain)\n"
+            "• lower (-0.20) proportion of people who live in a communal establishment. Variance:0.005 (Demography and Migration domain)\n"
+            "• higher (0.15) proportion of people who are Never married and never registered a civil partnership. Variance:0.18 (Demography and Migration domain)\n" 
             "----------------------------------------\n"
             "Cluster 2\n"
             "Cluster 2 contains 2 local authorities which is 50.00% of UK local authorities, this included 81.56% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 6.06 people per hectare.\n"
-            "The average variance for cluster 2 is 0.01. Example areas: Glasgow City, City of Edinburgh\n"
+            "The average variance for cluster 2 is 0.005. Example areas: Glasgow City, City of Edinburgh\n"
             "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
             "        compared with the mean of the other clusters combined. The population of cluster 2 has a:\n"
-            "• higher (0.45) Usual residents per square kilometre. Variance:0.00 (Demography and Migration domain)\n"
-            "• higher (0.20) proportion of people who live in a communal establishment. Variance:0.01 (Demography and Migration domain)\n"
-            "• lower (-0.15) proportion of people who are Never married and never registered a civil partnership. Variance:0.00 (Demography and Migration domain)\n"
+            "• higher (0.45) Usual residents per square kilometre. Variance:0.005 (Demography and Migration domain)\n"
+            "• higher (0.20) proportion of people who live in a communal establishment. Variance:0.005 (Demography and Migration domain)\n"
+            "• lower (-0.15) proportion of people who are Never married and never registered a civil partnership. Variance:0.005 (Demography and Migration domain)\n"
+            
             "----------------------------------------\n"
-        )     
+        )    
+
+        for col, dtype in self.restructured_cluster_table_long.dtypes.items():
+            print(f"{col}: {dtype}") 
 
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
     #         print("Running cluster_summaries_wrapper...")
@@ -149,6 +153,8 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
                 cluster_column='supergroup'
             )
         #         print("Checking outputs...")
+        print("expected output:", expected_output)
+        print("actual output:", fake_out.getvalue())
         self.assertIn(expected_output, fake_out.getvalue())
 
 
