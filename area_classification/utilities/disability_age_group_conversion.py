@@ -185,7 +185,6 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
                     "Count"
                 ].astype(int).sum(),
                 "total_population": group_df.loc[(group_df["age_group"] == age_band_name) , "Count"].sum()
-
             }
             result_df_list.append(new_row)
 
@@ -280,5 +279,3 @@ if __name__ == "__main__":
 
     print(df_ew)
     print("all saved to csv")
-
-

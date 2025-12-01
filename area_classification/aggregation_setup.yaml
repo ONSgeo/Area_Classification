@@ -36,7 +36,6 @@ ni_file_configs:
   united_kingdom: [ni0330002, ni0330003] # united_kingdom - DONE. This has to be derived for NI only
   eu_countries: [ni0330004, ni0330005] # eu_countries - DONE. This has to be derived for NI only
 
-# economically_active - DONE 
 
 # Scotland variables to aggregate using the variable codes
 scot_file_configs:
@@ -61,4 +60,3 @@ scot_file_configs:
   hours_part: [UV6040002, UV6040003]
   hours_full: [UV6040004, UV6040005]
 
-# economically_active - DONE this is a single variable for EW
