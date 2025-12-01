@@ -18,42 +18,36 @@ ew_file_configs:
 
 # Northern Ireland variables to aggregate using the variable codes
 ni_file_configs:
+  # cars_2_or_more - this already has the one variable (2 or more cars or van available - ni2210004)
   separated_divorced: [ni1370005, ni1370006]
+  # dependant_children - this already has one variable (household with dependent children - ni2390003)
+  # cannot_speak_English - this already has one variable (Main language is not English: cannot speak English or cannot speak English well - ni0570004)
+  # provides_unpaid_care - this already has one variable (provides 1 or more hours of unpaid care per week - ni1270003)
   flat: [ni0030005, ni0030006, ni0030007]
   under_occupation: [ni1530002, ni1530003]
+  # overcrowding - this already has the one variavle (Occupancy rating (rooms) of -1 or less - ni1520003)
+  # ownership_or_shared - this already has one variable (Owner occupied - ni1070002)
   level_1_2_and_appr: [ni1100003, ni1100004, ni1100005]
   age_5_14: [ni0120003, ni0120004]
   age_25_44: [ni0120007, ni0120008, ni0120009, ni0120010]
   age_45_64: [ni0120011, ni0120012, ni0120013, ni0120014]
   age_65_84: [ni0120015, ni0120016, ni0120017, ni0120018]
-  united_kingdom: [ni0330002, ni0330003]
-  eu_countries: [ni0330004, ni0330005]
+  # no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
+  united_kingdom: [ni0330002, ni0330003] # united_kingdom - DONE. This has to be derived for NI only
+  eu_countries: [ni0330004, ni0330005] # eu_countries - DONE. This has to be derived for NI only
 
-# separated_divorced - DONE
-# dependant_children - this already has one variable (household with dependent children - ni2390003)
-# cannot_speak_English - this already has one variable (Main language is not English: cannot speak English or cannot speak English well - ni0570004)
-# provides_unpaid_care - this already has one variable (provides 1 or more hours of unpaid care per week - ni1270003)
-# flat - DONE
-# cars_2_or_more - this already has the one variable (2 or more cars or van available - ni2210004)
-# under_occupation - DONE
-# overcrowding - this already has the one variavle (Occupancy rating (rooms) of -1 or less - ni1520003)
-# ownership_or_shared - this already has one variable (Owner occupied - ni1070002)
-# level_1_2_and_appr - DONE
-# age_5_14 - DONE
-# age_25_44 - DONE
-# age_45_64 - DONE
-# age_65_84 - DONE
-# no_children - this already has one variable (Single family household: Couple family household: No children - ni2520004)
-# united_kingdom - DONE. This has to be derived for NI only
-# eu_countries - DONE. This has to be derived for NI only
 
 # Scotland variables to aggregate using the variable codes
 scot_file_configs:
+  cars_2_or_more: [UV4050004, UV4050005, UV4050006]
   separated_divorced: [UV1040004, UV1040005]
   dependant_children: [UV1130009, UV1130010, UV1130022, UV1130023, UV1130014, UV1130015, UV1130018, UV1130019]
   cannot_speak_English: [UV2100002, UV2100006, UV2100007, UV2100008, UV2100010, UV2100011]
-  cars_2_or_more: [UV4050004, UV4050005, UV4050006]
+  # provides_unpaid_care - this already has one variable (All unpaid carers - UV3010003) 
+  # flat - this already has one variable (Flat, maisonette or apartment: total - UV4010006)
   under_occupation: [UV4150002, UV4150003]
+  # overcrowding - this already has one variable (Occupancy rating of bedrooms: -1 or less - UV4150005)
+  # ownership_or_shared - this already has one variable (Owned: Total	UV4030002)
   level_1_2_and_appr: [UV5010003, UV5010004, UV5010005]
   age_4_and_under: [UV1030002, UV1030003, UV1030004, UV1030005, UV1030006]
   age_5_14: [UV1030007, UV1030008, UV1030009, UV1030010, UV1030011, UV1030012, UV1030013, UV1030014, UV1030015, UV1030016]
@@ -66,24 +60,3 @@ scot_file_configs:
   hours_part: [UV6040002, UV6040003]
   hours_full: [UV6040004, UV6040005]
 
-
-# separated_divorced - DONE
-# dependant_children - DONE
-# cannot_speak_English - DONE
-# provides_unpaid_care - this already has one variable (All unpaid carers - UV3010003) 
-# flat - this already has one variable (Flat, maisonette or apartment: total - UV4010006)
-# cars_2_or_more - DONE
-# under_occupation - DONE
-# overcrowding - this already has one variable (Occupancy rating of bedrooms: -1 or less - UV4150005)
-# ownership_or_shared - this already has one variable (Owned: Total	UV4030002)
-# level_1_2_and_appr - DONE
-# age_4_years_and_under - DONE
-# age_5_14 - DONE
-# age_25_44 - DONE
-# age_45_64 - DONE
-# age_65_84 - DONE
-# age_85_and_over - DONE 
-# no_children - DONE
-# christian - DONE
-# hours_part - DONE
-# hours_full - DONE

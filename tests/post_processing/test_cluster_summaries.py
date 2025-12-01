@@ -1,18 +1,7 @@
 
 import unittest
 import pandas as pd
-import os
-from area_classification.post_processing.cluster_summaries import calculate_cluster_variance
-from area_classification.post_processing.cluster_summaries import cluster_population_percentages
-from area_classification.post_processing.cluster_summaries import cluster_summary
-from area_classification.post_processing.cluster_summaries import identify_cluster_drivers
-from area_classification.utilities.load_config import load_config
-
-#Tests for all functions in the cluster_summaries script:
-# calculate_cluster_variance
-# cluster_population_percentage
-# cluster_summary
-
+from area_classification.post_processing.cluster_summaries import calculate_cluster_variance, cluster_population_percentages, cluster_summary
 
 class TestCalculateClusterVariance(unittest.TestCase):
     def setUp(self):
