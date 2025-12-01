@@ -1,17 +1,80 @@
-# JUST NEED A UNIT TEST FOR SCOTLAND
-
-import pytest
 import pandas as pd
 import unittest
-from unittest.mock import patch
 import unittest
-from pathlib import Path
-import tempfile
 import os
 
+from area_classification.utilities.disability_age_group_conversion import convert_disability_age_group_scotland
 from area_classification.utilities.disability_age_group_conversion import convert_disability_age_group_england_wales
 from area_classification.utilities.disability_age_group_conversion import convert_disability_age_group_northern_ireland
-from area_classification.utilities.disability_age_group_conversion import convert_disability_age_group_scotland
+
+class TestConvertDisabilityAgeGroupScotland(unittest.TestCase):
+    def setUp(self):
+        self.scot_test_data_filepath = "./tests/data/scot_test_disability_data.csv"
+        self.config = {'input_directory': './tests/data/', "LAD_lookup_file_path": "./tests/data/scotland_lad_lookup.csv"}
+
+        columns = [
+            " ", "Disability", "All people", "Day-to-day activities limited a lot", 
+            "Day-to-day activities limited a little", "Day-to-day activities not limited"
+        ]
+        placeholders = pd.DataFrame({
+            col: (['']*10 + ['Clackmannanshire'] if col == columns[0] else ['']*11)
+            for col in columns
+        })
+        header = pd.DataFrame([columns], columns=columns)
+        age_bands = ( ['0 to 4', '5 to 9', '10 to 14', '15', '16 to 17', '18 to 19', '20 to 24'] +
+        [f'{i} to {i+4}' for i in range(25, 85, 5)] +
+        ['85 and over']  )
+
+        population = [1000 + i*10 for i in range(len(age_bands))]
+        little_limited_count = [i*20 for i in range(len(age_bands))]
+        lot_limited_count = [i*15 for i in range(len(age_bands))]
+        non_disabled_count = [population[i] - (little_limited_count[i] + lot_limited_count[i]) for i in range(len(age_bands))]
+
+        data = {
+        " ": ['Sex'] + ['All people'] + ['']*(len(age_bands)) + ['Dumfries and Galloway']  + [''] + ['Sex'] + ['All people'] + ['']*(len(age_bands))  ,
+        "Disability":  ['Age'] + ['Total'] + age_bands + [''] + ['Disability'] +  ['Age'] + ['Total'] + age_bands ,
+        "All people":  [''] + ['TOTAL'] + population + [''] + ['All people'] + [''] + ['TOTAL'] + population ,
+        "Day-to-day activities limited a lot":  [''] + ['TOTAL'] + lot_limited_count + [''] + ['Day-to-day activities limited a lot'] + [''] + ['TOTAL'] + lot_limited_count ,
+        "Day-to-day activities limited a little": [''] + ['TOTAL'] + little_limited_count + [''] + ['Day-to-day activities limited a little'] + [''] + ['TOTAL'] + little_limited_count,
+        "Day-to-day activities not limited": [''] + ['TOTAL'] + non_disabled_count + [''] + ['Day-to-day activities not limited'] + [''] + ['TOTAL'] + non_disabled_count ,
+        }
+        data_rows = pd.DataFrame(data)
+        df = pd.concat([placeholders, header, data_rows], ignore_index=True)
+        os.makedirs(os.path.dirname(self.scot_test_data_filepath), exist_ok=True)
+        df.to_csv(self.scot_test_data_filepath, index=False, header=False)
+
+        LAD_lookup = pd.DataFrame({
+                'LAD22CD': ['S12000005', 'S12000006'],
+                'LAD22NM': ['Clackmannanshire', 'Dumfries and Galloway'],
+                'LAD22NMW': ['', ''],
+                'ObjectId': [1, 2],
+            })
+        os.makedirs(os.path.dirname('./tests/data/scotland_lad_lookup.csv'), exist_ok=True)
+        LAD_lookup.to_csv('./tests/data/scotland_lad_lookup.csv')
+
+        self.expected_df = pd.DataFrame({
+            'area_code': ['S12000005', 'S12000005',  'S12000006', 'S12000006'],
+            'age_group': ['<15 and >=65', '15-64', '<15 and >=65', '15-64'],
+            'total_population': ['8880.0', '13020.0', '8880.0', '13020.0'], 
+            'total_disabled': ['3080.0', '3570.0', '3080.0', '3570.0']
+        })
+        self.expected_df["total_population"] = self.expected_df["total_population"].astype(float)
+        self.expected_df["total_disabled"] = self.expected_df["total_disabled"].astype(float)
+
+    def test_convert_disability_age_group_scotland(self):
+        result_df = convert_disability_age_group_scotland(self.scot_test_data_filepath, self.config)
+        self.assertIsInstance(result_df, pd.DataFrame)
+        self.assertFalse(result_df.empty)
+        pd.testing.assert_frame_equal(result_df, self.expected_df)
+
+    def tearDown(self):
+        for filename in os.listdir('./tests/data/'):
+            if 'disability' in filename:
+                file_path = os.path.join('./tests/data/', filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Test ran then deleted: {file_path}")
+
 class TestConvertDisabilityAgeGroupEnglandWales(unittest.TestCase):
     def setUp(self):
         self.test_data_filepath = "./tests/data/ew_test_disability_data.xlsx"
@@ -56,6 +119,14 @@ class TestConvertDisabilityAgeGroupEnglandWales(unittest.TestCase):
         self.assertIsInstance(result_df, pd.DataFrame)
         self.assertFalse(result_df.empty)
         pd.testing.assert_frame_equal(result_df, self.expected_df)
+
+    def tearDown(self):
+        for filename in os.listdir('./tests/data/'):
+            if 'disability' in filename:
+                file_path = os.path.join('./tests/data/', filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Test ran then deleted: {file_path}")
 
 class TestConvertDisabilityAgeGroupNorthernIreland(unittest.TestCase):
     def setUp(self):
@@ -130,6 +201,13 @@ class TestConvertDisabilityAgeGroupNorthernIreland(unittest.TestCase):
         self.assertFalse(result_df.empty)
         pd.testing.assert_frame_equal(result_df, self.expected_df)
 
+    def tearDown(self):
+        for filename in os.listdir('./tests/data/'):
+            if 'disability' in filename:
+                file_path = os.path.join('./tests/data/', filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f"Test ran then deleted: {file_path}")
 
 if __name__ == '__main__':
     unittest.main()
