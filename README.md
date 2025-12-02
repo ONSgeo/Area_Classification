@@ -128,7 +128,7 @@ As mentioned above, some data requires manual downloads. Therefore, before runni
 For more information on the data (England/Wales and Northern Ireland census tables) that is automatically downloaded when running the pipeline via API's, see the [downloading data page in the specifications folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Downloading_data.md)
 
 #### 'lookups' folder:
-* Local Authority Districts Names and Codes in the UK Lookup from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This is required to convert between are names and area codes.
+* Local Authority Districts Names and Codes in the UK Lookup from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This is required to convert between area names and area codes.
 
 #### 'ew_downloads' folder:
 * England and Wales disability data [disabilitycensus2021.xlsx from the ONS website](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/disability/datasets/disabilityinenglandandwales2021). The file name should be 'disabilitycensus2021.xlsx'.
