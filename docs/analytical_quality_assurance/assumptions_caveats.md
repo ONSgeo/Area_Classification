@@ -4,7 +4,7 @@ This log contains a list of assumptions, caveats and decisions used in this anal
 
 ## Definitions
 
-Assumptions are RAG-rated according to the following definitions for quality and
+Assumptions are rated red, amber or green (RAG) according to the following definitions for quality and
 impact[^1]:
 
 [^1]: With thanks to the Home Office Analytical Quality Assurance team for these definitions.
