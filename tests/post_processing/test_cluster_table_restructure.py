@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 import os
+from unittest.mock import patch
 from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
 
 config = {
@@ -8,15 +9,8 @@ config = {
         "output_directory": "./tests/data/"
         }
 
-import unittest
-from unittest.mock import patch
-import pandas as pd
-import os
-
 class TestClusterTableRestructure(unittest.TestCase):
-    @patch("os.makedirs")
-    @patch("pandas.DataFrame.to_csv")
-    def setUp(self, mock_to_csv, mock_makedirs):
+    def setUp(self):
         # No actual directories or files will be created
         if not os.path.exists(config["output_directory"]+"cluster_assignments/"):
             os.makedirs(config["output_directory"]+ "cluster_assignments/")
@@ -65,6 +59,12 @@ class TestClusterTableRestructure(unittest.TestCase):
         )
         pd.testing.assert_frame_equal(result_df, self.expected_df)
         pd.testing.assert_frame_equal(result_df_long, self.expected_df_long)
+
+    def tearDown(self):
+        file_path = config["LAD_lookup_file_path"]
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+            print(f"Test ran then deleted: {file_path}")
 
 if __name__ == '__main__':
     unittest.main()
