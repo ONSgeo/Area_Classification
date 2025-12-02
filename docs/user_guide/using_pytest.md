@@ -1,40 +1,37 @@
 # Using pytest
 
-We use [`pytest`][pytest] to create and run all of our python based testing. Pytest is the most commonly used python module for testing python code. Testing your code is vital for followling coding best practices and has numerous benefits such as:
+[`pytest`][pytest] has been used to create some of the python based testing in this repo. Pytest is the most commonly used python module for testing python code. Testing code is vital for following coding best practices and has numerous benefits such as:
 
-* They help to debug your code
-* They make you write more efficient code first time
-* They make you think about what precisely your code is doing as you write it
-* They provide a sort of documentation for your code
-* They help to keep your deployment smooth.
+* Assisting with debug code
+* Helping developers write more efficient code first time
+* Encouraging thoughtful consideration of what the code is doing as it is written
+* Providing documentation for increased clarity
+* Supporting smooth code deployment.
 
 ## Structure
 
-There should be a `tests` folder in the root directory of your repository containing all the tests that relate to your package. It sits outside of your package because users that want to just use your package will not necessarily need the tests. The tests are there for contributers to use, and if they are contributing they will clone the whole repository, not just the package.
-
-There is an example pytest folder structure and file in your package that demonstrates this structure.
+There is be a `tests` folder in the root directory of this repository containing all the tests relate to this pipeline. The tests are there for contributers to use, so will be avaiable to contributors when cloning the whole repository.
 
 ## Writing pytests
 
-For pytest to find your tests, all test files and tests must either start with `test_` or finish with `_test.py`
+All test files and tests must either start with `test_` or finish with `_test.py` for pytest to find them. 
 
-The `test_example_module.py` example test file provides an example of these restrictions.
 
 ## Running pytest
 ### In the terminal
 
-There are a few ways to run pytests in your terminal. The easiest is by running
+There are a few ways to run pytests in the terminal. The easiest is by running
 ```shell
 pytest
 ```
-in your root directory. This will find any existing pytests within your directory and run them.
+in the root directory. This will find any existing pytests within the directory and run them.
 
-If you only want to run pytests in a specific pytest file you can run
+To run pytests in a specific pytest file run
 ```shell
 pytest tests/test_example_module.py
 ```
 
-You can try both of these in the root directory of your new repository.
+Both of these methods can be tried in the root directory of a new repository.
 
 
 [pytest]: https://pypi.org/project/pytest/
