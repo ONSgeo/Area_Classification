@@ -14,7 +14,6 @@ class TestSelectVariables(unittest.TestCase):
             'UV1040004': [50, 30, 20, 200]
         })
 
-        print(self.input_df)
         # Expected output DataFrame after conversion
         self.expected_df = pd.DataFrame({
             'LAD_code': ['S12000001', 'S12000002', 'S12000003','S12000004'],
@@ -22,11 +21,18 @@ class TestSelectVariables(unittest.TestCase):
             'v03': [25, 15, 10, 50]
         })
 
+        self.lookup_df = pd.DataFrame({
+            'variable_name': ['Never married', 'Married'],
+            'variable_code': ['UV1040002', 'UV1040003'],
+            'table_id': ['UV104', 'UV104'],
+            'table_name': ['Marital status', 'Marital status'],
+            'country': ['scot', 'scot'],
+            'new_code': ['v02', 'v03'],
+            'domain': ['Demography and Migration', 'Demography and Migration']
+        })
+
     def test_select_variables(self):
-        from area_classification.utilities.load_config import load_config
-        config = load_config('area_classification/config.yaml')
-        select_variables_lookup = pd.read_csv(config["select_variables_lookup"])
-        result_df = select_variables(self.input_df, select_variables_lookup, config)
+        result_df = select_variables(self.input_df, self.lookup_df)
         # Assert that the result matches the expected output
         pd.testing.assert_frame_equal(result_df, self.expected_df)
 
