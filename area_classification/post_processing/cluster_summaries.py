@@ -134,7 +134,6 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
     # Add the average variance as an additional column
     variance_df['cluster_average_variance'] = variance_df.index.map(cluster_average_variance)
 
-    print("VARIANCE DF:", variance_df)
     return variance_df
 
 def population_sam_preprocessing(restructured_cluster_table_long, population_estimates_filepath_2021, population_estimates_filepath_2022, sam_2021_filepath, sam_2022_filepath):
@@ -441,7 +440,7 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         # Check if the cluster exists in the DataFrame
         if cluster in variance_df.index:
             cluster_avg_variance = variance_df.loc[cluster, 'cluster_average_variance']
-            output += f"The average variance for cluster {cluster} is {cluster_avg_variance:.2f}. Example areas: {', '.join(area_names)}"
+            output += f"The average variance for cluster {cluster} is {cluster_avg_variance:.3f}. Example areas: {', '.join(area_names)}"
         else:
             output += f"Cluster {cluster} not found in the DataFrame.\n"
 
@@ -510,6 +509,7 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
         # Use the value in the 'cluster' column as the cluster_number
         # cluster_number = int(row['cluster'])
         cluster_number = row['cluster']
+
         # Create a Pandas Series of the mean values of all numeric columns in uk_std_cluster_means, excluding rows where the cluster column equals cluster_number.
         other_clusters_means = uk_std_cluster_means[uk_std_cluster_means['cluster'] != cluster_number].select_dtypes(include='number').mean()
 
@@ -519,7 +519,6 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
         # Sort variables by the absolute difference in descending order
         # The variable at the top of the list will then have the greatest difference between the current cluster and the other clusters
         sorted_differences = differences.abs().sort_values(ascending=False)
-        
         # Select the top N variables with the greatest difference
         variables_with_greatest_differnce = sorted_differences.head(top_n)
         
@@ -535,7 +534,6 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
         for variable in variables_with_greatest_differnce.index:
             # Remove anything in brackets from the variable name
             variable_name = re.sub(r'\(.*?\)', '', variable).strip()
-
             # Determine if the difference is "higher" or "lower"
             if differences[variable] > 0:
                 difference_status = "higher"
@@ -608,7 +606,7 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
                     # Generate the specific message based on the domain logic
                     if domain in domain_logic:
                         specific_message = domain_logic[domain](table_name_value, variable_name)
-                        message = f"• {difference_status} ({differences[variable]:.2f}) {specific_message}. Variance:{variance_value:.2f} ({domain} domain)"
+                        message = f"• {difference_status} ({differences[variable]:.3f}) {specific_message}. Variance:{variance_value:.3f} ({domain} domain)"
                         print(message)
                     else:
                         # Default message for unrecognized domains

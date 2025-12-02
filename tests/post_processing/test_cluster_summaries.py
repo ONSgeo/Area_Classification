@@ -48,11 +48,14 @@ class TestClusterPopulationPercentages(unittest.TestCase):
             'supergroup_population': [232.0, 241.0, 176.0],
             'supergroup_percentage': [35.75, 37.13, 27.12],
         })
+        self.expected_df["supergroup_population"] = self.expected_df["supergroup_population"].astype("Int64")
+        self.expected_df["supergroup_percentage"] = self.expected_df["supergroup_percentage"].astype("Float64")
 
     def test_cluster_population_percentages(self):
         result_df =  cluster_population_percentages (self.input_df, cluster_column = 'supergroup')
         # Assert that the result matches the expected output
         pd.testing.assert_frame_equal(result_df, self.expected_df)
+
 
 class TestClusterSummary(unittest.TestCase):
     def setUp(self):
@@ -82,7 +85,7 @@ class TestClusterSummary(unittest.TestCase):
             'supergroup': ['1', '2', '3'],
             'v01': [0.02, 0, 0.10125],
             'v02': [0.045,  0.005, 0.01125],
-            'cluster_average_variance': [0.0325, 0.0025, 0.05625 ]
+            'cluster_average_variance': [0.033, 0.003, 0.056 ]
         }).set_index('supergroup')  # Set 'supergroup' as the index
 
         # Mock population sums DataFrame
@@ -102,17 +105,16 @@ class TestClusterSummary(unittest.TestCase):
 
         # Expected output strings
         self.expected_output = [
-            'Cluster 1 contains 2 local authorities which is 33.33% of UK local authorities, this included 35.75% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.30 people per hectare.\nThe average variance for cluster 1 is 0.03. Example areas: County Durham, Hartlepool', 
-            'Cluster 2 contains 2 local authorities which is 33.33% of UK local authorities, this included 37.13% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.21 people per hectare.\nThe average variance for cluster 2 is 0.00. Example areas: Stockton-on-Tees, Redcar and Cleveland', 
-            'Cluster 3 contains 2 local authorities which is 33.33% of UK local authorities, this included 27.12% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.41 people per hectare.\nThe average variance for cluster 3 is 0.06. Example areas: Darlington, Middlesbrough'
+            'Cluster 1 contains 2 local authorities which is 33.33% of UK local authorities, this included 35.75% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.30 people per hectare.\nThe average variance for cluster 1 is 0.033. Example areas: County Durham, Hartlepool', 
+            'Cluster 2 contains 2 local authorities which is 33.33% of UK local authorities, this included 37.13% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.21 people per hectare.\nThe average variance for cluster 2 is 0.003. Example areas: Stockton-on-Tees, Redcar and Cleveland', 
+            'Cluster 3 contains 2 local authorities which is 33.33% of UK local authorities, this included 27.12% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 0.41 people per hectare.\nThe average variance for cluster 3 is 0.056. Example areas: Darlington, Middlesbrough'
         ]
 
     def test_cluster_summary(self):
         self.maxDiff = None  # Show full diff for debugging
-        result_df = cluster_summary(self.input_df, self.uk_std_cluster_means_df, self.variance_df, self.pop_sums_df, self.pop_densities, cluster_column='supergroup')
+        result_output = cluster_summary(self.input_df, self.uk_std_cluster_means_df, self.variance_df, self.pop_sums_df, self.pop_densities, cluster_column='supergroup')
         # Compare the lists
-        self.assertListEqual(result_df, self.expected_output)
-
+        self.assertListEqual(result_output, self.expected_output)
 
 if __name__ == "__main__":
     unittest.main()
