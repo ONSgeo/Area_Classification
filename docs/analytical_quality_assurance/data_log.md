@@ -1,4 +1,4 @@
-<img width="223" height="449" alt="image" src="https://github.com/user-attachments/assets/c382e60c-091d-4c76-8277-348077362f34" /># Data log
+# Data log
 
 This log contains a list of data sources used in this analysis.
 
