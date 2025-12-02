@@ -3,8 +3,8 @@
 We use [`pytest`][pytest] to create and run all of our python based testing. Pytest is the most commonly used python module for testing python code. Testing your code is vital for followling coding best practices and has numerous benefits such as:
 
 * They help to debug your code
-* They make your write more efficient code first time
-* They make you think about what precisely your code is doing as you right it
+* They make you write more efficient code first time
+* They make you think about what precisely your code is doing as you write it
 * They provide a sort of documentation for your code
 * They help to keep your deployment smooth.
 
