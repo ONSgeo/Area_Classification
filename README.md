@@ -1,6 +1,8 @@
 # Area Classification
 This repository contains the workflow for downloading, pre-processing, performing clustering using k-means and post processing to create an Area Classification for Local Authority District (LAD) level data for the UK 2021/22 census'. It follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
+The outputs of this pipeline includes a table allocating each LAD to a Supergroup, Group and Subgroup, based on census data, as well as supporting materials in the form of radial plots and clustergrams.
+
 # Background
 Area Classification - “a hierarchical geodemographic classification across the UK which identifies areas of the country with similar characteristics.” [Geographic Data Service (GeoDS)​](https://data.geods.ac.uk/dataset/output-area-classification-2021#:~:text=The%202021%20Classification%20for%20Output,which%20provides%20a%20thorough%20evaluation.)
 
