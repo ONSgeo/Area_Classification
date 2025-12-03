@@ -1,6 +1,6 @@
 # Using pytest
 
-[`pytest`][pytest] has been used to create some of the python based testing in this repo. Pytest is the most commonly used python module for testing python code. Testing code is vital for following coding best practices and has numerous benefits such as:
+[`pytest`][pytest] has been used to create some of the python-based testing in this repo. Pytest is the most commonly used python module for testing python code. Testing code is vital for following coding best practices and has numerous benefits such as:
 
 * Assisting with debug code
 * Helping developers write more efficient code first time
@@ -10,7 +10,7 @@
 
 ## Structure
 
-There is be a `tests` folder in the root directory of this repository containing all the tests relate to this pipeline. The tests are there for contributers to use, so will be avaiable to contributors when cloning the whole repository.
+There is a `tests` folder in the root directory of this repository containing all the tests relate to this pipeline. The tests are there for contributors to use, so will be available to contributors when cloning the whole repository.
 
 ## Writing pytests
 
