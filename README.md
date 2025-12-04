@@ -7,7 +7,7 @@ The outputs of this pipeline includes a table allocating each LAD to a Supergrou
 Area Classification - “a hierarchical geodemographic classification across the UK which identifies areas of the country with similar characteristics.” [Geographic Data Service (GeoDS)​](https://data.geods.ac.uk/dataset/output-area-classification-2021#:~:text=The%202021%20Classification%20for%20Output,which%20provides%20a%20thorough%20evaluation.)
 
 Current focus:
-* 2021 ​
+* 2021/22
 * Supergroups​, Groups and Subgroups
 * Local Authority District​ (LAD)
     * England and Wales (NOMIS) ​
