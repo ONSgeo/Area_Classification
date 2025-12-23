@@ -1,10 +1,5 @@
 # Creation of radial plots
 
-# WORK OUT HOW TO INCREASE THE SIZE OF THE TICK MARKS FOR THE LABELS AT THE TOP AND BOTTOM
-# NEED TO ADD A FUNCTION THAT CREATES A KEY FOR THE DOMAINS AND THEIR COLOURS
-# NEED TO ADJUST THE RADIAL PLOT TO HAVE DIFFERENT SCALES FOR VALUES GREATER THAN 3 OR LESS THAN -3
-# NEED TO ADD A FUNCTION THAT CREATES A KEY FOR THE LINE COLOURS FOR SUPERGROUPS/GROUPS/SUBGROUPS/UK
-
 import os
 import numpy as np
 import pandas as pd
@@ -30,16 +25,19 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
     """
 
     # Create radial plots for supergroups, groups and subgroups against UK
-    create_radial_plots(config, uk_std_cluster_means, level="UK")
+    create_radial_plots(config, uk_std_cluster_means, level="UK", domain_colours = config['domain_colours'])
     
     # Create radial plots for groups against their parent (groups)
-    create_radial_plots(config, combined_group_means, level="group")
+    create_radial_plots(config, combined_group_means, level="group", domain_colours = config['domain_colours'])
 
     # Create radial plots for subgroups against their parent (groups)
-    create_radial_plots(config, combined_subgroup_means, level="subgroup")
+    create_radial_plots(config, combined_subgroup_means, level="subgroup", domain_colours = config['domain_colours'])
+
+    # Create legends
+    legend_creation (config['domain_colours'])
 
 
-def create_radial_plots(config, dataframe, level):
+def create_radial_plots(config, dataframe, level, domain_colours):
     """
     Helper function to create radial plots for a given dataframe.
 
@@ -58,23 +56,13 @@ def create_radial_plots(config, dataframe, level):
     domain_dict = lookup.set_index('new_code')['domain'].to_dict()
 
     # Output directories
-    parent_dir = os.path.join(config["radial_plot_directory"], "parent_cluster_radial_plots_v2")
-    uk_dir = os.path.join(config["radial_plot_directory"], "uk_radial_plots_v2")
+    parent_dir = os.path.join(config["radial_plot_directory"], "parent_cluster_radial_plots")
+    uk_dir = os.path.join(config["radial_plot_directory"], "uk_radial_plots")
     os.makedirs(parent_dir, exist_ok=True)
     os.makedirs(uk_dir, exist_ok=True)
 
     # Feature columns (e.g., v01, v02, ...)
     feature_cols = [col for col in dataframe if col.startswith("v")]
-
-    # Domain color mapping
-    domain_colors = {
-        "Demography and Migration": "#004272", # blue
-        "Ethnicity, Identity, Language and Religion": "#006400", # dark green
-        "Health, Disability and Unpaid Care": "#584001", # brown
-        "Housing": "#4b0082", # indigo
-        "Labour Market": "#9e0d0d", # dark red
-        "Education": "#525151" # grey
-    }
 
     for _, row in dataframe.iterrows():
         # Data for this cluster
@@ -86,14 +74,14 @@ def create_radial_plots(config, dataframe, level):
         fig.subplots_adjust(top=0.9, bottom=0.1, left=0.1, right=0.9)
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_ylim(-3, 4.0)
+        ax.set_ylim(-3, 4.3)
         # Make the outer polar axis border (spine) transparent 
         ax.spines['polar'].set_visible(False)
 
         # Draw colored domain segments
         for i, col in enumerate(feature_cols):
             domain = domain_dict.get(col, "Other")
-            color = domain_colors.get(domain, "black")
+            color = domain_colours.get(domain, "black")
             ax.fill([
                 angles[i], angles[i+1], angles[i+1], angles[i]
             # Set where the colored segments start (3.25) and end (3.5) on the y-axis
@@ -109,9 +97,9 @@ def create_radial_plots(config, dataframe, level):
 
         # User-defined radii for top 6 and bottom 6 labels (edit these as needed)
         top_label_radii = [4.6, 4.6, 4.4, 4.4, 4.2, 4.2]  # Closest to top (angle=0), then next, etc.
-        top_tick_ends = [5.0, 5.0, 4.5, 4.5, 4.0, 4.0] # WORK OUT WHY THESE ARE ALL THE SAME LENGTH IN THE OUTPUT
+        top_tick_ends =  [r - 0.25 for r in top_label_radii] # [5.0, 5.0, 4.5, 4.5, 4.0, 4.0]
         bottom_label_radii = [4.6, 4.6, 4.4, 4.4, 4.2, 4.2]  # Closest to bottom (angle=pi), then next, etc.
-        bottom_tick_ends = [5.0, 5.0, 4.5, 4.5, 4.0, 4.0] # WORK OUT WHY THESE ARE ALL THE SAME LENGTH IN THE OUTPUT
+        bottom_tick_ends = [r - 0.25 for r in bottom_label_radii] # [5.0, 5.0, 4.5, 4.5, 4.0, 4.0]
         default_label_radius = 4.0
         default_tick_end = 3.8
 
@@ -122,14 +110,6 @@ def create_radial_plots(config, dataframe, level):
         # Bottom 6: closest to 3π/2 (270°), but exclude any already in top_indices
         bottom_candidates = [item for item in angle_label_indices if item[0] not in top_indices]
         bottom_indices_sorted = sorted(bottom_candidates, key=lambda x: abs(x[1] - (3 * np.pi / 2)))[:6]
-
-        # Debug printout for verification
-        print("Top 6 label indices and angles (closest to 90°):")
-        for idx, ang in top_indices_sorted:
-            print(f"  idx={idx}, angle={ang:.3f}, label={label_dict.get(feature_cols[idx], feature_cols[idx])}")
-        print("Bottom 6 label indices and angles (closest to 270°):")
-        for idx, ang in bottom_indices_sorted:
-            print(f"  idx={idx}, angle={ang:.3f}, label={label_dict.get(feature_cols[idx], feature_cols[idx])}")
 
         # Build maps for radii/tick_end
         top_map = {idx: (r, t) for (idx, _), r, t in zip(top_indices_sorted, top_label_radii, top_tick_ends)}
@@ -152,21 +132,24 @@ def create_radial_plots(config, dataframe, level):
             ax.text(angle, label_radius, label, fontsize=18, color="black", ha=ha, va='center', zorder=11)
 
         # Draw line at y=0
-        ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
+        #ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
 
         # Plot the data line and set title/filename
         # colour of the plotted line is blue for groups, green for subgroups and black for UK
         if level == "group":
+            ax.plot(angles, [0] * len(angles), color='black', linewidth=1.0, linestyle='solid', label='Zero Line')
             ax.plot(angles, values, color='blue', linewidth=1.5, linestyle='solid') 
-            ax.set_title(f"{row[level]} {level} (supergroup mean)", size=18, pad=80, weight='bold')
+            ax.set_title(f"{row[level]} {level} (supergroup mean)", size=26, pad=80, weight='bold')
             plot_path = os.path.join(parent_dir, f"{row[level]}_{level}.png")
         elif level == "subgroup":
+            ax.plot(angles, [0] * len(angles), color='blue', linewidth=1.0, linestyle='solid', label='Zero Line')           
             ax.plot(angles, values, color='green', linewidth=1.5, linestyle='solid')
-            ax.set_title(f"{row[level]} {level} (group mean)", size=18, pad=80, weight='bold')
+            ax.set_title(f"{row[level]} {level} (group mean)", size=26, pad=80, weight='bold')
             plot_path = os.path.join(parent_dir, f"{row[level]}_{level}.png")
         elif level == "UK":
+            ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')            
             ax.plot(angles, values, color='black', linewidth=1.5, linestyle='solid')
-            ax.set_title(f"{row['cluster']} {row['hierarchy_level']} (UK mean)", size=18, pad=80, weight='bold')
+            ax.set_title(f"{row['cluster']} {row['hierarchy_level']} (UK mean)", size=26, pad=80, weight='bold')
             plot_path = os.path.join(uk_dir, f"{row['cluster']}_{row['hierarchy_level']}.png")
 
         plt.savefig(plot_path)
@@ -176,6 +159,49 @@ def create_radial_plots(config, dataframe, level):
         print(f"UK radial plots saved in: {uk_dir}")
     elif level in ["group", "subgroup"]:
         print(f"Parent cluster radial plots saved in: {parent_dir}")
+
+def legend_creation (domain_colours):
+    """
+    Function to great pngs of the legend for both the radial plot domains and the lines on the
+    radial plots.
+
+    Parameters
+    ----------
+    domain_colours : Dictionary
+        The list of colours used for the domains.    
+    """
+    # Create the domain legend
+    fig, ax = plt.subplots(figsize=(1, 3))
+    ax.axis('off')
+    y = 0.1
+    for domain, color in domain_colours.items():
+        ax.scatter(0.013, y, s=300, color=color, marker='s')
+        ax.text(0.0134, y, domain, va='center', fontsize=14)
+        y -= 0.13
+    domain_colour_filepath = os.path.join(config["radial_plot_directory"], "Domain key.png")
+    plt.savefig(domain_colour_filepath, bbox_inches='tight', dpi=150)
+    plt.close(fig)
+
+    #Create the line legend
+    # Define the line types and their colours
+    line_info = [
+        ("UK mean", "#FA0000"),
+        ("Group mean", "blue"),
+        ("Subgroup mean", "green"),
+        ("Supergroup mean", "black")
+    ]
+
+    fig, ax = plt.subplots(figsize=(2, 2))
+    ax.axis('off')
+
+    y_positions = [0.8, 0.6, 0.4, 0.2]
+    for (label, color), y in zip(line_info, y_positions):
+        ax.plot([0.1, 0.11], [y, y], color=color, linewidth=6)
+        ax.text(0.111, y, label, va='center', fontsize=14)
+
+    line_colour_filepath = os.path.join(config["radial_plot_directory"], "Line colour.png")
+    plt.savefig(line_colour_filepath, bbox_inches='tight', dpi=200)
+    plt.close(fig)
 
 if __name__ == "__main__":
     from area_classification.utilities.load_config import load_config

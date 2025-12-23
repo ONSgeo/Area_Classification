@@ -128,3 +128,13 @@ england_and_wales_table_codes_to_remove : [
         "ts038asp",
         "ts039asp"
     ]
+
+# Domain colours mapping radial plots
+domain_colours : {
+    "Demography and Migration" : "#28A197", # turquoise
+    "Ethnicity, Identity, Language and Religion" : "#12436D", #dark blue 
+    "Health, Disability and Unpaid Care" : "#A285D1", # Light purple  
+    "Housing" : "#801650", # Dark pink  
+    "Labour Market" : "#F46A25", #Orange   
+    "Education" : "#3D3D3D" , #Dark grey   
+}
