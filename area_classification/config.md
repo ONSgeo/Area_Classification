@@ -40,6 +40,7 @@
 |keep_column| The names of columns to keep in the table restructure | string  | Any valid column name. |
 |split_column| The names of columns to split into separate characters in the table restructure | string  | Any valid column name. |
 |england_and_wales_table_codes_to_remove | Tables which do not have OA data for England and Wales | list  | Any valid table codes. |
+|domain_colours | A dictionary of colours to use in the radial plots for each domain | dict   | Dictionary of names of domains and the colour which will represent this in radial plots. |
 
 ## Guidance for use
 As an end user, you will only need to change a some of the [config.yaml](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/config.yaml). It is likely you will only need to update file paths and values in the top section of the config.yaml under #*****FILE PATHS AND CONFIGURATIONS WHICH MAY NEED AMENDING*****. If making amendments ensure that the key remains the same and only the value associated (file path, variable, list etc) is changed.
