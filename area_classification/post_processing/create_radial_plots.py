@@ -131,9 +131,6 @@ def create_radial_plots(config, dataframe, level, domain_colours):
             ha = 'left' if 0 <= angle < np.pi / 2 or 3 * np.pi / 2 <= angle < 2 * np.pi else 'right'
             ax.text(angle, label_radius, label, fontsize=18, color="black", ha=ha, va='center', zorder=11)
 
-        # Draw line at y=0
-        #ax.plot(angles, [0] * len(angles), color='red', linewidth=1.0, linestyle='solid', label='Zero Line')
-
         # Plot the data line and set title/filename
         # colour of the plotted line is blue for groups, green for subgroups and black for UK
         if level == "group":
