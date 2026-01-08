@@ -287,11 +287,3 @@ def fetch_data(var_code, var_name, var_unit):
         logger.error(log_message)
         return None
     return r.content
- 
-
-if __name__ == "__main__":
-    # Example usage
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    ni_lgd_download_data(config)
-

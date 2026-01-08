@@ -61,12 +61,4 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     return pre_clustering_filtered
 
 
-# Example usage
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    pre_clustering_std = pd.read_csv(config['pre_clustering_data_std_mean'])
-    pre_clustering_df = drop_variables_pre_clustering(config, pre_clustering_std, config.get('variables_to_drop', [])) 
-    print(pre_clustering_df)
-
     

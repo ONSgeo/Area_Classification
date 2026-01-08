@@ -56,12 +56,3 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     
     # Return the combined means for further use if needed
     return combined_group_means, combined_subgroup_means
-    
-
-# Run the function if the script is executed directly
-if __name__ == "__main__":
-    config = load_config('area_classification/config.yaml')
-    clustering_output_filepath = os.path.join(config["output_directory"], "subgroup", "subclustering_output.csv")
-    clustering_output = pd.read_csv(clustering_output_filepath)
-    chosen_clustering_variables = config["pre_clustering_data_filtered_std_mean"]
-    post_processing(config, chosen_clustering_variables, clustering_output)

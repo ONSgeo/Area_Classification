@@ -390,17 +390,3 @@ def run_subclustering(input_df, output_location,drop_columns,column_name, cluste
     logger.info(f"Subcluster Output DataFrame shape: {subcluster_output_df.shape}")
 
     return df  # Return the modified DataFrame with clusters and subclusters
-
-
-if __name__ == "__main__":
-    config = load_config()
-
-    function_output = clustering_wrapper(config,
-        input_dataframe= config["pre_clustering_data_std_mean"],
-        number_of_clusters=config["number_of_clusters"],
-        n_init=config["number_of_times_k_means_initialised"],
-        output_directory=config["output_directory"],
-        clustergram_directory=config["clustergram_directory"],
-        random_seed=config["random_seed"])
-    print(function_output.head())
-    function_output.to_csv('function_output.csv', index=False)

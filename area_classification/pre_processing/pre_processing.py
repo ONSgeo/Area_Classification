@@ -102,12 +102,3 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     preprocessed_df.to_csv(config["pre_clustering_data"], index=False)
 
     return preprocessed_df
-
-if __name__ == "__main__":
-    # Example usage
-    config = load_config('area_classification/config.yaml')
-    ew_df = pd.read_csv(f"{config['input_directory']}LTLA_all_variables.csv")  
-    ni_df = pd.read_csv(f"{config['input_directory']}LGD_all_variables.csv")
-    scot_df = pd.read_csv(f"{config['input_directory']}CA19_all_variables.csv")
-    processed_df = pre_processing(ew_df, ni_df, scot_df, config)
-    print("pre-processing complete. Processed DataFrame shape:", processed_df.shape)

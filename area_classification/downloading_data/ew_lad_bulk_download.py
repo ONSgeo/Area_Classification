@@ -223,10 +223,3 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     meta_data_table_full.to_csv(os.path.join(config["input_directory"], "ew_lad_table_metadata.csv"), index=False)
 
     return meta_data_table_full
-
-
-if __name__ == "__main__":
-    # Example usage
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    ew_lad_bulk_download(config)

@@ -259,23 +259,3 @@ def convert_disability_age_group_northern_ireland(filepath:str, config:dict) -> 
     output_path = Path(config["input_directory"]) / "ni_disability_age_group.csv"
     result_df.to_csv(output_path, index=False)
     return result_df
-
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    LAD_lookup_file_path = (config["LAD_lookup_file_path"]) 
-    
-    df_scot = convert_disability_age_group_scotland(config["input_directory"] + config["scotland_disability_input"], config)
-    df_scot.to_csv(config["input_directory"]+"scot_disability_age_group.csv", index=False)
-    print(df_scot)
-
-    df_ni = convert_disability_age_group_northern_ireland(config["input_directory"] + config["ni_disability_input"], config)
-    df_ni.to_csv(config["input_directory"]+"ni_disability_age_group.csv", index=False)
-    print(df_ni)
-
-    df_ew = convert_disability_age_group_england_wales(config["input_directory"] + config["england_wales_disability_input"], config)
-    df_ew.to_csv(config["input_directory"]+"ew_disability_age_group.csv", index=False)
-
-    print(df_ew)
-    print("all saved to csv")

@@ -613,15 +613,3 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
                         message = f"Domain {domain} not recognized for variable {variable_name}."
 
         print("-" * 40)
-
-
-if __name__ == "__main__":
-    config = load_config()
-    filepath_long = os.path.join(config["output_directory"], "cluster_assignments/restructured_subclustering_output_long.csv")
-    restructured_cluster_table_long = pd.read_csv(filepath_long)
-    uk_std_cluster_means_filepath = os.path.join(config["output_directory"], "std_means/uk_std_means/uk_std_cluster_means_output.csv")
-    uk_std_cluster_means = pd.read_csv(uk_std_cluster_means_filepath)
-
-    lookup_file = config["select_variables_lookup"]
-
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, lookup_file,  cluster_column='subgroup')

@@ -160,10 +160,3 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
     # Save to data QA folder
     output_file_path = config["qa_directory"] + "sir_calculation_qa_output.csv"
     df.to_csv(output_file_path, index=False)
-
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    x = sir_processing(config)
-    sir_qa_checks(x, config)

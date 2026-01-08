@@ -367,14 +367,3 @@ def user_input_qa(df):
     print('QA checks complete')
 
     return
-
-   
-
-if __name__ == "__main__":
-    # Example usage
-    folder_path = "./data/inputs"
-    file_path = os.path.join(folder_path, 'pre_clustering_data_filtered.csv')
-    df = pd.read_csv(file_path)
-    run_qa_checks(df)
-
-

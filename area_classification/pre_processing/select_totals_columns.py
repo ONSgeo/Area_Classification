@@ -120,8 +120,3 @@ def select_totals_columns(config, inputs_folder):
     raw_totals_df.to_csv(output_file, index=False)
 
     return raw_totals_df
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    select_totals_columns(config, config["qa_directory"])

@@ -71,11 +71,3 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
     uk_std_cluster_means.to_csv(output_file_path, index=False)
     
     return uk_std_cluster_means
-
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    cluster_variable_means(config)
-
- 

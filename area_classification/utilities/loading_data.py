@@ -95,13 +95,3 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
     merged_df.to_csv(output_csv_path, index=False)
     
     return merged_df
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
-    ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
-
-    filepath = os.path.join(config["input_directory"], "./ni_downloads/")
-    ni_df = load_format_data(filepath, config["ni_file_pattern"],config["ni_join_column_name"])
-
