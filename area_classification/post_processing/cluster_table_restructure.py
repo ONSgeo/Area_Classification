@@ -96,12 +96,3 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
     restructured_cluster_table_long.to_csv(output_file_long, index=False)
 
     return restructured_cluster_table, restructured_cluster_table_long
-
-if __name__ == "__main__":
-    # Example usage
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    clustering_output_filepath = os.path.join(config["output_directory"], "subgroup", "subclustering_output.csv")
-    clustering_output = pd.read_csv(clustering_output_filepath)
-    standardised_data = pd.read_csv(config["pre_clustering_data_std_mean"])
-    cluster_table_restructure(config, clustering_output, config["split_column"],standardised_data)

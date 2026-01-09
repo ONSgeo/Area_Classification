@@ -35,9 +35,3 @@ def convert_to_percentages(raw_totals_df):
     percentages_df = percentages_df[[col for col in percentages_df.columns if not col.endswith('_total')]]
     
     return percentages_df
-
-if __name__ == "__main__":
-    # Example usage
-    raw_totals_df= pd.read_csv("./area_classification/data/inputs/raw_totals_df.csv")
-    df = convert_to_percentages(raw_totals_df)
-    print(df)

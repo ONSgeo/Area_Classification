@@ -34,7 +34,7 @@ def create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_mea
     create_radial_plots(config, combined_subgroup_means, level="subgroup", domain_colours = config['domain_colours'])
 
     # Create legends
-    legend_creation (config['domain_colours'])
+    legend_creation (config, config['domain_colours'])
 
 
 def create_radial_plots(config, dataframe, level, domain_colours):
@@ -157,13 +157,15 @@ def create_radial_plots(config, dataframe, level, domain_colours):
     elif level in ["group", "subgroup"]:
         print(f"Parent cluster radial plots saved in: {parent_dir}")
 
-def legend_creation (domain_colours):
+def legend_creation (config, domain_colours):
     """
     Function to great pngs of the legend for both the radial plot domains and the lines on the
     radial plots.
 
     Parameters
     ----------
+    config : dict
+        config dictionary containing filepaths.
     domain_colours : Dictionary
         The list of colours used for the domains.    
     """
@@ -199,11 +201,3 @@ def legend_creation (domain_colours):
     line_colour_filepath = os.path.join(config["radial_plot_directory"], "Line colour.png")
     plt.savefig(line_colour_filepath, bbox_inches='tight', dpi=200)
     plt.close(fig)
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    uk_std_cluster_means = pd.read_csv(os.path.join(config["output_directory"], "std_means", "uk_std_means", "uk_std_cluster_means_output.csv"))
-    combined_group_means = pd.read_csv(os.path.join(config["output_directory"], "std_means", "parent_std_means","parent_std_cluster_group_means_output.csv"))
-    combined_subgroup_means = pd.read_csv(os.path.join(config["output_directory"], "std_means", "parent_std_means","parent_std_cluster_subgroup_means_output.csv"))
-    create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)

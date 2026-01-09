@@ -90,16 +90,4 @@ def apply_min_max_scaling(dataframe):
         scaled_data.iloc[:, 1:].max() - scaled_data.iloc[:, 1:].min()
     )
     return scaled_data
-
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    pre_clustering_df_path = config["pre_clustering_data"]
-    pre_clustering_df = pd.read_csv(pre_clustering_df_path)
-    pre_clustering_df_std = prepare_clustering_data(pre_clustering_df)
-    pre_clustering_df_std.to_csv(config["input_directory"] + "pre_clustering_data_std_normalized.csv", index=False)
-  
-
-
  

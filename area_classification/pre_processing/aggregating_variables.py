@@ -56,12 +56,3 @@ def aggregating_variables(df_temp, aggregation_configs, config):
     df_temp.to_csv(output_file_path, index=False)
         
     return df_temp
-
-if __name__ == "__main__":
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-    aggregation_config = load_config('area_classification/aggregation_setup.yaml')
-    aggregation_configs = aggregation_config['scot_file_configs']
-    df_temp = "./data/inputs/CA19_all_variables.csv"
-    df = aggregating_variables(df_temp, aggregation_config, config )
-
