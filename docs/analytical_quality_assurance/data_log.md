@@ -37,11 +37,11 @@ Scotland's Census website is the official provider of census statistics for Scot
 * 🟢Quality: Green
 * 🟢Suitability: Green <br>
 
-The source of the Standard Area Measurement product used for population density calculations. Also the source for the Local Authority Districts Names and Codes in the UK Lookup. The portal is the official source of geographic products, web applications, story maps, services and APIs from the ONS.
+The source of the Local Authority Districts Names and Codes in the UK Lookup. The portal is the official source of geographic products, web applications, story maps, services and APIs from the ONS.
 
 ## ONS website
 * 🟢Quality: Green
 * 🟢Suitability: Green <br>
 
-The source of the England and Wales Census 2021 disability data used for calculating the Standardised Illness Ratio. Also the source of National and subnational mid-year population estimates for the UK and its constituent countries used for population density calculations. 
+The source of the England and Wales Census 2021 disability data used for calculating the Standardised Illness Ratio. 
 
