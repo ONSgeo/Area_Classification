@@ -1,5 +1,6 @@
 #pip install xlwt
 import xlwt
+import shutil
 import unittest
 import pandas as pd
 import os
@@ -11,8 +12,8 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
     def setUp(self):
         # Create a mock configuration
         self.config = {
-            'input_directory': './tests/data/pop_density/',
-            'output_directory': './tests/data/pop_density/',
+            'input_directory': './tests/data/summaries/',
+            'output_directory': './tests/data/summaries/',
         }
 
         # Create mock data for restructured_cluster_table_long
@@ -40,8 +41,8 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         self.uk_std_cluster_means.to_csv('uk_std_cluster_means.csv', index=False)
 
         # Create a mock lookup file
-        os.makedirs('./tests/data/pop_density/population_density/', exist_ok=True)
-        self.lookup_file = './tests/data/pop_density/lookup_file.csv'
+        os.makedirs('./tests/data/summaries/', exist_ok=True)
+        self.lookup_file = './tests/data/summaries/lookup_file.csv'
 
         pd.DataFrame({
             'variable_name': ['Lives in a communal establishment', 'Never married and never registered a civil partnership', 'Usual residents per square kilometre'],
@@ -93,19 +94,17 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         print("actual output:", fake_out.getvalue())
         self.assertIn(expected_output, fake_out.getvalue())
 
+        print("Cleaning up test files...")
+        # Clean up - remove created files and folders
+        for filename in os.listdir(self.config['input_directory']):
+            file_path = os.path.join(self.config['input_directory'], filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+                shutil.rmtree(self.config['input_directory'])
 
-
-        # print("Cleaning up test files...")
-        # # Clean up - remove created files and folders
-        # for filename in os.listdir(self.config['input_directory']):
-        #     file_path = os.path.join(self.config['input_directory'], filename)
-        #     if os.path.isfile(file_path):
-        #         os.remove(file_path)
-        #     elif os.path.isdir(file_path):
-        #         shutil.rmtree(file_path)
-        #         shutil.rmtree(self.config['input_directory'])
-
-        # print("Integration test completed.")
+        print("Integration test completed.")
 
 if __name__ == '__main__':
     unittest.main()
