@@ -26,7 +26,6 @@ class TestCalculateClusterVariance(unittest.TestCase):
     def test_calculate_cluster_variance(self):
 
         result_df =  calculate_cluster_variance(self.input_df, cluster_column = 'supergroup')
-        print(result_df)
         # Assert that the result matches the expected output
         pd.testing.assert_frame_equal(result_df, self.expected_df)
 
@@ -74,7 +73,6 @@ class TestClusterSummary(unittest.TestCase):
     def test_cluster_summary(self):
         self.maxDiff = None  # Show full diff for debugging
         result_output = cluster_summary(self.input_df, self.uk_std_cluster_means_df, self.variance_df, cluster_column='supergroup')
-        print(result_output)
         # Compare the lists
         self.assertListEqual(result_output, self.expected_output)
 
