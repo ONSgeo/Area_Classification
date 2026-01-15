@@ -1,5 +1,6 @@
 #pip install xlwt
 import xlwt
+import shutil
 import unittest
 import pandas as pd
 import os
@@ -11,12 +12,8 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
     def setUp(self):
         # Create a mock configuration
         self.config = {
-            'input_directory': './tests/data/pop_density/',
-            'output_directory': './tests/data/pop_density/',
-            'population_estimates_filepath_2021': './tests/data/pop_density/population_density/population_2021.xls',
-            'population_estimates_filepath_2022': './tests/data/pop_density/population_density/population_2022.xlsx',
-            'sam_2021_filepath': './tests/data/pop_density/population_density/SAM_LAD_DEC_2021_UK.csv',
-            'sam_2022_filepath': './tests/data/pop_density/population_density/SAM_LAD_DEC_2022_UK_V2.csv'
+            'input_directory': './tests/data/summaries/',
+            'output_directory': './tests/data/summaries/',
         }
 
         # Create mock data for restructured_cluster_table_long
@@ -44,8 +41,8 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         self.uk_std_cluster_means.to_csv('uk_std_cluster_means.csv', index=False)
 
         # Create a mock lookup file
-        os.makedirs('./tests/data/pop_density/population_density/', exist_ok=True)
-        self.lookup_file = './tests/data/pop_density/lookup_file.csv'
+        os.makedirs('./tests/data/summaries/', exist_ok=True)
+        self.lookup_file = './tests/data/summaries/lookup_file.csv'
 
         pd.DataFrame({
             'variable_name': ['Lives in a communal establishment', 'Never married and never registered a civil partnership', 'Usual residents per square kilometre'],
@@ -56,69 +53,13 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
             'new_code': ['v01', 'v02', 'v12'],
             'domain': ['Demography and Migration', 'Demography and Migration', 'Demography and Migration']
         }).to_csv(self.lookup_file, index=False)
-
-        # Make mock popultion density and SAM data files
-        pd.DataFrame({
-            'LAD21CD': ['E06000001' , 'E06000002', 'S12000036', 'S12000049'],
-            'LAD21NM': ['Hartlepool', 'Middlesbrough', 'City of Edinburgh', 'Glasgow City'],
-            'AREAEHECT': [116637.77, 77554.08, 116637.77, 77554.08],
-            'AREACHECT': [116637.77, 73763.24, 116637.77, 73763.24],
-            'AREAIHECT': [0, 587.16, 0, 587.16],
-            'AREALHECT': [116637.77, 73176.08, 116637.77, 73176.08]
-        }).to_csv(self.config['sam_2021_filepath'], index=False)
-
-        pd.DataFrame({
-            'LAD22CD': ['E06000001' , 'E06000002', 'S12000036', 'S12000049'],
-            'LAD22NM': ['Hartlepool', 'Middlesbrough', 'City of Edinburgh', 'Glasgow City'],
-            'LAD22NMW': ['', '', '', ''],
-            'AREAEHECT': [116637.78, 77554.07, 116637.78, 77554.07],
-            'AREACHECT': [116637.78, 73763.23, 116637.78, 73763.23],
-            'AREAIHECT': [0, 587.16, 0, 587.16],
-            'AREALHECT': [116637.78, 73176.07, 116637.78, 73176.07]
-        }).to_csv(self.config['sam_2022_filepath'], index=False)       
-
-        os.makedirs(os.path.dirname(self.config['population_estimates_filepath_2021']), exist_ok=True)
-        # This version of pandas doesn't support xls to to create a mock xls, need to creat a CSV then convert
-        pop_2021_df = pd.DataFrame({
-            'Code': ['empty', 'empty','empty','empty','empty','empty','empty','Code','E06000001', 'E06000002','S12000036', 'S12000049'],
-            'Name': ['empty', 'empty','empty','empty','empty','empty','empty','Name','Hartlepool', 'Middlesbrough','City of Edinburgh', 'Glasgow City'],
-            'Geography': ['empty', 'empty','empty','empty','empty','empty','empty','Geography','Unitary Authority', 'Unitary Authority', 'Council Area', 'Council Area'],
-            'All ages': ['empty', 'empty','empty','empty','empty','empty','empty','All ages', 110000, 150000, 630050, 520010]
-            })
-        
-        pop_estimates_CSV_2021 = os.path.join(self.config['input_directory'], 'pop_estimates_CSV_2021.xls')
-        pop_2021_df.to_csv(pop_estimates_CSV_2021, index=False)
-        # Unable to produce the xls directly so need to read back in the CSV to convert
-        df = pd.read_csv(pop_estimates_CSV_2021)
-        wb = xlwt.Workbook()
-        ws = wb.add_sheet('MYE2 - Persons')
-        # Write header
-        for col_idx, col_name in enumerate(df.columns):
-            ws.write(0, col_idx, col_name)
-        # Write data
-        for row_idx, row in enumerate(df.values, start=1):
-            for col_idx, value in enumerate(row):
-                ws.write(row_idx, col_idx, value)
-        wb.save(os.path.join(self.config['population_estimates_filepath_2021']))
-
-        os.makedirs(os.path.dirname(self.config['population_estimates_filepath_2022']), exist_ok=True)
-        pop_2022_df = pd.DataFrame({
-            'Code': ['empty', 'empty','empty','empty','empty','empty','empty','Code','E06000001', 'E06000002','S12000036', 'S12000049'],
-            'Name': ['empty', 'empty','empty','empty','empty','empty','empty','Name','Hartlepool', 'Middlesbrough', 'City of Edinburgh', 'Glasgow City'],
-            'Geography': ['empty', 'empty','empty','empty','empty','empty','empty','Geography','Unitary Authority', 'Unitary Authority', 'Council Area', 'Council Area'],
-            'All ages': ['empty', 'empty','empty','empty','empty','empty','empty','All ages', 110050, 150005, 630000, 520000]
-        })
-        with pd.ExcelWriter(self.config['population_estimates_filepath_2022'], engine='openpyxl') as writer:
-            pop_2022_df.to_excel(writer, sheet_name='MYE2 - Persons', index=False)
-
         
     def test_cluster_summaries_wrapper(self):
         # Expected output strings
         # When checking variance, remember sample var used and the value after higher / lower is related to the UK_means table
         expected_output = (
             "Cluster 1\n"
-            "Cluster 1 contains 2 local authorities which is 50.00% of UK local authorities, this included 18.44% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 1.37 people per hectare.\n"
-            "The average variance for cluster 1 is 0.068. Example areas: Middlesbrough, Hartlepool\n"
+            "Cluster 1 contains 2 local authorities which is 50.00% of UK local authorities. The average variance for cluster 1 is 0.068. Example areas: Middlesbrough, Hartlepool\n"
             "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
             "        compared with the mean of the other clusters combined. The population of cluster 1 has a:\n"
             "• lower (-0.240) Usual residents per square kilometre. Variance:0.020 (Demography and Migration domain)\n"
@@ -126,8 +67,7 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
             "• lower (-0.200) proportion of people who are Never married and never registered a civil partnership. Variance:0.180 (Demography and Migration domain)\n" 
             "----------------------------------------\n"
             "Cluster 2\n"
-            "Cluster 2 contains 2 local authorities which is 50.00% of UK local authorities, this included 81.56% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census). This cluster has a population density of 6.06 people per hectare.\n"
-            "The average variance for cluster 2 is 0.005. Example areas: Glasgow City, City of Edinburgh\n"
+            "Cluster 2 contains 2 local authorities which is 50.00% of UK local authorities. The average variance for cluster 2 is 0.005. Example areas: Glasgow City, City of Edinburgh\n"
             "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
             "        compared with the mean of the other clusters combined. The population of cluster 2 has a:\n"
             "• higher (0.240) Usual residents per square kilometre. Variance:0.005 (Demography and Migration domain)\n"
@@ -154,19 +94,17 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         print("actual output:", fake_out.getvalue())
         self.assertIn(expected_output, fake_out.getvalue())
 
+        print("Cleaning up test files...")
+        # Clean up - remove created files and folders
+        for filename in os.listdir(self.config['input_directory']):
+            file_path = os.path.join(self.config['input_directory'], filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+                shutil.rmtree(self.config['input_directory'])
 
-
-        # print("Cleaning up test files...")
-        # # Clean up - remove created files and folders
-        # for filename in os.listdir(self.config['input_directory']):
-        #     file_path = os.path.join(self.config['input_directory'], filename)
-        #     if os.path.isfile(file_path):
-        #         os.remove(file_path)
-        #     elif os.path.isdir(file_path):
-        #         shutil.rmtree(file_path)
-        #         shutil.rmtree(self.config['input_directory'])
-
-        # print("Integration test completed.")
+        print("Integration test completed.")
 
 if __name__ == '__main__':
     unittest.main()

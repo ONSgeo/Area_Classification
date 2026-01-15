@@ -33,9 +33,8 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     Steps
     -----
     1. Calculate the variance for each cluster.
-    2. Compute the population percentages and population densities for each cluster.
-    3. Generate detailed summaries for each cluster.
-    4. Identify the key drivers for each cluster.
+    2. Generate detailed summaries for each cluster.
+    3. Identify the key drivers for each cluster.
 
     Returns
     -------
@@ -47,21 +46,10 @@ def cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cl
     # Step 1 - Variance: 
     variance_df = calculate_cluster_variance(restructured_cluster_table_long, cluster_column)
 
-    # Step 2 - Population statistics: 
-    df_populations_sam_long = population_sam_preprocessing(
-        restructured_cluster_table_long,
-        f"{config['input_directory']}population_density/population_2021.xls",
-        f"{config['input_directory']}population_density/population_2022.xlsx",
-        f"{config['input_directory']}population_density/SAM_LAD_DEC_2021_UK.csv",
-        f"{config['input_directory']}population_density/SAM_LAD_DEC_2022_UK_V2.csv"
-    )
-    pop_sums = cluster_population_percentages(df_populations_sam_long, cluster_column)
-    pop_densities = output_population_densities(config, df_populations_sam_long)
+    # Step 2 - Cluster summaries: 
+    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column)
 
-    # Step 3 - Cluster summaries: 
-    cluster_info = cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities,  cluster_column)
-
-    # Step 4 - Cluster drivers: 
+    # Step 3 - Cluster drivers: 
     identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, variance_df, cluster_column, top_n=3)
 
     return 
@@ -136,202 +124,7 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
 
     return variance_df
 
-def population_sam_preprocessing(restructured_cluster_table_long, population_estimates_filepath_2021, population_estimates_filepath_2022, sam_2021_filepath, sam_2022_filepath):
-    """
-    Data preprocessing steps before running cluster_population_percentages and output_population_densities functions. 
-
-    This function removes superfluous columns, removes 'total' row in population_estimates, and renames 
-    primary key columns ready for joining the restructured_cluster_table_long and df_populations together. 
-
-    NOTE: This function edits the dataframes in place, then returns them.
-
-    Parameters
-    ----------
-    restructured_cluster_table_long : pd.DataFrame
-        A DataFrame containing the data, including columns for LAD code / names, the cluster allocation at different levels 
-    population_estimates_filepath_2021 : str
-        The file path of where to find the .xls for the LAD estimate population for 2021.
-    population_estimates_filepath_2022 : str
-        The file path of where to find the .xlsx for the LAD estimate population for 2022.
-    sam_2021_filepath : str
-        The file path of where to find the csv for the Standard Area Measurements (SAM) in hectares by LAD code for 2021.
-    sam_2022_filepath : str
-        The file path of where to find the csv for the Standard Area Measurements (SAM) in hectares by LAD code for 2022.    
-
-    Returns
-    -------
-    Three pandas.DataFrames
-        - The first DataFrame is a cleaned version of the `restructured_cluster_table_long` and `population_estimates` joined.
-        - The second DataFrame is cleaned version of Standard Area Measurements (SAM) for 2021.
-        - The third DataFrame is cleaned version of Standard Area Measurements (SAM) for 2021.
-        These are ready for running cluster_population_percentages and output_population_densities functions functions. 
-    """
-    #Pre-process the populations table
-    # Import the .xls file and open the 'MYE2 - Persons' tab
-    df_populations_2021 = pd.read_excel(population_estimates_filepath_2021, sheet_name='MYE2 - Persons', engine='xlrd')  
-
-    # Import the .xlsx file
-    df_populations_2022 = pd.read_excel(population_estimates_filepath_2022, sheet_name='MYE2 - Persons', engine='openpyxl')  # Use 'openpyxl' for .xlsx files
-    
-    # List of DataFrames to process
-    dataframes = [df_populations_2021, df_populations_2022]
-
-    # Process each DataFrame in the list
-    for index, df in enumerate(dataframes):
-        # Remove the first 7 rows and keep only the first 4 columns
-        df = df.iloc[7:, :4]
-        # Rename the columns
-        df.columns = ['LAD_code', 'LAD_name', 'Geography', 'population']
-        
-        # Drop rows where 'Geography' column contains 'country' or 'region'
-        df = df[~df['Geography'].str.lower().isin(['country', 'region'])]
-        
-        # Update the original DataFrame in the list
-        dataframes[index] = df
-
-    # Assign the processed DataFrames back to their original variables
-    df_populations_2021, df_populations_2022 = dataframes
-    # Filter rows where the first character of 'LAD_code' is 'E', 'N', or 'W'
-    df_populations_2021 = df_populations_2021[df_populations_2021['LAD_code'].str[0].isin(['E', 'N', 'W'])]
-
-    # Filter rows where the first character of 'LAD_code' is 's'
-    df_populations_2022 = df_populations_2022[df_populations_2022['LAD_code'].str[0].str.lower() == 's']
-
-    # Pre-process the SAM tables
-    # Read in the population estimates CSV file and do some initial formatting
-    sam_2021 = pd.read_csv(sam_2021_filepath)
-    sam_2022 = pd.read_csv(sam_2022_filepath)
-    
-    # Keep only required columns 
-    sam_2021.drop(columns=['LAD21NM', 'AREAEHECT', 'AREACHECT', 'AREAIHECT'], inplace=True)
-    sam_2022.drop(columns=['LAD22NM', 'LAD22NMW', 'AREAEHECT', 'AREACHECT', 'AREAIHECT'], inplace=True)
-
-    # Rename columns in place
-    sam_2021.rename(columns={'LAD21CD': 'LAD_code'}, inplace=True)
-    sam_2022.rename(columns={'LAD22CD': 'LAD_code'}, inplace=True)
-    
-    # Merge the sam_2021 DataFrame with df_populations_2021 on the 'LAD_code' column
-    merged_2021 = pd.merge(df_populations_2021, sam_2021, on='LAD_code', how='inner')
-    merged_2022 = pd.merge(df_populations_2022, sam_2022, on='LAD_code', how='inner')
-
-    # Concatenate merged_2021 and merged_2022
-    merged_all = pd.concat([merged_2021, merged_2022], axis=0, ignore_index=True)
-
-    # Perform the join with an indicator column to track the source of rows
-    df_populations_sam_long = pd.merge(merged_all, restructured_cluster_table_long, 
-        on='LAD_code', how='outer', indicator=True)
-
-    return df_populations_sam_long
-
-def cluster_population_percentages (df_populations_sam_long, cluster_column):
-    """
-    Calculates the total population of the LAD combined for each cluster at the level specificed (supergroup, 
-    group or subgroup) as well as calculating the precentage of population for that cluster based on population
-    estimates for the years 2021 and 2022. The function reads the merged population and cluster data, and 
-    calculates the total and percentage population for each supergroup, group or subgroup as specified.
-    
-    Parameters
-    ----------
-    df_populations_sam_long : pd.DataFrame
-        A DataFrame containing the merged restructured_cluster_table_long, population estimates (for 2021 for EW and
-        NI, and 2022 for Scot), and standard area measurement (AREALHECT for 2021 for EW and NI, and 2022 for Scot). 
-        This function requires at least the columns 'LAD_code', 'supergroup' and 'population'
-    cluster_column : str
-        The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
-
-    Returns
-    -------
-    pd.DataFrame
-        A DataFrame containing the population totals and percentages for each supergroup.
-        The columns include:
-        - 'supergroup': The unique cluster supergroup identifier.
-        - 'supergroup_population': Total population for the supergroup (population for EW and NI is 2021 but for Scot is from 2022).
-        - 'supergroup_percentage': Percentage of the total population (population for EW and NI is 2021 but for Scot is from 2022).
-
-    Notes
-    -----
-    - Percentages are rounded to two decimal places for clarity.
-    """
-    # Sum the population for each unique subgroup
-    df_populations_sam_long['population'] = pd.to_numeric(df_populations_sam_long['population'], errors='coerce').astype('Int64')
-    pop_sums = df_populations_sam_long.groupby(cluster_column)[['population']].sum().reset_index()
-    # Sum the total population column in merged_df
-    total_population = df_populations_sam_long['population'].sum()
-
-    # Add population columns for 2021 and 2022
-    pop_sums['percentage'] = (pop_sums['population'] / total_population) * 100
-
-    # Ensure the 'percentage' column is numeric
-    pop_sums['percentage'] = pd.to_numeric(pop_sums['percentage'], errors='coerce')
-
-    # Round the percentages to 2 decimal places
-    pop_sums['percentage'] = pop_sums['percentage'].round(2)
-
-    # Rename columns for clarity
-    pop_sums.rename(columns={'population': f'{cluster_column}_population', 'percentage': f'{cluster_column}_percentage'}, inplace=True)
-
-    return pop_sums
-
-
-def output_population_densities(config, df_populations_sam_long ):
-    """
-    Calculate population densities by cluster and output to CSV. This function splits LAD codes into those 
-    which conducted census in 2021 (England, Wales and Northern Ireland) and those which conducted census 
-    in 2022 (Scotland). It then applies 2021 population and area to the 2021 group and applies 2022 
-    population and area to LAD codes in Scotland. The function then groups all the variables by their cluster 
-    (e.g. supergroup 1 or subgroup 1a1) and aggregates the population and area values so there is one population
-    value and one area value for each cluster. Then population density is calculated (population / area) and saved
-    as a csv.  
-    
-    Data must be cleaned using population_sam_preprocessing function before running this function. 
-
-    Parameters
-    ----------
-    config : dict
-        A configuration dictionary containing the output directory path.
-    df_populations_sam_long : pd.DataFrame
-        A DataFrame containing the merged restructured_cluster_table_long and population estimates, containing at 
-        least the columns 'LAD_code', 'supergroup', 'population' and 'AREALHECT'
-
-    Returns
-    -------
-    pandas.DataFrame
-        A combined DataFrame containing population densities for supergroups, groups, and subgroups.    
-    """    
-    # Define the clusters and their corresponding columns
-    clusters = {
-        'supergroup': 'supergroup',
-        'group': 'group',
-        'subgroup': 'subgroup'
-    }
-
-    # Initialize an empty list to store the processed DataFrames
-    dataframes = []
-
-    # Process each cluster
-    for cluster, column in clusters.items():
-        df = df_populations_sam_long[[column, 'population', 'AREALHECT']]
-        df = df.groupby(by=column).sum()
-        df['population_density'] = df['population'] / df['AREALHECT']
-        df['cluster'] = cluster
-        df = df[['cluster'] + [col for col in df.columns if col != 'cluster']]
-        dataframes.append(df)
-
-    # Concatenate all three DataFrames (supergroup, group and subgroup) into one
-    pop_densities = pd.concat(dataframes)
-    # Reset the index to turn the cluster allocation into a column
-    pop_densities.reset_index(inplace=True)
-    # Rename the first column to cluster_allocation
-    pop_densities.rename(columns={pop_densities.columns[0]: 'cluster_allocation'}, inplace=True)
-
-    # Save the combined DataFrame to a single CSV file
-    pop_densities_filepath = os.path.join(config['output_directory'], 'population_densities.csv')
-    pop_densities.to_csv(pop_densities_filepath, index=False)
-    
-    # Return the combined dataframe
-    return pop_densities
-
-def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, pop_sums, pop_densities, cluster_column):
+def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
@@ -346,9 +139,6 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     variance_df : pd.DataFrame
         A DataFrame containing variance information for clusters, indexed by cluster IDs,
             with a column 'cluster_average_variance'.
-    pop_sums: pd.DataFrame
-        A DataFrame containing population percentages for clusters, including columns
-            such as 'supergroup', '2021_percentage', and '2022_percentage'.
     cluster_column : str
         The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 
@@ -356,8 +146,6 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     ----------
         list: A list of strings, where each string contains a detailed summary for a cluster, including:
             - The number and percentage of local authorities in the cluster.
-            - The population percentages for 2021 and 2022.
-            - The population density (mean of 'v12' values).
             - The average variance for the cluster.
             - Example areas (up to 3 randomly sampled local authority names).
 
@@ -411,31 +199,10 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
         else:
             area_names = ["No area found"]
 
-        # Extract the percentage for the current cluster
-        cluster_data = pop_sums.loc[pop_sums[cluster_column] == cluster]  # Filter for the current cluster
-        percentage_column = f'{cluster_column}_percentage'
-        percentage = cluster_data[percentage_column].values[0]  
-
-        ## Population density
-        # Ensure both 'cluster_allocation' values and 'cluster' are strings
-        pop_densities['cluster_allocation'] = pop_densities['cluster_allocation'].astype(str)
-        cluster = str(cluster)
-
-        # Find the row where 'cluster_allocation' matches the defined cluster
-        matching_row = pop_densities[pop_densities['cluster_allocation'] == cluster]
-
-        # Extract the 'population_density' value from the matching row
-        if not matching_row.empty:
-            cluster_pop_density = matching_row['population_density'].values[0]
-        else:
-            print(f"No matching row found for cluster_allocation: {cluster}")
-
         # Print the summary for the cluster
         # Combine the print statements into a single string
         output = (
-            f"Cluster {cluster} contains {num_local_authorities} local authorities which is {percentage_local_authorities:.2f}% of UK local authorities, "
-            f"this included {percentage:.2f}% of the UK population (values are taken for 2021 for EW and NI, but 2022 for Scot, due to times of the census)."
-            f" This cluster has a population density of {cluster_pop_density:.2f} people per hectare.\n"
+            f"Cluster {cluster} contains {num_local_authorities} local authorities which is {percentage_local_authorities:.2f}% of UK local authorities. "
         )
         # Check if the cluster exists in the DataFrame
         if cluster in variance_df.index:
@@ -467,6 +234,8 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
             such as example area names or additional metadata.
         variance_df (pd.DataFrame): A DataFrame containing variance values for each variable
             and cluster, indexed by cluster number and variable code.
+        cluster_column : str
+            The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
         top_n (int, optional): The number of top driving variables to identify for each
             cluster. Defaults to 5.
 
@@ -580,13 +349,13 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
                     ),
                     "Ethnicity, Identity, Language and Religion": lambda table_name_value, variable_name: (
                         f"proportion of people who are {variable_name}" if "Ethnic group" in table_name_value else
-                        f"proportion ofhouseholds where all household members have the same ethnic group" if "Multiple ethnic group" in table_name_value else
+                        f"proportion of households where all household members have the same ethnic group" if "Multiple ethnic group" in table_name_value else
                         f"proportion of whose religion is {variable_name}" if "Religion" in table_name_value else
                         f"proportion of people who {variable_name}" if "Proficient in English" in table_name_value else
                         f"proportion of people {variable_name}"
                     ),
                     "Education": lambda table_name_value, variable_name: (
-                        f" proportion of people whose highest level of qualification is {variable_name}"
+                        f"proportion of people whose highest level of qualification is {variable_name}"
                     )
                 }
 

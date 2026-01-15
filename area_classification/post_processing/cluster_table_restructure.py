@@ -37,6 +37,11 @@ def cluster_table_restructure(config, clustering_output, split_column, keep_colu
     # Reset the LAD_codes column so it is no longer an index and can be used to merge a table
     df = clustering_output.reset_index()
    
+    # Change the cluster number 0 to 6 (Python indexes to 0, but for cluster number we need 1 to 6) 
+    for col in ['cluster', 'subcluster', 'subsubcluster']:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.replace(r'^0', '6', regex=True)
+
     # Check if the specified columns exist
     if keep_column not in df.columns:
         raise ValueError(f"Column '{keep_column}' not found in the dataframe.")

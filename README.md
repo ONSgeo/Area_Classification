@@ -113,7 +113,6 @@ Within the `data/inputs` folder create four new folders:
 * **'ew_downloads'**
 * **'ni_downloads'**
 * **'scot_downloads'**
-* **'population_density'**
 
 ## 4.3 Data download
 As mentioned above, some data requires manual downloads. Therefore, before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
@@ -172,10 +171,6 @@ For more information on the data (England/Wales and Northern Ireland census tabl
 | UV604 |	Hours worked |	scot|
 | UV606 |	Occupation |	scot|
 | UV607 |	National Statistics Socio-economic Classification (NS-SeC) |	scot|
-
-### 4.3.5 'population_density' folder:
-* Download Mid-2022 and Mid-2021 [Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland). Once downloaded and saved in this folder, rename the files to 'population_2021.xls' and 'population_2022.xlsx'.
-* Download csv versions of [Standard Area Measurements for Administrative Areas (December 2021) in the UK (V2)](https://geoportal.statistics.gov.uk/datasets/ba0873184e6349bebb63b5da6dd050b5/about) and [Standard Area Measurements for Administrative Areas (December 2022) in the UK (V2)](https://geoportal.statistics.gov.uk/datasets/235c70d40c494361bd6b0ddaebdf0bad/about) from the Open Geography Portal. From the zip files, save the SAM_LAD_DEC_2021_UK.csv and SAM_LAD_DEC_2022_UK_V2.csv respectively to this folder.
   
 ### 4.3.5 Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and CSV file which already exist in the repo (`data/lookups/UK_selected_codes_lookup.csv`). The text in black are the folders you need to manually create, and files which you need to download and save as mentioned in instructions above.
