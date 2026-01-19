@@ -21,7 +21,7 @@ impact[^1]:
 * 🟢Quality: Green
 * 🔴Impact: Red
 
-Censuses were conducted in different years in Scotland (2022) than in England & Wales, and Northern Ireland (both 2021). Census is the only source which can provide information on the variables required for this specific analysis. As Scotland was only a year later, the assumption is that this will not have a great impact on the clusters created. This is supported by comparison with 2011 Census data. 
+Censuses were conducted in different years in Scotland (2022) than in England & Wales and Northern Ireland (both 2021). Census is the only source which can provide information on the variables required for this specific analysis. As Scotland was only a year later, the assumption is that this will not have a great impact on the clusters created. This is supported by comparison with 2011 Census data. 
 
 ## 2. Variables are consistent with 2021 Interim Output Area Classification
 
