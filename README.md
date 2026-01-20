@@ -1,5 +1,5 @@
 # Area Classifications
-This repository contains the workflow for creation of Area Classifications at Local Authority Districts (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
+This repository contains the pipeline for creation of Area Classifications at Local Authority Districts (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 The output of this pipeline includes a table allocating each LAD to a Supergroup, Group and Subgroup, based on input census data, as well as supporting materials in the form of radial plots and clustergrams.
 
