@@ -9,21 +9,21 @@ Area Classifications: a hierarchical geodemographic classification across the UK
 Repo focus:
 * 2021 and 2022 UK censuses
 * Supergroups​, Groups and Subgroups
-* Local Authority District​ (LAD)
-    * England and Wales​
-        * NOMIS: 2022 local authorities: district / unitary​ (LTLA)
-    * Northern Ireland​
-        * NISRA: Local Government District 2014​ (LGD)
-    * Scotland
-        * Scotland Census: Local authority (CA2019)​
+* Local Authority District​ (LAD) equivalents
+    * England and Wales (EW)​
+        * [NOMIS](https://www.nomisweb.co.uk/): 2022 local authorities: district / unitary​ (LTLA)
+    * Northern Ireland (NI)​
+        * [NISRA](https://www.nisra.gov.uk/): Local Government District 2014​ (LGD)
+    * Scotland (Scot)
+        * [Scotland Census](https://www.scotlandscensus.gov.uk/): Local authority (CA2019)​
 
 
 # 2.0 Process
 The flow diagram shows the stages of the area classification process:
 
-<img width="542" height="456" alt="Methods_diagram (4)" src="https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83" />
+<img width="533" height="456" alt="Methods_diagram (1)" src="https://github.com/user-attachments/assets/10e11833-f905-475a-b41e-a4b56185d053" />
 
-[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/e827d2b6-b4a0-4375-919b-8de5a8595b83)
+[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/10e11833-f905-475a-b41e-a4b56185d053)
 
 
 This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py). This is currently not embedded in the pipeline but can be ran on any data frame from any stage of the pipeline. The QA script checks for expected, zero and duplicate values, and produces descriptive statistics (e.g. range). 
@@ -36,28 +36,28 @@ This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/b
 This section explains the data used in this pipeline. Later in this ReadMe you will find the [Data Download section](https://github.com/ONSgeo/Area_Classification/blob/main/README.md#data-download) within [Set-up](https://github.com/ONSgeo/Area_Classification/blob/main/README.md#set-up ) which provides links and instructions for downloading the data listed here. 
 
 ### 3.1.1 England and Wales
-Data for England and Wales is collected from the bulk download available on the ONS census data platform, [NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk). Table codes generally start with "TS".
+Data for England and Wales is collected from the bulk download available on the ONS census data platform, [NOMIS 2021 Census Bulk Data Download](https://www.nomisweb.co.uk/sources/census_2021_bulk). Table codes generally start with 'TS'.
 
 **Exceptions:**
 * Manual download needed for England and Wales disability data required to calculate Standardised Illness Ratio (SIR).
 ### 3.1.2 Northern Ireland
-Data for Northern Ireland is collected from the bulk download available on the NISRA census data platform, [NISRA flexible table builder](https://build.nisra.gov.uk/en/). Table codes generally start with "ni".
+Data for Northern Ireland is collected from the bulk download available on the NISRA census data platform, [NISRA flexible table builder](https://build.nisra.gov.uk/en/). Table codes generally start with 'ni'.
 
 **Exceptions:**
 * Bangladeshi ethnic group category data is not available for Northern Ireland 2021. Read more in the [assumptions_caveats.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/analytical_quality_assurance/assumptions_caveats.md).
-* Manual download needed for Northern Ireland Census 2021 Population Density data at the Local Government District level. Population density for Northern Ireland at other levels of geography is available on [the UK Data Service](https://statistics.ukdataservice.ac.uk/dataset/northern-ireland-census-2021-ms-a14-population-density).<br>**Note:** Unlike the rest of the UK, raw population density data for NI is by hectare. Conversion present in code to transform to km2. 
+* Manual download needed for Northern Ireland Census 2021 Population Density data at the Local Government District level. <br>**Note:** Unlike the rest of the UK, raw population density data for NI is by hectare. Conversion present in code to transform to km2. 
 * Manual download needed for Northern Ireland disability data required to calculate SIR.
   
 ### 3.1.3 Scotland
-At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Table codes generally start with "UV". The manual download was completed 22 April 2025.
+At this time the bulk files are only available for the output area (OA) geography, so currently data for [Scotland is manually downloaded from Scotland's Census Search Census Data](https://www.scotlandscensus.gov.uk/search-the-census#/search-by). Table codes generally start with 'UV'. The manual download was completed 22 April 2025.
 
 **Exceptions:**<br>
-Manual downloads needed for:
+Additional manual downloads needed for:
 * Census 2022 table 'population density'. Population density table was downloaded 15 April 2025.
 * Census 2022 table 'migrant indicator'. Migrant indicator table was downloaded 22 April 2025.
 * Census 2022 disability data required to calculate SIR.
 
-<br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the target geography is not available on the Flexible Table Builder. Statistical Disclosure Controls (SDC) - such as cell key perturbation - are implemented to protect the confidentiality of data within tables. This means that cells will not necessarily sum to sub-totals and totals.
+<br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the target geography is not available on the Flexible Table Builder. Statistical Disclosure Controls - such as cell key perturbation - are implemented to protect the confidentiality of data within tables. This means that cells will not necessarily sum to sub-totals and totals.
 
 ## 3.2 Look ups
 * [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the 2021 England and Wales (EW), 2021 Northern Ireland (NI) and 2022 Scotland (Scot) Area Classifications for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of censuses.
@@ -175,9 +175,9 @@ For more information on the data that is automatically downloaded when running t
 ### 4.3.5 Set Up - folders and download data diagram
 Your file structure should look like the following. Text in red are the folders and csv file which already exist in the repo (`data/lookups/UK_selected_codes_lookup.csv`). The text in black are the folders you need to manually create, and files which you need to download and save as described in **4.3. Data Download**.
 
-<img width="576" height="1085" alt="area classification file structure for README (5)" src="https://github.com/user-attachments/assets/4221b59e-ad10-4862-b036-ca5a7acb5fba" />
+<img width="646" height="1080" alt="area classification file structure for README (8)" src="https://github.com/user-attachments/assets/196538ad-8df7-4011-a696-8d7744501260" />
 
-[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/4221b59e-ad10-4862-b036-ca5a7acb5fba)
+[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/196538ad-8df7-4011-a696-8d7744501260)
 
 ### 4.3.6 Running the pipeline
 The entry point for the pipeline is stored within the package and called `main_pipeline.py`.
