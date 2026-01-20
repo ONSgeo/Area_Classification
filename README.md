@@ -80,7 +80,7 @@ a virtual environment.
  
 This may also work on earlier versions of python, but it has not been developed with versions 3.9 or lower in mind.
 
-Contributors have some additional requirements - please see our [contributing guidance][contributing].
+Contributors have additional `requirements` (e.g. the pytest package), please see our [contributing guidance][contributing] on how to install these.
 
 ### 4.1.1 Installing the package
 Whilst in the root folder, in a terminal, you can install the package and its
