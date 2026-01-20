@@ -3,6 +3,8 @@ This repository contains the workflow for creation of Area Classifications at Lo
 
 The output of this pipeline includes a table allocating each LAD to a Supergroup, Group and Subgroup, based on input census data, as well as supporting materials in the form of radial plots and clustergrams.
 
+This is a packaged pipeline, you can install the package (instructions **4.1.1 Installing the package**) or clone the repository to run it.
+
 # 1.0 Background
 Area Classifications: a hierarchical geodemographic classification across the UK which identifies areas of the country with similar characteristics. [Geographic Data Service (GeoDS)​](https://data.geods.ac.uk/dataset/output-area-classification-2021#:~:text=The%202021%20Classification%20for%20Output,which%20provides%20a%20thorough%20evaluation.)
 
