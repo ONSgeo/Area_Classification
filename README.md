@@ -13,11 +13,11 @@ Repo focus:
 * Supergroups​, Groups and Subgroups
 * Local Authority District​ (LAD) equivalents
     * England and Wales (EW)​
-        * [NOMIS](https://www.nomisweb.co.uk/): 2022 local authorities: district / unitary​ (LTLA)
+        * [NOMIS](https://www.nomisweb.co.uk/): <i>2022 local authorities: district / unitary​ (LTLA)</i>
     * Northern Ireland (NI)​
-        * [NISRA](https://www.nisra.gov.uk/): Local Government District 2014​ (LGD)
+        * [NISRA](https://www.nisra.gov.uk/): <i>Local Government District 2014​ (LGD)</i>
     * Scotland (Scot)
-        * [Scotland Census](https://www.scotlandscensus.gov.uk/): Local authority (CA2019)​
+        * [Scotland Census](https://www.scotlandscensus.gov.uk/): <i>Local authority (CA2019)</i>​
 
 
 # 2.0 Process
