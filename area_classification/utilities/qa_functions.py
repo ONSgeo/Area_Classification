@@ -33,7 +33,7 @@ def run_qa_checks(df):
     else:
         print("Invalid choice. No QA checks run.")
 
-# Ask user to put in standard rows (tailored to whatever use - so for area classifications this would be number of LADs)?
+# Ask user to put in standard rows (for this area classification this would be number of LADs)
 
 def quality_checks_all_dfs(df):
 
