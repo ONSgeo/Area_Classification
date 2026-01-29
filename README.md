@@ -1,12 +1,12 @@
 # Local Authority Districts Area Classification
-This repository contains the pipeline for creation of Area Classifications at Local Authority Districts (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
+This repository contains the pipeline for creation of the Area Classification at Local Authority Districts (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 The output of this pipeline includes a table allocating each LAD to a Supergroup, Group and Subgroup, based on input census data, as well as supporting materials in the form of radial plots and clustergrams.
 
 This is a packaged pipeline, you can install the package (instructions **4.1.1 Installing the package**) or clone the repository to run it.
 
 # 1.0 Background
-Area Classifications: a hierarchical geodemographic classification across the UK which identifies areas of the country with similar characteristics. [Geographic Data Service (GeoDS)​](https://data.geods.ac.uk/dataset/output-area-classification-2021#:~:text=The%202021%20Classification%20for%20Output,which%20provides%20a%20thorough%20evaluation.)
+Area Classification: a hierarchical geodemographic classification across the UK which identifies areas of the country with similar characteristics. [Geographic Data Service (GeoDS)​](https://data.geods.ac.uk/dataset/output-area-classification-2021#:~:text=The%202021%20Classification%20for%20Output,which%20provides%20a%20thorough%20evaluation.)
 
 Repo focus:
 * 2021 and 2022 UK censuses
@@ -62,7 +62,7 @@ Additional manual downloads needed for:
 <br>**Note:** it is not advised to aggregate from a lower level of geography (such as OA), if the target geography is not available on the Flexible Table Builder. Statistical Disclosure Controls - such as cell key perturbation - are implemented to protect the confidentiality of data within tables. This means that cells will not necessarily sum to sub-totals and totals.
 
 ## 3.2 Look ups
-* [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the 2021 England and Wales (EW), 2021 Northern Ireland (NI) and 2022 Scotland (Scot) Area Classifications for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of censuses.
+* [UK_selected_codes_lookup](https://github.com/ONSgeo/Area_Classification/blob/main/data/lookups/UK_selected_codes_lookup.csv) has been created to run the 2021 England and Wales (EW), 2021 Northern Ireland (NI) and 2022 Scotland (Scot) Area Classification for Local Authority Districts (LAD). This will need updating if choosing to run at another level of geography or different combination of censuses.
 * A Local Authority Districts Names and Codes in the UK Lookup is required to convert between area names and area codes. This is available from the [ONS Geography Portal](https://geoportal.statistics.gov.uk/) .
 
 
