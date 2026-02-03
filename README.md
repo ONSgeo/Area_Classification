@@ -1,5 +1,5 @@
 # Local Authority Districts Area Classification
-This repository contains the pipeline for creation of the Area Classification at Local Authority Districts (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
+This repository contains the pipeline for creation of the Area Classification at Local Authority District (LAD) level using data from the censuses of the UK in 2021 & 2022. It includes downloading, pre-processing, performing clustering using k-means and post processing scripts, and follows a process, similar to that described in the [2021 OAC Paper](https://rgs-ibg.onlinelibrary.wiley.com/doi/full/10.1111/geoj.12550).   
 
 The output of this pipeline includes a table allocating each LAD to a Supergroup, Group and Subgroup, based on input census data, as well as supporting materials in the form of radial plots and clustergrams.
 
@@ -28,7 +28,7 @@ The flow diagram shows the stages of the area classification process:
 [Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/10e11833-f905-475a-b41e-a4b56185d053)
 
 
-This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py). This is currently not embedded in the pipeline but can be ran on any data frame from any stage of the pipeline. The QA script checks for expected, zero and duplicate values, and produces descriptive statistics (e.g. range). 
+This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py). This is currently not embedded in the pipeline but can be run on any data frame from any stage of the pipeline. The QA script checks for expected, zero and duplicate values, and produces descriptive statistics (e.g. range). 
 
 ### 2.1 Folder structure
 [The folder and script structure can be found in the user guide folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/repo_structure.md)
@@ -193,11 +193,11 @@ python src/area_classification/main_pipeline.py
 Alternatively, most Python IDEs allow you to run the code directly using a `run` button.
 
 # 5.0 Output
-This pipeline produces a range of outputs which can be found in the **'output'** folder. These include radial plots, clustergrams and lookup tables allocating each area code for the Local Authority Districts in England, Wales, Northern Ireland and Scotland to clusters at the supergroup, group and subgroup levels. More information on the outputs can be found in the [naming_conventions.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/naming_conventions.md#outputs)
+This pipeline produces a range of outputs which can be found in the **'output'** folder. These include radial plots, clustergrams and lookup tables allocating each area code for the Local Authority Districts in England, Wales, Scotland and Northern Ireland to clusters at the supergroup, group and subgroup levels. More information on the outputs can be found in the [naming_conventions.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/naming_conventions.md#outputs)
 
 # 6.0 Limitations
 These are high level limitations of the overall pipeline. For more specific limitations for each pipeline component see [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications):
-1. **Combining data from two separate years** - Censuses for EW, NI and Scot are usually conducted on the same date. However due to the [impact of COVID-19, Scotland moved their census to 2022](https://www.scotlandscensus.gov.uk/news-and-events/news-release-scotland-s-census-to-be-moved-to-march-2022/). This collection date difference may have affected responses to variables across the countries of the UK. It may have had a particular affect on responses to questions on employment, reflecting the very different nature of work between the two years, and potentially making these variables less comparable than previously. Additionally, it is possible if individuals migrated internally between 2021 and 2022, they may have been included from or excluded in more than one census. 
+1. **Combining data from two separate years** - Censuses for EW, Scot and NI are usually conducted on the same date. However due to the [impact of COVID-19, Scotland moved their census to 2022](https://www.scotlandscensus.gov.uk/news-and-events/news-release-scotland-s-census-to-be-moved-to-march-2022/). This collection date difference may have affected responses to variables across the countries of the UK. It may have had a particular effect on responses to questions on employment, reflecting the very different nature of work between the two years, and potentially making these variables less comparable than previously. Additionally, it is possible if individuals migrated internally between 2021 and 2022, they may have been included or excluded in more than one census. 
 2. **Choice of variables** - The variables used in this pipeline have been chosen in line with the earlier work and the [2021 Output Area Classification](https://data.geods.ac.uk/dataset/output-area-classification-2021). Use of other variables (including non-Census data), will likely lead to different solutions.
 3. **Level of geography** - This pipeline produces clusters at Local Authority District (LAD) levels of geography (LTLA, LGD and CA19). As such, it does not necessarily capture the heterogeneity inherent within such large populations. 
 More detailed limitations can be found in the [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications).
