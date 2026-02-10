@@ -119,7 +119,7 @@ Within the `data/inputs` folder create four new folders:
 ## 4.3 Data download
 As per **3.0 Data**, there are some manual data downloads required. Therefore, before running any of the scripts, ensure the data listed below has been downloaded and saved in the correct folders listed.
 
-For more information on the data that is automatically downloaded when running the pipeline via API's, see the [downloading data page in the specifications folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/Downloading_data.md)
+For more information on the data that is automatically downloaded when running the pipeline via API's, see the [downloading data page in the specifications folder.](https://github.com/ONSgeo/Area_Classification/blob/main/docs/specifications/1.0_Downloading_Data.md)
 
 ### 4.3.1 'lookups' folder:
 * Local Authority Districts Names and Codes in the UK Lookup from the [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). We used [Local Authority Districts (December 2022) Names and Codes in the UK](https://geoportal.statistics.gov.uk/datasets/42af123c4663466496dafb4c8fcb0c82_0/explore). This is required to convert between area names and area codes.
