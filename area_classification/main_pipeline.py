@@ -10,7 +10,8 @@ from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.pre_processing.drop_variables import check_drop_columns_true
 from area_classification.clustering.clustering import clustering_wrapper      
 from area_classification.post_processing.post_processing import post_processing
-from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data     
+from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data  
+from area_classification.data_visualisation.horizontal_bar_chart import create_horizontal_bar_chart_wrapper   
 
 def main_pipeline():
     """
@@ -29,6 +30,7 @@ def main_pipeline():
     6. standardise the pre-processed data for clustering.
     7. Perform clustering on the pre-processed data, using variables chosen.
     8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots.
+    9. Generate data visualisations from the outputs.
 
     Parameters
     ----------
@@ -83,7 +85,10 @@ def main_pipeline():
     input("Press Enter to continue to post processing...")
  
     # Step 8: Post processing
-    post_processing(config, clustering_output, chosen_clustering_variables)
+    combined_group_means, combined_subgroup_means, uk_std_cluster_means = post_processing(config, clustering_output, chosen_clustering_variables)
+
+    # Step 9: Data visualisation
+    create_horizontal_bar_chart_wrapper(uk_std_cluster_means)
 
 if __name__ == "__main__":
     main_pipeline()

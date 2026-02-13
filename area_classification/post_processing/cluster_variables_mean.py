@@ -24,7 +24,6 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
 
     Returns
     -------
-
     pd.DataFrame 
         Dataframe containing the mean of each variable for each cluster, structured as:
         Cluster_code  | Hierarchy_level   |  variable_name  |  variable_mean
@@ -53,8 +52,6 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
     uk_std_cluster_means = uk_std_cluster_means.pivot(index=["cluster", "hierarchy_level"], 
                                              columns="variable_name", 
                                              values="variable_value").reset_index()
-
-
   
     # Create the 'std_means' folder in the output directory
     std_means_directory = os.path.join(config["output_directory"], "std_means")

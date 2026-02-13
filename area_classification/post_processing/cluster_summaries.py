@@ -132,22 +132,22 @@ def cluster_summary(restructured_cluster_table_long, uk_std_cluster_means, varia
     ----------
     restructured_cluster_table_long : pd.DataFrame
         A DataFrame containing detailed information about clusters,
-            including columns such as 'supergroup', 'LAD_name', and 'v12'.
+        including columns such as 'supergroup', 'LAD_name', and 'v12'.
     uk_std_cluster_means : pd.DataFrame
         A DataFrame containing mean values for various metrics at the cluster level,
-            including columns such as 'hierarchy_level', 'cluster', and 'v12'.
+        including columns such as 'hierarchy_level', 'cluster', and 'v12'.
     variance_df : pd.DataFrame
         A DataFrame containing variance information for clusters, indexed by cluster IDs,
-            with a column 'cluster_average_variance'.
+        with a column 'cluster_average_variance'.
     cluster_column : str
         The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
 
     Returns
     ----------
-        list: A list of strings, where each string contains a detailed summary for a cluster, including:
-            - The number and percentage of local authorities in the cluster.
-            - The average variance for the cluster.
-            - Example areas (up to 3 randomly sampled local authority names).
+    list: A list of strings, where each string contains a detailed summary for a cluster, including:
+        - The number and percentage of local authorities in the cluster.
+        - The average variance for the cluster.
+        - Example areas (up to 3 randomly sampled local authority names).
 
     Notes
     ----------
@@ -225,23 +225,30 @@ def identify_cluster_drivers(uk_std_cluster_means, lookup_file, cluster_info, va
     
     Parameters
     ----------
-        uk_std_cluster_means (pd.DataFrame): A DataFrame where rows represent clusters
-            and columns represent the mean values of variables for each cluster.
-        lookup_file (str): Path to a CSV file containing a lookup table with columns
-            'new_code', 'variable_name', and 'domain' for mapping variable codes to
-            descriptive names and domains.
-        cluster_info (list): A list of strings containing information about each cluster,
-            such as example area names or additional metadata.
-        variance_df (pd.DataFrame): A DataFrame containing variance values for each variable
-            and cluster, indexed by cluster number and variable code.
-        cluster_column : str
-            The name of the column in the DataFrame that contains cluster allocations (likely supergroup, group, and subgroup).
-        top_n (int, optional): The number of top driving variables to identify for each
-            cluster. Defaults to 5.
+    uk_std_cluster_means : pd.DataFrame
+        A DataFrame where rows represent clusters and columns represent the mean values 
+        of variables for each cluster.
+    lookup_file : str
+        Path to a CSV file containing a lookup table with columns
+        'new_code', 'variable_name', and 'domain' for mapping variable codes to
+        descriptive names and domains.
+    cluster_info : list
+        A list of strings containing information about each cluster,
+        such as example area names or additional metadata.
+    variance_df : pd.DataFrame
+        A DataFrame containing variance values for each variable
+        and cluster, indexed by cluster number and variable code.
+    cluster_column : str
+        The name of the column in the DataFrame that contains cluster allocations (likely supergroup,
+        group, and subgroup).
+    top_n : int (optional)
+        The number of top driving variables to identify for each
+        cluster. Defaults to 5.
 
     Returns
     ----------
-        None: The function prints the top driving variables for each cluster, along with
+    None
+        The function prints the top driving variables for each cluster, along with
         detailed descriptions and variance values.
 
     """

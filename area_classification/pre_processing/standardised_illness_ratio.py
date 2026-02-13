@@ -141,7 +141,7 @@ def sir_qa_checks(df: pd.DataFrame, config: dict) -> None:
         
     Returns
     -------
-        None
+    None
     """
     # Check if disability_count is int
     assert df['disability_count'].dtype == 'int64', "Disability count should be of type int64"

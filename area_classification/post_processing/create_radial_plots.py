@@ -43,12 +43,14 @@ def create_radial_plots(config, dataframe, level, domain_colours):
 
     Parameters
     ----------
+    config : dict
+        Configuration dictionary containing settings for the plotting.    
     dataframe : DataFrame
         The input DataFrame (either combined_group_means or combined_subgroup_means).
     level : str
         Either 'group' or 'subgroup' to indicate the type of data.
-    config : dict
-        Configuration dictionary containing settings for the plotting.    
+    domain_colours : Dictionary
+        The list of colours used for the domains. 
     """
     # Load lookup for variable labels and domains
     lookup = pd.read_csv(config['select_variables_lookup'])
