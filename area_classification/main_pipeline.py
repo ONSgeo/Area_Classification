@@ -11,7 +11,7 @@ from area_classification.pre_processing.drop_variables import check_drop_columns
 from area_classification.clustering.clustering import clustering_wrapper      
 from area_classification.post_processing.post_processing import post_processing
 from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data  
-from area_classification.data_visualisation.horizontal_bar_chart import create_horizontal_bar_chart_wrapper   
+from area_classification.data_visualisation.horizontal_bar_chart import create_bar_charts_wrapper   
 
 def main_pipeline():
     """
@@ -88,7 +88,7 @@ def main_pipeline():
     combined_group_means, combined_subgroup_means, uk_std_cluster_means = post_processing(config, clustering_output, chosen_clustering_variables)
 
     # Step 9: Data visualisation
-    create_horizontal_bar_chart_wrapper(uk_std_cluster_means)
+    create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
 
 if __name__ == "__main__":
     main_pipeline()
