@@ -62,9 +62,8 @@ def quality_checks_all_dfs(df):
         The DataFrame to be checked.
 
     Returns 
-
+    ----------
     Print statement at the specified level of detail. 
-
     """
     
     # Ask the user if they want a basic or detailed auto check
@@ -205,7 +204,9 @@ def user_input_qa(df):
     df : pd.DataFrame
         The DataFrame to be checked.
 
-    Returns print statements based on the checks performed.
+    Returns 
+    ----------
+    Print statements based on the checks performed.
     
     """
 

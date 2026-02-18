@@ -16,7 +16,6 @@ def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
     -------
         dict
             Dictionary with age band names as keys and boolean conditions as values.
-
      """
      age_band_names_and_bools = {
             "<15 and >=65": (df[lower_age_band_col]<15)|(df[lower_age_band_col]>=65),
@@ -48,7 +47,6 @@ def convert_disability_age_group_scotland(filepath:str, config: dict) -> pd.Data
     pd.DataFrame
         disability data combined into two age groups: "<15 and >=65" and "15-64".
         Columns: council_area, age_group, total_population, total_disabled.
-    
     """    
 
     # Read the CSV file

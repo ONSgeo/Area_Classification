@@ -5,26 +5,28 @@ import yaml
 
 def check_drop_columns_true(config, preprocessed_df):
     """
-    This function checks if the 'drop_columns' key in the config is set to True.
-    If it is, it calls the drop_variables_pre_clustering function to drop specified columns
-    from the preprocessed input table.
+    This function checks if the 'drop_columns' key in the config is set to 
+    True. If it is, it calls the drop_variables_pre_clustering function to 
+    drop specified columns from the preprocessed input table.
 
     Parameters
     ----------
     config : dict
         Configuration dictionary containing paths and parameters.
     preprocessed_df : pd.DataFrame
-         pandas DataFrame containing the preprocessed table.
+        DataFrame containing the preprocessed table.
 
     Returns
     -------
     pd.DataFrame
-        DataFrame with specified columns dropped if 'drop_columns' is True; otherwise, the original DataFrame.
+        DataFrame with specified columns dropped if 'drop_columns' is True; 
+        therwise, the original DataFrame.
     """
     
     # Check if 'drop_columns' is set to True in the config
     if config["drop_columns"]:
-        return drop_variables_pre_clustering(config, preprocessed_df, config.get('variables_to_drop', [])) 
+        return drop_variables_pre_clustering(config, preprocessed_df, 
+                                             config.get('variables_to_drop', [])) 
     else: 
         return preprocessed_df
 

@@ -55,4 +55,4 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
     
     # Return the combined means for further use if needed
-    return combined_group_means, combined_subgroup_means
+    return combined_group_means, combined_subgroup_means, uk_std_cluster_means

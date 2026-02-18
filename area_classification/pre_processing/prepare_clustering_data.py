@@ -9,12 +9,14 @@ def prepare_clustering_data(dataframe):
 
     Parameters
     ----------
-        dataframe (pd.DataFrame): The input DataFrame for clustering.
+    dataframe : pd.DataFrame
+        The input DataFrame for clustering.
 
     Returns
     -------
-        pd.DataFrame: A new DataFrame with the transformed and standardised numeric values,
-                      and the first column set as the index.
+    dataframe : pd.DataFrame
+        A new DataFrame with the transformed and standardised numeric values,
+        and the first column set as the index.
     """
     # Step 1: standardise the data
     standardised_data = standardise_data(dataframe)
@@ -33,12 +35,15 @@ def standardise_data(dataframe):
     standardises the numeric columns of the DataFrame by subtracting the mean
     and dividing by the standard deviation (z-score normalization).
 
-
-        dataframe (pd.DataFrame): The input DataFrame.
+    Parameters
+    ----------
+    dataframe : pd.DataFrame
+        The input DataFrame.
 
     Returns
     -------
-        pd.DataFrame: A DataFrame with standardised numeric columns.
+    dataframe : pd.DataFrame
+        A DataFrame with standardised numeric columns.
     """
     standardised_data = dataframe.copy()
      # Skip the first column (e.g., area codes)
@@ -57,16 +62,17 @@ def standardise_data(dataframe):
 
 def apply_arcsinh_transformation(dataframe):
     """
-
     Applies the inverse hyperbolic sine (arcsinh) transformation to numeric values.
 
     Parameters
     ----------
-        dataframe (pd.DataFrame): The input DataFrame.
+    dataframe : pd.DataFrame
+        The input DataFrame.
 
     Returns
     -------
-        pd.DataFrame: A DataFrame with arcsinh-transformed numeric columns.
+    dataframe : pd.DataFrame
+        A DataFrame with arcsinh-transformed numeric columns.
     """
     transformed_data = dataframe.copy()
     transformed_data.iloc[:, 1:] = np.arcsinh(transformed_data.iloc[:, 1:])
@@ -79,15 +85,16 @@ def apply_min_max_scaling(dataframe):
 
     Parameters
     ----------
-        dataframe (pd.DataFrame): The input DataFrame.
+    dataframe : pd.DataFrame
+        The input DataFrame.
 
     Returns
     -------
-        pd.DataFrame: A DataFrame with min-max scaled numeric columns.
+    dataframe : pd.DataFrame
+        A DataFrame with min-max scaled numeric columns.
     """
     scaled_data = dataframe.copy()
     scaled_data.iloc[:, 1:] = (scaled_data.iloc[:, 1:] - scaled_data.iloc[:, 1:].min()) / (
         scaled_data.iloc[:, 1:].max() - scaled_data.iloc[:, 1:].min()
     )
     return scaled_data
- 

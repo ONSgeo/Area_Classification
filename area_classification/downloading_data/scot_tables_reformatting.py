@@ -143,7 +143,7 @@ def rename_csv_files_by_table_id(scot_input_folder):
 
     Returns
     -------
-        None
+    None
     """
     # Regular expression to extract the Table ID 
     table_id_pattern = r"UV\d+\w*"
@@ -587,7 +587,7 @@ def extract_pop_density_table(scot_input_folder):
 
     Returns
     -------
-        None
+    None
     """
     # Define file paths
     population_density_xlsx = os.path.join(scot_input_folder, "population_density.xlsx")
@@ -799,7 +799,6 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     -------
     None
         The function modifies the CSV files in place and saves them to the specified output path in the config dictionary.
-    
     """
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)  # Assuming the file has headers
