@@ -22,10 +22,9 @@ Repo focus:
 
 # 2.0 Process
 The flow diagram shows the stages of the area classification process:
+<img width="533" height="456" alt="Methods_diagram (2)" src="https://github.com/user-attachments/assets/43aca87f-ffd4-4dee-af5c-6bc71d12c675" />
 
-<img width="533" height="456" alt="Methods-diagram" src="https://github.com/user-attachments/assets/37abc2e5-ea72-427a-984f-9c3a1fc74f78" />
-
-[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/37abc2e5-ea72-427a-984f-9c3a1fc74f78)
+[Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/43aca87f-ffd4-4dee-af5c-6bc71d12c675)
 
 
 This repo contains a [QA script](https://github.com/ONSgeo/Area_Classification/blob/main/area_classification/utilities/qa_functions.py). This is currently not embedded in the pipeline but can be run on any data frame from any stage of the pipeline. The QA script checks for expected, zero and duplicate values, and produces descriptive statistics (e.g. range). 
