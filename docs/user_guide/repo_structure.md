@@ -18,6 +18,7 @@
 │   │   ├── cluster_table_restructure.py
 │   │   ├── cluster_variables_mean.py
 │   │   ├── create_radial_plots.py
+│   │   ├── horizontal_bar_chart.py
 │   │   └── post_processing.py
 │   ├── pre_processing/
 │   │   ├── __init__.py
@@ -50,11 +51,11 @@
 │   │   ├── assumptions_caveats.md
 │   │   └── data_log.md
 │   ├── specifications/
-│   │   ├── Clustering.md
-│   │   ├── Downloading_data.md
-│   │   ├── Post_processing.md
-│   │   ├── Pre-processing.md
-│   │   └── Standardised_Illness_Ratio.md
+│   │   ├── 1.0_Downloading_Data.md
+│   │   ├── 2.0_Pre-Processing.md
+│   │   ├── 2.1_Standardised_Illness_Ratio.md
+│   │   ├── 3.0_Clustering.md
+│   │   └── 4.0_Post_Processing.md
 │   ├── user_guide/
 │   │   ├── naming_conventions.md
 │   │   ├── repo_structure.md
@@ -81,14 +82,14 @@
 │   │   ├── test_convert_to_percentages.py
 │   │   ├── test_drop_variables.py
 │   │   ├── test_prepare_clustering_data.py
+│   │   ├── test_select_totals_columns.py
 │   │   ├── test_select_variables.py
-│   │   ├── test_standard_illness_ratio.py
-│   │   └── test_totals_columns_select_uk.py
+│   │   └── test_standard_illness_ratio.py 
 │   ├── utilities/
-│   │   └── test_load_config.py
-│   ├── README.md
-│   ├── test_load_config.py
-│   └── test_loading_data.py
+│   │   ├── test_disability_age_group_conversion.py
+│   │   ├── test_load_config.py
+│   │   └── test_loading_data.py
+│   └── README.md
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE

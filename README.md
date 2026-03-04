@@ -192,7 +192,7 @@ python src/area_classification/main_pipeline.py
 Alternatively, most Python IDEs allow you to run the code directly using a `run` button.
 
 # 5.0 Output
-This pipeline produces a range of outputs which can be found in the **'output'** folder. These include radial plots, clustergrams and lookup tables allocating each area code for the Local Authority Districts in England, Wales, Scotland and Northern Ireland to clusters at the supergroup, group and subgroup levels. More information on the outputs can be found in the [naming_conventions.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/naming_conventions.md#outputs)
+This pipeline produces a range of outputs which can be found in the **'output_data'** folder. These include radial plots, clustergrams, bar charts and lookup tables allocating each area code for the Local Authority Districts in England, Wales, Scotland and Northern Ireland to clusters at the supergroup, group and subgroup levels. More information on the outputs can be found in the [naming_conventions.md](https://github.com/ONSgeo/Area_Classification/blob/main/docs/user_guide/naming_conventions.md#outputs)
 
 # 6.0 Limitations
 These are high level limitations of the overall pipeline. For more specific limitations for each pipeline component see [Specifications folder](https://github.com/ONSgeo/Area_Classification/tree/main/docs/specifications):

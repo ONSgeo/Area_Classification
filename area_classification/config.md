@@ -18,8 +18,9 @@
 |input_directory | The path where inputs required for the clustering are saved             | 	string   | Any filepath.     |
 |qa_directory |  The path where outputs is saved to for quality assurance (QA) checks            | 	string   | Any filepath.     |
 |output_directory | The path where outputs should be saved | 	string   | Any filepath.     |
-|clustergram_directory | The path where outputted clustergrams is saved      | 	string   | Any filepath.     |
-|radial_plot_directory | The path where outputted radial plots is saved      | 	string   | Any filepath.     |
+|clustergram_directory | The path where outputted clustergrams are saved      | 	string   | Any filepath.     |
+|radial_plot_directory | The path where outputted radial plots are saved      | 	string   | Any filepath.     |
+|bar_chart_directory | The path where outputted bar charts are saved      | 	string   | Any filepath.     |
 |scot_input_folder| The file path for where the Scotland input data is saved | string   | Any filepath. |
 |reformat_scot_input_folder| The file path for where the Scotland input data which has been reformatted into a consistent structure is saved | string   | Any filepath. |
 |ni_pop_density_filepath | The path to where the population density file for Northern Ireland is stored    | 	string   | Any filepath.  |

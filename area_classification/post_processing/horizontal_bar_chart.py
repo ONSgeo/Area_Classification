@@ -1,7 +1,5 @@
-# STILL TO DO, LOOP THROUGH ALL THE levels at the parent level.
-# LOOK INTO SMALL MULTIPLES! - some code for ideas below
-# 
-#  # Horizontal bar chart
+#  This script creates horizontal bar charts
+
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib import gridspec
@@ -24,17 +22,12 @@ def create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means
         DataFrame containing group-level means.
     combined_subgroup_means : DataFrame
         DataFrame containing subgroup-level means.
-    level : str
-        Either 'group' or 'subgroup' to indicate the type of data.
 
     Returns
     -------
     None
         Created bar charts are saved to the 'bar_charts' folder
 
-    Notes
-    -----
-    The lookup CSV file must contain at least the columns 'new_code', 'radial_plot_label', and 'domain'.
     """
 
     # Create horizontal bar charts for supergroups, groups and subgroups against UK
@@ -217,14 +210,3 @@ def small_multiples(config, dataframe, level, domain_col):
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.savefig(plot_path, bbox_inches='tight', dpi=150)
         plt.close(fig)
-
-
-if __name__ == "__main__":
-
-    from area_classification.utilities.load_config import load_config
-    config = load_config('area_classification/config.yaml')
-       
-    uk_std_cluster_means = pd.read_csv('./data/output_data/std_means/uk_std_means/uk_std_cluster_means_output.csv') 
-    combined_group_means = pd.read_csv('./data/output_data/std_means/parent_std_means/parent_std_cluster_group_means_output.csv') 
-    combined_subgroup_means = pd.read_csv('./data/output_data/std_means/parent_std_means/parent_std_cluster_subgroup_means_output.csv')
-    create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means) 
