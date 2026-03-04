@@ -32,6 +32,7 @@ This pipeline produces a range of outputs which can be found in the 'output' fol
 - Clustergrams - diagrams for each cluster used to visualise the cluster analysis and how the data is grouped.
 - Radial plots - circular diagram which representing the variable distribution. The red line in the supergroup radial plots is for the UK average, in group and subgroup it is the supergroup average and group average respectively.
 - std_mean - tables of standardised means for each variable. 
+- Horizontal bar charts - bar charts which representing the variable distribution. The zero point on the supergroup bar charts is for the UK average, in group and subgroup it is the supergroup average and group average respectively.
 
 The most notable output is within the cluster_assignments folder -  restructured_subclustering_output:
 

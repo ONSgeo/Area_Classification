@@ -15,7 +15,7 @@ suitability[^1]:
 | 🟠Amber | Data is well understood. There are quality issues (for example missing values, step changes, large number of outliers) that can be explained, documented or shown to have negligible impact. | Not the ideal data set for the analysis, but the best available at the time. Results will reflect the fact that it is not the ideal data set and it will subject to sensitivity analysis where appropriate. |
 | 🔴Red   | Data is not well understood. There are major quality issues that cannot be fully explained and/or have a significant impact on analysis outputs.                                             | There are concerns about the suitability of the data set for this application, which could negatively affect the quality and accuracy of the analysis. Its derivation / sample size is not known.           |
 
-## Source 1: NOMIS
+## Source 1: Nomis
 * 🟢Quality: Green
 * 🟢Suitability: Green <br>
 

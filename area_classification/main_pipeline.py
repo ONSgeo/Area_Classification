@@ -10,8 +10,7 @@ from area_classification.pre_processing.pre_processing import pre_processing
 from area_classification.pre_processing.drop_variables import check_drop_columns_true
 from area_classification.clustering.clustering import clustering_wrapper      
 from area_classification.post_processing.post_processing import post_processing
-from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data  
-from area_classification.data_visualisation.horizontal_bar_chart import create_bar_charts_wrapper   
+from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data   
 
 def main_pipeline():
     """
@@ -29,8 +28,7 @@ def main_pipeline():
     5. Establish the variables which will be used for clustering (some may be dropped).
     6. standardise the pre-processed data for clustering.
     7. Perform clustering on the pre-processed data, using variables chosen.
-    8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots.
-    9. Generate data visualisations from the outputs.
+    8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots and bar charts.
 
     Parameters
     ----------
@@ -45,12 +43,12 @@ def main_pipeline():
     config = load_config('area_classification/config.yaml')
 
     # Step 1: Download england and wales data and reformat to be processed and combined
-    #ew_lad_bulk_download(config)
+    ew_lad_bulk_download(config)
     ew_input_csv_path = os.path.join(config["input_directory"], "./ew_downloads/")
     ew_df = load_format_data(ew_input_csv_path, config["ew_file_pattern"],config["ew_join_column_name"], config)
 
     # Step 2: Download Northen Ireland data and reformat to be processed and combined
-    #ni_lgd_download_data(config)
+    ni_lgd_download_data(config)
     ni_input_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
     ni_df = load_format_data(ni_input_csv_path, config["ni_file_pattern"],config["ni_join_column_name"], config)
   
@@ -86,9 +84,6 @@ def main_pipeline():
  
     # Step 8: Post processing
     combined_group_means, combined_subgroup_means, uk_std_cluster_means = post_processing(config, clustering_output, chosen_clustering_variables)
-
-    # Step 9: Data visualisation
-    create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
 
 if __name__ == "__main__":
     main_pipeline()

@@ -8,6 +8,7 @@ from area_classification.post_processing.cluster_std_means_to_parent_clusters im
 from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
 from area_classification.post_processing.cluster_summaries import cluster_summaries_wrapper
 from area_classification.pre_processing.prepare_clustering_data import standardise_data
+from area_classification.post_processing.horizontal_bar_chart import create_bar_charts_wrapper  
 
 def post_processing(config, clustering_output, chosen_clustering_variables):
     """
@@ -49,7 +50,10 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     # Step 4: Create radial plots for the clusters using the combined means
     create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
 
-    # Step 5: Draft cluster summaries
+    # Step 5: Data visualisation
+    create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
+
+    # Step 6: Draft cluster summaries
     cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'supergroup')
     cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'group')
     cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
