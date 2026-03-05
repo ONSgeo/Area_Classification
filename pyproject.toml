@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "area_classification",
+    "area_classification.clustering",
+    "area_classification.downloading_data",
+    "area_classification.post_processing",
+    "area_classification.pre_processing",
+    "area_classification.utilities"
+]
+
+[tool.bumpversion]
+current_version = "1.0.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "Bump version: {current_version} → {new_version}"
+commit_args = "--no-verify"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "B",
+    "SIM",
+    "I",
+]
+ignore = ["D203", "E203"]
+
+[tool.ruff]
+line-length = 101
+
+[tool.ruff.format]
+line-ending = "auto"
+
+[tool.bandit]
+exclude_dirs = ["tests", "docs"]
+skips = []
+
+[tool.coverage.run]
+omit = [
+    "tests/*"
+]
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::UserWarning"]
