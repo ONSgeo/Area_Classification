@@ -1,5 +1,7 @@
 import getpass
+
 import yaml
+
 
 def replace_username_in_dict(d, username: str, placeholder: str = "{USERNAME}"):
     """
@@ -15,7 +17,7 @@ def replace_username_in_dict(d, username: str, placeholder: str = "{USERNAME}"):
         The username to replace the placeholder with.
     placeholder : str, optional
         The string to be replaced by the username. Default is "{USERNAME}".
-        
+
     Returns
     -------
     dict, list, or str
@@ -32,9 +34,8 @@ def replace_username_in_dict(d, username: str, placeholder: str = "{USERNAME}"):
 
 
 def load_config(
-    config_path: str = "./area_classification/config.yaml", 
-    placeholder: str = "{USERNAME}"
-    ) -> dict:
+    config_path: str = "./area_classification/config.yaml", placeholder: str = "{USERNAME}"
+) -> dict:
     """
     Loads a YAML configuration file and replaces placeholders with the username.
 

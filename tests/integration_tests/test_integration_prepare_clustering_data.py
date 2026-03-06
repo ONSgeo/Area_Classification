@@ -1,13 +1,15 @@
 import unittest
+
 import pandas as pd
-import numpy as np
+
 from area_classification.pre_processing.prepare_clustering_data import prepare_clustering_data
+
 
 class TestPrepareClusteringDataIntegration(unittest.TestCase):
     def test_prepare_clustering_data_pipeline(self):
         # Arrange: Create a sample DataFrame
         data = {
-            'LAD_code': ['E06000001', 'W06000001', 'N09000001', 'S12000005'],
+            "LAD_code": ["E06000001", "W06000001", "N09000001", "S12000005"],
             "v01": [10, 20, 30, 15],
             "v02": [5, 15, 25, 12],
         }
@@ -29,6 +31,7 @@ class TestPrepareClusteringDataIntegration(unittest.TestCase):
 
         # 4. Ensure no NaN values exist in the result
         self.assertFalse(result.isnull().values.any())
+
 
 if __name__ == "__main__":
     unittest.main()

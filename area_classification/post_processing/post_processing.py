@@ -1,21 +1,21 @@
 # Post clustering wrapper
-import os
-import pandas as pd
-from area_classification.utilities.load_config import load_config
-from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure  
-from area_classification.post_processing.cluster_variables_mean import cluster_variable_means
-from area_classification.post_processing.cluster_std_means_to_parent_clusters import cluster_std_means_to_parent_clusters  
-from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
+from area_classification.post_processing.cluster_std_means_to_parent_clusters import (
+    cluster_std_means_to_parent_clusters,
+)
 from area_classification.post_processing.cluster_summaries import cluster_summaries_wrapper
+from area_classification.post_processing.cluster_table_restructure import cluster_table_restructure
+from area_classification.post_processing.cluster_variables_mean import cluster_variable_means
+from area_classification.post_processing.create_radial_plots import create_radial_plots_wrapper
+from area_classification.post_processing.horizontal_bar_chart import create_bar_charts_wrapper
 from area_classification.pre_processing.prepare_clustering_data import standardise_data
-from area_classification.post_processing.horizontal_bar_chart import create_bar_charts_wrapper  
+
 
 def post_processing(config, clustering_output, chosen_clustering_variables):
     """
-    Wrapper function to standardise the data and restructure the table created when clustering. 
+    Wrapper function to standardise the data and restructure the table created when clustering.
     Calculates means of each cluster, based on the restructured table and standardised data.
     Creates radial plots and drafts cluster summaries.
-    
+
     Parameters
     ----------
     config : dict
@@ -36,11 +36,13 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
 
     # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
     restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(
-    config, clustering_output, config["split_column"], config["keep_column"], standardised_data
+        config, clustering_output, config["split_column"], config["keep_column"], standardised_data
     )
 
-    # Step 2: Calculate means for each variable for each cluster 
-    uk_std_cluster_means = cluster_variable_means(config, restructured_cluster_table, standardised_data)
+    # Step 2: Calculate means for each variable for each cluster
+    uk_std_cluster_means = cluster_variable_means(
+        config, restructured_cluster_table, standardised_data
+    )
 
     # Step 3: Run cluster_std_means_to_parent_clusters and capture the returned means
     combined_group_means, combined_subgroup_means = cluster_std_means_to_parent_clusters(
@@ -48,15 +50,37 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     )
 
     # Step 4: Create radial plots for the clusters using the combined means
-    create_radial_plots_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
+    create_radial_plots_wrapper(
+        config, uk_std_cluster_means, combined_group_means, combined_subgroup_means
+    )
 
     # Step 5: Data visualisation
-    create_bar_charts_wrapper(config, uk_std_cluster_means, combined_group_means, combined_subgroup_means)
+    create_bar_charts_wrapper(
+        config, uk_std_cluster_means, combined_group_means, combined_subgroup_means
+    )
 
     # Step 6: Draft cluster summaries
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'supergroup')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'group')
-    cluster_summaries_wrapper(config, restructured_cluster_table_long, uk_std_cluster_means, config["select_variables_lookup"], cluster_column = 'subgroup')
-    
+    cluster_summaries_wrapper(
+        config,
+        restructured_cluster_table_long,
+        uk_std_cluster_means,
+        config["select_variables_lookup"],
+        cluster_column="supergroup",
+    )
+    cluster_summaries_wrapper(
+        config,
+        restructured_cluster_table_long,
+        uk_std_cluster_means,
+        config["select_variables_lookup"],
+        cluster_column="group",
+    )
+    cluster_summaries_wrapper(
+        config,
+        restructured_cluster_table_long,
+        uk_std_cluster_means,
+        config["select_variables_lookup"],
+        cluster_column="subgroup",
+    )
+
     # Return the combined means for further use if needed
     return combined_group_means, combined_subgroup_means, uk_std_cluster_means

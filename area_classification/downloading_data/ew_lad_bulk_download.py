@@ -1,17 +1,17 @@
+import logging
 import os
-from bs4 import BeautifulSoup  # Equivalent to rvest for web scraping
 import re  # For string manipulation (similar to stringr)
-import pandas as pd  # For data manipulation (similar to tidyverse and vroom)
-import requests  # For making HTTP requests
-from zipfile import ZipFile
+import tempfile
 from glob import glob
 from shutil import rmtree
-import tempfile
-import logging
+from zipfile import ZipFile
 
-from area_classification.utilities.load_config import load_config
+import pandas as pd  # For data manipulation (similar to tidyverse and vroom)
+import requests  # For making HTTP requests
+from bs4 import BeautifulSoup  # Equivalent to rvest for web scraping
 
 logger = logging.getLogger(__name__)
+
 
 def ew_lad_bulk_download(config: dict):
     """
@@ -22,7 +22,7 @@ def ew_lad_bulk_download(config: dict):
     ----------
     config : dict
         main config for pipeline
-    
+
     Returns
     -------
     None
@@ -49,26 +49,34 @@ def get_census_table_urls(config: dict) -> list:
     -------
     list
         list of URLs for census tables that contain Output Areas (OA).
-    """     
+    """
     # Read the HTML page from the Nomis Census 2021 bulk download site
-    html_page = BeautifulSoup(requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk").content, "html.parser")
+    html_page = BeautifulSoup(
+        requests.get("https://www.nomisweb.co.uk/sources/census_2021_bulk", timeout=100).content,
+        "html.parser",
+    )
 
     # Extract links to census table ZIP files (excluding 'extra.zip')
     zip_urls = [
-        link['href'] for link in html_page.find_all('a', href=True) 
-        if link['href'].endswith('.zip') and 'extra.zip' not in link['href']
+        link["href"]
+        for link in html_page.find_all("a", href=True)
+        if link["href"].endswith(".zip") and "extra.zip" not in link["href"]
     ]
 
     # Make zip file names into a full URLs
     zip_urls = ["https://www.nomisweb.co.uk" + url for url in zip_urls]
 
     nomis_address = "https://www.nomisweb.co.uk/output/census/2021/census2021-{table_id}.zip"
-    no_oa_tables = [nomis_address.format(table_id=code) for code in config["england_and_wales_table_codes_to_remove"]]
+    no_oa_tables = [
+        nomis_address.format(table_id=code)
+        for code in config["england_and_wales_table_codes_to_remove"]
+    ]
 
     # Remove the tables without Output Areas (OA)
     zip_urls = list(set(zip_urls) - set(no_oa_tables))
-    
+
     return zip_urls
+
 
 def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
     """
@@ -97,13 +105,13 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         tmp_dir = tempfile.mkdtemp()
 
         # Download the specified zip file
-        response = requests.get(url)
+        response = requests.get(url, timeout=100)
         zip_file_path = os.path.join(tmp_dir, "temp.zip")
         with open(zip_file_path, "wb") as f:
             f.write(response.content)
 
         # Unzip the file
-        with ZipFile(zip_file_path, 'r') as zip_ref:
+        with ZipFile(zip_file_path, "r") as zip_ref:
             zip_ref.extractall(tmp_dir)
 
         # Extract the table name from the URL
@@ -128,7 +136,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         if t_name == "ts007a":
             unit = "Person"
         else:
-             # --- Find and read the .txt file in metadata folder for unit ---
+            # --- Find and read the .txt file in metadata folder for unit ---
             metadata_txt_files = glob(os.path.join(tmp_dir, "metadata", "*.txt"))
             if metadata_txt_files:
                 with open(metadata_txt_files[0], "r", encoding="utf-8") as meta_file:
@@ -149,12 +157,9 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         Variable_ID = [f"{t_name}{i:04d}" for i in range(1, len(Full_Name) + 1)]
 
         # Create a metadata table
-        n_list = pd.DataFrame({
-            "Variable_ID": Variable_ID,
-            "Table_ID": t_name,
-            "Full_Name": Full_Name,
-            "Unit": unit
-        })
+        n_list = pd.DataFrame(
+            {"Variable_ID": Variable_ID, "Table_ID": t_name, "Full_Name": Full_Name, "Unit": unit}
+        )
 
         # Append to the metadata table
         meta_data_table = pd.concat([meta_data_table, n_list], ignore_index=True)
@@ -162,7 +167,7 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         # Rename the columns in the DataFrame
         df.columns = Variable_ID
         # Move row names back to a column
-        df.reset_index(inplace=True)  
+        df.reset_index(inplace=True)
         df.rename(columns={"geography code": "LTLA"}, inplace=True)
 
         # Write the DataFrame to a CSV file
@@ -174,7 +179,6 @@ def download_and_unzip_data(zip_urls: list, config: dict) -> pd.DataFrame:
         # Remove all downloaded files for this table
         rmtree(tmp_dir)
     return meta_data_table
-
 
 
 def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict):
@@ -193,33 +197,40 @@ def format_and_export_metadata_table(meta_data_table: pd.DataFrame, config: dict
     --------
     pd.DataFrame
         The formatted metadata table. Also saved as a CSV file in the specified output directory.
-    """    
+    """
 
-    
     # Format the lookup table
     meta_data_table_full = (
         meta_data_table
         # Extract variable name from 'Full_Name' (text after first colon, up to semicolon if present)
-        .assign(
-            Variable_Name=meta_data_table['Full_Name'].str.extract(r':\s*([^;:]+?)(?:;|$)')
-        )
-
+        .assign(Variable_Name=meta_data_table["Full_Name"].str.extract(r":\s*([^;:]+?)(?:;|$)"))
         # Extract table name from 'Full_Name' (text before first colon)
-        .assign(Table_Name=meta_data_table['Full_Name'].str.split(':', n=1).str[0])
+        .assign(Table_Name=meta_data_table["Full_Name"].str.split(":", n=1).str[0])
         .assign(Type="Count")
+    )
 
-        )
-         
     # Specify desired column order
-    column_order = ["Variable_Name", "Variable_ID", "Table_ID", "Table_Name", "Type", "Unit", "Full_Name"]
+    column_order = [
+        "Variable_Name",
+        "Variable_ID",
+        "Table_ID",
+        "Table_Name",
+        "Type",
+        "Unit",
+        "Full_Name",
+    ]
 
     # Reorder columns (only keep columns that exist in the DataFrame)
-    meta_data_table_full = meta_data_table_full[[col for col in column_order if col in meta_data_table_full.columns]]    
-    
+    meta_data_table_full = meta_data_table_full[
+        [col for col in column_order if col in meta_data_table_full.columns]
+    ]
+
     # Ensure input directory exists
     os.makedirs(os.path.dirname(config["input_directory"]), exist_ok=True)
 
     # Write the resulting DataFrame to a CSV file
-    meta_data_table_full.to_csv(os.path.join(config["input_directory"], "ew_lad_table_metadata.csv"), index=False)
+    meta_data_table_full.to_csv(
+        os.path.join(config["input_directory"], "ew_lad_table_metadata.csv"), index=False
+    )
 
     return meta_data_table_full

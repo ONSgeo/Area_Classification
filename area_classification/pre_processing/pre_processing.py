@@ -1,16 +1,19 @@
-import pandas as pd
 import os
-from area_classification.utilities.load_config import load_config
-from area_classification.pre_processing.standardised_illness_ratio import sir_processing
+
+import pandas as pd
+
 from area_classification.pre_processing.aggregating_variables import aggregating_variables
-from area_classification.pre_processing.select_variables import select_variables
-from area_classification.pre_processing.select_totals_columns import select_totals_columns
 from area_classification.pre_processing.convert_to_percentages import convert_to_percentages
+from area_classification.pre_processing.select_totals_columns import select_totals_columns
+from area_classification.pre_processing.select_variables import select_variables
+from area_classification.pre_processing.standardised_illness_ratio import sir_processing
+from area_classification.utilities.load_config import load_config
+
 
 # Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
     """
-    Processes census data from England, Wales, Northern Ireland, and Scotland to ensure 
+    Processes census data from England, Wales, Northern Ireland, and Scotland to ensure
     consistency of datasets before being fed into clustering algorithm.
 
     Parameters
@@ -27,7 +30,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     Returns
     -------
     pd.DataFrame
-        Combined and pre-processed DataFrame containing data for England, Wales, Northern Ireland, 
+        Combined and pre-processed DataFrame containing data for England, Wales, Northern Ireland,
         and Scotland, for the 60 specific variables required for area classification clustering.
 
     Notes
@@ -49,7 +52,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         If there are issues with data merging or transformations.
 
     """
-    aggregation_config = load_config('area_classification/aggregation_setup.yaml')
+    aggregation_config = load_config("area_classification/aggregation_setup.yaml")
     select_variables_lookup = pd.read_csv(config["select_variables_lookup"])
     dfs = {"ew": ew_df, "ni": ni_df, "scot": scot_df}
 
@@ -64,29 +67,39 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         df_temp = dfs[key]
 
         # Aggregate variables which need to be combined categories
-        aggregation_configs = aggregation_config[key + '_file_configs']
+        aggregation_configs = aggregation_config[key + "_file_configs"]
         df_temp = aggregating_variables(df_temp, aggregation_configs, config)
 
         # Join SIR column into the main DataFrame
-        df_temp = pd.merge(df_temp,sir_output_df[["area_code","SIR"]],how = "left", left_on = config[join_column_name], right_on = "area_code").drop(columns=["area_code"])
-        
+        df_temp = pd.merge(
+            df_temp,
+            sir_output_df[["area_code", "SIR"]],
+            how="left",
+            left_on=config[join_column_name],
+            right_on="area_code",
+        ).drop(columns=["area_code"])
+
         # Check cases where SIR is NaN and try to match with sir_output_df
         # This is a workaround for cases where the area code in the main df does not match exactly with the area code in the sir_output_df
-        # Occurs where Area code is combined for small areas 
+        # Occurs where Area code is combined for small areas
         for idx, row in df_temp[df_temp["SIR"].isna()].iterrows():
             area_code = row[config[join_column_name]]
-            match_in_sir = sir_output_df[sir_output_df["area_code"].str.contains(str(area_code), na=False)]
+            match_in_sir = sir_output_df[
+                sir_output_df["area_code"].str.contains(str(area_code), na=False)
+            ]
             if not match_in_sir.empty:
                 df_temp.at[idx, "SIR"] = match_in_sir["SIR"].values[0]
 
         # Select the 60 variables a used in previous itterations of the area classification
         country_variables_lookup = select_variables_lookup[select_variables_lookup["country"] == key]
         df_temp = select_variables(df_temp, country_variables_lookup)
-        df_temp.rename(columns={config[join_column_name]: "LAD_code"},inplace=True)
+        df_temp.rename(columns={config[join_column_name]: "LAD_code"}, inplace=True)
 
         # Write the DataFrame to a CSV file
         os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)
-        output_csv_path = os.path.join(config["qa_directory"], f"preprocessing_{key}_selected_variables.csv")
+        output_csv_path = os.path.join(
+            config["qa_directory"], f"preprocessing_{key}_selected_variables.csv"
+        )
         df_temp.to_csv(output_csv_path, index=False)
 
         # overwriting original df with processed df
@@ -97,7 +110,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
 
     # Convert counts to percentages
     preprocessed_df = convert_to_percentages(raw_totals_df)
-    
+
     # Save pre-clustering data (unstandardized, used in cluster means)
     preprocessed_df.to_csv(config["pre_clustering_data"], index=False)
 

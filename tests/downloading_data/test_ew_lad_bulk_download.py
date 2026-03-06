@@ -1,10 +1,17 @@
 # Unit test not running yet!
 import unittest
-from unittest.mock import patch, Mock, MagicMock, mock_open
+from unittest.mock import Mock, mock_open, patch
+
 import pandas as pd
-from area_classification.downloading_data.ew_lad_bulk_download import get_census_table_urls, download_and_unzip_data, format_and_export_metadata_table
+
+from area_classification.downloading_data.ew_lad_bulk_download import (
+    download_and_unzip_data,
+    format_and_export_metadata_table,
+    get_census_table_urls,
+)
 
 MODULE = "area_classification.downloading_data.ew_lad_bulk_download"
+
 
 class TestGetCensusTableUrls(unittest.TestCase):
     @patch(f"{MODULE}.requests.get")
@@ -24,14 +31,12 @@ class TestGetCensusTableUrls(unittest.TestCase):
         mock_response.content = html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        config = {
-            "england_and_wales_table_codes_to_remove": ["def456"]
-        }
+        config = {"england_and_wales_table_codes_to_remove": ["def456"]}
 
         urls = get_census_table_urls(config)
         expected_urls = [
             "https://www.nomisweb.co.uk/output/census/2021/census2021-abc123.zip",
-            "https://www.nomisweb.co.uk/output/census/2021/census2021-ghi789.zip"
+            "https://www.nomisweb.co.uk/output/census/2021/census2021-ghi789.zip",
         ]
         self.assertCountEqual(urls, expected_urls)
 
@@ -47,8 +52,16 @@ class TestDownloadAndUnzipData(unittest.TestCase):
     @patch(f"{MODULE}.requests.get")
     @patch(f"{MODULE}.tempfile.mkdtemp")
     def test_download_and_unzip_data(
-        self, mock_mkdtemp, mock_requests_get, mock_open_func, mock_zipfile,
-        mock_glob, mock_read_csv, mock_to_csv, mock_makedirs, mock_rmtree
+        self,
+        mock_mkdtemp,
+        mock_requests_get,
+        mock_open_func,
+        mock_zipfile,
+        mock_glob,
+        mock_read_csv,
+        mock_to_csv,
+        mock_makedirs,
+        mock_rmtree,
     ):
         # --- Test case 1: ts001, unit from metadata ---
         mock_mkdtemp.return_value = "/tmp/mockdir"
@@ -57,7 +70,7 @@ class TestDownloadAndUnzipData(unittest.TestCase):
         # CSV and metadata txt file
         mock_glob.side_effect = [
             ["/tmp/mockdir/census2021-ts001-ltla.csv"],  # CSV
-            ["/tmp/mockdir/metadata/meta.txt"]           # Metadata txt
+            ["/tmp/mockdir/metadata/meta.txt"],  # Metadata txt
         ]
         # Mock open for metadata file
         metadata_content = "Some header\nUnit of measure: Household\nOther info\n"
@@ -65,13 +78,15 @@ class TestDownloadAndUnzipData(unittest.TestCase):
         m_open.return_value.__iter__ = lambda self: iter(metadata_content.splitlines(True))
         mock_open_func.side_effect = m_open
 
-        df = pd.DataFrame({
-            "date": [20210101],
-            "geography": ["Area1"],
-            "geography code": ["E123"],
-            "col1": [1],
-            "col2": [2]
-        })
+        df = pd.DataFrame(
+            {
+                "date": [20210101],
+                "geography": ["Area1"],
+                "geography code": ["E123"],
+                "col1": [1],
+                "col2": [2],
+            }
+        )
         mock_read_csv.return_value = df
         zip_urls = ["https://www.nomisweb.co.uk/output/census/2021/census2021-ts001.zip"]
         config = {"input_directory": "/mock/input"}
@@ -82,7 +97,7 @@ class TestDownloadAndUnzipData(unittest.TestCase):
         # --- Test case 2: ts007a, special case unit ---
         mock_glob.side_effect = [
             ["/tmp/mockdir/census2021-ts007a-ltla.csv"],  # CSV
-            []                                            # No metadata txt
+            [],  # No metadata txt
         ]
         zip_urls = ["https://www.nomisweb.co.uk/output/census/2021/census2021-ts007a.zip"]
         meta = download_and_unzip_data(zip_urls, config)
@@ -96,23 +111,21 @@ class TestDownloadAndUnzipData(unittest.TestCase):
         self.assertTrue(mock_to_csv.called)
 
 
-
-
-
 class TestFormatAndExportMetadataTable(unittest.TestCase):
     @patch(f"{MODULE}.os.makedirs")
     @patch(f"{MODULE}.pd.DataFrame.to_csv")
     def test_format_and_export_metadata_table(self, mock_to_csv, mock_makedirs):
-
         # Sample input DataFrame
-        meta_data_table = pd.DataFrame({
-            "Full_Name": [
-                "Tenure of household: Total: All households",
-                "Year of arrival in the UK: Total: All usual residents; measures: Value"
-            ],
-            "Variable_ID": ["ts0010001", "ts0020001"],
-            "Table_ID": ["TS001", "TS002"]
-        })
+        meta_data_table = pd.DataFrame(
+            {
+                "Full_Name": [
+                    "Tenure of household: Total: All households",
+                    "Year of arrival in the UK: Total: All usual residents; measures: Value",
+                ],
+                "Variable_ID": ["ts0010001", "ts0020001"],
+                "Table_ID": ["TS001", "TS002"],
+            }
+        )
         config = {"input_directory": "mock_dir/input"}
 
         # Call the function
@@ -137,6 +150,5 @@ class TestFormatAndExportMetadataTable(unittest.TestCase):
         self.assertEqual(result.loc[1, "Variable_Name"], "All usual residents")
 
 
-
-if __name__ == '__main__':
-   unittest.main()
+if __name__ == "__main__":
+    unittest.main()
