@@ -22,7 +22,8 @@ def ni_lgd_download_data(config):
     Returns
     -------
     None
-        The function saves the downloaded data and metadata as CSV files in the specified input directory.
+        The function saves the downloaded data and metadata as CSV files in the
+        specified input directory.
     """
 
     meta_data_table = download_ni_lgd_data(config)
@@ -180,7 +181,8 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config: d
     Returns
     -------
     None
-        The function saves the formatted metadata table as a CSV file in the specified input directory.
+        The function saves the formatted metadata table as a CSV file in the
+        specified input directory.
     """
     # Rename units to match other scripts
     meta_data_table["Unit"] = meta_data_table["Unit"].replace(
@@ -210,9 +212,10 @@ def get_available_variables():
     """
     Fetches available variables from the NISRA dataset metadata page.
 
-    This function sends a GET request to the NISRA metadata page for both the PEOPLE and HOUSEHOLD datasets,
-    parses the HTML content to extract table data, and returns the data as a list of lists.
-    Each inner list represents a row in the table, containing the text content of each cell.
+    This function sends a GET request to the NISRA metadata page for both the PEOPLE
+    and HOUSEHOLD datasets, parses the HTML content to extract table data, and
+    returns the data as a list of lists. Each inner list represents a row in the
+    table, containing the text content of each cell.
 
     Returns
     -------

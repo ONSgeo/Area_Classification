@@ -28,13 +28,15 @@ def post_processing(config, clustering_output, chosen_clustering_variables):
     Returns
     -------
     tuple of pd.DataFrame
-        (combined_group_means, combined_subgroup_means): DataFrames containing means for group and subgroup clusters.
+        (combined_group_means, combined_subgroup_means): DataFrames containing means
+        for group and subgroup clusters.
     """
 
     # Run the standardise_data function on chosen_clustering_variables
     standardised_data = standardise_data(chosen_clustering_variables)
 
-    # Step 1: Restructure the cluster table to have separate columns for supergroup, group and subgroup
+    # Step 1: Restructure the cluster table to have separate columns for
+    # supergroup, group and subgroup
     restructured_cluster_table, restructured_cluster_table_long = cluster_table_restructure(
         config, clustering_output, config["split_column"], config["keep_column"], standardised_data
     )

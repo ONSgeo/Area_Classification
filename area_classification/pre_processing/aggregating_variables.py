@@ -35,7 +35,8 @@ def aggregating_variables(df_temp, aggregation_configs, config):
         missing_cols = [col for col in col_names if col not in df_temp.columns]
         if missing_cols:
             logger.warning(
-                f"Warning: Missing columns {missing_cols} in DataFrame. Skipping aggregation for {new_col_name}."
+                f"Warning: Missing columns {missing_cols} in DataFrame. "
+                + "Skipping aggregation for {new_col_name}."
             )
             continue
 
@@ -43,12 +44,8 @@ def aggregating_variables(df_temp, aggregation_configs, config):
         df_temp[new_col_name] = df_temp[col_names].sum(axis=1)
 
     # Extract the header of column 1 (the country area code type e.g. LTLA, LGD or CA19)
-    if not df_temp.empty:
-        # Convert to string for use in the file name
-        country_lad_code = str(df_temp.columns[0])
-    else:
-        # Handle empty DataFrame case
-        country_lad_code = "N/A"
+    # Convert to string for use in the file name else Handle empty DataFrame case
+    country_lad_code = str(df_temp.columns[0]) if not df_temp.empty else "N/A"
 
     # Ensure QA directory exists
     os.makedirs(os.path.dirname(config["qa_directory"]), exist_ok=True)

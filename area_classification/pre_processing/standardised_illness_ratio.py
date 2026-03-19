@@ -11,22 +11,22 @@ import os
 
 import pandas as pd
 
-logger = logging.getLogger(__name__)
-
 from area_classification.utilities.disability_age_group_conversion import (
     convert_disability_age_group_england_wales,
     convert_disability_age_group_northern_ireland,
     convert_disability_age_group_scotland,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def sir_processing(config):
     """
     Process disability data to calculate the Standardised Illness Ratio (SIR) for each area code.
 
-    This function first checks if the required disability data files are present, if missing it runs a function
-    to generate them. When all required files are present, it combines them into one dataframe to then calculate
-    the SIR for each area code.
+    This function first checks if the required disability data files are present, if missing
+    it runs a function to generate them. When all required files are present, it combines them
+    into one dataframe to then calculate the SIR for each area code.
 
     Parameters
     -----------
@@ -56,7 +56,8 @@ def sir_processing(config):
     # If each file is in the missing list, then run the conversion function to create that file
     if config["england_wales_disability_file"] in missing_files:
         logger.warning(
-            f"Warning: The file {config['england_wales_disability_file']} was not found in the input directory."
+            f"Warning: The file {config['england_wales_disability_file']} "
+            + "was not found in the input directory."
         )
         convert_disability_age_group_england_wales(
             config["input_directory"] + config["england_wales_disability_input"], config
@@ -73,7 +74,8 @@ def sir_processing(config):
             config["input_directory"] + config["scotland_disability_input"], config
         )
         logger.warning(
-            f"Warning: The file {config['scotland_disability_file']} was not found in the input directory."
+            f"Warning: The file {config['scotland_disability_file']} was"
+            + " not found in the input directory."
         )
 
         logger.warning(f"Warning: The following files were not found: {missing_files}")
@@ -95,16 +97,18 @@ def sir_processing(config):
 
 def SIR_calculation(df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """
-    Calculate the Standardised Illness Ratio (SIR) for a given DataFrame containing disability data.
-    This is calculated as a ratio of the 'disability_count' (observed disability) and 'exp_ill_all' (expected
-    disability count) based on national proportions. The SIR is calculated for each area code.
+    Calculate the Standardised Illness Ratio (SIR) for a given DataFrame containing disability
+    data. This is calculated as a ratio of the 'disability_count' (observed disability) and
+    'exp_ill_all' (expected disability count) based on national proportions. The SIR is
+    calculated for each area code.
 
     At the end it runs the QA function which saves the file into the QA directory.
 
     Parameters
     ----------
     df : DataFrame
-        DataFrame containing columns 'Area_Code', 'local_authority', 'age_group', 'Count', 'Population'
+        DataFrame containing columns 'Area_Code', 'local_authority', 'age_group',
+        'Count', 'Population'
 
     Returns
     -------

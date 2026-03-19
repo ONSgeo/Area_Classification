@@ -32,7 +32,8 @@ def cluster_std_means_to_parent_clusters(
     Returns
     -------
     tuple of pd.DataFrame
-        (combined_group_means, combined_subgroup_means): DataFrames containing standardised means for each group and subgroup.
+        (combined_group_means, combined_subgroup_means): DataFrames containing
+        standardised means for each group and subgroup.
 
     """
     # Merge the two DataFrames on the LAD CODE column
@@ -55,7 +56,7 @@ def cluster_std_means_to_parent_clusters(
     all_subgroup_means = []
 
     # Group by supergroup and process each supergroup's data
-    for supergroup, supergroup_data in merged_df.groupby("supergroup"):
+    for _supergroup, supergroup_data in merged_df.groupby("supergroup"):
         # Sort the data by 'group'
         supergroup_data = supergroup_data.sort_values(by=["group"])
         # Drop the 'subgroup' column
@@ -84,7 +85,7 @@ def cluster_std_means_to_parent_clusters(
     merged_df = merged_df.sort_values(by=["group", "subgroup"])
 
     # Group by group and process each group's data
-    for group, group_data in merged_df.groupby("group"):
+    for _group, group_data in merged_df.groupby("group"):
         # Identify columns starting with 'v'
         v_columns = [col for col in group_data.columns if col.startswith("v")]
 

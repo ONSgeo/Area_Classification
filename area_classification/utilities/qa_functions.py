@@ -6,7 +6,8 @@ def run_qa_checks(df):
     Main function to run QA checks on the provided dataframe.
 
     The user selects which type of QA checks to perform: an automatic summary or user-input checks
-        - If the user selects automatic summary checks, the function 'quality_checks_all_dfs' is called.
+        - If the user selects automatic summary checks, the function 'quality_checks_all_dfs'
+        is called.
         - If the user selects user-input checks, the function 'user_input_qa' is called
 
     Parameters
@@ -44,21 +45,25 @@ def quality_checks_all_dfs(df):
     """
     Function to perform automatic quality checks on the dataframe.
 
-    The user can select between a basic or a full auto check. Each option will print a summary report of the dataframe but will provide
-    a different level of detail.
+    The user can select between a basic or a full auto check. Each option will print a
+    summary report of the dataframe but will provide a different level of detail.
 
     Basic Auto Check:
         - Prints the total number of rows and columns.
         - Checks if any column contains a mix of data types and prints a warning if so.
         - Checks for missing values and zero values, printing the total counts if any are found.
-        - After completing the basic auto check, the user is prompted to decide if they want to proceed with the full auto check.
+        - After completing the basic auto check, the user is prompted to decide if they want
+        to proceed with the full auto check.
 
     Full Auto Check:
         - Prints the total number of rows and columns.
         - Prints the column names and data types of each column.
-        - Checks if any column contains a mix of data types. Prints a warning and lists the columns containing mixed data types.
-        - Checks for missing values and zero values - lists the columns containing missing or zero values and the total count found in each.
-        - After completing the full auto check, the user is prompted to decide if they want to proceed with the user input checks.
+        - Checks if any column contains a mix of data types. Prints a warning and lists the
+        columns containing mixed data types.
+        - Checks for missing values and zero values - lists the columns containing missing or
+        zero values and the total count found in each.
+        - After completing the full auto check, the user is prompted to decide if they want to
+        proceed with the user input checks.
 
     Parameters
     ----------
@@ -184,25 +189,34 @@ def user_input_qa(df):
     """
     Function to perform tailored quality checks on the dataframe based on user inputs.
 
-    The function performs three main checks - the user is prompted at each stage to select if they want to perform or skip the check:
+    The function performs three main checks - the user is prompted at each stage to select if
+    they want to perform or skip the check:
 
     1. Structure of the dataframe
         - User inputs the expected number of rows and columns.
-        - The function checks if the dataframe matches these expectations and prints a warning if not.
+        - The function checks if the dataframe matches these expectations and prints a warning
+          if not.
 
     2. Ranges
-        - User selects whether they want to check the value ranges for the entire dataframe or specific columns.
+        - User selects whether they want to check the value ranges for the entire dataframe or
+          specific columns.
         - For the entire dataframe - the user inputs the expected min and max values.
-          The function checks if any values fall outside this range and prints a warning if so. The duplicate count per column is listed.
-          The user is then prompted to decide if they want to check specific columns.
-        - For specific columns - the user specifies which columns to check and inputs the expected min and max for each.
-          The function checks if any values in those columns fall outside the specified ranges and prints a warning if so.
-          The user is then prompted to decide if they want to check any further columns.
+          The function checks if any values fall outside this range and prints a warning if so.
+          The duplicate count per column is listed. The user is then prompted to decide if they
+          want to check specific columns.
+        - For specific columns - the user specifies which columns to check and inputs the expected
+          min and max for each.
+          The function checks if any values in those columns fall outside the specified ranges and
+          prints a warning if so. The user is then prompted to decide if they want to check any
+          further columns.
 
     3. Unique Values/ Duplicates
-        - User selects whether they want to check for duplicate values in the entire dataframe or specific columns.
-        - For the entire dataframe - the function checks each column for duplicate values and prints the total number found in each column.
-        - For specific columns - the user specifies which columns to check. The function checks each specified column for duplicate values and prints the total number found.
+        - User selects whether they want to check for duplicate values in the entire dataframe
+          or specific columns.
+        - For the entire dataframe - the function checks each column for duplicate values and prints
+          the total number found in each column.
+        - For specific columns - the user specifies which columns to check. The function checks each
+          specified column for duplicate values and prints the total number found.
 
     Parameters
     ----------
@@ -216,7 +230,8 @@ def user_input_qa(df):
     """
 
     # Check One - Structure of the dataframe
-    # Asks the user to input the expected number of rows and columns. Then checks if the dataframe matches these expectations.
+    # Asks the user to input the expected number of rows and columns. Then checks if the
+    # dataframe matches these expectations.
 
     # Ask the user if they want to check the number of rows and columns
     print("Check 1/3 - Structure of the DataFrame")
@@ -243,7 +258,8 @@ def user_input_qa(df):
         print("Skipping row and column count check.")
 
     # Check Two - Ranges
-    # Asks the user to input the expected range for data values (min and max). Then checks if any values fall outside this range.
+    # Asks the user to input the expected range for data values (min and max). Then checks if
+    # any values fall outside this range.
 
     # Ask the user if they want to check value ranges
     print("Check 2/3 - Ranges")
@@ -319,7 +335,8 @@ def user_input_qa(df):
 
                         if out_of_range_count > 0:
                             print(
-                                f"Warning: Column '{col}' has {out_of_range_count} values outside the expected range [{min_expected}, {max_expected}]."
+                                f"Warning: Column '{col}' has {out_of_range_count} values outside"
+                                + "the expected range [{min_expected}, {max_expected}]."
                             )
                         else:
                             print(f"All values in column '{col}' are within the expected range.")
@@ -341,7 +358,8 @@ def user_input_qa(df):
         print("Skipping range check.")
 
     # Check Three - Unique Values/ Duplicates
-    # Asks the user to specify if a column contains only unique values. Then checks if there are any duplicates in that column.
+    # Asks the user to specify if a column contains only unique values. Then checks if there are
+    # any duplicates in that column.
 
     # Ask the user if they want to check for duplicate values.
     print("Check 3/3 - Duplicate Values")
@@ -375,7 +393,8 @@ def user_input_qa(df):
                         duplicate_count = df[col].duplicated().sum()
                         if duplicate_count > 0:
                             print(
-                                f"Warning: Column '{col}' contains {duplicate_count} duplicate values:"
+                                f"Warning: Column '{col}' contains {duplicate_count}"
+                                + "duplicate values:"
                             )
                             # Print each duplicate value and how many times it appears in the column
                             duplicated_values = df[col][df[col].duplicated(keep=False)]

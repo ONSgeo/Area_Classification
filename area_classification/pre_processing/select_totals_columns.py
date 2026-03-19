@@ -20,7 +20,8 @@ def select_totals_columns(config, inputs_folder):
     inputs_folder : str
         Path to the folder containing the select files and aggregated output tables for each
         country (ew, ni, scot).
-            - select files contain the area codes and raw counts for only the variables from v1 to v60.
+            - select files contain the area codes and raw counts for only the variables
+            from v1 to v60.
             - aggregated output tables contain the area codes and raw counts and totals for every
             variable using variables codes like ts, ni and uv. Codes ending '001' are the totals.
 
@@ -86,7 +87,8 @@ def select_totals_columns(config, inputs_folder):
 
             # Iterate through each variable column in the select file
             for variable in select_df.columns[1:]:  # Skip the first column
-                # Ignore 'v12' and 'v33' columns as these are already ratios, don't need to be percentages
+                # Ignore 'v12' and 'v33' columns as these are already ratios,
+                # don't need to be percentages
                 if variable in ["v12", "v33"]:
                     continue
                 # Only process variable columns
@@ -106,7 +108,8 @@ def select_totals_columns(config, inputs_folder):
                             ]  # Get the matching total column name (e.g., ts0010001)
                         else:
                             logger.warning(
-                                f"Warning: No match found for variable '{variable}' in lookup_df for {country}."
+                                f"Warning: No match found for variable '{variable}' "
+                                + "in lookup_df for {country}."
                             )
                             continue
 

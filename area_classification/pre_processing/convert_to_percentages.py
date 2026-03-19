@@ -6,8 +6,8 @@ def convert_to_percentages(raw_totals_df):
     Parameters
     ----------
     raw_totals_df : pd.DataFrame
-        Input DataFrame with area codes as the first column followed by columns like 'v01', 'v01_total'.
-        Values are raw counts.
+        Input DataFrame with area codes as the first column followed by columns like
+        'v01', 'v01_total'. Values are raw counts.
 
     Returns
     -------

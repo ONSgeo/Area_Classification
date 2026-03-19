@@ -16,8 +16,9 @@ def main_pipeline():
     """
     Main pipeline to process area classification data.
 
-    This function runs the entire pipeline for creation of the Local Authority District area classification
-    clusters, including downloading, formatting, pre-processing, and clustering.
+    This function runs the entire pipeline for creation of the Local Authority
+    District area classification clusters, including downloading, formatting,
+    pre-processing, and clustering.
 
     Steps
     -----
@@ -28,7 +29,8 @@ def main_pipeline():
     5. Establish the variables which will be used for clustering (some may be dropped).
     6. standardise the pre-processed data for clustering.
     7. Perform clustering on the pre-processed data, using variables chosen.
-    8. Reformat the cluster tables, calculate the means of the clustered data and generate radial plots and bar charts.
+    8. Reformat the cluster tables, calculate the means of the clustered data and
+    generate radial plots and bar charts.
 
     Parameters
     ----------
@@ -36,8 +38,10 @@ def main_pipeline():
 
     Notes
     -----
-    - The configuration file `area_classification/config.yaml` is loaded to provide all necessary settings.
-    - The clustering step assumes pre-processed data is saved locally and loads it during clustering.
+    - The configuration file `area_classification/config.yaml` is loaded to
+    provide all necessary settings.
+    - The clustering step assumes pre-processed data is saved locally and
+    loads it during clustering.
 
     """
     config = load_config("area_classification/config.yaml")

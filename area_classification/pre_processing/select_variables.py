@@ -16,13 +16,14 @@ def select_variables(df_temp, lookup_df):
     df_temp : pd.DataFrame
         The temp DataFrame containing all data.
     lookup_df : pd.DataFrame
-        DataFrame containing 'variable_code' and 'new_code' columns to select and rename columns.
+        DataFrame containing 'variable_code' and 'new_code' columns to select and
+        rename columns.
 
     Returns
     -------
     pd.DataFrame
-        A new DataFrame with only the specified columns, with area codes in the first column followed by
-        raw count values for each variable from v1 to v60.
+        A new DataFrame with only the specified columns, with area codes in the
+        first column followed by raw count values for each variable from v1 to v60.
 
     """
 

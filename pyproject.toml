@@ -10,6 +10,7 @@ ignore = ["D203", "E203"]
 
 [tool.ruff]
 line-length = 101
+exclude = ["tests"]
 
 [tool.ruff.format]
 line-ending = "auto"

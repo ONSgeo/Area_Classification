@@ -10,7 +10,8 @@ from area_classification.pre_processing.standardised_illness_ratio import sir_pr
 from area_classification.utilities.load_config import load_config
 
 
-# Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks and downloaded Scot)
+# Assume that the data has been loaded and is in a pandas dataframe (e.g. ran NI / EW bulks
+# and downloaded Scot)
 def pre_processing(ew_df, ni_df, scot_df, config):
     """
     Processes census data from England, Wales, Northern Ireland, and Scotland to ensure
@@ -62,7 +63,7 @@ def pre_processing(ew_df, ni_df, scot_df, config):
     for key in dfs:
         # Make the key to extract the information from config file
         join_column_name = key + "_join_column_name"
-        exclude_form_code_key = key + "_excluded_form_code"
+        # exclude_form_code_key = key + "_excluded_form_code"
 
         df_temp = dfs[key]
 
@@ -80,7 +81,8 @@ def pre_processing(ew_df, ni_df, scot_df, config):
         ).drop(columns=["area_code"])
 
         # Check cases where SIR is NaN and try to match with sir_output_df
-        # This is a workaround for cases where the area code in the main df does not match exactly with the area code in the sir_output_df
+        # This is a workaround for cases where the area code in the main df does not
+        # match exactly with the area code in the sir_output_df
         # Occurs where Area code is combined for small areas
         for idx, row in df_temp[df_temp["SIR"].isna()].iterrows():
             area_code = row[config[join_column_name]]

@@ -6,8 +6,8 @@ import pandas as pd
 
 def cluster_variable_means(config, restructured_cluster_table, standardised_data):
     """
-    Calculates the mean of each variable for different hierarchical clusters (supergroup, group, subgroup),
-    and outputs the results in a structured format.
+    Calculates the mean of each variable for different hierarchical clusters
+    (supergroup, group, subgroup), and outputs the results in a structured format.
 
     Parameters
     ----------
@@ -38,7 +38,8 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
     # Merge cluster results with standardised means census data
     merged_data = pd.merge(restructured_cluster_table, standardised_data, on="LAD_code", how="left")
 
-    # Reshape from wide to long format to create one variable_name column (rather than 61 columns, one for each)
+    # Reshape from wide to long format to create one variable_name column
+    # (rather than 61 columns, one for each)
     long_data = pd.melt(
         merged_data,
         id_vars=["LAD_code", "LAD_name", "supergroup", "group", "subgroup"],
@@ -46,7 +47,8 @@ def cluster_variable_means(config, restructured_cluster_table, standardised_data
         value_name="variable_value",
     )
 
-    # Reshape to even longer by making one hierarchy_level column (rather than supergroup, group, subgroup)
+    # Reshape to even longer by making one hierarchy_level column (rather than
+    # supergroup, group, subgroup)
     long_data = pd.melt(
         long_data,
         id_vars=["LAD_code", "LAD_name", "variable_name", "variable_value"],

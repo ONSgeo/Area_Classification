@@ -5,7 +5,8 @@ import pandas as pd
 
 def define_age_bands_and_bools(df, lower_age_band_col="lower_age_band"):
     """
-     Function to define age bands and their corresponding boolean conditions based on the lower age band column.
+     Function to define age bands and their corresponding boolean conditions based on
+     the lower age band column.
 
      Parameters
      ----------
@@ -30,9 +31,9 @@ def convert_disability_age_group_scotland(filepath: str, config: dict) -> pd.Dat
     """
     Function to convert disability age group data from Scotland into a standard format,
     iterating based on council areas.
-    As mentioned in the main README for this repo, disability data for Scotland needs to be downloaded manually
-    from the Scotland's Census Flexible Table Builder (UV303a) and saved into the 'data/inputs/scot_downloads folder.
-    The file should be named 'UV303a.csv'.
+    As mentioned in the main README for this repo, disability data for Scotland needs to
+    be downloaded manually from the Scotland's Census Flexible Table Builder (UV303a) and
+    saved into the 'data/inputs/scot_downloads folder. The file should be named 'UV303a.csv'.
 
     Output is written to a csv file in the input_directory
 
@@ -65,7 +66,8 @@ def convert_disability_age_group_scotland(filepath: str, config: dict) -> pd.Dat
         if str(row.iloc[0]).strip().lower() == "sex":
             # Get the council area name
             if index == 0:
-                # If the index is 0, set council_area to "Clackmannanshire" (as this CA was removed in skip rows reformat)
+                # If the index is 0, set council_area to "Clackmannanshire" (as this CA was
+                # removed in skip rows reformat)
                 council_area = "Clackmannanshire"  # Set to "Clackmannanshire" for index 1
             else:
                 # If it's not the first one, instead get the area name from two rows above
@@ -148,10 +150,10 @@ def convert_disability_age_group_scotland(filepath: str, config: dict) -> pd.Dat
 def convert_disability_age_group_england_wales(filepath: str, config: dict) -> pd.DataFrame:
     """
     function to convert disability age group data from England and Wales into a standard format.
-    As mentioned in the main README for this repo, disability data for England and Wales needs to be downloaded
-    manually from the Office for National Statistics (ONS) website as it is not available in the bulk download.
-    It should have been manually saved into the 'data/inputs/ew_downloads folder. The file name should be
-    'disabilitycensus2021.xlsx'.
+    As mentioned in the main README for this repo, disability data for England and Wales needs
+    to be downloaded manually from the Office for National Statistics (ONS) website as it is not
+    available in the bulk download. It should have been manually saved into the
+    'data/inputs/ew_downloads' folder. The file name should be 'disabilitycensus2021.xlsx'.
 
     Output is written to a csv file in the input_directory
 
@@ -223,10 +225,10 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
 def convert_disability_age_group_northern_ireland(filepath: str, config: dict) -> pd.DataFrame:
     """
     function to convert disability age group data from Northern Ireland into a standard format.
-    As mentioned in the main README for this repo, disability data for Northern Ireland needs to be downloaded
-    manually from the Northern Ireland Statistics and Research Agency (NISRA) website as it is not available in
-    the bulk download. It should have been manually saved into the 'data/inputs/ni_downloads folder. The file
-    should be named 'census-2021-ms-d02.xlsx'.
+    As mentioned in the main README for this repo, disability data for Northern Ireland needs to
+    be downloaded manually from the Northern Ireland Statistics and Research Agency (NISRA)
+    website as it is not available in the bulk download. It should have been manually saved
+    into the 'data/inputs/ni_downloads folder. The file should be named 'census-2021-ms-d02.xlsx'.
     Output is written to a csv file in the input_directory
 
     Parameters

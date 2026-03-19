@@ -13,8 +13,9 @@ def create_radial_plots_wrapper(
     """
     Wrapper function to create radial plots for UK clusters and parent clusters.
 
-    Radial plots for parent clusters represent difference from parent cluster standardised means.
-    Radial plots for the area classification clusters to represent difference from UK standardised means.
+    Radial plots for parent clusters represent difference from parent cluster
+    standardised means. Radial plots for the area classification clusters to
+    represent difference from UK standardised means.
 
     Parameters
     ----------

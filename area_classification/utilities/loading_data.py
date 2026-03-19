@@ -28,7 +28,8 @@ def load_data(filepath):
     missing_values = input_df.isnull().sum().sum()
     if missing_values > 0:
         logger.warning(
-            f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0."
+            f"Warning: {missing_values} missing values found in input data."
+            + "Missing values will be replaced with 0."
         )
         input_df.fillna(0, inplace=True)
 
@@ -62,14 +63,16 @@ def load_format_data(
     FileNotFoundError
         raises error if no files matching the pattern are found in the given filepath
     ValueError
-        raises error if the number of columns in the merged dataframe does not match the expected number
-        expected number is the sum of columns in all files minus the join column which is only present in the first file
+        raises error if the number of columns in the merged dataframe does not
+        match the expected number. The expected number is the sum of columns in
+        all files minus the join column which is only present in the first file
         (i.e. len(file_list) - 1)
     """
 
     # Load all of the data tables into a single DataFrame
     # First column will be geo code, others be questions and rows indicate responses
-    # Find all files matching the pattern "ts" followed by any three digits and ".csv" in the given filepath
+    # Find all files matching the pattern "ts" followed by any three digits and ".csv" in
+    # the given filepath
     pattern = os.path.join(filepath, file_pattern)
     file_list = glob.glob(pattern)
 

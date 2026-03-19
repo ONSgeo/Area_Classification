@@ -77,7 +77,7 @@ def horizontal_bar_charts(config, dataframe, level):
     os.makedirs(bar_parent_dir, exist_ok=True)
     os.makedirs(bar_uk_dir, exist_ok=True)
 
-    for idx, row in dataframe.iterrows():
+    for _idx, row in dataframe.iterrows():
         values = row[categories].tolist()
 
         fig = plt.figure(figsize=(12, 8))

@@ -38,7 +38,8 @@ def drop_variables_pre_clustering(config, preprocessed_df, variables_to_drop):
     Parameters
     ----------
     config : dict
-        Configuration dictionary containing the output file path under 'pre_clustering_data_filtered'.
+        Configuration dictionary containing the output file path under
+        'pre_clustering_data_filtered'.
     preprocessed_df : pd.DataFrame
         DataFrame containing the preprocessed table.
     variables_to_drop : list

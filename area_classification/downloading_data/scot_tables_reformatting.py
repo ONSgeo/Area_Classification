@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 def scot_reformatting_wrapper(scot_input_folder: str, LAD_lookup_file_path: str, config: dict):
     """
-    Wrapper function to perform the reformatting of the Scotland tables to be consistent with tables
-    downloaded for England and Wales and Northern Ireland and extract metadata from Scotland tables
-    to create a metadata table for Scotland.
+    Wrapper function to perform the reformatting of the Scotland tables to be
+    consistent with tables downloaded for England and Wales and Northern Ireland
+    and extract metadata from Scotland tables to create a metadata table for
+    Scotland.
 
     Certain tables have their own re-formatting functions.
 
@@ -31,7 +32,8 @@ def scot_reformatting_wrapper(scot_input_folder: str, LAD_lookup_file_path: str,
     Returns
     -------
     None
-        Metadata table is saved as a csv to the specified output path in the config dictionary.
+        Metadata table is saved as a csv to the specified output path
+        in the config dictionary.
     """
 
     # Rename the tables based on their table ID values
@@ -79,7 +81,8 @@ def scot_reformatting_wrapper(scot_input_folder: str, LAD_lookup_file_path: str,
         {"table_id": "UV303a", "table_name": "Disability by sex by age (20)", "unit": "Person"}
     )
     variable_names_ids.append((["Disability"], ["UV303a"]))
-    # Iterate over the metadata dict and variable_names_ids list and add to the metadata table
+    # Iterate over the metadata dict and variable_names_ids list and
+    # add to the metadata table
     for meta, (variable_names, variable_ids) in zip(metadata, variable_names_ids):
         # Extract table_id, table_name, and unit from the metadata dictionary
         table_id = meta.get("table_id", "")
@@ -137,11 +140,13 @@ def scot_reformatting_wrapper(scot_input_folder: str, LAD_lookup_file_path: str,
 
 def rename_csv_files_by_table_id(scot_input_folder):
     """
-    Renames CSV files in the specified folder based on the Table ID found in their content.
+    Renames CSV files in the specified folder based on the Table ID
+    found in their content.
 
     Paramaters
     ----------
-        scot_input_folder) (str): Path to the folder containing the CSV files.
+        scot_input_folder) (str): Path to the folder containing the
+        CSV files.
 
     Returns
     -------
@@ -185,7 +190,8 @@ def rename_csv_files_by_table_id(scot_input_folder):
 # Function to reformat the UV101b CSV file
 def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     """
-    Function to reformat the UV101b CSV file so it has rows removed and CA codes instead of names.
+    Function to reformat the UV101b CSV file so it has rows removed
+    and CA codes instead of names.
 
     Parameters
     ----------
@@ -199,7 +205,8 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file
+        in the specified output path.
     """
     # Look for UV101b.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV101b.csv")
@@ -269,7 +276,8 @@ def reformat_uv101b(scot_input_folder, LAD_lookup_file_path, config):
 
 def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     """
-    Function to reformat the UV103 CSV file so it has rows removed and CA codes instead of names.
+    Function to reformat the UV103 CSV file so it has rows removed and
+    CA codes instead of names.
 
     Parameters
     ----------
@@ -283,7 +291,8 @@ def reformat_uv103(scot_input_folder, LAD_lookup_file_path, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file
+        in the specified output path.
     """
     # Look for UV103.csv in the directory
     file_path = os.path.join(scot_input_folder, "UV103.csv")
@@ -376,7 +385,8 @@ def reformat_uv104(scot_input_folder, LAD_lookup_file_path, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file
+        in the specified output path.
     """
 
     # Look for UV104.csv in the directory
@@ -449,7 +459,8 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file
+        in the specified output path.
     """
 
     # Look for UV210.csv in the directory
@@ -511,9 +522,9 @@ def reformat_uv210(scot_input_folder, LAD_lookup_file_path, config):
 
 def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     """
-    Reformat the migrant indicator CSV file to move the last column of the DataFrame which contains total
-    to be the second column so that it is consistent with other tables.
-    Replace CA names with codes.
+    Reformat the migrant indicator CSV file to move the last column of the
+    DataFrame which contains total to be the second column so that it is
+    consistent with other tables. Replace CA names with codes.
 
     Parameters
     ----------
@@ -527,7 +538,8 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file
+        in the specified output path.
     """
     # Look for migrant_indicator.csv in the directory
     file_path = os.path.join(scot_input_folder, "migrant_indicator.csv")
@@ -551,7 +563,8 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
         return df
     # Identify the last column
     last_column = columns[-1]
-    # Rearrange the columns to move the last column which it totals to the second position
+    # Rearrange the columns to move the last column which it totals to
+    # the second position
     new_order = [columns[0], last_column] + columns[1:-1]
     reformatted_df = empty_columns_removed_df[new_order]
 
@@ -559,10 +572,12 @@ def reformat_migrant_indicator(scot_input_folder, LAD_lookup_file_path, config):
     reformatted_df.iloc[0, 0] = ""  # Remove the value in A1 (table name)
 
     if len(reformatted_df) > 1 and reformatted_df.shape[1] > 1:
-        # Move the values from row 1 (index 0) in columns B onward (index 1 onward) to row 2 (index 1)
+        # Move the values from row 1 (index 0) in columns B onward
+        # (index 1 onward) to row 2 (index 1)
         reformatted_df.iloc[1, 1:] = reformatted_df.iloc[0, 1:].values
 
-        # Clear the original values in row 1 (index 0) from column B onward (index 1 onward)
+        # Clear the original values in row 1 (index 0) from column B onward
+        # (index 1 onward)
         reformatted_df.iloc[0, 1:] = np.nan
 
         # Drop the first (empty) row and reset the index
@@ -639,7 +654,8 @@ def extract_pop_density_table(scot_input_folder):
 
 def reformat_pop_density(scot_input_folder, config):
     """
-    Reformats the population density file by removing unnecessary rows and amending column headers.
+    Reformats the population density file by removing unnecessary rows and
+    amending column headers.
     The output includes CA codes.
 
     Parameters
@@ -652,7 +668,8 @@ def reformat_pop_density(scot_input_folder, config):
     Returns
     -------
     None
-        The function saves the reformatted DataFrame to a new CSV file in the specified output path.
+        The function saves the reformatted DataFrame to a new CSV file in the
+        specified output path.
     """
 
     # Look for population_density.csv in the directory
@@ -688,7 +705,8 @@ def reformat_pop_density(scot_input_folder, config):
 def extract_metadata_from_files(scot_input_folder):
     """
     Extracts metadata from CSV files in the specified input directory.
-    Special handling is applied for the 'migrant_indicator_percentage.csv' and 'population_density.csv' files.
+    Special handling is applied for the 'migrant_indicator_percentage.csv'
+    and 'population_density.csv' files.
     It also skips the 'reformat_' files as these are repeats of the UV files.
 
     Parameters
@@ -824,7 +842,8 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
     Returns
     -------
     None
-        The function modifies the CSV files in place and saves them to the specified output path in the config dictionary.
+        The function modifies the CSV files in place and saves them to
+        the specified output path in the config dictionary.
     """
     # Load the LAD codes and names lookup file
     lookup_df = pd.read_csv(LAD_lookup_file_path)  # Assuming the file has headers
@@ -887,16 +906,18 @@ def replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, confi
 def remove_rows(config, folderpath):
     """
     Processes all CSV files in the input directory that start with 'reformat_'.
-    Modifies the files in place by performing specific preprocessing steps which includ
-    removing the last three rows as there is extra informaiton outside of the data table,
-    renaming column heading 'Council Area 2019' to 'CA19' and resetting the index.
+    Modifies the files in place by performing specific preprocessing steps
+    which include removing the last three rows as there is extra informaiton
+    outside of the data table, renaming column heading 'Council Area 2019' to
+    'CA19' and resetting the index.
 
     Parameters
     ----------
     config : dict
         Configuration dictionary containing paths and file names.
     folderpath: str
-        The folder containing the files to loop through, likely  as config["reformat_scot_input_folder"]
+        The folder containing the files to loop through, likely as
+        config["reformat_scot_input_folder"]
 
     Returns
     -------
@@ -927,7 +948,8 @@ def remove_rows(config, folderpath):
                 # Remove value from cell A1 (table name)
                 df.iloc[0, 0] = ""
 
-                # Move the values from row 1 (index 0) in columns B onward (index 1 onward) to row 2 (index 1)
+                # Move the values from row 1 (index 0) in columns B
+                # onward (index 1 onward) to row 2 (index 1)
                 df.iloc[1, 1:] = df.iloc[0, 1:]
 
                 # Clear the original values in row 1 (index 0) from column B onward (index 1 onward)
@@ -963,7 +985,8 @@ def replace_variable_names_with_codes(config):
     Returns
     -------
     variable_names_ids: list
-        A list of tuples, each containing a list of variable names and a list of variable ids for each processed file.
+        A list of tuples, each containing a list of variable names and a list
+        of variable ids for each processed file.
     """
     # Initialize a list to store variable_names and variable_ids for each file
     variable_names_ids = []
@@ -1003,7 +1026,8 @@ def replace_variable_names_with_codes(config):
                     f"{table_id}{str(i).zfill(4)}" for i in range(1, len(variable_names))
                 ]
 
-                # Replace the existing column names of the df from column B onward with the variable IDs
+                # Replace the existing column names of the df from column B onward
+                # with the variable IDs
                 df.columns = [df.columns[0]] + list(
                     variable_ids
                 )  # Keep column A unchanged, replace column B onward
@@ -1060,9 +1084,6 @@ def concat_reformatted_tables(config):
     for file in files:
         file_path = os.path.join(folder_path, file)
         df = pd.read_csv(file_path)  # Read the CSV file
-
-        # Extract the first column as the join key
-        join_key = df.iloc[:, 0]  # First column
 
         if result is None:
             # For the first file, include all columns and set the first column as the index

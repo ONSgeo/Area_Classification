@@ -12,9 +12,10 @@ def cluster_table_restructure(
     config, clustering_output, split_column, keep_column, standardised_data
 ):
     """
-    Using the cluster output column one (LAD_codes) is kept, but column two containing cluster codes are
-    separated out into seperate columns for supergroup, group, and subgroup. The final character in the
-    subgroup column is then converted to a number (a=1, b=2, c=3, etc.).
+    Using the cluster output column one (LAD_codes) is kept, but column two containing
+    cluster codes are separated out into seperate columns for supergroup, group, and
+    subgroup. The final character in the subgroup column is then converted to a number
+    (a=1, b=2, c=3, etc.).
 
     Parameters
     ----------
@@ -25,7 +26,8 @@ def cluster_table_restructure(
     keep_column : str
         The column header which will be kept in the final output
     clustering_output : pd.DataFrame
-        DataFrame of cluster assignments which have been output from running the clustering algorithm.
+        DataFrame of cluster assignments which have been output from running the
+        clustering algorithm.
         Data will have the following format:
 
         LAD_code   | subsub cluster
@@ -36,8 +38,10 @@ def cluster_table_restructure(
     -------
     tuple of pd.DataFrame
         (restructured_cluster_table, restructured_cluster_table_long)
-        - restructured_cluster_table: DataFrame with LAD_code, supergroup, group, subgroup, and LAD_name.
-        - restructured_cluster_table_long: Merged DataFrame with standardised data for summaries.
+        - restructured_cluster_table: DataFrame with LAD_code, supergroup, group,
+        subgroup, and LAD_name.
+        - restructured_cluster_table_long: Merged DataFrame with standardised
+        data for summaries.
     """
 
     # Reset the LAD_codes column so it is no longer an index and can be used to merge a table

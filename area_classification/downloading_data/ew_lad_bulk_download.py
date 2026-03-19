@@ -15,8 +15,9 @@ logger = logging.getLogger(__name__)
 
 def ew_lad_bulk_download(config: dict):
     """
-    Downloads the latest census 2021 data for England and Wales Local Authority Districts (LADs) from Nomis.
-    Census data is exported in CSV format to output directory specified in the config.
+    Downloads the latest census 2021 data for England and Wales Local Authority
+    Districts (LADs) from Nomis. Census data is exported in CSV format to output
+    directory specified in the config.
 
     Parameters
     ----------
