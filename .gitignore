@@ -890,5 +890,8 @@ docs/_linkcheck/
 *.xls
 *.xlsx
 
+# Font file
+*.ttf 
+
 # ignoring all contents of top level data folder
 data/
