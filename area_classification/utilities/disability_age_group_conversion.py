@@ -213,6 +213,7 @@ def convert_disability_age_group_england_wales(filepath: str, config: dict) -> p
                     (group_df["age_group"] == age_band_name), "Count"
                 ].sum(),
             }
+            print(condition)
             result_df_list.append(new_row)
 
     result_df = pd.DataFrame(result_df_list)

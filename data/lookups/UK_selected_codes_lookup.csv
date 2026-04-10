@@ -1,5 +1,5 @@
 variable_name,variable_code,table_ID,table_name,country,new_code,domain,radial_plot_label
-Lives in a communal establishment,ts0010003,TS001,Residency type,ew,v01,Demography and Migration,Communual establishment living 
+Lives in a communal establishment,ts0010003,TS001,Residency type,ew,v01,Demography and Migration,Communal establishment living 
 Never married and never registered a civil partnership,ts0020002,TS002,Legal partnership status,ew,v02,Demography and Migration,Never married and never in a civil partnership
 Married or in a registered civil partnership,ts0020003,TS002,Legal partnership status,ew,v03,Demography and Migration,Married or in a civil partnership
 Separated or divorced,separated_divorced,TS002,Legal partnership status,ew,v04,Demography and Migration,Separated or divorced
@@ -59,7 +59,7 @@ Economically active: Unemployed,ts0660013,TS066,Economic activity status,ew,v57,
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,TS067,Highest level of qualification,ew,v58,Education,Level 1 Level 2 or Apprenticeship
 Level 3 qualifications,ts0670006,TS067,Highest level of qualification,ew,v59,Education,Level 3 qualifications
 Level 4 qualifications or above,ts0670007,TS067,Highest level of qualification,ew,v60,Education,Level 4 qualifications or above
-Lives in a communal establishment,ni1920003,ni192,Residence Type,ni,v01,Demography and Migration,Communual establishment living 
+Lives in a communal establishment,ni1920003,ni192,Residence Type,ni,v01,Demography and Migration,Communal establishment living 
 Never married and never registered a civil partnership,ni1370002,ni137,Marital and Civil Partnership Status,ni,v02,Demography and Migration,Never married and never in a civil partnership
 Married or in a registered civil partnership,ni1380002,ni138,Marital and Civil Partnership Status - 3 Categories,ni,v03,Demography and Migration,Married or in a civil partnership
 Separated or divorced,separated_divorced,ni137,Marital and Civil Partnership Status,ni,v04,Demography and Migration,Separated or divorced
@@ -118,7 +118,7 @@ Economically active: Unemployed,ni0500005,ni050,Economic Activity - 12 Categorie
 Level 1 Level 2 or Apprenticeship,level_1_2_and_appr,ni110,Qualifications (Highest Level),ni,v58,Education,Level 1 Level 2 or Apprenticeship
 Level 3 qualifications,ni1100006,ni110,Qualifications (Highest Level),ni,v59,Education,Level 3 qualifications
 Level 4 qualifications or above,ni1100007,ni110,Qualifications (Highest Level),ni,v60,Education,Level 4 qualifications or above
-Lives in a communal establishment,UV101b0003,UV101b,Usual resident population by sex by age (6),scot,v01,Demography and Migration,Communual establishment living 
+Lives in a communal establishment,UV101b0003,UV101b,Usual resident population by sex by age (6),scot,v01,Demography and Migration,Communal establishment living 
 Never married and never registered a civil partnership,UV1040002,UV104,Marital and civil partnership status,scot,v02,Demography and Migration,Never married and never in a civil partnership
 Married or in a registered civil partnership,UV1040003,UV104,Marital and civil partnership status,scot,v03,Demography and Migration,Married or in a civil partnership
 Separated or divorced,separated_divorced,UV104,Marital and civil partnership status,scot,v04,Demography and Migration,Separated or divorced

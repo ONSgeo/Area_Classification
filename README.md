@@ -180,7 +180,12 @@ Your file structure should look like the following. Text in red are the folders 
 
 [Clicking this link will open the image in a separate  window to allow you to zoom in if needed.](https://github.com/user-attachments/assets/196538ad-8df7-4011-a696-8d7744501260)
 
-### 4.3.6 Running the pipeline
+### 4.3.6 Download specific font
+To create the horizontal bar chart, the Open Sans font is required.
+Download the Open Sans font from https://fonts.google.com/specimen/Open+Sans
+Manually save the downloaded font folder within the Data folder, output_data, bar_charts.
+
+### 4.3.7 Running the pipeline
 The entry point for the pipeline is stored within the package and called `main_pipeline.py`.
 To run the pipeline, run the following code in the terminal (either in the root directory of the
 project, or by specifying the path to `main_pipeline.py` from elsewhere).
@@ -228,5 +233,3 @@ If you want to help us build and improve `area_classification`, please take a lo
 
 # 11.0 Contacts
 [ONS Geography inbox](mailto:ons.geography@ons.gov.uk)
-
-

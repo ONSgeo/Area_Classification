@@ -190,7 +190,7 @@ def cluster_summary(
         filtered_df = uk_std_cluster_means.loc[
             uk_std_cluster_means["hierarchy_level"] == cluster_column
         ].assign(cluster=lambda df: df["cluster"].astype(str))
-
+    print(filtered_df)
     # Initialize a list to store outputs for all clusters
     cluster_info = []
 
