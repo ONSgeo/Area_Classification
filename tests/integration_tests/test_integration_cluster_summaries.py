@@ -16,6 +16,7 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         self.config = {
             "input_directory": "./tests/data/summaries/",
             "output_directory": "./tests/data/summaries/",
+            "qa_directory": "./tests/data/summaries/",
         }
 
         # Create mock data for restructured_cluster_table_long
@@ -88,16 +89,18 @@ class TestClusterSummariesWrapperIntegration(unittest.TestCase):
         expected_output = (
             "Cluster 1\n"
             "Cluster 1 contains 2 local authorities which is 50.00% of UK local authorities. The average variance for cluster 1 is 0.068. Example areas: Middlesbrough, Hartlepool\n"
-            "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
-            "        compared with the mean of the other clusters combined. The population of cluster 1 has a:\n"
+            "Values in the brackets below are the difference between the mean of the \n"
+            "              variable for this cluster compared with the mean of the other clusters combined. \n"
+            "              The population of cluster 1 has a:\n"
             "• lower (-0.240) Usual residents per square kilometre. Variance:0.020 (Demography and Migration domain)\n"
             "• lower (-0.200) proportion of people who live in a communal establishment. Variance:0.005 (Demography and Migration domain)\n"
             "• lower (-0.200) proportion of people who are Never married and never registered a civil partnership. Variance:0.180 (Demography and Migration domain)\n"
             "----------------------------------------\n"
             "Cluster 2\n"
             "Cluster 2 contains 2 local authorities which is 50.00% of UK local authorities. The average variance for cluster 2 is 0.005. Example areas: Glasgow City, City of Edinburgh\n"
-            "Values in the brackets below are the difference between the mean of the variable for this cluster\n"
-            "        compared with the mean of the other clusters combined. The population of cluster 2 has a:\n"
+            "Values in the brackets below are the difference between the mean of the \n" 
+            "              variable for this cluster compared with the mean of the other clusters combined. \n"
+            "              The population of cluster 2 has a:\n"
             "• higher (0.240) Usual residents per square kilometre. Variance:0.005 (Demography and Migration domain)\n"
             "• higher (0.200) proportion of people who live in a communal establishment. Variance:0.005 (Demography and Migration domain)\n"
             "• higher (0.200) proportion of people who are Never married and never registered a civil partnership. Variance:0.005 (Demography and Migration domain)\n"

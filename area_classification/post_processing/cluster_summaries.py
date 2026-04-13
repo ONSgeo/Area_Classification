@@ -1,6 +1,7 @@
 # Creating print statements about the clusters
 
 import logging
+import os
 import re
 
 import numpy as np
@@ -52,7 +53,7 @@ def cluster_summaries_wrapper(
 
     # Step 2 - Cluster summaries:
     cluster_info = cluster_summary(
-        restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column
+        config, restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column
     )
 
     # Step 3 - Cluster drivers:
@@ -139,13 +140,15 @@ def calculate_cluster_variance(restructured_cluster_table_long, cluster_column):
 
 
 def cluster_summary(
-    restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column
+    config, restructured_cluster_table_long, uk_std_cluster_means, variance_df, cluster_column
 ):
     """
     Generate a text summary for each cluster based on various metrics and data sources.
 
     Parameters
     ----------
+    config : dict
+        main pipeline config dictionary containing QA directory.
     restructured_cluster_table_long : pd.DataFrame
         A DataFrame containing detailed information about clusters,
         including columns such as 'supergroup', 'LAD_name', and 'v12'.
@@ -190,7 +193,10 @@ def cluster_summary(
         filtered_df = uk_std_cluster_means.loc[
             uk_std_cluster_means["hierarchy_level"] == cluster_column
         ].assign(cluster=lambda df: df["cluster"].astype(str))
-    print(filtered_df)
+    filtered_df_QA = os.path.join(config["qa_directory"], "filtered_df")
+    os.makedirs(filtered_df_QA, exist_ok=True)
+    filtered_df.to_csv(f"{filtered_df_QA}/filtered_df.csv", index=False)
+
     # Initialize a list to store outputs for all clusters
     cluster_info = []
 

@@ -47,6 +47,11 @@ class TestCalculateClusterVariance(unittest.TestCase):
 
 class TestClusterSummary(unittest.TestCase):
     def setUp(self):
+        # Create a mock configuration
+        self.config = {
+            "qa_directory": "./tests/data/summaries/"
+        }
+
         # Sample input DataFrame
         self.input_df = pd.DataFrame(
             {
@@ -106,6 +111,7 @@ class TestClusterSummary(unittest.TestCase):
     def test_cluster_summary(self):
         self.maxDiff = None  # Show full diff for debugging
         result_output = cluster_summary(
+            self.config, 
             self.input_df,
             self.uk_std_cluster_means_df,
             self.variance_df,
