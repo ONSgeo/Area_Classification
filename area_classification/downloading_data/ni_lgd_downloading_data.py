@@ -1,16 +1,18 @@
-import requests
-import pandas as pd
-from bs4 import BeautifulSoup
 import logging
+import os
 from io import BytesIO
-import os 
+
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-def ni_lgd_download_data(config): 
+
+def ni_lgd_download_data(config):
     """
     Wrapper function to download Northern Ireland Local Government District (LGD) data.
-    Data and metadata are downloaded and exported to csv files. 
+    Data and metadata are downloaded and exported to csv files.
 
     Parameters
     ----------
@@ -20,13 +22,13 @@ def ni_lgd_download_data(config):
     Returns
     -------
     None
-        The function saves the downloaded data and metadata as CSV files in the specified input directory.
-    """    
+        The function saves the downloaded data and metadata as CSV files in the
+        specified input directory.
+    """
 
     meta_data_table = download_ni_lgd_data(config)
     format_and_export_ni_metadata_table(meta_data_table, config)
     reformat_pop_density_ni(config)
-
 
 
 def reformat_pop_density_ni(config):
@@ -47,17 +49,19 @@ def reformat_pop_density_ni(config):
     """
 
     # Load only the first sheet of the Excel file
-    df = pd.read_excel(config["ni_pop_density_filepath"], sheet_name=0, skiprows=5, header=0, index_col=None)
+    df = pd.read_excel(
+        config["ni_pop_density_filepath"], sheet_name=0, skiprows=5, header=0, index_col=None
+    )
 
     # Remove unnecessary columns by index
-    df = df.drop(df.columns[[0, 2, 3,5]], axis=1)
+    df = df.drop(df.columns[[0, 2, 3, 5]], axis=1)
 
     # Rename the first remaining column to 'LGD'
-    df.columns.values[0] = "LGD" 
+    df.columns.values[0] = "LGD"
 
     # Convert from per hectare to per km²
-    df.iloc[:, 1] = df.iloc[:, 1] * 100  
-    df.columns.values[1] = "population_density"  
+    df.iloc[:, 1] = df.iloc[:, 1] * 100
+    df.columns.values[1] = "population_density"
 
     # Save to a CSV
     output_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
@@ -65,12 +69,9 @@ def reformat_pop_density_ni(config):
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     # save to output_csv_path
     df.to_csv(output_csv_path + "ni_population_density.csv", index=False)
-    
-    
 
-    
 
-def download_ni_lgd_data(config:dict)-> pd.DataFrame:
+def download_ni_lgd_data(config: dict) -> pd.DataFrame:
     """
     Function to download Northern Ireland Local Government District (LGD) data
     from the NISRA website and format it into a metadata table.
@@ -86,8 +87,8 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
     pd.DataFrame
         ni metadata table containing information about the downloaded variables.
         Columns: Variable_Name, Variable_ID, Table_ID, Table_Name, Type, Unit
-    """    
-    
+    """
+
     variables = get_available_variables()
     meta_data_table = pd.DataFrame(
         columns=[
@@ -97,7 +98,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
             "Type",
         ]
     )
-    
+
     for var in variables:
         t_name = var[0]
         t_dcode = var[1]
@@ -112,7 +113,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
 
         # Get metadata (more fields available if needed)
         meta_url = f"https://build.nisra.gov.uk/en/custom/table.csv-metadata.json?d={t_unit}&v=LGD14&v={t_dcode}&p=1"
-        r = requests.get(meta_url)
+        r = requests.get(meta_url, timeout=100)
         if r.status_code != 200:
             log_message = (
                 f"Failed to fetch metadata for variable {t_name} | "
@@ -123,7 +124,6 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
             continue
         type = r.json()["tableSchema"]["columns"][4]["titles"]
 
-
         df = pd.read_csv(BytesIO(data), skiprows=1)
         df.rename(columns={"Local Government District 2014 Code": "LGD"}, inplace=True)
         df.set_index("LGD", inplace=True)
@@ -132,7 +132,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         # Drop the "No code required" column if it exists
         if "No code required" in df.columns:
             df.drop(columns=["No code required"], inplace=True)
-    
+
         # Create a total column, that includes everything except "No code required"
         df["All " + t_unit] = df.sum(axis=1)
         # Put the total column first
@@ -143,7 +143,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
         df.columns = var_ids
 
         output_csv_path = os.path.join(config["input_directory"], "./ni_downloads/")
-        
+
         # Ensure output directory exists
         os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
         # Save to csv
@@ -167,7 +167,7 @@ def download_ni_lgd_data(config:dict)-> pd.DataFrame:
     return meta_data_table
 
 
-def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:dict):
+def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config: dict):
     """
     Formats and exports ni metadata table to csv.
 
@@ -181,8 +181,9 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
     Returns
     -------
     None
-        The function saves the formatted metadata table as a CSV file in the specified input directory.
-    """    
+        The function saves the formatted metadata table as a CSV file in the
+        specified input directory.
+    """
     # Rename units to match other scripts
     meta_data_table["Unit"] = meta_data_table["Unit"].replace(
         {
@@ -202,17 +203,19 @@ def format_and_export_ni_metadata_table(meta_data_table: pd.DataFrame, config:di
     # Set Type to 'Count' for all tables
     meta_data_table["Type"] = "Count"
 
-    meta_data_table.to_csv(os.path.join(config["input_directory"],"ni_lgd_table_metadata.csv"), index=False)
-
+    meta_data_table.to_csv(
+        os.path.join(config["input_directory"], "ni_lgd_table_metadata.csv"), index=False
+    )
 
 
 def get_available_variables():
     """
     Fetches available variables from the NISRA dataset metadata page.
 
-    This function sends a GET request to the NISRA metadata page for both the PEOPLE and HOUSEHOLD datasets,
-    parses the HTML content to extract table data, and returns the data as a list of lists.
-    Each inner list represents a row in the table, containing the text content of each cell.
+    This function sends a GET request to the NISRA metadata page for both the PEOPLE
+    and HOUSEHOLD datasets, parses the HTML content to extract table data, and
+    returns the data as a list of lists. Each inner list represents a row in the
+    table, containing the text content of each cell.
 
     Returns
     -------
@@ -220,24 +223,24 @@ def get_available_variables():
         A list containing rows of table data, where each row is a list of cell values.
         Each row also includes a column indicating whether the data is for PEOPLE or HOUSEHOLD.
     """
-            
+
     table_data = []
 
     # Fetch and parse PEOPLE dataset metadata table
     url = "https://build.nisra.gov.uk/en/metadata/dataset?d=PEOPLE"
-    response = requests.get(url)
+    response = requests.get(url, timeout=100)
     soup = BeautifulSoup(response.content, "html.parser")
     for row in soup.select("tr"):
         cells = row.find_all(["td", "th"])
-        table_data.append([cell.text.strip() for cell in cells] + ['PEOPLE'])
+        table_data.append([cell.text.strip() for cell in cells] + ["PEOPLE"])
 
     # Fetch and parse HOUSEHOLD dataset metadata table
     url = "https://build.nisra.gov.uk/en/metadata/dataset?d=HOUSEHOLD"
-    response = requests.get(url)
+    response = requests.get(url, timeout=100)
     soup = BeautifulSoup(response.content, "html.parser")
     for row in soup.select("tr"):
         cells = row.find_all(["td", "th"])
-        table_data.append([cell.text.strip() for cell in cells] + ['HOUSEHOLD'])
+        table_data.append([cell.text.strip() for cell in cells] + ["HOUSEHOLD"])
 
     return table_data
 
@@ -246,16 +249,16 @@ def fetch_data(var_code, var_name, var_unit):
     """
     Fetches data from the Northern Ireland Census 2022 Data Zone.
 
-    Constructs a URL based on the provided variable code, variable name, 
+    Constructs a URL based on the provided variable code, variable name,
     and variable unit, then sends a GET request to fetch the corresponding data in CSV format.
 
     Parameters
     ----------
-        var_code (str): 
+        var_code (str):
             The code of the variable to fetch.
-        var_name (str): 
+        var_name (str):
             The name of the variable to fetch.
-        var_unit (str): 
+        var_unit (str):
             The unit of the variable to fetch.
 
     Returns
@@ -276,7 +279,7 @@ def fetch_data(var_code, var_name, var_unit):
     """
 
     url = f"https://build.nisra.gov.uk/en/custom/table.csv?d={var_unit}&v=LGD14&v={var_code}&p=1"
-    r = requests.get(url)
+    r = requests.get(url, timeout=100)
 
     if r.status_code != 200:
         log_message = (

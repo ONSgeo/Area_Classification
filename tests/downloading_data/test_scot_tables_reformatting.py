@@ -1,15 +1,19 @@
 import os
 import unittest
-from unittest.mock import patch, mock_open, call, MagicMock
+from unittest.mock import MagicMock, call, mock_open, patch
+
 import pandas as pd
 import pandas.testing as pdt
-import numpy as np
 
 from area_classification.downloading_data.scot_tables_reformatting import (
-    rename_csv_files_by_table_id, extract_pop_density_table,
-    extract_metadata_from_files, replace_ca19_names_with_codes,
-    remove_rows, reformat_migrant_indicator, reformat_pop_density,
-    replace_variable_names_with_codes
+    extract_metadata_from_files,
+    extract_pop_density_table,
+    reformat_migrant_indicator,
+    reformat_pop_density,
+    remove_rows,
+    rename_csv_files_by_table_id,
+    replace_ca19_names_with_codes,
+    replace_variable_names_with_codes,
 )
 
 
@@ -30,15 +34,9 @@ class TestRenameCsvFilesByTableId(unittest.TestCase):
 
         # Check that os.rename was called for each CSV file with a Table ID
         expected_calls = [
-            call(
-                os.path.join(test_folder, "file1.csv"),
-                os.path.join(test_folder, "UV101b.csv")
-            ),
-            call(
-                os.path.join(test_folder, "file2.csv"),
-                os.path.join(test_folder, "UV101b.csv")
-            )
-        ]   
+            call(os.path.join(test_folder, "file1.csv"), os.path.join(test_folder, "UV101b.csv")),
+            call(os.path.join(test_folder, "file2.csv"), os.path.join(test_folder, "UV101b.csv")),
+        ]
         self.assertEqual(mock_rename.call_count, 2)
         self.assertEqual(mock_rename.call_args_list, expected_calls)
 
@@ -67,7 +65,7 @@ class ExtractPopDensityTable(unittest.TestCase):
         mock_to_csv.assert_called_once()
         mock_remove.assert_called_once()
         mock_logger.info.assert_called()
-  
+
 
 class TestExtractMetadataFromFiles(unittest.TestCase):
     @patch("area_classification.downloading_data.scot_tables_reformatting.logger")
@@ -84,7 +82,7 @@ class TestExtractMetadataFromFiles(unittest.TestCase):
             "migrant_indicator.csv",  # Special case
             "population_density.csv",  # Special case
             "UV607.csv",  # Special case for table_name
-            "UV123.csv"   # Normal file
+            "UV123.csv",  # Normal file
         ]
 
         # Create a mapping of filenames to mock file objects
@@ -100,14 +98,10 @@ class TestExtractMetadataFromFiles(unittest.TestCase):
         def csv_reader_side_effect(file_obj):
             if "UV607.csv" in file_obj.name:
                 # 9 rows, row 4 has special format, row 9 has "Individuals"
-                return [
-                    [], [], [], ["Some-Text-TableName-All"], [], [], [], [], ["Individuals"]
-                ]
+                return [[], [], [], ["Some-Text-TableName-All"], [], [], [], [], ["Individuals"]]
             elif "UV123.csv" in file_obj.name:
                 # 9 rows, row 4 has normal format, row 9 has "Households"
-                return [
-                    [], [], [], ["Some-Text-AnotherTable"], [], [], [], [], ["Households"]
-                ]
+                return [[], [], [], ["Some-Text-AnotherTable"], [], [], [], [], ["Households"]]
             else:
                 return [[]] * 9
 
@@ -125,23 +119,36 @@ class TestExtractMetadataFromFiles(unittest.TestCase):
         # Check special cases
         self.assertIn(
             {"table_id": "migrant_indicator", "table_name": "Migrant Indicator", "unit": "Person"},
-            metadata
+            metadata,
         )
         self.assertIn(
-            {"table_id": "population_density", "table_name": "Population Density", "unit": "Persons per square kilometer"},
-            metadata
+            {
+                "table_id": "population_density",
+                "table_name": "Population Density",
+                "unit": "Persons per square kilometer",
+            },
+            metadata,
         )
 
         # Check normal file
-        self.assertTrue(any(entry["table_id"] == "UV123" and entry["unit"] == "Household" for entry in metadata))
+        self.assertTrue(
+            any(entry["table_id"] == "UV123" and entry["unit"] == "Household" for entry in metadata)
+        )
 
         # Check UV607 special parsing
-        self.assertTrue(any(entry["table_id"] == "UV607" and "TableName" in entry["table_name"] for entry in metadata))
+        self.assertTrue(
+            any(
+                entry["table_id"] == "UV607" and "TableName" in entry["table_name"]
+                for entry in metadata
+            )
+        )
 
 
 class TestReplaceCA19NamesWithCodes(unittest.TestCase):
     def test_replace_names_with_codes(self):
-        config = {"reformat_scot_input_folder": "./tests/data/test_scot_tables_reformatting/ReplaceCA19NamesWithCodes"}
+        config = {
+            "reformat_scot_input_folder": "./tests/data/test_scot_tables_reformatting/ReplaceCA19NamesWithCodes"
+        }
         scot_input_folder = "./tests/data/test_scot_tables_reformatting/ReplaceCA19NamesWithCodes"
         LAD_lookup_file_path = "./tests/data/test_scot_tables_reformatting/lookup.csv"
 
@@ -150,29 +157,62 @@ class TestReplaceCA19NamesWithCodes(unittest.TestCase):
             os.makedirs(scot_input_folder)
 
         # Create the lookup df needed
-        lookup_df = pd.DataFrame({
-            "LAD22NM": ["City of Edinburgh", "Glasgow City"],
-            "LAD22CD": ["S12000036", "S12000049"]
-        })
+        lookup_df = pd.DataFrame(
+            {"LAD22NM": ["City of Edinburgh", "Glasgow City"], "LAD22CD": ["S12000036", "S12000049"]}
+        )
         lookup_df.to_csv(LAD_lookup_file_path, index=False, header=True)
-        
+
         # Create the uv100 test input file with mock data
-        uv100 = pd.DataFrame({
-                "Title row1": ["empty","empty","empty","empty","empty","empty","empty","empty","Council Area 2019","City of EDINburgh", "GlasGow City"],
-                "Title row2": ["empty","empty","empty","empty","empty","empty","empty","empty","LAD22CD","S12000036", "S12000049"],
-                "Title row3": ["empty","empty","empty","empty","empty","empty","empty","empty","variable1","empty", "empty"],
-        })
+        uv100 = pd.DataFrame(
+            {
+                "Title row1": [
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "Council Area 2019",
+                    "City of EDINburgh",
+                    "GlasGow City",
+                ],
+                "Title row2": [
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "LAD22CD",
+                    "S12000036",
+                    "S12000049",
+                ],
+                "Title row3": [
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "empty",
+                    "variable1",
+                    "empty",
+                    "empty",
+                ],
+            }
+        )
 
         # Save the uv100 test input file
         output_path = os.path.join(scot_input_folder, "uv100.csv")
         uv100.to_csv(output_path, index=False, header=True)
 
         # Call the function to test
-        replace_ca19_names_with_codes(
-            scot_input_folder,
-            LAD_lookup_file_path,
-            config
-        )
+        replace_ca19_names_with_codes(scot_input_folder, LAD_lookup_file_path, config)
 
         # Look in the folder to check the result of the output file
         for filename in os.listdir(scot_input_folder):
@@ -183,12 +223,12 @@ class TestReplaceCA19NamesWithCodes(unittest.TestCase):
                         result_df = pd.read_csv(file_path)
 
         # Create the expected dataframe
-        expected_df = pd.DataFrame([
-            ["S12000036", "S12000036", "empty"],
-            ["S12000049", "S12000049", "empty"]
-        ], columns=["Council Area 2019", "LAD22CD", "variable1"])
+        expected_df = pd.DataFrame(
+            [["S12000036", "S12000036", "empty"], ["S12000049", "S12000049", "empty"]],
+            columns=["Council Area 2019", "LAD22CD", "variable1"],
+        )
 
-        # Compare the result with the expected dataframe        
+        # Compare the result with the expected dataframe
         pdt.assert_frame_equal(result_df, expected_df)
 
         # Clean up - remove created files
@@ -206,27 +246,28 @@ class TestRemoveRows(unittest.TestCase):
     @patch("pandas.read_csv")
     def test_remove_rows(self, mock_read_csv, mock_listdir, mock_dirname, mock_makedirs):
         # Mock input DataFrame: 5 rows, "Council Area 2019" in first cell, last 3 rows are extra
-        input_df = pd.DataFrame({
-            0: ["Table name", "Council Area 2019", "A", "B", "extra1", "extra2", "extra3"],
-            1: ["all people", '', 3, 4, "extra4", "extra5", "extra6"]
-        })
+        input_df = pd.DataFrame(
+            {
+                0: ["Table name", "Council Area 2019", "A", "B", "extra1", "extra2", "extra3"],
+                1: ["all people", "", 3, 4, "extra4", "extra5", "extra6"],
+            }
+        )
         mock_read_csv.return_value = input_df.copy()
 
         captured = {}
+
         def to_csv_side_effect(self, file_path, index, header):
-            captured['df'] = self.copy()
+            captured["df"] = self.copy()
+
         with patch.object(pd.DataFrame, "to_csv", new=to_csv_side_effect):
             config = {"reformat_scot_input_folder": "dummy_folder"}
             remove_rows(config, "dummy_folder")
 
         # Expected output after processing
-        expected_df = pd.DataFrame({
-            0: ["CA19", "A", "B"],
-            1: ["all people", 3, 4]
-        })
+        expected_df = pd.DataFrame({0: ["CA19", "A", "B"], 1: ["all people", 3, 4]})
 
         # Compare output DataFrame to expected DataFrame
-        pd.testing.assert_frame_equal(captured['df'].reset_index(drop=True), expected_df)
+        pd.testing.assert_frame_equal(captured["df"].reset_index(drop=True), expected_df)
 
 
 class TestReformatMigrantIndicator(unittest.TestCase):
@@ -236,39 +277,44 @@ class TestReformatMigrantIndicator(unittest.TestCase):
     @patch("pandas.read_csv")
     def test_reformat_migrant_indicator(self, mock_read_csv, mock_join, mock_exists, mock_makedirs):
         # Mock input DataFrame (after skiprows=9, header=None)
-        migrant_data = pd.DataFrame([
-            ["Table name", "Header1", "Header2", "Total"],
-            ["Council Area 2019", "Value1", "Value2", "Sum"],
-            ["Glasgow City", 10, 20, 30],
-            ["Edinburgh, City of", 5, 15, 20],
-            ["Total", "", "", ""]
-        ])
+        migrant_data = pd.DataFrame(
+            [
+                ["Table name", "Header1", "Header2", "Total"],
+                ["Council Area 2019", "Value1", "Value2", "Sum"],
+                ["Glasgow City", 10, 20, 30],
+                ["Edinburgh, City of", 5, 15, 20],
+                ["Total", "", "", ""],
+            ]
+        )
         # Mock lookup DataFrame
-        lookup_data = pd.DataFrame({
-            "LAD22NM": ["Glasgow City", "Edinburgh, City of"],
-            "LAD22CD": ["S12000046", "S12000036"]
-        })
+        lookup_data = pd.DataFrame(
+            {
+                "LAD22NM": ["Glasgow City", "Edinburgh, City of"],
+                "LAD22CD": ["S12000046", "S12000036"],
+            }
+        )
 
         # pandas.read_csv returns migrant_data first, then lookup_data
         mock_read_csv.side_effect = [migrant_data, lookup_data]
 
         # Capture output DataFrame
         captured = {}
+
         def to_csv_side_effect(self, file_path, index):
-            captured['df'] = self.copy()
-            captured['file_path'] = file_path
+            captured["df"] = self.copy()
+            captured["file_path"] = file_path
 
         with patch.object(pd.DataFrame, "to_csv", new=to_csv_side_effect):
             config = {"reformat_scot_input_folder": "output_folder"}
             reformat_migrant_indicator("input_folder", "lookup.csv", config)
 
         # Check output DataFrame
-        df = captured['df']
+        df = captured["df"]
         expected_columns = ["CA19", "Total", "Header1", "Header2"]
         self.assertListEqual(list(df.columns), expected_columns)
         self.assertIn("S12000046", df["CA19"].values)
         self.assertIn("S12000036", df["CA19"].values)
-        self.assertEqual(captured['file_path'], "output_folder/reformat_migrant_indicator.csv")
+        self.assertEqual(captured["file_path"], "output_folder/reformat_migrant_indicator.csv")
 
 
 class TestReformatMigrantIndicator(unittest.TestCase):
@@ -278,40 +324,41 @@ class TestReformatMigrantIndicator(unittest.TestCase):
     @patch("pandas.read_csv")
     def test_reformat_migrant_indicator(self, mock_read_csv, mock_join, mock_exists, mock_makedirs):
         # Mock input DataFrame (after skiprows=9, header=None)
-        migrant_data = pd.DataFrame([
-            ["Table name", "Header1", "Header2", "Total"],
-            ["Council Area 2019", "", "", ""],
-            ["Glasgow City", 10, 20, 30],
-            ["Edinburgh", 5, 15, 20],
-            ["Total", "", "", ""]
-        ])
+        migrant_data = pd.DataFrame(
+            [
+                ["Table name", "Header1", "Header2", "Total"],
+                ["Council Area 2019", "", "", ""],
+                ["Glasgow City", 10, 20, 30],
+                ["Edinburgh", 5, 15, 20],
+                ["Total", "", "", ""],
+            ]
+        )
         # Mock lookup DataFrame
-        lookup_data = pd.DataFrame({
-            "LAD22NM": ["Glasgow City", "Edinburgh"],
-            "LAD22CD": ["S12000046", "S12000036"]
-        })
+        lookup_data = pd.DataFrame(
+            {"LAD22NM": ["Glasgow City", "Edinburgh"], "LAD22CD": ["S12000046", "S12000036"]}
+        )
 
         # pandas.read_csv returns migrant_data first, then lookup_data
         mock_read_csv.side_effect = [migrant_data, lookup_data]
 
         # Capture output DataFrame
         captured = {}
+
         def to_csv_side_effect(self, file_path, index):
-            captured['df'] = self.copy()
-            captured['file_path'] = file_path
+            captured["df"] = self.copy()
+            captured["file_path"] = file_path
 
         with patch.object(pd.DataFrame, "to_csv", new=to_csv_side_effect):
             config = {"reformat_scot_input_folder": "output_folder"}
             reformat_migrant_indicator("input_folder", "lookup.csv", config)
 
         # Check output DataFrame
-        df = captured['df']
+        df = captured["df"]
         expected_columns = ["CA19", "Total", "Header1", "Header2"]
         self.assertListEqual(list(df.columns), expected_columns)
         self.assertIn("S12000046", df["CA19"].values)
         self.assertIn("S12000036", df["CA19"].values)
-        self.assertEqual(captured['file_path'], "output_folder/reformat_migrant_indicator.csv")
-
+        self.assertEqual(captured["file_path"], "output_folder/reformat_migrant_indicator.csv")
 
 
 class TestReformatPopDensity(unittest.TestCase):
@@ -320,23 +367,26 @@ class TestReformatPopDensity(unittest.TestCase):
     @patch("os.path.exists", return_value=True)
     @patch("os.path.join", side_effect=lambda *args: "/".join(args))
     @patch("pandas.read_csv")
-    def test_reformat_pop_density(self, mock_read_csv, mock_join, mock_exists, mock_dirname, mock_makedirs):
-        
-        
+    def test_reformat_pop_density(
+        self, mock_read_csv, mock_join, mock_exists, mock_dirname, mock_makedirs
+    ):
         # Mock input DataFrame
-        df_input = pd.DataFrame({
-            "Area Name": ["Area name1", "Area name1"],
-            "Area code": ["S92000003", "S12000046"], # expect S92000003 row to be removed
-            "Area type": ["Country", "Council Area"],
-            "Population density": [100, 200]
-        })
+        df_input = pd.DataFrame(
+            {
+                "Area Name": ["Area name1", "Area name1"],
+                "Area code": ["S92000003", "S12000046"],  # expect S92000003 row to be removed
+                "Area type": ["Country", "Council Area"],
+                "Population density": [100, 200],
+            }
+        )
         mock_read_csv.return_value = df_input.copy()
 
         # Capture output DataFrame
         captured = {}
+
         def to_csv_side_effect(self, file_path, index):
-            captured['df'] = self.copy()
-            captured['file_path'] = file_path
+            captured["df"] = self.copy()
+            captured["file_path"] = file_path
 
         with patch.object(pd.DataFrame, "to_csv", new=to_csv_side_effect):
             config = {"reformat_scot_input_folder": "output_folder"}
@@ -345,16 +395,13 @@ class TestReformatPopDensity(unittest.TestCase):
         # Check output DataFrame columns
         expected_columns = [
             "CA19",
-            "Population density (number of usual residents per square kilometre)"
+            "Population density (number of usual residents per square kilometre)",
         ]
-        self.assertListEqual(list(captured['df'].columns), expected_columns)
+        self.assertListEqual(list(captured["df"].columns), expected_columns)
         # Check 'S92000003' row is removed
-        self.assertNotIn("S92000003", captured['df']["CA19"].values)
+        self.assertNotIn("S92000003", captured["df"]["CA19"].values)
         # Check output file path
-        self.assertEqual(
-            captured['file_path'],
-            "output_folder/reformat_population_density.csv"
-        )
+        self.assertEqual(captured["file_path"], "output_folder/reformat_population_density.csv")
 
 
 class TestReplaceVariableNamesWithCodes(unittest.TestCase):
@@ -362,29 +409,34 @@ class TestReplaceVariableNamesWithCodes(unittest.TestCase):
     @patch("os.path.dirname", return_value="dummy_dir")
     @patch("os.listdir", return_value=["reformat_uv123.csv"])
     @patch("pandas.read_csv")
-    def test_replace_variable_names_with_codes_uv123(self, mock_read_csv, mock_listdir, mock_dirname, mock_makedirs):
+    def test_replace_variable_names_with_codes_uv123(
+        self, mock_read_csv, mock_listdir, mock_dirname, mock_makedirs
+    ):
         # Step 1: Mock input DataFrame
-        input_df = pd.DataFrame({
-            "CA19": ["A", "B"],
-            "var1": [1, 2],
-            "var2": [3, 4],
-            "var3": [5, 6] # expecting this to be dropped from output
-        })
+        input_df = pd.DataFrame(
+            {
+                "CA19": ["A", "B"],
+                "var1": [1, 2],
+                "var2": [3, 4],
+                "var3": [5, 6],  # expecting this to be dropped from output
+            }
+        )
         mock_read_csv.return_value = input_df.copy()
 
         # Step 2: Patch to_csv to capture output DataFrame
         captured = {}
+
         def to_csv_side_effect(self, file_path, index, header):
-   
-            captured['df'] = self.copy()
+            captured["df"] = self.copy()
+
         with patch.object(pd.DataFrame, "to_csv", new=to_csv_side_effect):
             config = {"reformat_scot_input_folder": "dummy_folder"}
             result = replace_variable_names_with_codes(config)
-        
+
         # Step 3: Assert output DataFrame columns
         # last column has been dropped from output
         expected_columns = ["CA19", "uv1230001", "uv1230002"]
-        self.assertListEqual(list(captured['df'].columns), expected_columns)
+        self.assertListEqual(list(captured["df"].columns), expected_columns)
 
         # Step 4: Assert returned variable names and ids
         # varialble_names and variable_ids get created before the last column is dropped

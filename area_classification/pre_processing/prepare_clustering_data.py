@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 
 
@@ -46,17 +45,17 @@ def standardise_data(dataframe):
         A DataFrame with standardised numeric columns.
     """
     standardised_data = dataframe.copy()
-     # Skip the first column (e.g., area codes)
-    for column in dataframe.columns[1:]: 
+    # Skip the first column (e.g., area codes)
+    for column in dataframe.columns[1:]:
         mean = dataframe[column].mean()
         # Use population standard deviation
-        std = dataframe[column].std(ddof=0)  
+        std = dataframe[column].std(ddof=0)
         # Avoid division by zero
-        if std != 0: 
+        if std != 0:
             standardised_data[column] = (dataframe[column] - mean) / std
         else:
             # If std is 0, set standardised values to 0
-            standardised_data[column] = 0  
+            standardised_data[column] = 0
     return standardised_data
 
 

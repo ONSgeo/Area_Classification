@@ -1,7 +1,8 @@
-import unittest
 import getpass
-import os
+import unittest
+
 from area_classification.utilities.load_config import load_config
+
 
 class TestLoadConfig(unittest.TestCase):
     def test_load_config_with_placeholder(self):
@@ -17,6 +18,7 @@ class TestLoadConfig(unittest.TestCase):
         # Assert
         self.assertIn("filepath", result)
         self.assertEqual(result["filepath"], expected_filepath)
+
 
 if __name__ == "__main__":
     unittest.main()

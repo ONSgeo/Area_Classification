@@ -1,10 +1,12 @@
-import pandas as pd
-import os
 import glob
-from functools import reduce
 import logging
+import os
+from functools import reduce
+
+import pandas as pd
 
 logger = logging.getLogger(__name__)
+
 
 def load_data(filepath):
     """
@@ -14,23 +16,29 @@ def load_data(filepath):
     ----------
     filepath : str
         Path to the CSV file to be loaded.
-    
+
     Returns
     -------
     pd.DataFrame
         A pandas DataFrame containing the data from the CSV file.
     """
     input_df = pd.read_csv(filepath, index_col=0)
-    
+
     # Check for missing values
     missing_values = input_df.isnull().sum().sum()
     if missing_values > 0:
-        logger.warning(f"Warning: {missing_values} missing values found in input data. Missing values will be replaced with 0.")
+        logger.warning(
+            f"Warning: {missing_values} missing values found in input data."
+            + "Missing values will be replaced with 0."
+        )
         input_df.fillna(0, inplace=True)
-    
+
     return input_df
 
-def load_format_data(filepath:str, file_pattern:str, join_column_name:str, config: str) -> pd.DataFrame:
+
+def load_format_data(
+    filepath: str, file_pattern: str, join_column_name: str, config: str
+) -> pd.DataFrame:
     """
     Function to load and format data downloaded from API calls
 
@@ -55,25 +63,27 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
     FileNotFoundError
         raises error if no files matching the pattern are found in the given filepath
     ValueError
-        raises error if the number of columns in the merged dataframe does not match the expected number
-        expected number is the sum of columns in all files minus the join column which is only present in the first file
+        raises error if the number of columns in the merged dataframe does not
+        match the expected number. The expected number is the sum of columns in
+        all files minus the join column which is only present in the first file
         (i.e. len(file_list) - 1)
-    """    
+    """
 
-    # Load all of the data tables into a single DataFrame 
-    # First column will be geo code, others be questions and rows indicate responses 
-    # Find all files matching the pattern "ts" followed by any three digits and ".csv" in the given filepath
+    # Load all of the data tables into a single DataFrame
+    # First column will be geo code, others be questions and rows indicate responses
+    # Find all files matching the pattern "ts" followed by any three digits and ".csv" in
+    # the given filepath
     pattern = os.path.join(filepath, file_pattern)
     file_list = glob.glob(pattern)
-    
+
     # Raise an error if no files match the pattern
     if not file_list:
         raise FileNotFoundError(f"No files matching {file_pattern} found in {filepath}")
-    
+
     # Initialize an empty list to store DataFrames
     dfs = []
     num_columns = 0
-    
+
     # Read all files and store them in dfs
     for file in file_list:
         df = pd.read_csv(file)
@@ -81,17 +91,21 @@ def load_format_data(filepath:str, file_pattern:str, join_column_name:str, confi
         dfs.append(df)
 
     # Remove the join column from count, only added in first df
-    num_columns -= (len(file_list) - 1) 
-    
+    num_columns -= len(file_list) - 1
+
     # Merge all dataframes on join_column_name column
-    merged_df = reduce(lambda left, right: pd.merge(left, right, on=join_column_name, how='outer'), dfs)
+    merged_df = reduce(
+        lambda left, right: pd.merge(left, right, on=join_column_name, how="outer"), dfs
+    )
     if num_columns != merged_df.shape[1]:
-        raise ValueError(f"Expected {num_columns} columns, but got {merged_df.shape[1]} columns after merging.")
-    
+        raise ValueError(
+            f"Expected {num_columns} columns, but got {merged_df.shape[1]} columns after merging."
+        )
+
     # Write the DataFrame to a CSV file
     country_lad = join_column_name
     output_csv_path = os.path.join(config["input_directory"], f"{country_lad}_all_variables.csv")
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     merged_df.to_csv(output_csv_path, index=False)
-    
+
     return merged_df

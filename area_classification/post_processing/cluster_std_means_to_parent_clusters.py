@@ -2,16 +2,19 @@
 # group means standardised to the supergroup mean
 # subgroup means standardised to the group mean
 
-import pandas as pd
 import os
-from collections import defaultdict
 
-def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, chosen_clustering_variables):
+import pandas as pd
+
+
+def cluster_std_means_to_parent_clusters(
+    config, restructured_cluster_table_df, chosen_clustering_variables
+):
     """
     This function reads the clustering output CSV file and the pre-clustering data CSV file.
-    It creates standardised means of the values in a cluster to their parent cluster. It then 
+    It creates standardised means of the values in a cluster to their parent cluster. It then
     saves the standardised means to a new CSV file.
-    Once it has the standardised means, it creates means for each cluster. 
+    Once it has the standardised means, it creates means for each cluster.
 
     Parameters
     ----------
@@ -21,7 +24,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
         DataFrame containing the pre-clustering data with the chosen clustering variables.
     restructured_cluster_table_df : pd.DataFrame
         DataFrame of cluster assignments. Data will have the following format:
-        
+
         LAD_name    | LAD_code  | supergroup| group | subgroup
         -------------------------------------------
         Hartlepool  | E06000001 | 1         | 1c    | 1c1
@@ -29,20 +32,21 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     Returns
     -------
     tuple of pd.DataFrame
-        (combined_group_means, combined_subgroup_means): DataFrames containing standardised means for each group and subgroup.
+        (combined_group_means, combined_subgroup_means): DataFrames containing
+        standardised means for each group and subgroup.
 
-    """   
+    """
     # Merge the two DataFrames on the LAD CODE column
     merged_df = restructured_cluster_table_df.merge(
-        chosen_clustering_variables , on="LAD_code", how="left"
+        chosen_clustering_variables, on="LAD_code", how="left"
     )
-    
+
     # Define the output directory
     output_directory = config["output_directory"]
-    
+
     # Define the path for the std_means output folder
     output_directory = os.path.join(output_directory, "std_means")
-    
+
     # --- Generate CSVs for supergroups ---
     # Sort the data by the supergroup column
     merged_df = merged_df.sort_values(by=["supergroup"])
@@ -52,7 +56,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     all_subgroup_means = []
 
     # Group by supergroup and process each supergroup's data
-    for supergroup, supergroup_data in merged_df.groupby("supergroup"):
+    for _supergroup, supergroup_data in merged_df.groupby("supergroup"):
         # Sort the data by 'group'
         supergroup_data = supergroup_data.sort_values(by=["group"])
         # Drop the 'subgroup' column
@@ -81,7 +85,7 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     merged_df = merged_df.sort_values(by=["group", "subgroup"])
 
     # Group by group and process each group's data
-    for group, group_data in merged_df.groupby("group"):
+    for _group, group_data in merged_df.groupby("group"):
         # Identify columns starting with 'v'
         v_columns = [col for col in group_data.columns if col.startswith("v")]
 
@@ -105,15 +109,21 @@ def cluster_std_means_to_parent_clusters(config, restructured_cluster_table_df, 
     combined_subgroup_means = pd.concat(all_subgroup_means, ignore_index=True)
 
     # Create the 'parent_std_means' subfolder within 'std_means'
-    parent_std_means_directory = os.path.join(config["output_directory"], "std_means", "parent_std_means")
+    parent_std_means_directory = os.path.join(
+        config["output_directory"], "std_means", "parent_std_means"
+    )
     os.makedirs(parent_std_means_directory, exist_ok=True)
 
     # Save the group output file path within the 'parent_std_means' folder
-    group_output_file_path = os.path.join(parent_std_means_directory, "parent_std_cluster_group_means_output.csv")
+    group_output_file_path = os.path.join(
+        parent_std_means_directory, "parent_std_cluster_group_means_output.csv"
+    )
     combined_group_means.to_csv(group_output_file_path, index=False)
 
     # Save the subgroup output file path within the 'parent_std_means' folder
-    subgroup_output_file_path = os.path.join(parent_std_means_directory, "parent_std_cluster_subgroup_means_output.csv")
+    subgroup_output_file_path = os.path.join(
+        parent_std_means_directory, "parent_std_cluster_subgroup_means_output.csv"
+    )
     combined_subgroup_means.to_csv(subgroup_output_file_path, index=False)
 
     # Return the concatenated DataFrames
