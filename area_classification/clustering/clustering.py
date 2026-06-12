@@ -193,10 +193,10 @@ def create_clustergram(df, number_of_clusters, n_init, save_location, random_see
     """
     Create and save a clustergram for evaluating k-means clustering solutions.
 
-    The clustergram visualizes clustering stability and helps identify the optimal
+    The clustergram visualises clustering stability and helps identify the optimal
     number of clusters by performed the k-means algorithm for a range of cluster
     numbers.
-    Since k-means is sensitive to initialization, `n_init` determines the number of
+    Since k-means is sensitive to initialisation, `n_init` determines the number of
     times the algorithm runs with different centroid seeds. The final result is the
     best outcome based on inertia/WCSS (within-cluster sum of squares).
 
@@ -352,7 +352,7 @@ def create_subcluster_clustergrams(
         if len(subcluster_df) <= 2:
             # Skip this subcluster if it has insufficient data points (2 or fewer).
             # For example when running on number_of_times_k_means_initialised = 1000 the
-            # Oxford and Cambridge subgroup have an errors when creating the clustergram
+            # Oxford and Cambridge subgroup have an error when creating the clustergram
             # so skip this subcluster instead.
             logger.info(
                 f"Skipping cluster {subcluster} due to insufficient"

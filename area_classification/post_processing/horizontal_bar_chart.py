@@ -129,7 +129,7 @@ def small_multiples(config, dataframe, level, domain_col):
             bar_colors = ["#206095" if val >= 0 else "#f66068" for val in means]
             y_labels = [label_dict.get(cat, cat) for cat in domain_cats]
 
-            # Split y-axis labels at 28 characters
+            # Split y-axis labels at 31 characters
             def split_label(label, width=31):
                 return "\n".join(textwrap.wrap(label, width=width))
 
