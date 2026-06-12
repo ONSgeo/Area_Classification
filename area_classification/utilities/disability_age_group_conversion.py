@@ -229,7 +229,7 @@ def convert_disability_age_group_northern_ireland(filepath: str, config: dict) -
     As mentioned in the main README for this repo, disability data for Northern Ireland needs to
     be downloaded manually from the Northern Ireland Statistics and Research Agency (NISRA)
     website as it is not available in the bulk download. It should have been manually saved
-    into the 'data/inputs/ni_downloads folder. The file should be named 'census-2021-ms-d02.xlsx'.
+    into the 'data/inputs/ni_downloads' folder. The file should be named 'census-2021-ms-d02.xlsx'.
     Output is written to a csv file in the input_directory
 
     Parameters

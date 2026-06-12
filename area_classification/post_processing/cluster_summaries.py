@@ -453,9 +453,9 @@ def identify_cluster_drivers(
                     # if running through main hash the line below!
                     # cluster_number_int = int(cluster_number_str)
 
-                    variance_value = variance_df.loc[
-                        cluster_number_str, v_code
-                    ]  # if running through main un hash / if running through main hash this!
+                    variance_value = variance_df.loc[cluster_number_str, v_code]
+                    # if running through main unhash line below
+                    # alternatively, if running through main hash this!
                     # variance_value = variance_df.loc[cluster_number_int, v_code]
 
                     # Generate the specific message based on the domain logic
